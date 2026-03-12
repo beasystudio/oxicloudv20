@@ -135,18 +135,6 @@ export default function PilotDashboard() {
             </Card>
           </motion.div>
 
-          {/* Footer */}
-          <motion.div {...fade(0.3)}>
-            <div className="flex items-center justify-center gap-5 text-xs text-muted-foreground">
-              {[
-                language === 'nl' ? '100% gratis voor architecten' : '100% free for architects',
-                language === 'nl' ? 'Geen abonnementen' : 'No subscriptions',
-                language === 'nl' ? 'Geen kredietkaart' : 'No credit card',
-              ].map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </div>
-          </motion.div>
         </div>
       </div>
     </>
