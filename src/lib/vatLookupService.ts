@@ -164,6 +164,8 @@ function generateMockCompanyData(vatNumber: string): KBOCompanyData {
     naceCode: '71111',
     naceDescription: 'Architectenactiviteiten',
     director: mock.director,
+    email: mock.email,
+    phone: mock.phone,
   };
 }
 
