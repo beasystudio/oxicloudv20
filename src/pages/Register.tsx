@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { LanguageToggle } from '@/components/LanguageToggle';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { supabase } from '@/integrations/supabase/client';
 
 type UserCategory = null | 'professional' | 'government';
@@ -77,6 +78,7 @@ export default function Register() {
         <div className="flex items-center justify-between px-6 lg:px-12 py-5">
           <Link to="/" className="text-foreground font-semibold text-lg tracking-tight">OxiCloud</Link>
           <div className="flex items-center gap-4">
+            <ThemeToggle />
             <LanguageToggle variant="light" />
             <Link to="/login" className="text-xs text-muted-foreground hover:text-primary transition-colors">
               Already have an account? <span className="text-primary font-medium">Sign in</span>
