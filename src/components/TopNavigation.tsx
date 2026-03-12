@@ -186,6 +186,15 @@ export const TopNavigation = () => {
     });
   };
 
+  const handleSignOut = async () => {
+    logout();
+    try {
+      await supabase.auth.signOut();
+    } finally {
+      window.location.href = '/login';
+    }
+  };
+
   // Navigation item component
   const NavItem = ({
     to,
