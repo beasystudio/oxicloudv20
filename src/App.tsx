@@ -49,6 +49,7 @@ import PilotProjects from "./pages/pilot/PilotProjects";
 import PilotContacts from "./pages/pilot/PilotContacts";
 import PilotFinancial from "./pages/pilot/PilotFinancial";
 import PilotSettings from "./pages/pilot/PilotSettings";
+import PilotProfile from "./pages/pilot/PilotProfile";
 
 const queryClient = new QueryClient();
 
