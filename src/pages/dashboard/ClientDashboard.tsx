@@ -228,20 +228,27 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* Next Step */}
-            <div className="rounded-xl border border-border p-5 flex flex-col">
-              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">
-                {language === 'nl' ? 'Volgende stap' : 'Next step'}
+            {/* Partner Card */}
+            <div className="rounded-xl border border-border p-5 flex flex-col items-center text-center">
+              <p className="text-[13px] text-muted-foreground leading-relaxed mb-3 max-w-[260px]">
+                {language === 'nl'
+                  ? 'Als OxiCloud partner verdient uw bureau een commissie telkens wanneer een NOx-rapport wordt gegenereerd — automatisch, zonder administratieve overhead.'
+                  : 'As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead.'}
               </p>
-              <div className="flex flex-col gap-2 mt-auto">
+              <button
+                onClick={() => navigate('/dashboard/partnership-program')}
+                className="text-sm font-semibold text-primary hover:underline mb-4">
+                {language === 'nl' ? 'Bekijk OxiCloud Partnerprogramma' : 'View OxiCloud Partnership Program'}
+              </button>
+              <div className="flex flex-col gap-2 w-full">
                 <button
                   onClick={() => navigate('/register/workspace')}
-                  className="w-full rounded-lg px-4 py-2.5 text-sm font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
+                  className="w-full rounded-xl px-4 py-3 text-sm font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
                   {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
                 </button>
                 <button
                   onClick={() => setShowInviteManager(true)}
-                  className="w-full rounded-lg px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  className="w-full rounded-xl px-4 py-3 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
                   {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
                 </button>
               </div>
