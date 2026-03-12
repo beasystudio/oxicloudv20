@@ -85,11 +85,11 @@ export function PilotNavigation({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Setup Guide */}
-            {onStartOnboarding && <Button variant="ghost" size="sm" className="h-9 gap-1.5 text-xs" onClick={() => onStartOnboarding(!onboarding.flow1Complete ? 1 : !onboarding.flow2Complete ? 2 : 3)}>
+            {/* Setup Guide - navigate to dashboard to show checklist */}
+            <Button variant="ghost" size="sm" className="h-9 gap-1.5 text-xs" onClick={() => navigate('/pilot-demo/dashboard')}>
                 <HelpCircle className="h-4 w-4" />
                 <span className="hidden sm:inline">{t('pilot.nav.setupGuide')}</span>
-              </Button>}
+              </Button>
 
             {/* Financial Dashboard */}
             <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", isActive('/pilot-demo/financial') && "bg-primary/10")}>
