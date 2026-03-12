@@ -53,7 +53,7 @@ export function PilotNavigation({
                   <span className="font-semibold text-sm text-foreground">{company.name}</span>
                 )}
                 <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-primary/30 text-primary">
-                  Pilot
+                  Workspace
                 </Badge>
               </div>
             </div>

@@ -525,12 +525,12 @@ export const TopNavigation = () => {
   return <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
-          {/* Left: Branding */}
+          {/* Left: Branding + Demo badge */}
           <div className="flex items-center gap-6">
             {renderBranding()}
-            
-            {/* Separator */}
-            
+            <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded-full border border-primary/30 text-primary">
+              Demo
+            </span>
             
             {/* Navigation */}
             <div className="hidden md:flex">

@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils';
 import { isPilotAccount, isPilotCompany, getEmptyStats } from '@/lib/pilotAccountUtils';
 import { PaymentSuccessDialog } from '@/components/oxicloud/PaymentSuccessDialog';
 import { CreateNewProjectDialog } from '@/components/projects/CreateNewProjectDialog';
+import { InviteManagerDialog } from '@/components/demo/InviteManagerDialog';
+import { Handshake, Send } from 'lucide-react';
 
 export default function ClientDashboard() {
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ export default function ClientDashboard() {
   const [showPaymentSuccessDialog, setShowPaymentSuccessDialog] = useState(false);
   const [showCreateProjectDialog, setShowCreateProjectDialog] = useState(false);
   const [paymentProjectName, setPaymentProjectName] = useState('');
+  const [showInviteManager, setShowInviteManager] = useState(false);
 
   const selectedCompany = getSelectedCompany();
   const isClientOwnerOrAdmin = currentUser?.role === 'client_owner' || currentUser?.role === 'client_admin';
@@ -147,7 +150,35 @@ export default function ClientDashboard() {
       <div className="h-[100dvh] overflow-hidden bg-background flex flex-col">
         <TopNavigation />
 
-        <main className="flex-1 min-h-0 overflow-hidden container mx-auto px-4 py-5 flex flex-col">
+        <main className="flex-1 min-h-0 overflow-y-auto container mx-auto px-4 py-5 flex flex-col">
+
+          {/* Demo Environment Banner */}
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 mb-4 shrink-0">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-foreground">
+                  {language === 'nl' ? 'U verkent momenteel de OxiCloud Demo-omgeving.' : 'You are currently exploring the OxiCloud Demo Environment.'}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {language === 'nl' ? 'Alle data is fictief. Maak een Workspace aan om echt aan de slag te gaan.' : 'All data is fictional. Create a Workspace to start working for real.'}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => navigate('/register/workspace')}
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
+                  <Plus className="h-3 w-3" />
+                  {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
+                </button>
+                <button
+                  onClick={() => setShowInviteManager(true)}
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  <Send className="h-3 w-3" />
+                  {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
+                </button>
+              </div>
+            </div>
+          </div>
 
           {/* Header */}
           <header className="mb-4 shrink-0">
@@ -165,7 +196,7 @@ export default function ClientDashboard() {
             className="flex-1 min-h-0 grid gap-2"
             style={{
               gridTemplateColumns: '1fr 1fr 1fr',
-              gridTemplateRows: 'auto auto auto 1fr',
+              gridTemplateRows: 'auto auto auto auto 1fr',
             }}>
 
             {/* ═══ ROW 1: Insights (2col) + New Project / Todo (1col) ═══ */}
@@ -236,11 +267,54 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* ═══ ROW 4: Action Required / Setup — full width (bottom) ═══ */}
+            {/* ═══ ROW 4: Partner Program + Workspace CTA ═══ */}
+            <div
+              className="rounded-2xl border border-border p-4"
+              style={{ gridColumn: '1 / 3', gridRow: '4' }}>
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-xl bg-primary/10 shrink-0">
+                  <Handshake className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground mb-1">
+                    {language === 'nl' ? 'OxiCloud Partner Programma' : 'OxiCloud Partner Program'}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {language === 'nl'
+                      ? 'Architecten verdienen commissie wanneer hun bureau een project aanmaakt en een NOx rapport genereert. De bouwheer betaalt het rapport via overschrijving na ontvangst van een offerte. Commissie wordt overgemaakt naar de bankrekening van het bedrijf.'
+                      : 'Architects earn commission when their firm creates a project and generates a NOx report. The client pays for the report via bank transfer after receiving a quote. Commission is transferred to the company\'s bank account.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="rounded-2xl border border-primary/20 bg-primary/5 p-4 flex flex-col justify-between"
+              style={{ gridColumn: '3', gridRow: '4' }}>
+              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">
+                {language === 'nl' ? 'Volgende stap' : 'Next step'}
+              </p>
+              <div className="space-y-2">
+                <button
+                  onClick={() => navigate('/register/workspace')}
+                  className="w-full flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
+                  <Plus className="h-3 w-3" />
+                  {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
+                </button>
+                <button
+                  onClick={() => setShowInviteManager(true)}
+                  className="w-full flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  <Send className="h-3 w-3" />
+                  {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
+                </button>
+              </div>
+            </div>
+
+            {/* ═══ ROW 5: Action Required / Setup — full width (bottom) ═══ */}
             {isFirstTimeUser && isClientOwnerOrAdmin ? (
               <div
                 className="rounded-2xl border border-border p-4 overflow-y-auto"
-                style={{ gridColumn: '1 / 4', gridRow: '4' }}>
+                style={{ gridColumn: '1 / 4', gridRow: '5' }}>
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <h2 className="text-sm font-semibold">{t('dashboard.client.completeSetup')}</h2>
@@ -264,7 +338,7 @@ export default function ClientDashboard() {
             ) : (
               <div
                 className="rounded-2xl border border-border p-4 overflow-y-auto"
-                style={{ gridColumn: '1 / 4', gridRow: '4' }}>
+                style={{ gridColumn: '1 / 4', gridRow: '5' }}>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.client.actionRequired')}</span>
                   <span className="text-sm text-muted-foreground">{displayActions.length}</span>
@@ -295,6 +369,7 @@ export default function ClientDashboard() {
         onOpenChange={setShowCreateProjectDialog}
         companyId={selectedCompanyId || ''}
         onProjectCreated={() => { setShowCreateProjectDialog(false); navigate('/dashboard/projects'); }} />
+      <InviteManagerDialog open={showInviteManager} onOpenChange={setShowInviteManager} />
     </>
   );
 }
