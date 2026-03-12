@@ -40,8 +40,8 @@ import AuthoritySpatialAnalysis from "./pages/dashboard/authority/AuthoritySpati
 import AuthoritySettings from "./pages/dashboard/authority/AuthoritySettings";
 // Pilot Demo pages (now Production Workspace flow)
 import PilotLanding from "./pages/pilot/PilotLanding";
-import PilotRegister from "./pages/pilot/PilotRegister";
 import PilotActivationSent from "./pages/pilot/PilotActivationSent";
+import PilotCreateAccount from "./pages/pilot/PilotCreateAccount";
 import PilotCreateAccount from "./pages/pilot/PilotCreateAccount";
 import PilotLogin from "./pages/pilot/PilotLogin";
 import PilotForgotPassword from "./pages/pilot/PilotForgotPassword";
