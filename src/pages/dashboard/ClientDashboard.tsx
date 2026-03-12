@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils';
 import { isPilotAccount, isPilotCompany, getEmptyStats } from '@/lib/pilotAccountUtils';
 import { PaymentSuccessDialog } from '@/components/oxicloud/PaymentSuccessDialog';
 import { CreateNewProjectDialog } from '@/components/projects/CreateNewProjectDialog';
+import { InviteManagerDialog } from '@/components/demo/InviteManagerDialog';
+import { Handshake, Send } from 'lucide-react';
 
 export default function ClientDashboard() {
   const navigate = useNavigate();
