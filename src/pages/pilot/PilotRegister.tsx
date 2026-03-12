@@ -27,12 +27,6 @@ export default function PilotRegister() {
   const navigate = useNavigate();
   const vatInputRef = useRef<HTMLInputElement>(null);
 
-  const session = getPilotSession();
-  if (!session) {
-    navigate('/pilot-demo');
-    return null;
-  }
-
   // ── Form state ──
   const [vatInput, setVatInput] = useState('');
   const [lookupStatus, setLookupStatus] = useState<LookupStatus>('idle');
