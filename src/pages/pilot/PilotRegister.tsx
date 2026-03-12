@@ -101,6 +101,7 @@ export default function PilotRegister() {
       postalCode: data.postalCode || prev.postalCode,
       city: data.city || prev.city,
       country: data.country || 'Belgium',
+      contactName: data.director ? `${data.director.firstName} ${data.director.lastName}` : prev.contactName,
     }));
     setLookupStatus('success');
     toast.success('Bedrijfsgegevens opgehaald uit het KBO-register');
