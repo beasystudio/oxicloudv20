@@ -21,6 +21,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { PilotOnboardingFlow1 } from '@/components/pilot/PilotOnboardingFlow1';
 
 /* ─── Storage ─── */
 const STORAGE_KEY = 'oxicloud_onboarding_v2';
