@@ -262,10 +262,7 @@ export default function PilotDashboard() {
             </motion.div>
           </div>
 
-              
 
-
-              
             </motion.div>
           </div>
 
