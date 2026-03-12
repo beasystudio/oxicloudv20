@@ -135,7 +135,7 @@ export function ProjectTypesTable() {
               </TableHeader>
               <TableBody>
                 {types.map(type => (
-                  <TableRow key={type.id}>
+                  <TableRow key={type.id} className="cursor-pointer" onDoubleClick={() => handleEdit(type)}>
                     <TableCell className="font-medium">{type.name}</TableCell>
                     <TableCell className="text-center">
                       <Switch 

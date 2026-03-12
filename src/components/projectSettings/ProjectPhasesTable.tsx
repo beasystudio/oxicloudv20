@@ -146,7 +146,7 @@ export function ProjectPhasesTable() {
               </TableHeader>
               <TableBody>
                 {phases.map(phase => (
-                  <TableRow key={phase.id}>
+                  <TableRow key={phase.id} className="cursor-pointer" onDoubleClick={() => handleEdit(phase)}>
                     <TableCell>
                       <div 
                         className="w-6 h-6 rounded-full border" 
