@@ -35,6 +35,7 @@ export default function ClientDashboard() {
   const [showPaymentSuccessDialog, setShowPaymentSuccessDialog] = useState(false);
   const [showCreateProjectDialog, setShowCreateProjectDialog] = useState(false);
   const [paymentProjectName, setPaymentProjectName] = useState('');
+  const [showInviteManager, setShowInviteManager] = useState(false);
 
   const selectedCompany = getSelectedCompany();
   const isClientOwnerOrAdmin = currentUser?.role === 'client_owner' || currentUser?.role === 'client_admin';
