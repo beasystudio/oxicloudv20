@@ -24,7 +24,7 @@ export default function PilotLogin() {
     setLoading(true);
     setError(null);
 
-    await new Promise(resolve => setTimeout(resolve, 400));
+    await new Promise((resolve) => setTimeout(resolve, 400));
     const session = getPilotSession();
     const pilotUser = getPilotUser();
     if (!session || !pilotUser) {
@@ -38,7 +38,7 @@ export default function PilotLogin() {
         eventType: 'login_success',
         userId: pilotUser.id,
         userEmail: pilotUser.email,
-        description: `Succesvol ingelogd als ${pilotUser.firstName} ${pilotUser.lastName}`,
+        description: `Succesvol ingelogd als ${pilotUser.firstName} ${pilotUser.lastName}`
       });
       toast.success(`Welcome back, ${pilotUser.firstName}!`);
       navigate('/pilot-demo/dashboard');
@@ -47,7 +47,7 @@ export default function PilotLogin() {
         eventType: 'login_failed',
         userId: 'unknown',
         userEmail: email,
-        description: `Mislukte inlogpoging voor ${email}`,
+        description: `Mislukte inlogpoging voor ${email}`
       });
       setError('Invalid email or password. Please try again.');
     }
@@ -70,8 +70,8 @@ export default function PilotLogin() {
           <img
             src={loginBackground}
             alt="Architecture"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+            className="absolute inset-0 w-full h-full object-cover" />
+          
           <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/30 to-transparent" />
 
           <div className="relative z-10 flex flex-col justify-between p-12 w-full">
@@ -82,10 +82,10 @@ export default function PilotLogin() {
               <p className="text-white/50 text-xs uppercase tracking-[0.14em] mb-3">
                 Environmental Compliance
               </p>
-              <p className="text-white text-2xl font-semibold leading-snug tracking-tight">
-                Submit NOx reports,<br />
-                get paid for it.
-              </p>
+              
+
+
+              
             </div>
           </div>
         </div>
@@ -96,8 +96,8 @@ export default function PilotLogin() {
             variants={container}
             initial="hidden"
             animate="show"
-            className="max-w-sm mx-auto w-full"
-          >
+            className="max-w-sm mx-auto w-full">
+            
             {/* Mobile logo */}
             <motion.div variants={item} className="lg:hidden mb-12">
               <Link to="/" className="text-white font-semibold text-lg tracking-tight">
@@ -116,12 +116,12 @@ export default function PilotLogin() {
             </motion.div>
 
             {/* Error */}
-            {error && (
-              <Alert variant="destructive" className="mb-6 border-destructive/30 bg-destructive/10">
+            {error &&
+            <Alert variant="destructive" className="mb-6 border-destructive/30 bg-destructive/10">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription className="text-destructive">{error}</AlertDescription>
               </Alert>
-            )}
+            }
 
             {/* Form */}
             <motion.form variants={item} onSubmit={handleSubmit} className="space-y-5">
@@ -134,10 +134,10 @@ export default function PilotLogin() {
                   type="email"
                   placeholder="you@company.be"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="h-12 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-primary focus:ring-primary/20"
-                />
+                  className="h-12 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-primary focus:ring-primary/20" />
+                
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-white/60 text-xs uppercase tracking-wider">
@@ -148,16 +148,16 @@ export default function PilotLogin() {
                   type="password"
                   placeholder="••••••••"
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-12 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-primary focus:ring-primary/20"
-                />
+                  className="h-12 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-primary focus:ring-primary/20" />
+                
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="group relative w-full h-12 flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_-6px_hsl(108_96%_52%/0.4)] active:scale-[0.98]"
-              >
+                className="group relative w-full h-12 flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_-6px_hsl(108_96%_52%/0.4)] active:scale-[0.98]">
+                
                 <span className="relative z-10">
                   {loading ? 'Signing in…' : 'Sign In'}
                 </span>
@@ -197,6 +197,6 @@ export default function PilotLogin() {
           </motion.div>
         </div>
       </div>
-    </>
-  );
+    </>);
+
 }
