@@ -169,7 +169,7 @@ export default function ClientDashboard() {
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
                   <button
-                    onClick={() => navigate('/register/workspace')}
+                    onClick={() => navigate('/pilot-demo/create-account')}
                     className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[11px] font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
                     <Plus className="h-3 w-3" />
                     {language === 'nl' ? 'Workspace aanmaken' : 'Create Workspace'}
