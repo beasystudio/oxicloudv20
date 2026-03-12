@@ -316,28 +316,28 @@ function GovernmentNotice({
         </button>
       </motion.div>
 
-      <motion.div variants={item} className="text-center py-4">
-        <h2 className="text-2xl font-semibold text-white mb-3">Government Access</h2>
-        <p className="text-white/40 text-sm max-w-sm mx-auto leading-relaxed mb-8">
-          Government accounts require a dedicated onboarding process with identity verification and domain validation.
-        </p>
+      <motion.div variants={item} className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-semibold text-white tracking-tight mb-3">Government Access</h2>
+          <p className="text-white/40 text-sm leading-relaxed">
+            Government accounts require a dedicated onboarding process with identity verification and domain validation.
+          </p>
+        </div>
 
-        <div className="space-y-4 max-w-sm mx-auto text-left">
+        <div className="space-y-3">
           {[
             'Official domain email verification',
             'Organization identity check',
             'Dedicated account manager',
           ].map((text) => (
-            <div key={text} className="flex items-center gap-3">
-              <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                <CheckCircle className="w-3 h-3 text-white/40" />
-              </div>
-              <span className="text-sm text-white/50">{text}</span>
+            <div key={text} className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.06] bg-white/[0.02]">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+              <span className="text-sm text-white/60">{text}</span>
             </div>
           ))}
         </div>
 
-        <div className="mt-10 space-y-3">
+        <div className="space-y-3 pt-2">
           <a
             href="mailto:support@oxicloud.be?subject=Government%20Account%20Request"
             className="group w-full h-12 flex items-center justify-center gap-2 rounded-lg border border-white/15 bg-white/5 text-white text-sm font-medium hover:bg-white/10 transition-colors"
@@ -345,7 +345,7 @@ function GovernmentNotice({
             Contact us for access
             <ArrowUpRight size={14} className="group-hover:rotate-45 transition-transform" />
           </a>
-          <p className="text-[11px] text-white/25">
+          <p className="text-[11px] text-white/25 text-center">
             Or reach out at <span className="text-white/40">support@oxicloud.be</span>
           </p>
         </div>
