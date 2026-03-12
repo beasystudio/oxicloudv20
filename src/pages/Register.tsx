@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import { ArrowUpRight } from '@/components/icons/OxiIcons';
+import { LanguageToggle } from '@/components/LanguageToggle';
 import { supabase } from '@/integrations/supabase/client';
 
 type UserCategory = null | 'professional' | 'government';
