@@ -462,7 +462,7 @@ export const TopNavigation = () => {
                 </div>
                 <DropdownMenuSeparator />
                 <div className="p-1">
-                  <DropdownMenuItem onClick={logout} className="cursor-pointer text-xs h-8 px-3 text-destructive">
+                  <DropdownMenuItem onClick={() => { logout(); window.location.href = '/login'; }} className="cursor-pointer text-xs h-8 px-3 text-destructive">
                     <LogOut className="h-3.5 w-3.5 mr-2" />
                     {t('dashboard.nav.signOut')}
                   </DropdownMenuItem>
