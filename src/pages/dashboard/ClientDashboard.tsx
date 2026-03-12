@@ -182,7 +182,7 @@ export default function ClientDashboard() {
               {new Date().toLocaleDateString(language === 'nl' ? 'nl-BE' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
             <h1 className="text-3xl tracking-tight leading-[1.15] text-foreground font-semibold text-balance">
-              {greeting()},<br />{currentUser?.name?.split(' ')[0]}.
+              {greeting()}, {currentUser?.name?.split(' ')[0]}.
             </h1>
             {summaryLine && <p className="text-sm text-muted-foreground mt-1">{summaryLine}</p>}
           </header>
