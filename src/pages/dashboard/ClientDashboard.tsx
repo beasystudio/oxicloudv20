@@ -196,7 +196,7 @@ export default function ClientDashboard() {
             className="flex-1 min-h-0 grid gap-2"
             style={{
               gridTemplateColumns: '1fr 1fr 1fr',
-              gridTemplateRows: 'auto auto auto 1fr',
+              gridTemplateRows: 'auto auto auto auto 1fr',
             }}>
 
             {/* ═══ ROW 1: Insights (2col) + New Project / Todo (1col) ═══ */}
