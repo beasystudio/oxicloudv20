@@ -2,36 +2,22 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { TopNavigation } from '@/components/TopNavigation';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, TrendingUp, Shield, Layers, CheckCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-const commissionSteps = [
-  { n: '01', label: 'Project aanmaken', desc: 'Voeg projectgegevens toe in OxiCloud' },
-  { n: '02', label: 'Inschatting indienen', desc: 'Voorlopige schatting & offerte voltooien' },
-  { n: '03', label: 'Klant betaalt', desc: 'Rapport betaald door uw klant' },
-  { n: '04', label: 'Afrekening', desc: 'Partnervergoeding automatisch verwerkt' },
+const steps = [
+  { n: '01', label: 'Create a project', desc: 'Add your project details in OxiCloud — address, type, and client contact.' },
+  { n: '02', label: 'Complete the pre-estimation', desc: 'Fill in emission sources. The system calculates NOx impact and generates a price.' },
+  { n: '03', label: 'Send the quote to your client', desc: 'A professional quote is generated. Your client pays directly — you never advance any costs.' },
+  { n: '04', label: 'Report is generated', desc: 'After payment, the full NOx compliance report is produced and delivered to your client.' },
+  { n: '05', label: 'You receive your commission', desc: 'A 40 % commission on the report fee is automatically calculated and settled to your firm.' },
 ];
 
-const benefits = [
-  {
-    icon: CheckCircle,
-    title: 'Projectafhandeling',
-    desc: 'Voltooi compliance-dossiers efficiënt. Uw klanten krijgen sneller hun vergunning — u bespaart tijd op elk project.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Professionele meerwaarde',
-    desc: 'Positioneer uzelf als compliance-adviseur. Klanten waarderen uw proactieve aanpak en betrouwbare service.',
-  },
-  {
-    icon: Shield,
-    title: 'Nul financieel risico',
-    desc: 'U betaalt nooit vooraf. Klanten betalen rechtstreeks. Uw vergoeding wordt automatisch berekend na betaling.',
-  },
-  {
-    icon: Layers,
-    title: 'Strategisch partnerschap',
-    desc: 'Een langetermijnsamenwerking gericht op kwaliteit, compliance en wederzijds vertrouwen.',
-  },
+const faqs = [
+  { q: 'How much do I earn per report?', a: 'You earn 40 % of the report fee. For a typical residential project this means €280 – €450 per report.' },
+  { q: 'Do I need to pay anything upfront?', a: 'No. Your client pays the report fee directly. You never advance any money.' },
+  { q: 'How is the commission paid?', a: 'After payment is confirmed, we generate a self-billing invoice. The commission is transferred to your company bank account.' },
+  { q: 'Is there a minimum number of projects?', a: 'No minimum. You earn a commission on every single report — whether you submit one project or a hundred.' },
+  { q: 'Can my whole team submit projects?', a: 'Yes. Add colleagues to your workspace. Every report submitted under your firm earns the same commission rate.' },
 ];
 
 export default function PartnershipProgram() {
@@ -40,14 +26,14 @@ export default function PartnershipProgram() {
   return (
     <>
       <Helmet>
-        <title>Partnerprogramma · OxiCloud</title>
-        <meta name="description" content="Het OxiCloud Partnerprogramma — samenwerken aan succesvolle projectafhandeling." />
+        <title>Partnership Program · OxiCloud</title>
+        <meta name="description" content="Learn how architects earn commissions through the OxiCloud Partnership Program." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
         <TopNavigation />
 
-        <main className="container mx-auto px-6 py-12 max-w-3xl">
+        <main className="container mx-auto px-6 py-12 max-w-2xl">
           {/* Back */}
           <Button
             variant="ghost"
@@ -56,76 +42,102 @@ export default function PartnershipProgram() {
             className="mb-10 -ml-2 text-muted-foreground"
           >
             <ArrowLeft className="h-4 w-4 mr-1.5" />
-            Terug
+            Back
           </Button>
 
-          {/* Page Header */}
-          <header className="mb-12">
-            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground font-medium mb-3">
-              Partnerprogramma
+          {/* Header */}
+          <header className="mb-14">
+            <p className="text-xs uppercase tracking-[0.15em] text-primary font-semibold mb-3">
+              Partnership Program
             </p>
             <h1 className="text-[2rem] font-semibold tracking-tight text-foreground leading-tight mb-4">
-              Samenwerken aan<br />
-              succesvolle projecten.
+              Earn a commission on every<br />
+              NOx report you deliver.
             </h1>
             <p className="text-muted-foreground text-base leading-relaxed max-w-lg">
-              Dien projecten in. Laat uw klanten betalen voor de rapporten die ze nodig hebben. 
-              Ontvang automatische afrekening — zonder financieel risico.
+              OxiCloud is free for architects. When your client pays for a compliance report,
+              your firm automatically receives <span className="font-semibold text-foreground">40 %</span> of the report fee — 
+              with zero admin overhead.
             </p>
           </header>
 
           {/* How It Works */}
           <section className="mb-14">
             <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-6">
-              Hoe het werkt
+              How it works
             </h2>
-            <div className="space-y-0 border border-border rounded-xl overflow-hidden">
-              {commissionSteps.map((step, i) => (
+            <div className="border border-border rounded-xl overflow-hidden">
+              {steps.map((step, i) => (
                 <div
                   key={step.n}
-                  className={`flex items-center gap-6 px-6 py-5 ${i < commissionSteps.length - 1 ? 'border-b border-border' : ''}`}
+                  className={`flex items-start gap-5 px-6 py-5 ${i < steps.length - 1 ? 'border-b border-border' : ''}`}
                 >
-                  <span className="text-[11px] font-semibold text-muted-foreground/50 tracking-wider w-6 shrink-0">
+                  <span className="text-[11px] font-semibold text-muted-foreground/50 tracking-wider w-6 shrink-0 pt-0.5">
                     {step.n}
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-foreground">{step.label}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{step.desc}</p>
+                    <p className="text-[13px] text-muted-foreground mt-0.5 leading-relaxed">{step.desc}</p>
                   </div>
-                  {i < commissionSteps.length - 1 && (
-                    <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/30 shrink-0" />
+                  {i < steps.length - 1 && (
+                    <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/30 shrink-0 mt-1" />
                   )}
                 </div>
               ))}
             </div>
           </section>
 
-          {/* Benefits */}
+          {/* Example Earnings */}
           <section className="mb-14">
             <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-6">
-              Voordelen
+              Example earnings
             </h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {benefits.map((b) => (
-                <div key={b.title} className="p-5 rounded-xl border border-border/60 bg-background">
-                  <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center mb-4">
-                    <b.icon className="h-4 w-4 text-foreground/70" />
-                  </div>
-                  <h3 className="text-sm font-semibold text-foreground mb-1.5">{b.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{b.desc}</p>
+            <div className="rounded-xl border border-border overflow-hidden">
+              <div className="grid grid-cols-3 text-xs uppercase tracking-[0.1em] text-muted-foreground border-b border-border">
+                <div className="px-5 py-3">Project type</div>
+                <div className="px-5 py-3 text-right">Report fee</div>
+                <div className="px-5 py-3 text-right">Your commission</div>
+              </div>
+              {[
+                { type: 'Residential', fee: '€ 850', commission: '€ 340' },
+                { type: 'Mixed-use', fee: '€ 1 125', commission: '€ 450' },
+                { type: 'Industrial', fee: '€ 1 800', commission: '€ 720' },
+              ].map((row, i) => (
+                <div key={i} className={`grid grid-cols-3 ${i < 2 ? 'border-b border-border' : ''}`}>
+                  <div className="px-5 py-3.5 text-sm text-foreground">{row.type}</div>
+                  <div className="px-5 py-3.5 text-sm text-muted-foreground text-right">{row.fee}</div>
+                  <div className="px-5 py-3.5 text-sm font-semibold text-foreground text-right">{row.commission}</div>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              Amounts are indicative and depend on the scope of the project.
+            </p>
+          </section>
+
+          {/* FAQ */}
+          <section className="mb-14">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-6">
+              Frequently asked questions
+            </h2>
+            <div className="space-y-5">
+              {faqs.map((faq, i) => (
+                <div key={i}>
+                  <p className="text-sm font-semibold text-foreground mb-1">{faq.q}</p>
+                  <p className="text-[13px] text-muted-foreground leading-relaxed">{faq.a}</p>
                 </div>
               ))}
             </div>
           </section>
 
           {/* CTA */}
-          <div className="p-8 rounded-2xl border border-border/50 bg-muted/20 text-center">
-            <h3 className="text-base font-semibold mb-2">Klaar om te starten?</h3>
+          <div className="rounded-2xl border border-border/50 bg-muted/20 p-8 text-center">
+            <h3 className="text-base font-semibold mb-2">Ready to start earning?</h3>
             <p className="text-sm text-muted-foreground mb-6 max-w-xs mx-auto">
-              Maak uw eerste project aan en dien een NOx-beoordeling in.
+              Create your first project and submit a NOx pre-estimation.
             </p>
             <Button onClick={() => navigate('/dashboard/projects')} className="px-6">
-              Naar projecten
+              Go to projects
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </div>
