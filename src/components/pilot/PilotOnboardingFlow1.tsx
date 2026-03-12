@@ -64,7 +64,7 @@ function mockKBOLookup(vatInput: string) {
   };
 }
 
-export function PilotOnboardingFlow1({ onComplete, onClose }: Props) {
+export function PilotOnboardingFlow1({ onComplete, onClose, initialStep, onStepComplete }: Props) {
   const company = getPilotCompany();
   const user = getPilotUser();
   const employees = getPilotEmployees();
