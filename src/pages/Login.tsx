@@ -238,7 +238,7 @@ const Login = () => {
                 onClick={() => setShowQuickAccess(!showQuickAccess)}
                 className="w-full flex items-center justify-center gap-2 py-2 text-xs text-white/30 hover:text-white/50 transition-colors">
                 
-                Quick access to demo accounts
+                Quick access to my accounts
                 {showQuickAccess ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               </button>
 
