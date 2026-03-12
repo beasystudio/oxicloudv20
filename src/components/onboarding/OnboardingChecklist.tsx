@@ -435,7 +435,7 @@ export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: Onboar
     setActiveStep(step.id);
   };
 
-  if (allDone) return null;
+  if (allDone && !forceShow) return null;
 
   const progressPct = Math.round(completedCount / steps.length * 100);
 

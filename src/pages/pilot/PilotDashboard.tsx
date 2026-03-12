@@ -28,7 +28,7 @@ function Label({ className = '', children }: {className?: string;children: React
 const fade = (d: number) => ({ initial: { opacity: 0, y: 8 } as const, animate: { opacity: 1, y: 0 } as const, transition: { delay: d, duration: 0.3 } });
 
 export default function PilotDashboard() {
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { t, language } = useLanguage();
   const session = getPilotSession();
   const user = getPilotUser();
