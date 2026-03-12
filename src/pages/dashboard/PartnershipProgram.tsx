@@ -5,11 +5,11 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const steps = [
-  { n: '01', label: 'Create a project', desc: 'Add your project details in OxiCloud — address, type, and client contact.' },
-  { n: '02', label: 'Complete the pre-estimation', desc: 'Fill in emission sources. The system calculates NOx impact and generates a price.' },
-  { n: '03', label: 'Send the quote to your client', desc: 'A professional quote is generated. Your client pays directly — you never advance any costs.' },
-  { n: '04', label: 'Report is generated', desc: 'After payment, the full NOx compliance report is produced and delivered to your client.' },
-  { n: '05', label: 'You receive your commission', desc: 'A 40 % commission on the report fee is automatically calculated and settled to your firm.' },
+  { n: '01', label: 'Create a project', desc: 'Add project details — address, type, client contact.' },
+  { n: '02', label: 'Complete the pre-estimation', desc: 'Fill in emission sources. OxiCloud calculates NOx impact and price.' },
+  { n: '03', label: 'Send the quote to your client', desc: 'A professional quote is generated. Your client pays directly.' },
+  { n: '04', label: 'Report is generated', desc: 'After payment, the compliance report is produced and delivered.' },
+  { n: '05', label: 'You receive your commission', desc: '40 % of the report fee is automatically settled to your firm.' },
 ];
 
 const faqs = [
