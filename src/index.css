@@ -93,11 +93,57 @@ html {
     --shadow-lg: 0px 1px 13.75px -2px hsla(0, 0%, 0%, 0.08);
   }
   .dark {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 95%;
+
+    --primary: 78 90% 65%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 13%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
+
+    --accent: 78 90% 65%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 15%;
+    --ring: 78 90% 65%;
+
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 95%;
+
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 78 90% 65%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 78 90% 65%;
+
+    --chart-1: 78 90% 65%;
+    --chart-2: 0 0% 80%;
+    --chart-3: 0 0% 55%;
+    --chart-4: 78 60% 55%;
+    --chart-5: 0 0% 40%;
+
+    --glass-bg: 0 0% 10% / 0.85;
+    --glass-border: 0 0% 18%;
+
     --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-    --shadow-sm: 0px 1px 2.75px -2px hsla(0, 0%, 0%, 0.1);
-    --shadow: 0px 1px 5.5px -2px hsla(0, 0%, 0%, 0.1);
-    --shadow-md: 0px 1px 8.25px -2px hsla(0, 0%, 0%, 0.1);
-    --shadow-lg: 0px 1px 13.75px -2px hsla(0, 0%, 0%, 0.1);
+    --shadow-sm: 0px 1px 2.75px -2px hsla(0, 0%, 0%, 0.2);
+    --shadow: 0px 1px 5.5px -2px hsla(0, 0%, 0%, 0.2);
+    --shadow-md: 0px 1px 8.25px -2px hsla(0, 0%, 0%, 0.2);
+    --shadow-lg: 0px 1px 13.75px -2px hsla(0, 0%, 0%, 0.2);
   }
 
 }
