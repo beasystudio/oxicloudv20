@@ -77,7 +77,7 @@ export function PilotOnboardingFlow1({ onComplete, onClose, initialStep, onStepC
   // Auto-run VAT lookup on mount — skip the lookup screen entirely
   const autoData = useMemo(() => mockKBOLookup(company?.vatNumber || 'BE0885703733'), []);
 
-  const [currentStep, setCurrentStep] = useState<Step>('company-details');
+  const [currentStep, setCurrentStep] = useState<Step>(initialStep || 'company-details');
 
   // --- VAT lookup ---
   const [vatInput, setVatInput] = useState(autoData.vatNumber);
