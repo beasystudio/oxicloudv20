@@ -299,9 +299,8 @@ const Login = () => {
               <div className="flex items-center justify-center">
                 <Link to="/forgot-password" className="text-xs text-white/40 hover:text-primary transition-colors">{t('login.forgotPassword')}</Link>
               </div>
-              <div className="flex items-center justify-between text-xs text-white/30">
+              <div className="flex items-center justify-center text-xs text-white/30">
                 <Link to="/register" className="hover:text-primary transition-colors">{t('login.createAccount')}</Link>
-                <Link to="/activation" className="hover:text-primary transition-colors">{t('login.activateAccount')}</Link>
               </div>
             </motion.div>
           </motion.div>
