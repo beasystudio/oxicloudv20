@@ -144,7 +144,7 @@ export function PilotNavigation({
                     <DropdownMenuSeparator />
                     <div className="p-1">
                       <DropdownMenuItem asChild className="cursor-pointer text-xs h-8 px-3">
-                        <Link to="/pilot-demo/settings">{t('pilot.nav.settings')}</Link>
+                        <Link to="/pilot-demo/profile">{language === 'nl' ? 'Profiel' : 'Profile'}</Link>
                       </DropdownMenuItem>
                     </div>
                     <DropdownMenuSeparator />
