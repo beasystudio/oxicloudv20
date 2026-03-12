@@ -13,16 +13,16 @@ function Card({ className = '', children, ...props }: React.HTMLAttributes<HTMLD
   return (
     <div className={`rounded-2xl border border-border bg-card px-5 py-3.5 ${className}`} {...props}>
       {children}
-    </div>
-  );
+    </div>);
+
 }
 
-function Label({ className = '', children }: { className?: string; children: React.ReactNode }) {
+function Label({ className = '', children }: {className?: string;children: React.ReactNode;}) {
   return (
     <p className={`text-[10px] uppercase tracking-[0.14em] font-semibold text-muted-foreground ${className}`}>
       {children}
-    </p>
-  );
+    </p>);
+
 }
 
 const fade = (d: number) => ({ initial: { opacity: 0, y: 8 } as const, animate: { opacity: 1, y: 0 } as const, transition: { delay: d, duration: 0.3 } });
@@ -44,11 +44,11 @@ export default function PilotDashboard() {
 
   // Pending tasks
   const pendingTasks = useMemo(() => {
-    const tasks: { id: string; title: string; description: string; action: () => void }[] = [];
+    const tasks: {id: string;title: string;description: string;action: () => void;}[] = [];
     projects.filter((p) => p.noxStatus === 'awaiting_payment').forEach((p) => {
       tasks.push({ id: `ap-${p.id}`, title: `"${p.name}" — ${t('pilot.dashboard.awaitingPayment')}`, description: t('pilot.dashboard.followUpPayment'), action: () => navigate('/pilot-demo/projects', { state: { highlightProjectId: p.id, noxAction: 'pay' } }) });
     });
-    projects.filter((p) => !p.noxStatus || (p.noxStatus === 'input_completed' && !p.priceData)).forEach((p) => {
+    projects.filter((p) => !p.noxStatus || p.noxStatus === 'input_completed' && !p.priceData).forEach((p) => {
       tasks.push({ id: `ni-${p.id}`, title: `"${p.name}" — ${t('pilot.dashboard.inputIncomplete')}`, description: t('pilot.dashboard.fillPreEstimation'), action: () => navigate('/pilot-demo/projects', { state: { highlightProjectId: p.id, noxAction: 'pre-estimation' } }) });
     });
     return tasks;
@@ -104,16 +104,16 @@ export default function PilotDashboard() {
 
           {/* Partner Program */}
           <motion.div {...fade(0.18)} className="mb-2.5">
-            <Card>
-              <p className="text-sm font-semibold text-foreground">
-                {language === 'nl' ? 'OxiCloud Partner Programma' : 'OxiCloud Partner Program'}
-              </p>
-              <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">
-                {language === 'nl'
-                  ? 'Zet elk project om in omzet. Als OxiCloud-partner verdient uw bureau automatisch commissie bij elk gegenereerd NOx-rapport — zonder administratieve last. Bouwheren ontvangen een transparante offerte en betalen via overschrijving. Uw commissie wordt rechtstreeks op uw bedrijfsrekening gestort.'
-                  : 'Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account.'}
-              </p>
-            </Card>
+            
+
+
+
+
+
+
+
+
+            
           </motion.div>
 
           {/* Stats row */}
@@ -137,6 +137,6 @@ export default function PilotDashboard() {
 
         </div>
       </div>
-    </>
-  );
+    </>);
+
 }
