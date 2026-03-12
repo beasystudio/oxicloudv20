@@ -86,7 +86,7 @@ export function GlobalAddMenu({ companyId }: GlobalAddMenuProps) {
     <>
       <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen} modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-foreground text-[hsl(var(--neon-lime))] hover:bg-muted/60 hover:text-foreground transition-all duration-200">
+          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-foreground text-background dark:bg-primary dark:text-primary-foreground hover:bg-muted/60 hover:text-foreground transition-all duration-200">
             <Plus className="h-3.5 w-3.5 text-primary" />
           </Button>
         </DropdownMenuTrigger>
