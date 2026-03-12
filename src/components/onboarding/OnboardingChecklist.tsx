@@ -1,37 +1,57 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { 
-  CheckCircle, 
-  ChevronDown, 
-  ChevronUp,
-  Sparkles,
+import {
+  CheckCircle2,
+  ChevronDown,
   Building2,
   Users,
-  FolderKanban,
   Settings,
-  ArrowRight,
-  X,
   ShieldCheck,
-  Download
+  Upload,
+  Rocket,
+  Lock,
+  Download,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useMockAuth } from '@/contexts/MockAuthContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 
-interface ChecklistItem {
+/* ─── Storage key ─── */
+const STORAGE_KEY = 'oxicloud_onboarding_v2';
+
+export interface OnboardingStep {
   id: string;
   title: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
+  mandatory: boolean;
   path?: string;
-  completed: boolean;
-  isLegalStep?: boolean;
+  hasInlinePanel?: boolean;
 }
 
+interface SavedState {
+  completedSteps: string[];
+  legalSelfBilling: boolean;
+  legalSendConsent: boolean;
+  dismissed: boolean;
+}
+
+const loadState = (): SavedState => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return { completedSteps: [], legalSelfBilling: false, legalSendConsent: false, dismissed: false };
+};
+
+const saveState = (state: SavedState) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+};
+
+/* ─── Component ─── */
 interface OnboardingChecklistProps {
   onComplete?: () => void;
   onDismiss?: () => void;
@@ -40,337 +60,340 @@ interface OnboardingChecklistProps {
 export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingChecklistProps) => {
   const navigate = useNavigate();
   const { currentUser } = useMockAuth();
-  const [expanded, setExpanded] = useState(true);
-  const [legalExpanded, setLegalExpanded] = useState(false);
-  const [selfBillingAgreed, setSelfBillingAgreed] = useState(false);
-  const [sendConsentAgreed, setSendConsentAgreed] = useState(false);
+  const { language } = useLanguage();
   const isCeo = currentUser?.role === 'client_owner';
+  const nl = language === 'nl';
 
-  const [items, setItems] = useState<ChecklistItem[]>([
+  const steps: OnboardingStep[] = [
     {
-      id: 'logo-upload',
-      title: 'Bedrijfslogo uploaden',
-      description: 'Upload uw logo voor een gepersonaliseerde ervaring',
+      id: 'company-profile',
+      title: nl ? 'Bedrijfsprofiel instellen' : 'Set up Company Profile',
+      description: nl
+        ? 'Upload uw logo, bevestig bedrijfsgegevens en BTW-nummer'
+        : 'Upload logo, confirm legal name, address and VAT details',
       icon: Building2,
-      path: '/dashboard/settings',
-      completed: false,
+      mandatory: true,
+      path: '/pilot-demo/settings',
     },
     {
-      id: 'partner-terms',
-      title: 'Partner voorwaarden lezen',
-      description: 'Begrijp hoe u 40% verdient op elk goedgekeurd project',
-      icon: Sparkles,
-      path: '/dashboard/partner/terms',
-      completed: false,
-    },
-    {
-      id: 'legal-agreements',
-      title: 'Juridische overeenkomsten accepteren',
-      description: isCeo ? 'Accepteer de self-billing en verzendautorisatie (eenmalig, als CEO)' : 'Reeds goedgekeurd door uw CEO',
-      icon: ShieldCheck,
-      completed: false,
-      isLegalStep: true,
-    },
-    {
-      id: 'company-setup',
-      title: 'Bedrijf instellen',
-      description: 'Voeg bedrijfsgegevens en facturatiegegevens toe',
-      icon: Building2,
-      path: '/dashboard/settings',
-      completed: false,
-    },
-    {
-      id: 'add-users',
-      title: 'Teamleden toevoegen',
-      description: 'Nodig collega\'s uit en wijs licenties toe',
+      id: 'team-setup',
+      title: nl ? 'Team configureren' : 'Set up your Team',
+      description: nl
+        ? 'Maak teamgroepen aan, nodig leden uit en wijs rollen toe'
+        : 'Create team groups, invite members and assign roles',
       icon: Users,
-      path: '/dashboard/settings',
-      completed: false,
+      mandatory: true,
+      path: '/pilot-demo/settings',
     },
     {
-      id: 'contact-types',
-      title: 'Contacttypes configureren',
-      description: 'Stel uw contacttaxonomie in voor projecten',
+      id: 'contact-config',
+      title: nl ? 'Contactconfiguratie' : 'Configure Contacts',
+      description: nl
+        ? 'Stel contacttaxonomie, standaardvelden en tags in'
+        : 'Define contact taxonomy, default fields and custom tags',
       icon: Settings,
-      path: '/dashboard/settings',
-      completed: false,
+      mandatory: true,
+      path: '/pilot-demo/settings',
     },
     {
-      id: 'first-project',
-      title: 'Eerste project aanmaken',
-      description: 'Begin met verdienen door een project in te dienen',
-      icon: FolderKanban,
-      path: '/dashboard/projects',
-      completed: false,
+      id: 'financial-agreement',
+      title: nl ? 'Financiële overeenkomst' : 'Financial Agreement',
+      description: isCeo
+        ? nl
+          ? 'Accepteer de self-billing en offerte-autorisatie (eenmalig, als CEO)'
+          : 'Review and sign self-billing & quote approval (one-time, as CEO)'
+        : nl
+          ? 'Reeds goedgekeurd door uw CEO'
+          : 'Already approved by your CEO',
+      icon: ShieldCheck,
+      mandatory: true,
+      hasInlinePanel: true,
     },
-  ]);
+    {
+      id: 'data-migration',
+      title: nl ? 'Datamigratie' : 'Data Migration',
+      description: nl
+        ? 'Importeer een bestaand klantenbestand via CSV (optioneel)'
+        : 'Import an existing client database via CSV upload (optional)',
+      icon: Upload,
+      mandatory: false,
+      path: '/pilot-demo/contacts',
+    },
+    {
+      id: 'workspace-ready',
+      title: nl ? 'Workspace klaar' : 'Workspace Ready',
+      description: nl
+        ? 'Ga naar het projectdashboard en maak uw eerste dossier'
+        : 'Head to the project dashboard and create your first dossier',
+      icon: Rocket,
+      mandatory: true,
+      path: '/pilot-demo/projects',
+    },
+  ];
 
-  const completedCount = items.filter(item => item.completed).length;
-  const progressPercentage = (completedCount / items.length) * 100;
+  const [state, setState] = useState<SavedState>(loadState);
+  const [expandedLegal, setExpandedLegal] = useState(false);
+  const [selfBilling, setSelfBilling] = useState(state.legalSelfBilling);
+  const [sendConsent, setSendConsent] = useState(state.legalSendConsent);
 
+  // Persist
+  useEffect(() => { saveState(state); }, [state]);
+
+  // Auto-complete legal for non-CEO if CEO approved
   useEffect(() => {
-    // Load completion state from localStorage
-    const savedState = localStorage.getItem('oxicloud_onboarding_checklist');
-    if (savedState) {
-      const parsed = JSON.parse(savedState);
-      setItems(prev => prev.map(item => ({
-        ...item,
-        completed: parsed[item.id] || false,
-      })));
-      // Restore legal checkbox states
-      if (parsed['legal_selfbilling']) setSelfBillingAgreed(true);
-      if (parsed['legal_sendconsent']) setSendConsentAgreed(true);
+    if (!isCeo && state.legalSelfBilling && state.legalSendConsent) {
+      markComplete('financial-agreement');
     }
+  }, []);
 
-    // If not CEO, auto-complete the legal step (CEO already approved)
-    // Check if CEO has previously approved
-    const ceoApproved = localStorage.getItem('oxicloud_legal_ceo_approved');
-    if (!isCeo && ceoApproved === 'true') {
-      setItems(prev => prev.map(item => 
-        item.id === 'legal-agreements' ? { ...item, completed: true } : item
-      ));
-    }
-  }, [isCeo]);
+  const completedSet = new Set(state.completedSteps);
+  const completedCount = steps.filter(s => completedSet.has(s.id)).length;
+  const mandatorySteps = steps.filter(s => s.mandatory);
+  const mandatoryComplete = mandatorySteps.every(s => completedSet.has(s.id));
 
-  const markComplete = (itemId: string) => {
-    setItems(prev => {
-      const updated = prev.map(item => 
-        item.id === itemId ? { ...item, completed: true } : item
-      );
-      
-      // Save to localStorage
-      const completionState = updated.reduce((acc, item) => ({
-        ...acc,
-        [item.id]: item.completed,
-      }), {});
-      localStorage.setItem('oxicloud_onboarding_checklist', JSON.stringify(completionState));
-      
-      // Check if all complete
-      if (updated.every(item => item.completed)) {
-        onComplete?.();
+  // Sequential unlock: a step is unlocked if all prior mandatory steps are done (or it's optional and prior mandatory are done)
+  const isUnlocked = (index: number): boolean => {
+    if (index === 0) return true;
+    // All mandatory steps before this index must be complete
+    for (let i = 0; i < index; i++) {
+      if (steps[i].mandatory && !completedSet.has(steps[i].id)) {
+        // Exception: step 5 (data-migration, optional) can be skipped
+        if (steps[i].id === 'data-migration') continue;
+        return false;
       }
-      
-      return updated;
+    }
+    return true;
+  };
+
+  const markComplete = (stepId: string) => {
+    setState(prev => {
+      if (prev.completedSteps.includes(stepId)) return prev;
+      const next = { ...prev, completedSteps: [...prev.completedSteps, stepId] };
+      // Check all mandatory done
+      const allDone = mandatorySteps.every(s => next.completedSteps.includes(s.id));
+      if (allDone) onComplete?.();
+      return next;
     });
   };
 
-  const handleLegalAccept = () => {
-    if (selfBillingAgreed && sendConsentAgreed) {
-      markComplete('legal-agreements');
-      localStorage.setItem('oxicloud_legal_ceo_approved', 'true');
-      // Save checkbox states
-      const savedState = JSON.parse(localStorage.getItem('oxicloud_onboarding_checklist') || '{}');
-      savedState['legal_selfbilling'] = true;
-      savedState['legal_sendconsent'] = true;
-      localStorage.setItem('oxicloud_onboarding_checklist', JSON.stringify(savedState));
-      setLegalExpanded(false);
-    }
-  };
+  const handleStepClick = (step: OnboardingStep, index: number) => {
+    if (!isUnlocked(index)) return;
+    if (completedSet.has(step.id)) return;
 
-  const handleItemClick = (item: ChecklistItem) => {
-    if (item.isLegalStep) {
-      setLegalExpanded(!legalExpanded);
+    if (step.hasInlinePanel) {
+      setExpandedLegal(!expandedLegal);
       return;
     }
-    markComplete(item.id);
-    if (item.path) navigate(item.path);
+
+    // Mark complete and navigate
+    markComplete(step.id);
+    if (step.path) navigate(step.path);
   };
 
-  if (completedCount === items.length) {
-    return null;
-  }
+  const handleSkipMigration = () => {
+    markComplete('data-migration');
+  };
+
+  const handleLegalAccept = () => {
+    if (selfBilling && sendConsent) {
+      setState(prev => ({ ...prev, legalSelfBilling: true, legalSendConsent: true }));
+      markComplete('financial-agreement');
+      setExpandedLegal(false);
+    }
+  };
+
+  const handleDismiss = () => {
+    setState(prev => ({ ...prev, dismissed: true }));
+    onDismiss?.();
+  };
+
+  // Hide when all mandatory done
+  if (mandatoryComplete && completedSet.has('data-migration')) return null;
+  if (state.dismissed && mandatoryComplete) return null;
+
+  const progressPct = Math.round((completedCount / steps.length) * 100);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="mb-6"
+      exit={{ opacity: 0, y: -12 }}
     >
-      <Card className="border bg-card">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <CardTitle className="text-lg">Aan de slag</CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  Voltooi deze stappen om te beginnen
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              {/* Progress Ring */}
-              <div className="relative w-10 h-10">
-                <svg className="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
-                  <circle cx="18" cy="18" r="15" fill="none" stroke="hsl(var(--muted))" strokeWidth="3" />
-                  <circle cx="18" cy="18" r="15" fill="none" stroke="hsl(var(--primary))" strokeWidth="3" strokeDasharray={`${progressPercentage * 0.94} 100`} strokeLinecap="round" />
-                </svg>
-                <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold">
-                  {completedCount}/{items.length}
-                </span>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setExpanded(!expanded)}
-              >
-                {expanded ? (
-                  <ChevronUp className="w-4 h-4" />
-                ) : (
-                  <ChevronDown className="w-4 h-4" />
-                )}
-              </Button>
-              {onDismiss && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={onDismiss}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              )}
+      <div className="rounded-2xl border border-border bg-card px-5 py-4">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-sm font-semibold text-foreground">
+              {nl ? 'Configuratie voltooien' : 'Complete Configuration'}
+            </h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {nl ? 'Voltooi elke stap om uw workspace te activeren' : 'Complete each step to activate your workspace'}
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            {/* Progress ring */}
+            <div className="relative w-9 h-9">
+              <svg className="w-9 h-9 -rotate-90" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15" fill="none" stroke="hsl(var(--muted))" strokeWidth="2.5" />
+                <circle
+                  cx="18" cy="18" r="15" fill="none"
+                  stroke="hsl(var(--foreground))"
+                  strokeWidth="2.5"
+                  strokeDasharray={`${progressPct * 0.94} 100`}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-foreground">
+                {completedCount}/{steps.length}
+              </span>
             </div>
           </div>
-        </CardHeader>
+        </div>
 
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <CardContent className="pt-0">
-                <div className="space-y-2">
-                  {items.map((item, index) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
+        {/* Steps */}
+        <div className="space-y-1">
+          {steps.map((step, index) => {
+            const done = completedSet.has(step.id);
+            const unlocked = isUnlocked(index);
+            const Icon = step.icon;
+
+            return (
+              <div key={step.id}>
+                <button
+                  onClick={() => handleStepClick(step, index)}
+                  disabled={!unlocked || done}
+                  className={cn(
+                    'w-full flex items-center gap-3 p-2.5 rounded-xl text-left transition-all group',
+                    done && 'opacity-40',
+                    !unlocked && !done && 'opacity-30 cursor-not-allowed',
+                    unlocked && !done && 'hover:bg-muted/50 cursor-pointer'
+                  )}
+                >
+                  {/* Step indicator */}
+                  <div className={cn(
+                    'w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-[10px] font-semibold',
+                    done
+                      ? 'bg-foreground text-background'
+                      : unlocked
+                        ? 'border border-border text-muted-foreground'
+                        : 'border border-border/50 text-muted-foreground/40'
+                  )}>
+                    {done ? <CheckCircle2 className="h-3.5 w-3.5" /> : !unlocked ? <Lock className="h-3 w-3" /> : index + 1}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className={cn('text-sm font-medium', done && 'line-through text-muted-foreground')}>
+                        {step.title}
+                      </p>
+                      {!step.mandatory && !done && (
+                        <span className="text-[9px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full font-medium">
+                          {nl ? 'Optioneel' : 'Optional'}
+                        </span>
+                      )}
+                    </div>
+                    {!done && unlocked && (
+                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{step.description}</p>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  {step.hasInlinePanel && !done && unlocked && (
+                    <ChevronDown className={cn('w-4 h-4 text-muted-foreground transition-transform shrink-0', expandedLegal && 'rotate-180')} />
+                  )}
+                  {step.id === 'data-migration' && !done && unlocked && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleSkipMigration(); }}
+                      className="text-[11px] text-muted-foreground hover:text-foreground transition-colors shrink-0"
                     >
-                      <div
-                        className={cn(
-                          "flex items-center gap-4 p-3 rounded-lg transition-all cursor-pointer group",
-                          item.completed 
-                            ? "bg-muted/30 border border-border opacity-60" 
-                            : "bg-background border border-border hover:border-border hover:bg-muted/50"
-                        )}
-                        onClick={() => handleItemClick(item)}
-                      >
-                        <div className={cn(
-                          "w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-semibold",
-                          item.completed ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
-                        )}>
-                          {item.completed ? (
-                            <CheckCircle className="w-4 h-4 text-primary" />
-                          ) : (
-                            index + 1
-                          )}
+                      {nl ? 'Overslaan' : 'Skip'}
+                    </button>
+                  )}
+                </button>
+
+                {/* Legal inline panel */}
+                <AnimatePresence>
+                  {step.hasInlinePanel && expandedLegal && !done && unlocked && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="ml-9 mt-1.5 p-4 rounded-xl border border-border bg-muted/20 space-y-3.5">
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          {isCeo
+                            ? nl
+                              ? 'Als CEO dient u de volgende overeenkomsten eenmalig te accepteren.'
+                              : 'As CEO, you must accept the following agreements once.'
+                            : nl
+                              ? 'Deze overeenkomsten zijn reeds goedgekeurd door uw CEO.'
+                              : 'These agreements have already been approved by your CEO.'
+                          }
+                        </p>
+
+                        <div className="space-y-2.5">
+                          <label className="flex items-start gap-2.5 cursor-pointer">
+                            <Checkbox
+                              checked={selfBilling}
+                              onCheckedChange={(c) => setSelfBilling(c === true)}
+                              disabled={!isCeo}
+                              className="mt-0.5"
+                            />
+                            <div className="text-sm leading-relaxed">
+                              <span className="font-medium">Self-billing {nl ? 'overeenkomst' : 'agreement'}</span>
+                              <span className="text-muted-foreground">
+                                {nl
+                                  ? ' — Na ontvangst van betaling stellen wij namens u een self-billing factuur op voor de commissie-uitbetaling.'
+                                  : ' — Upon payment receipt, we issue a self-billing invoice on your behalf for commission settlement.'}
+                              </span>
+                              <button type="button" className="block text-primary text-xs mt-1 hover:underline">
+                                <Download className="inline h-3 w-3 mr-1" />
+                                {nl ? 'Download overeenkomst (PDF)' : 'Download agreement (PDF)'}
+                              </button>
+                            </div>
+                          </label>
+
+                          <label className="flex items-start gap-2.5 cursor-pointer">
+                            <Checkbox
+                              checked={sendConsent}
+                              onCheckedChange={(c) => setSendConsent(c === true)}
+                              disabled={!isCeo}
+                              className="mt-0.5"
+                            />
+                            <div className="text-sm leading-relaxed">
+                              <span className="font-medium">{nl ? 'Offerte-autorisatie' : 'Quote authorization'}</span>
+                              <span className="text-muted-foreground">
+                                {nl
+                                  ? ' — Ik autoriseer OxiCloud om offertes namens mijn bedrijf naar eindklanten te versturen.'
+                                  : ' — I authorize OxiCloud to send quotes to end clients on behalf of my company.'}
+                              </span>
+                            </div>
+                          </label>
                         </div>
-                        
-                        <div className="flex-1 min-w-0">
-                          <p className={cn(
-                            "font-medium text-sm",
-                            item.completed ? "line-through text-muted-foreground" : "text-foreground"
-                          )}>
-                            {item.title}
-                          </p>
-                          {!item.completed && (
-                            <p className="text-xs text-muted-foreground truncate">
-                              {item.description}
-                            </p>
-                          )}
-                        </div>
-                        
-                        {!item.completed && !item.isLegalStep && (
-                          <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        )}
-                        {item.isLegalStep && !item.completed && (
-                          <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform", legalExpanded && "rotate-180")} />
+
+                        {isCeo && (
+                          <Button
+                            size="sm"
+                            disabled={!selfBilling || !sendConsent}
+                            onClick={handleLegalAccept}
+                            className="w-full"
+                          >
+                            <ShieldCheck className="w-4 h-4 mr-2" />
+                            {nl ? 'Accepteren & doorgaan' : 'Accept & continue'}
+                          </Button>
                         )}
                       </div>
-
-                      {/* Legal agreements inline panel */}
-                      <AnimatePresence>
-                        {item.isLegalStep && legalExpanded && !item.completed && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="overflow-hidden"
-                          >
-                            <div className="ml-11 mt-2 p-4 rounded-lg border border-border bg-muted/20 space-y-4">
-                              <p className="text-xs text-muted-foreground">
-                                {isCeo 
-                                  ? 'Als CEO dient u de volgende overeenkomsten eenmalig te accepteren. Teamleden hoeven dit niet opnieuw te bevestigen.'
-                                  : 'Deze overeenkomsten zijn reeds goedgekeurd door uw CEO.'
-                                }
-                              </p>
-
-                              <div className="space-y-3">
-                                <label className="flex items-start gap-3 cursor-pointer">
-                                  <Checkbox
-                                    checked={selfBillingAgreed}
-                                    onCheckedChange={(c) => setSelfBillingAgreed(c === true)}
-                                    disabled={!isCeo}
-                                    className="mt-0.5"
-                                  />
-                                  <div className="text-sm leading-relaxed">
-                                    <span className="font-medium">Self-billing overeenkomst</span>
-                                    <span className="text-muted-foreground"> — Na ontvangst van betaling door de eindklant zullen wij namens u een self-billing factuur aan OxiCloud opstellen voor de commissie-uitbetaling.</span>
-                                    <button type="button" className="block text-primary text-xs mt-1 hover:underline">
-                                      <Download className="inline h-3 w-3 mr-1" />
-                                      Download overeenkomst (PDF)
-                                    </button>
-                                  </div>
-                                </label>
-
-                                <label className="flex items-start gap-3 cursor-pointer">
-                                  <Checkbox
-                                    checked={sendConsentAgreed}
-                                    onCheckedChange={(c) => setSendConsentAgreed(c === true)}
-                                    disabled={!isCeo}
-                                    className="mt-0.5"
-                                  />
-                                  <div className="text-sm leading-relaxed">
-                                    <span className="font-medium">Verzendautorisatie</span>
-                                    <span className="text-muted-foreground"> — Ik autoriseer OxiCloud om offertes namens mijn bedrijf naar eindklanten te versturen.</span>
-                                  </div>
-                                </label>
-                              </div>
-
-                              {isCeo && (
-                                <Button
-                                  size="sm"
-                                  disabled={!selfBillingAgreed || !sendConsentAgreed}
-                                  onClick={handleLegalAccept}
-                                  className="w-full"
-                                >
-                                  <ShieldCheck className="w-4 h-4 mr-2" />
-                                  Accepteren & doorgaan
-                                </Button>
-                              )}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
                     </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </Card>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </motion.div>
   );
 };
