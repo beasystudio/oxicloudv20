@@ -68,7 +68,7 @@ export function GlobalAddMenu({ companyId }: GlobalAddMenuProps) {
     return (
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon" disabled className="h-8 w-8 opacity-50 rounded-full bg-foreground text-[hsl(var(--neon-lime))]">
+          <Button variant="ghost" size="icon" disabled className="h-8 w-8 opacity-50 rounded-full bg-foreground text-background dark:bg-primary dark:text-primary-foreground">
             <Plus className="h-3.5 w-3.5" />
           </Button>
         </TooltipTrigger>
