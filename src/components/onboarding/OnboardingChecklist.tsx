@@ -54,6 +54,7 @@ interface OnboardingStep {
 interface OnboardingChecklistProps {
   onComplete?: () => void;
   onDismiss?: () => void;
+  forceShow?: boolean;
 }
 
 /* ═══════════════════════════════════════════════
