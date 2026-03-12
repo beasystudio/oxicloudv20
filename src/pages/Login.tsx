@@ -53,13 +53,29 @@ const Login = () => {
     }
   }, [currentUser, navigate]);
 
-  // Check for Supabase session
+  // Check for existing authenticated session
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        navigate('/dashboard/demo');
-      }
-    });
+    let isMounted = true;
+
+    const routeAuthenticatedUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user || !isMounted) return;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('workspace_id')
+        .eq('id', session.user.id)
+        .single();
+
+      if (!isMounted) return;
+      navigate(profile?.workspace_id ? '/dashboard/partner' : '/dashboard/demo');
+    };
+
+    void routeAuthenticatedUser();
+
+    return () => {
+      isMounted = false;
+    };
   }, [navigate]);
 
   if (currentUser) return null;
