@@ -42,7 +42,6 @@ import AuthoritySettings from "./pages/dashboard/authority/AuthoritySettings";
 import PilotLanding from "./pages/pilot/PilotLanding";
 import PilotActivationSent from "./pages/pilot/PilotActivationSent";
 import PilotCreateAccount from "./pages/pilot/PilotCreateAccount";
-import PilotCreateAccount from "./pages/pilot/PilotCreateAccount";
 import PilotLogin from "./pages/pilot/PilotLogin";
 import PilotForgotPassword from "./pages/pilot/PilotForgotPassword";
 import PilotDashboard from "./pages/pilot/PilotDashboard";
