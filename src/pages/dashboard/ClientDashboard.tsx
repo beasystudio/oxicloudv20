@@ -297,14 +297,12 @@ export default function ClientDashboard() {
               <div className="space-y-2">
                 <button
                   onClick={() => navigate('/register/workspace')}
-                  className="w-full flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
-                  <Plus className="h-3 w-3" />
+                  className="w-full flex items-center justify-center rounded-lg px-3 py-2 text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
                   {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
                 </button>
                 <button
                   onClick={() => setShowInviteManager(true)}
-                  className="w-full flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                  <Send className="h-3 w-3" />
+                  className="w-full flex items-center justify-center rounded-lg px-3 py-2 text-xs font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
                   {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
                 </button>
               </div>
