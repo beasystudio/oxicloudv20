@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { getNotifications, deleteNotification, getUnreadCount, type Notification } from "@/lib/notificationStore";
 import { ScrollArea } from "./ui/scroll-area";
 import { useLanguage, type Language } from "@/i18n/LanguageContext";
+import { supabase } from '@/integrations/supabase/client';
 export const TopNavigation = () => {
   const { language, setLanguage, t } = useLanguage();
   const {
@@ -183,6 +184,15 @@ export const TopNavigation = () => {
       title: "Company switched",
       description: `Now viewing ${companyName}`
     });
+  };
+
+  const handleSignOut = async () => {
+    logout();
+    try {
+      await supabase.auth.signOut();
+    } finally {
+      window.location.href = '/login';
+    }
   };
 
   // Navigation item component
@@ -462,7 +472,7 @@ export const TopNavigation = () => {
                 </div>
                 <DropdownMenuSeparator />
                 <div className="p-1">
-                  <DropdownMenuItem onClick={() => { logout(); window.location.href = '/login'; }} className="cursor-pointer text-xs h-8 px-3 text-destructive">
+                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-xs h-8 px-3 text-destructive">
                     <LogOut className="h-3.5 w-3.5 mr-2" />
                     {t('dashboard.nav.signOut')}
                   </DropdownMenuItem>

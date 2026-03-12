@@ -5,6 +5,7 @@ import { TopNavigation } from '@/components/TopNavigation';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle2 } from 'lucide-react';
 import { getEmployeesByCompany, getCompanyStats, isCompanyDataSeeded, type CompanyEmployee } from '@/lib/mockCompanyDB';
 import { getSettingsStatus, type SettingsStatus } from '@/lib/settingsValidator';
@@ -21,12 +22,42 @@ export default function ClientDashboard() {
   const location = useLocation();
   const { currentUser, selectedCompanyId, getSelectedCompany, login } = useMockAuth();
 
-  // Auto-login as Jan when accessing /dashboard/demo without a mock user
+  // Demo route behavior:
+  // - users with an existing workspace are redirected to production workspace
+  // - users without one can still explore demo as Jan
   useEffect(() => {
-    if (!currentUser && location.pathname === '/dashboard/demo') {
+    let isMounted = true;
+
+    const handleDemoEntry = async () => {
+      if (currentUser || location.pathname !== '/dashboard/demo') return;
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!isMounted) return;
+
+      if (session?.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('workspace_id')
+          .eq('id', session.user.id)
+          .single();
+
+        if (!isMounted) return;
+
+        if (profile?.workspace_id) {
+          navigate('/dashboard/partner', { replace: true });
+          return;
+        }
+      }
+
       login('jan@gdesign.be', 'demo123');
-    }
-  }, [currentUser, location.pathname, login]);
+    };
+
+    void handleDemoEntry();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [currentUser, location.pathname, login, navigate]);
   const { toast } = useToast();
   const { t, language } = useLanguage();
   const [employees, setEmployees] = useState<CompanyEmployee[]>([]);
