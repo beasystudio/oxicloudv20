@@ -162,7 +162,7 @@ export default function DemoDashboard() {
             </motion.div>
           </div>
 
-          {/* Row 3: Partner Program | Next Step */}
+          {/* Row 3: Partner Program | To Do */}
           <div className="grid grid-cols-12 gap-2.5 mb-2.5">
             <motion.div {...fade(0.25)} className="col-span-12 lg:col-span-7">
               <Card>
@@ -174,24 +174,10 @@ export default function DemoDashboard() {
             </motion.div>
 
             <motion.div {...fade(0.27)} className="col-span-12 lg:col-span-5">
-              <div className="rounded-2xl bg-foreground text-background px-5 py-4">
-                <Label className="text-background/50">Next Step</Label>
-                <div className="space-y-2 mt-2.5">
-                  <Button
-                    onClick={() => navigate('/pilot-demo/create-account')}
-                    className="w-full h-9 rounded-full bg-background text-foreground hover:bg-background/90 text-xs font-semibold"
-                  >
-                    Create my Workspace
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => setShowInviteDialog(true)}
-                    className="w-full h-9 rounded-full border-background/20 text-background hover:bg-background/10 text-xs"
-                  >
-                    Invite my manager
-                  </Button>
-                </div>
-              </div>
+              <Card>
+                <Label>To do</Label>
+                <p className="text-2xl font-bold tracking-tight text-foreground mt-1">3</p>
+              </Card>
             </motion.div>
           </div>
 
