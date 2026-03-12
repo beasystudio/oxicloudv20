@@ -381,7 +381,7 @@ function WorkspaceReadyPanel({ onComplete, onClose, nl }: {onComplete: () => voi
 /* ═══════════════════════════════════════════════
    MAIN CHECKLIST
    ═══════════════════════════════════════════════ */
-export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingChecklistProps) => {
+export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: OnboardingChecklistProps) => {
   const { currentUser } = useMockAuth();
   const { language } = useLanguage();
   const isCeo = currentUser?.role === 'client_owner';
