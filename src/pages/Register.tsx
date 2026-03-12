@@ -217,9 +217,6 @@ function CategorySelection({
           onClick={() => onSelect('government')}
           className="group relative text-left p-6 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300"
         >
-          <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4 group-hover:bg-white/15 transition-colors">
-            <Landmark className="w-6 h-6 text-white/60" />
-          </div>
           <h3 className="text-lg font-semibold text-white mb-1.5">Government</h3>
           <p className="text-sm text-white/40 leading-relaxed">
             Municipality, province, or federal/regional authority.
