@@ -271,8 +271,8 @@ export default function PilotDashboard() {
               language === 'nl' ? '100% gratis voor architecten' : '100% free for architects',
               language === 'nl' ? 'Geen abonnementen' : 'No subscriptions',
               language === 'nl' ? 'Geen kredietkaart' : 'No credit card'].
-              map((t) =>
-              <span key={t}>{t}</span>
+              map((t) => {}
+
               )}
             </div>
           </motion.div>
