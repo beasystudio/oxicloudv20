@@ -22,7 +22,7 @@ export function PillToggle({ items, activeId, onSelect, layoutId = 'pillToggleBg
           key={item.id}
           onClick={() => onSelect(item.id)}
           className={cn(
-            "relative px-4 py-1 rounded-full text-xs font-medium transition-colors duration-200",
+            "relative px-4 py-1.5 rounded-full text-xs font-medium transition-colors duration-200",
             activeId === item.id
               ? "text-background"
               : "text-muted-foreground hover:text-foreground"
