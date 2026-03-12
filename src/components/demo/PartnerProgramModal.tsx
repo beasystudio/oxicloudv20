@@ -82,7 +82,7 @@ export function PartnerProgramModal({ onClose }: PartnerProgramModalProps) {
 
           {/* Actions */}
           <div className="flex gap-2 pt-2">
-            <Button onClick={() => {onClose();navigate('/register/workspace');}} className="flex-1 gap-1.5">
+            <Button onClick={() => {onClose();navigate('/pilot-demo/create-account');}} className="flex-1 gap-1.5">
               
               Create my Workspace
               <ArrowRight className="w-3.5 h-3.5" />
