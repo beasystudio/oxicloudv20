@@ -267,7 +267,50 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* ═══ ROW 4: Action Required / Setup — full width (bottom) ═══ */}
+            {/* ═══ ROW 4: Partner Program + Workspace CTA ═══ */}
+            <div
+              className="rounded-2xl border border-border p-4"
+              style={{ gridColumn: '1 / 3', gridRow: '4' }}>
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-xl bg-primary/10 shrink-0">
+                  <Handshake className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground mb-1">
+                    {language === 'nl' ? 'OxiCloud Partner Programma' : 'OxiCloud Partner Program'}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {language === 'nl'
+                      ? 'Architecten verdienen commissie wanneer hun bureau een project aanmaakt en een NOx rapport genereert. De bouwheer betaalt het rapport via overschrijving na ontvangst van een offerte. Commissie wordt overgemaakt naar de bankrekening van het bedrijf.'
+                      : 'Architects earn commission when their firm creates a project and generates a NOx report. The client pays for the report via bank transfer after receiving a quote. Commission is transferred to the company\'s bank account.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="rounded-2xl border border-primary/20 bg-primary/5 p-4 flex flex-col justify-between"
+              style={{ gridColumn: '3', gridRow: '4' }}>
+              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">
+                {language === 'nl' ? 'Volgende stap' : 'Next step'}
+              </p>
+              <div className="space-y-2">
+                <button
+                  onClick={() => navigate('/register/workspace')}
+                  className="w-full flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
+                  <Plus className="h-3 w-3" />
+                  {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
+                </button>
+                <button
+                  onClick={() => setShowInviteManager(true)}
+                  className="w-full flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  <Send className="h-3 w-3" />
+                  {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
+                </button>
+              </div>
+            </div>
+
+            {/* ═══ ROW 5: Action Required / Setup — full width (bottom) ═══ */}
             {isFirstTimeUser && isClientOwnerOrAdmin ? (
               <div
                 className="rounded-2xl border border-border p-4 overflow-y-auto"
