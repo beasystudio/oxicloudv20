@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { getNotifications, deleteNotification, getUnreadCount, type Notification } from "@/lib/notificationStore";
 import { ScrollArea } from "./ui/scroll-area";
 import { useLanguage, type Language } from "@/i18n/LanguageContext";
+import { supabase } from '@/integrations/supabase/client';
 export const TopNavigation = () => {
   const { language, setLanguage, t } = useLanguage();
   const {

@@ -5,6 +5,7 @@ import { TopNavigation } from '@/components/TopNavigation';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle2 } from 'lucide-react';
 import { getEmployeesByCompany, getCompanyStats, isCompanyDataSeeded, type CompanyEmployee } from '@/lib/mockCompanyDB';
 import { getSettingsStatus, type SettingsStatus } from '@/lib/settingsValidator';
