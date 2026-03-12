@@ -5,20 +5,20 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const steps = [
-  { n: '01', label: 'Create a project', desc: 'Add project details — address, type, client contact.' },
-  { n: '02', label: 'Complete the pre-estimation', desc: 'Fill in emission sources. OxiCloud calculates NOx impact and price.' },
-  { n: '03', label: 'Send the quote to your client', desc: 'A professional quote is generated. Your client pays directly.' },
-  { n: '04', label: 'Report is generated', desc: 'After payment, the compliance report is produced and delivered.' },
-  { n: '05', label: 'You receive your commission', desc: '40 % of the report fee is automatically settled to your firm.' },
-];
+{ n: '01', label: 'Create a project', desc: 'Add project details — address, type, client contact.' },
+{ n: '02', label: 'Complete the pre-estimation', desc: 'Fill in emission sources. OxiCloud calculates NOx impact and price.' },
+{ n: '03', label: 'Send the quote to your client', desc: 'A professional quote is generated. Your client pays directly.' },
+{ n: '04', label: 'Report is generated', desc: 'After payment, the compliance report is produced and delivered.' },
+{ n: '05', label: 'You receive your commission', desc: '40 % of the report fee is automatically settled to your firm.' }];
+
 
 const faqs = [
-  { q: 'How much do I earn per report?', a: 'You earn 40 % of the report fee. For a typical residential project this means €280 – €450 per report.' },
-  { q: 'Do I need to pay anything upfront?', a: 'No. Your client pays the report fee directly. You never advance any money.' },
-  { q: 'How is the commission paid?', a: 'After payment is confirmed, we generate a self-billing invoice. The commission is transferred to your company bank account.' },
-  { q: 'Is there a minimum number of projects?', a: 'No minimum. You earn a commission on every single report — whether you submit one project or a hundred.' },
-  { q: 'Can my whole team submit projects?', a: 'Yes. Add colleagues to your workspace. Every report submitted under your firm earns the same commission rate.' },
-];
+{ q: 'How much do I earn per report?', a: 'You earn 40 % of the report fee. For a typical residential project this means €280 – €450 per report.' },
+{ q: 'Do I need to pay anything upfront?', a: 'No. Your client pays the report fee directly. You never advance any money.' },
+{ q: 'How is the commission paid?', a: 'After payment is confirmed, we generate a self-billing invoice. The commission is transferred to your company bank account.' },
+{ q: 'Is there a minimum number of projects?', a: 'No minimum. You earn a commission on every single report — whether you submit one project or a hundred.' },
+{ q: 'Can my whole team submit projects?', a: 'Yes. Add colleagues to your workspace. Every report submitted under your firm earns the same commission rate.' }];
+
 
 export default function PartnershipProgram() {
   const navigate = useNavigate();
@@ -39,8 +39,8 @@ export default function PartnershipProgram() {
             variant="ghost"
             size="sm"
             onClick={() => navigate(-1)}
-            className="mb-10 -ml-2 text-muted-foreground"
-          >
+            className="mb-10 -ml-2 text-muted-foreground">
+            
             <ArrowLeft className="h-4 w-4 mr-1.5" />
             Back
           </Button>
@@ -67,11 +67,11 @@ export default function PartnershipProgram() {
               How it works
             </h2>
             <div className="border border-border rounded-xl overflow-hidden">
-              {steps.map((step, i) => (
-                <div
-                  key={step.n}
-                  className={`flex items-start gap-5 px-6 py-5 ${i < steps.length - 1 ? 'border-b border-border' : ''}`}
-                >
+              {steps.map((step, i) =>
+              <div
+                key={step.n}
+                className={`flex items-start gap-5 px-6 py-5 ${i < steps.length - 1 ? 'border-b border-border' : ''}`}>
+                
                   <span className="text-[11px] font-semibold text-muted-foreground/50 tracking-wider w-6 shrink-0 pt-0.5">
                     {step.n}
                   </span>
@@ -79,41 +79,41 @@ export default function PartnershipProgram() {
                     <p className="text-sm font-semibold text-foreground">{step.label}</p>
                     <p className="text-[13px] text-muted-foreground mt-0.5 leading-relaxed">{step.desc}</p>
                   </div>
-                  {i < steps.length - 1 && (
-                    <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/30 shrink-0 mt-1" />
-                  )}
+                  {i < steps.length - 1 &&
+                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/30 shrink-0 mt-1" />
+                }
                 </div>
-              ))}
+              )}
             </div>
           </section>
 
           {/* Example Earnings */}
-          <section className="mb-14">
-            <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-6">
-              Example earnings
-            </h2>
-            <div className="rounded-xl border border-border overflow-hidden">
-              <div className="grid grid-cols-3 text-xs uppercase tracking-[0.1em] text-muted-foreground border-b border-border">
-                <div className="px-5 py-3">Project type</div>
-                <div className="px-5 py-3 text-right">Report fee</div>
-                <div className="px-5 py-3 text-right">Your commission</div>
-              </div>
-              {[
-                { type: 'Residential', fee: '€ 850', commission: '€ 340' },
-                { type: 'Mixed-use', fee: '€ 1 125', commission: '€ 450' },
-                { type: 'Industrial', fee: '€ 1 800', commission: '€ 720' },
-              ].map((row, i) => (
-                <div key={i} className={`grid grid-cols-3 ${i < 2 ? 'border-b border-border' : ''}`}>
-                  <div className="px-5 py-3.5 text-sm text-foreground">{row.type}</div>
-                  <div className="px-5 py-3.5 text-sm text-muted-foreground text-right">{row.fee}</div>
-                  <div className="px-5 py-3.5 text-sm font-semibold text-foreground text-right">{row.commission}</div>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-muted-foreground mt-3">
-              Amounts are indicative and depend on the scope of the project.
-            </p>
-          </section>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
 
           {/* FAQ */}
           <section className="mb-14">
@@ -121,12 +121,12 @@ export default function PartnershipProgram() {
               Frequently asked questions
             </h2>
             <div className="space-y-5">
-              {faqs.map((faq, i) => (
-                <div key={i}>
+              {faqs.map((faq, i) =>
+              <div key={i}>
                   <p className="text-sm font-semibold text-foreground mb-1">{faq.q}</p>
                   <p className="text-[13px] text-muted-foreground leading-relaxed">{faq.a}</p>
                 </div>
-              ))}
+              )}
             </div>
           </section>
 
@@ -148,6 +148,6 @@ export default function PartnershipProgram() {
           </div>
         </main>
       </div>
-    </>
-  );
+    </>);
+
 }
