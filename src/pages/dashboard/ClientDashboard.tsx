@@ -229,7 +229,7 @@ export default function ClientDashboard() {
             </div>
 
             {/* Partner Card */}
-            <div className="rounded-xl border border-border p-5 flex flex-col items-center text-center">
+            <div className="rounded-xl border border-border p-5 flex flex-col items-center text-center justify-between">
               <p className="text-[13px] text-muted-foreground leading-relaxed mb-3 max-w-[240px]">
                 {language === 'nl'
                   ? 'Verdien automatisch commissie op elk NOx-rapport. Geen voorschot, geen admin.'
