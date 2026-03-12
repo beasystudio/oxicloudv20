@@ -148,7 +148,10 @@ const Login = () => {
           <motion.div variants={container} initial="hidden" animate="show" className="max-w-[400px] w-full py-12">
             <motion.div variants={item} className="mb-16 flex items-center justify-between">
               <Link to="/" className="font-semibold text-lg tracking-tight text-foreground">OxiCloud</Link>
-              <LanguageToggle variant="light" />
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <LanguageToggle variant="light" />
+              </div>
             </motion.div>
 
             <motion.div variants={item} className="mb-10">
