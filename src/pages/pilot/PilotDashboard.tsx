@@ -99,7 +99,7 @@ export default function PilotDashboard() {
 
           {/* Setup Guide (OnboardingChecklist) */}
           <motion.div {...fade(0.15)} className="mb-2.5">
-            <OnboardingChecklist />
+            <OnboardingChecklist forceShow={searchParams.get('showGuide') === 'true'} />
           </motion.div>
 
           {/* Partner Program */}
