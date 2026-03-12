@@ -250,17 +250,26 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* Recent Activity (spans rows 2-3, cols 2-3) */}
+            {/* Action Required (spans rows 2-3, cols 2-3) */}
             <div
-              className="rounded-2xl border border-border p-3.5"
+              className="rounded-2xl border border-border p-3.5 overflow-y-auto"
               style={{ gridColumn: '2 / 4', gridRow: '2 / 4' }}>
-              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">{t('dashboard.client.recentActivity')}</p>
-              <div className="space-y-1">
-                {recentActivities.map((item, i) =>
-                <div key={i} className="flex items-center justify-between py-2 px-1">
-                    <span className="text-sm text-foreground">{item.label}</span>
-                    <span className="text-sm text-muted-foreground whitespace-nowrap ml-3">{item.time}</span>
-                  </div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.client.actionRequired')}</span>
+                <span className="text-sm text-muted-foreground">{displayActions.length}</span>
+              </div>
+              <div className="space-y-0.5">
+                {displayActions.map((task) =>
+                <button
+                  key={task.id}
+                  onClick={task.action}
+                  className="w-full flex items-start gap-2 px-1.5 py-2 text-left rounded-lg hover:bg-muted/50 transition-colors">
+                    <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-muted-foreground/30" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-foreground">{task.title}</p>
+                      <p className="text-sm text-muted-foreground">{task.description}</p>
+                    </div>
+                  </button>
                 )}
               </div>
             </div>
