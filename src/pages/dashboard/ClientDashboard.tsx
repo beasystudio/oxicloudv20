@@ -352,13 +352,6 @@ export default function ClientDashboard() {
                 </div>
               </div>
             }
-                        <p className="text-sm text-muted-foreground">{task.description}</p>
-                      </div>
-                    </button>
-                )}
-                </div>
-              </div>
-            }
           </div>
         </main>
       </div>
