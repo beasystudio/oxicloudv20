@@ -150,7 +150,35 @@ export default function ClientDashboard() {
       <div className="h-[100dvh] overflow-hidden bg-background flex flex-col">
         <TopNavigation />
 
-        <main className="flex-1 min-h-0 overflow-hidden container mx-auto px-4 py-5 flex flex-col">
+        <main className="flex-1 min-h-0 overflow-y-auto container mx-auto px-4 py-5 flex flex-col">
+
+          {/* Demo Environment Banner */}
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 mb-4 shrink-0">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-foreground">
+                  {language === 'nl' ? 'U verkent momenteel de OxiCloud Demo-omgeving.' : 'You are currently exploring the OxiCloud Demo Environment.'}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {language === 'nl' ? 'Alle data is fictief. Maak een Workspace aan om echt aan de slag te gaan.' : 'All data is fictional. Create a Workspace to start working for real.'}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => navigate('/register/workspace')}
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
+                  <Plus className="h-3 w-3" />
+                  {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
+                </button>
+                <button
+                  onClick={() => setShowInviteManager(true)}
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  <Send className="h-3 w-3" />
+                  {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
+                </button>
+              </div>
+            </div>
+          </div>
 
           {/* Header */}
           <header className="mb-4 shrink-0">
