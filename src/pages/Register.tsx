@@ -15,13 +15,12 @@ interface ProfessionalType {
   id: string;
   label: string;
   description: string;
-  icon: React.ReactNode;
 }
 
 const professionalTypes: ProfessionalType[] = [
-  { id: 'architect', label: 'Architect', description: 'Registered architect or architecture firm', icon: <Compass className="w-5 h-5" /> },
-  { id: 'engineer', label: 'Engineer', description: 'Structural, civil, or environmental engineer', icon: <Ruler className="w-5 h-5" /> },
-  { id: 'surveyor', label: 'Surveyor', description: 'Land surveyor or geometer', icon: <Map className="w-5 h-5" /> },
+  { id: 'architect', label: 'Architect', description: 'Registered architect or architecture firm' },
+  { id: 'engineer', label: 'Engineer', description: 'Structural, civil, or environmental engineer' },
+  { id: 'surveyor', label: 'Surveyor', description: 'Land surveyor or geometer' },
 ];
 
 export default function Register() {
