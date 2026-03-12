@@ -449,7 +449,7 @@ export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingCheckli
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-sm font-semibold text-foreground">
-                {nl ? 'Configuratie voltooien' : 'Complete Configuration'}
+                {nl ? 'Setup Guide' : 'Setup Guide'}
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
                 {nl ? 'Voltooi elke stap om uw workspace te activeren' : 'Complete each step to activate your workspace'}
