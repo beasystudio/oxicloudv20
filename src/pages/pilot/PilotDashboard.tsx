@@ -219,7 +219,7 @@ export default function PilotDashboard() {
               className="rounded-2xl p-4 flex flex-col justify-center bg-white text-primary-foreground"
               style={{ gridColumn: '1 / 3', gridRow: '1' }}>
               
-              <p className="text-xs uppercase tracking-[0.12em] text-background/40 mb-3">
+              <p className="text-xs uppercase tracking-[0.12em] mb-3 text-primary-foreground">
                 {language === 'nl' ? 'SLIMME INZICHTEN' : 'SMART INSIGHTS'}
               </p>
               <div className="space-y-2">
