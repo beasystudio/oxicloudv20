@@ -16,8 +16,8 @@ import {
   Download,
   X,
   Plus,
-  Trash2,
-} from 'lucide-react';
+  Trash2 } from
+'lucide-react';
 import { cn } from '@/lib/utils';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -47,7 +47,7 @@ interface OnboardingStep {
   id: string;
   title: string;
   description: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{className?: string;}>;
   mandatory: boolean;
 }
 
@@ -60,7 +60,7 @@ interface OnboardingChecklistProps {
    STEP PANELS — each step opens as a modal overlay
    ═══════════════════════════════════════════════ */
 
-function StepModal({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
+function StepModal({ title, children, onClose }: {title: string;children: React.ReactNode;onClose: () => void;}) {
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-6" onClick={onClose}>
       <motion.div
@@ -69,8 +69,8 @@ function StepModal({ title, children, onClose }: { title: string; children: Reac
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
         transition={{ duration: 0.2 }}
         className="max-w-lg w-full bg-card border border-border rounded-2xl shadow-2xl overflow-hidden max-h-[85vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+        onClick={(e) => e.stopPropagation()}>
+        
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <h3 className="text-base font-semibold text-foreground">{title}</h3>
           <button onClick={onClose} className="p-1 rounded-lg hover:bg-muted transition-colors">
@@ -79,12 +79,12 @@ function StepModal({ title, children, onClose }: { title: string; children: Reac
         </div>
         <div className="p-6">{children}</div>
       </motion.div>
-    </div>
-  );
+    </div>);
+
 }
 
 /* Step 1: Company Profile */
-function CompanyProfilePanel({ onComplete, onClose, nl }: { onComplete: () => void; onClose: () => void; nl: boolean }) {
+function CompanyProfilePanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
   const [companyName, setCompanyName] = useState('Architectenbureau Janssen');
   const [address, setAddress] = useState('Koningin Astridlaan 12, 2800 Mechelen');
   const [vat, setVat] = useState('BE0123.456.789');
@@ -101,19 +101,19 @@ function CompanyProfilePanel({ onComplete, onClose, nl }: { onComplete: () => vo
               "mt-1.5 border-2 border-dashed rounded-xl h-24 flex items-center justify-center cursor-pointer transition-colors",
               logoUploaded ? "border-foreground/20 bg-muted/30" : "border-border hover:border-foreground/20"
             )}
-            onClick={() => setLogoUploaded(true)}
-          >
-            {logoUploaded ? (
-              <div className="flex items-center gap-2 text-sm text-foreground">
+            onClick={() => setLogoUploaded(true)}>
+            
+            {logoUploaded ?
+            <div className="flex items-center gap-2 text-sm text-foreground">
                 <CheckCircle2 className="w-4 h-4" />
                 <span>logo.png</span>
-              </div>
-            ) : (
-              <div className="text-center">
+              </div> :
+
+            <div className="text-center">
                 <Upload className="w-5 h-5 mx-auto text-muted-foreground mb-1" />
                 <p className="text-xs text-muted-foreground">{nl ? 'Klik om te uploaden' : 'Click to upload'}</p>
               </div>
-            )}
+            }
           </div>
         </div>
 
@@ -135,12 +135,12 @@ function CompanyProfilePanel({ onComplete, onClose, nl }: { onComplete: () => vo
           {nl ? 'Bevestigen & doorgaan' : 'Confirm & continue'}
         </Button>
       </div>
-    </StepModal>
-  );
+    </StepModal>);
+
 }
 
 /* Step 2: Team Setup */
-function TeamSetupPanel({ onComplete, onClose, nl }: { onComplete: () => void; onClose: () => void; nl: boolean }) {
+function TeamSetupPanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
   const [emails, setEmails] = useState<string[]>(['']);
 
   return (
@@ -151,30 +151,30 @@ function TeamSetupPanel({ onComplete, onClose, nl }: { onComplete: () => void; o
         </p>
 
         <div className="space-y-2">
-          {emails.map((email, i) => (
-            <div key={i} className="flex gap-2">
+          {emails.map((email, i) =>
+          <div key={i} className="flex gap-2">
               <Input
-                placeholder={nl ? 'E-mailadres' : 'Email address'}
-                value={email}
-                onChange={(e) => {
-                  const next = [...emails];
-                  next[i] = e.target.value;
-                  setEmails(next);
-                }}
-              />
-              {emails.length > 1 && (
-                <button onClick={() => setEmails(emails.filter((_, j) => j !== i))} className="p-2 text-muted-foreground hover:text-foreground">
+              placeholder={nl ? 'E-mailadres' : 'Email address'}
+              value={email}
+              onChange={(e) => {
+                const next = [...emails];
+                next[i] = e.target.value;
+                setEmails(next);
+              }} />
+            
+              {emails.length > 1 &&
+            <button onClick={() => setEmails(emails.filter((_, j) => j !== i))} className="p-2 text-muted-foreground hover:text-foreground">
                   <Trash2 className="w-4 h-4" />
                 </button>
-              )}
+            }
             </div>
-          ))}
+          )}
         </div>
 
         <button
           onClick={() => setEmails([...emails, ''])}
-          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
-        >
+          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+          
           <Plus className="w-3.5 h-3.5" />
           {nl ? 'Nog iemand toevoegen' : 'Add another'}
         </button>
@@ -188,15 +188,15 @@ function TeamSetupPanel({ onComplete, onClose, nl }: { onComplete: () => void; o
           </Button>
         </div>
       </div>
-    </StepModal>
-  );
+    </StepModal>);
+
 }
 
 /* Step 3: Contact Configuration */
-function ContactConfigPanel({ onComplete, onClose, nl }: { onComplete: () => void; onClose: () => void; nl: boolean }) {
-  const defaultTypes = nl
-    ? ['Opdrachtgever', 'Bouwheer', 'Aannemer', 'Ingenieur']
-    : ['Client', 'Building Owner', 'Contractor', 'Engineer'];
+function ContactConfigPanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
+  const defaultTypes = nl ?
+  ['Opdrachtgever', 'Bouwheer', 'Aannemer', 'Ingenieur'] :
+  ['Client', 'Building Owner', 'Contractor', 'Engineer'];
   const [types, setTypes] = useState(defaultTypes);
   const [newType, setNewType] = useState('');
 
@@ -208,14 +208,14 @@ function ContactConfigPanel({ onComplete, onClose, nl }: { onComplete: () => voi
         </p>
 
         <div className="space-y-1.5">
-          {types.map((type, i) => (
-            <div key={i} className="flex items-center justify-between px-3 py-2 rounded-lg border border-border bg-background">
+          {types.map((type, i) =>
+          <div key={i} className="flex items-center justify-between px-3 py-2 rounded-lg border border-border bg-background">
               <span className="text-sm text-foreground">{type}</span>
               <button onClick={() => setTypes(types.filter((_, j) => j !== i))} className="text-muted-foreground hover:text-foreground">
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
-          ))}
+          )}
         </div>
 
         <div className="flex gap-2">
@@ -228,14 +228,14 @@ function ContactConfigPanel({ onComplete, onClose, nl }: { onComplete: () => voi
                 setTypes([...types, newType.trim()]);
                 setNewType('');
               }
-            }}
-          />
+            }} />
+          
           <Button
             variant="outline"
             size="sm"
             disabled={!newType.trim()}
-            onClick={() => { setTypes([...types, newType.trim()]); setNewType(''); }}
-          >
+            onClick={() => {setTypes([...types, newType.trim()]);setNewType('');}}>
+            
             <Plus className="w-4 h-4" />
           </Button>
         </div>
@@ -244,12 +244,12 @@ function ContactConfigPanel({ onComplete, onClose, nl }: { onComplete: () => voi
           {nl ? 'Bevestigen & doorgaan' : 'Confirm & continue'}
         </Button>
       </div>
-    </StepModal>
-  );
+    </StepModal>);
+
 }
 
 /* Step 4: Financial Agreement */
-function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: { onComplete: () => void; onClose: () => void; nl: boolean; isCeo: boolean }) {
+function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: {onComplete: () => void;onClose: () => void;nl: boolean;isCeo: boolean;}) {
   const [selfBilling, setSelfBilling] = useState(false);
   const [sendConsent, setSendConsent] = useState(false);
 
@@ -257,9 +257,9 @@ function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: { onComplet
     <StepModal title={nl ? 'Financiële overeenkomst' : 'Financial Agreement'} onClose={onClose}>
       <div className="space-y-4">
         <p className="text-sm text-muted-foreground">
-          {isCeo
-            ? nl ? 'Als CEO dient u de volgende overeenkomsten eenmalig te accepteren.' : 'As CEO, you must accept the following agreements once.'
-            : nl ? 'Deze overeenkomsten zijn reeds goedgekeurd door uw CEO.' : 'These agreements have already been approved by your CEO.'
+          {isCeo ?
+          nl ? 'Als CEO dient u de volgende overeenkomsten eenmalig te accepteren.' : 'As CEO, you must accept the following agreements once.' :
+          nl ? 'Deze overeenkomsten zijn reeds goedgekeurd door uw CEO.' : 'These agreements have already been approved by your CEO.'
           }
         </p>
 
@@ -269,9 +269,9 @@ function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: { onComplet
             <div className="text-sm leading-relaxed">
               <span className="font-medium">Self-billing {nl ? 'overeenkomst' : 'agreement'}</span>
               <span className="text-muted-foreground">
-                {nl
-                  ? ' — Na ontvangst van betaling stellen wij namens u een self-billing factuur op voor de commissie-uitbetaling.'
-                  : ' — Upon payment receipt, we issue a self-billing invoice on your behalf for commission settlement.'}
+                {nl ?
+                ' — Na ontvangst van betaling stellen wij namens u een self-billing factuur op voor de commissie-uitbetaling.' :
+                ' — Upon payment receipt, we issue a self-billing invoice on your behalf for commission settlement.'}
               </span>
               <button type="button" className="block text-primary text-xs mt-1 hover:underline">
                 <Download className="inline h-3 w-3 mr-1" />
@@ -285,36 +285,36 @@ function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: { onComplet
             <div className="text-sm leading-relaxed">
               <span className="font-medium">{nl ? 'Offerte-autorisatie' : 'Quote authorization'}</span>
               <span className="text-muted-foreground">
-                {nl
-                  ? ' — Ik autoriseer OxiCloud om offertes namens mijn bedrijf naar eindklanten te versturen.'
-                  : ' — I authorize OxiCloud to send quotes to end clients on behalf of my company.'}
+                {nl ?
+                ' — Ik autoriseer OxiCloud om offertes namens mijn bedrijf naar eindklanten te versturen.' :
+                ' — I authorize OxiCloud to send quotes to end clients on behalf of my company.'}
               </span>
             </div>
           </label>
         </div>
 
-        {isCeo && (
-          <Button disabled={!selfBilling || !sendConsent} onClick={onComplete} className="w-full">
+        {isCeo &&
+        <Button disabled={!selfBilling || !sendConsent} onClick={onComplete} className="w-full">
             <ShieldCheck className="w-4 h-4 mr-2" />
             {nl ? 'Accepteren & doorgaan' : 'Accept & continue'}
           </Button>
-        )}
+        }
       </div>
-    </StepModal>
-  );
+    </StepModal>);
+
 }
 
 /* Step 5: Data Migration */
-function DataMigrationPanel({ onComplete, onClose, nl }: { onComplete: () => void; onClose: () => void; nl: boolean }) {
+function DataMigrationPanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
   const [fileUploaded, setFileUploaded] = useState(false);
 
   return (
     <StepModal title={nl ? 'Datamigratie' : 'Data Migration'} onClose={onClose}>
       <div className="space-y-4">
         <p className="text-sm text-muted-foreground">
-          {nl
-            ? 'Importeer een bestaand klantenbestand (bijv. uit ArchX) via CSV. U kunt dit ook later doen vanuit het Contacten-module.'
-            : 'Import an existing client database (e.g. from ArchX) via CSV. You can also do this later from the Contacts module.'}
+          {nl ?
+          'Importeer een bestaand klantenbestand (bijv. uit ArchX) via CSV. U kunt dit ook later doen vanuit het Contacten-module.' :
+          'Import an existing client database (e.g. from ArchX) via CSV. You can also do this later from the Contacts module.'}
         </p>
 
         <div
@@ -322,20 +322,20 @@ function DataMigrationPanel({ onComplete, onClose, nl }: { onComplete: () => voi
             "border-2 border-dashed rounded-xl h-32 flex items-center justify-center cursor-pointer transition-colors",
             fileUploaded ? "border-foreground/20 bg-muted/30" : "border-border hover:border-foreground/20"
           )}
-          onClick={() => setFileUploaded(true)}
-        >
-          {fileUploaded ? (
-            <div className="flex items-center gap-2 text-sm text-foreground">
+          onClick={() => setFileUploaded(true)}>
+          
+          {fileUploaded ?
+          <div className="flex items-center gap-2 text-sm text-foreground">
               <CheckCircle2 className="w-4 h-4" />
               <span>contacts_export.csv</span>
-            </div>
-          ) : (
-            <div className="text-center">
+            </div> :
+
+          <div className="text-center">
               <Upload className="w-6 h-6 mx-auto text-muted-foreground mb-1.5" />
               <p className="text-sm text-muted-foreground">{nl ? 'Sleep een CSV-bestand hierheen' : 'Drop a CSV file here'}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{nl ? 'of klik om te bladeren' : 'or click to browse'}</p>
             </div>
-          )}
+          }
         </div>
 
         <div className="flex gap-2.5 pt-1">
@@ -347,34 +347,34 @@ function DataMigrationPanel({ onComplete, onClose, nl }: { onComplete: () => voi
           </Button>
         </div>
       </div>
-    </StepModal>
-  );
+    </StepModal>);
+
 }
 
 /* Step 6: Workspace Ready */
-function WorkspaceReadyPanel({ onComplete, onClose, nl }: { onComplete: () => void; onClose: () => void; nl: boolean }) {
+function WorkspaceReadyPanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
   return (
     <StepModal title={nl ? 'Workspace klaar!' : 'Workspace Ready!'} onClose={onClose}>
       <div className="space-y-4 text-center">
-        <div className="w-14 h-14 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-          <Rocket className="w-7 h-7 text-primary" />
-        </div>
+        
+
+        
         <div>
           <h3 className="text-lg font-semibold text-foreground">
             {nl ? 'Uw workspace is volledig geconfigureerd' : 'Your workspace is fully configured'}
           </h3>
           <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
-            {nl
-              ? 'U kunt nu uw eerste projectdossier aanmaken en beginnen met verdienen.'
-              : 'You can now create your first project dossier and start earning.'}
+            {nl ?
+            'U kunt nu uw eerste projectdossier aanmaken en beginnen met verdienen.' :
+            'You can now create your first project dossier and start earning.'}
           </p>
         </div>
         <Button onClick={onComplete} className="w-full" size="lg">
           {nl ? 'Ga naar projecten →' : 'Go to projects →'}
         </Button>
       </div>
-    </StepModal>
-  );
+    </StepModal>);
+
 }
 
 /* ═══════════════════════════════════════════════
@@ -387,22 +387,22 @@ export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingCheckli
   const nl = language === 'nl';
 
   const steps: OnboardingStep[] = [
-    { id: 'company-profile', title: nl ? 'Bedrijfsprofiel instellen' : 'Set up Company Profile', description: nl ? 'Upload logo, bevestig bedrijfsgegevens en BTW' : 'Upload logo, confirm legal name, address & VAT', icon: Building2, mandatory: true },
-    { id: 'team-setup', title: nl ? 'Team configureren' : 'Set up your Team', description: nl ? 'Nodig leden uit en wijs rollen toe' : 'Invite members and assign roles', icon: Users, mandatory: true },
-    { id: 'contact-config', title: nl ? 'Contactconfiguratie' : 'Configure Contacts', description: nl ? 'Stel contacttaxonomie en standaardvelden in' : 'Define contact taxonomy and default fields', icon: Settings, mandatory: true },
-    { id: 'financial-agreement', title: nl ? 'Financiële overeenkomst' : 'Financial Agreement', description: isCeo ? (nl ? 'Accepteer self-billing en offerte-autorisatie' : 'Review and sign self-billing & quote approval') : (nl ? 'Reeds goedgekeurd door uw CEO' : 'Already approved by your CEO'), icon: ShieldCheck, mandatory: true },
-    { id: 'data-migration', title: nl ? 'Datamigratie' : 'Data Migration', description: nl ? 'Importeer een bestaand klantenbestand via CSV' : 'Import existing client database via CSV', icon: Upload, mandatory: false },
-    { id: 'workspace-ready', title: nl ? 'Workspace klaar' : 'Workspace Ready', description: nl ? 'Start met uw eerste projectdossier' : 'Create your first project dossier', icon: Rocket, mandatory: true },
-  ];
+  { id: 'company-profile', title: nl ? 'Bedrijfsprofiel instellen' : 'Set up Company Profile', description: nl ? 'Upload logo, bevestig bedrijfsgegevens en BTW' : 'Upload logo, confirm legal name, address & VAT', icon: Building2, mandatory: true },
+  { id: 'team-setup', title: nl ? 'Team configureren' : 'Set up your Team', description: nl ? 'Nodig leden uit en wijs rollen toe' : 'Invite members and assign roles', icon: Users, mandatory: true },
+  { id: 'contact-config', title: nl ? 'Contactconfiguratie' : 'Configure Contacts', description: nl ? 'Stel contacttaxonomie en standaardvelden in' : 'Define contact taxonomy and default fields', icon: Settings, mandatory: true },
+  { id: 'financial-agreement', title: nl ? 'Financiële overeenkomst' : 'Financial Agreement', description: isCeo ? nl ? 'Accepteer self-billing en offerte-autorisatie' : 'Review and sign self-billing & quote approval' : nl ? 'Reeds goedgekeurd door uw CEO' : 'Already approved by your CEO', icon: ShieldCheck, mandatory: true },
+  { id: 'data-migration', title: nl ? 'Datamigratie' : 'Data Migration', description: nl ? 'Importeer een bestaand klantenbestand via CSV' : 'Import existing client database via CSV', icon: Upload, mandatory: false },
+  { id: 'workspace-ready', title: nl ? 'Workspace klaar' : 'Workspace Ready', description: nl ? 'Start met uw eerste projectdossier' : 'Create your first project dossier', icon: Rocket, mandatory: true }];
+
 
   const [state, setState] = useState<SavedState>(loadState);
   const [activeStep, setActiveStep] = useState<string | null>(null);
 
-  useEffect(() => { saveState(state); }, [state]);
+  useEffect(() => {saveState(state);}, [state]);
 
   const completedSet = new Set(state.completedSteps);
-  const completedCount = steps.filter(s => completedSet.has(s.id)).length;
-  const allDone = steps.every(s => completedSet.has(s.id));
+  const completedCount = steps.filter((s) => completedSet.has(s.id)).length;
+  const allDone = steps.every((s) => completedSet.has(s.id));
 
   const isUnlocked = (index: number): boolean => {
     if (index === 0) return true;
@@ -418,7 +418,7 @@ export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingCheckli
   };
 
   const markComplete = (stepId: string) => {
-    setState(prev => {
+    setState((prev) => {
       if (prev.completedSteps.includes(stepId)) return prev;
       const next = { ...prev, completedSteps: [...prev.completedSteps, stepId] };
       return next;
@@ -426,7 +426,7 @@ export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingCheckli
     setActiveStep(null);
     // Check if everything done after state update
     const nextCompleted = new Set([...state.completedSteps, stepId]);
-    if (steps.every(s => nextCompleted.has(s.id))) onComplete?.();
+    if (steps.every((s) => nextCompleted.has(s.id))) onComplete?.();
   };
 
   const handleStepClick = (step: OnboardingStep, index: number) => {
@@ -436,15 +436,15 @@ export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingCheckli
 
   if (allDone) return null;
 
-  const progressPct = Math.round((completedCount / steps.length) * 100);
+  const progressPct = Math.round(completedCount / steps.length * 100);
 
   return (
     <>
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -12 }}
-      >
+        exit={{ opacity: 0, y: -12 }}>
+        
         <div className="rounded-2xl border border-border bg-card px-5 py-4">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -481,8 +481,8 @@ export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingCheckli
                     done && 'opacity-40',
                     !unlocked && !done && 'opacity-30 cursor-not-allowed',
                     unlocked && !done && 'hover:bg-muted/50 cursor-pointer'
-                  )}
-                >
+                  )}>
+                  
                   <div className={cn(
                     'w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-[10px] font-semibold',
                     done ? 'bg-foreground text-background' : unlocked ? 'border border-border text-muted-foreground' : 'border border-border/50 text-muted-foreground/40'
@@ -493,18 +493,18 @@ export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingCheckli
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className={cn('text-sm font-medium', done && 'line-through text-muted-foreground')}>{step.title}</p>
-                      {!step.mandatory && !done && (
-                        <span className="text-[9px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full font-medium">
+                      {!step.mandatory && !done &&
+                      <span className="text-[9px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full font-medium">
                           {nl ? 'Optioneel' : 'Optional'}
                         </span>
-                      )}
+                      }
                     </div>
-                    {!done && unlocked && (
-                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{step.description}</p>
-                    )}
+                    {!done && unlocked &&
+                    <p className="text-xs text-muted-foreground mt-0.5 truncate">{step.description}</p>
+                    }
                   </div>
-                </button>
-              );
+                </button>);
+
             })}
           </div>
         </div>
@@ -512,25 +512,25 @@ export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingCheckli
 
       {/* Step Modals */}
       <AnimatePresence>
-        {activeStep === 'company-profile' && (
-          <CompanyProfilePanel nl={nl} onComplete={() => markComplete('company-profile')} onClose={() => setActiveStep(null)} />
-        )}
-        {activeStep === 'team-setup' && (
-          <TeamSetupPanel nl={nl} onComplete={() => markComplete('team-setup')} onClose={() => setActiveStep(null)} />
-        )}
-        {activeStep === 'contact-config' && (
-          <ContactConfigPanel nl={nl} onComplete={() => markComplete('contact-config')} onClose={() => setActiveStep(null)} />
-        )}
-        {activeStep === 'financial-agreement' && (
-          <FinancialAgreementPanel nl={nl} isCeo={isCeo} onComplete={() => markComplete('financial-agreement')} onClose={() => setActiveStep(null)} />
-        )}
-        {activeStep === 'data-migration' && (
-          <DataMigrationPanel nl={nl} onComplete={() => markComplete('data-migration')} onClose={() => setActiveStep(null)} />
-        )}
-        {activeStep === 'workspace-ready' && (
-          <WorkspaceReadyPanel nl={nl} onComplete={() => markComplete('workspace-ready')} onClose={() => setActiveStep(null)} />
-        )}
+        {activeStep === 'company-profile' &&
+        <CompanyProfilePanel nl={nl} onComplete={() => markComplete('company-profile')} onClose={() => setActiveStep(null)} />
+        }
+        {activeStep === 'team-setup' &&
+        <TeamSetupPanel nl={nl} onComplete={() => markComplete('team-setup')} onClose={() => setActiveStep(null)} />
+        }
+        {activeStep === 'contact-config' &&
+        <ContactConfigPanel nl={nl} onComplete={() => markComplete('contact-config')} onClose={() => setActiveStep(null)} />
+        }
+        {activeStep === 'financial-agreement' &&
+        <FinancialAgreementPanel nl={nl} isCeo={isCeo} onComplete={() => markComplete('financial-agreement')} onClose={() => setActiveStep(null)} />
+        }
+        {activeStep === 'data-migration' &&
+        <DataMigrationPanel nl={nl} onComplete={() => markComplete('data-migration')} onClose={() => setActiveStep(null)} />
+        }
+        {activeStep === 'workspace-ready' &&
+        <WorkspaceReadyPanel nl={nl} onComplete={() => markComplete('workspace-ready')} onClose={() => setActiveStep(null)} />
+        }
       </AnimatePresence>
-    </>
-  );
+    </>);
+
 };
