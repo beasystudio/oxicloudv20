@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { PageTransition } from "./components/PageTransition";
+import { DarkModeWrapper } from "./components/DarkModeWrapper";
 
 import { MockAuthProvider } from "./contexts/MockAuthContext";
 
@@ -56,6 +57,7 @@ const queryClient = new QueryClient();
 const AnimatedRoutes = () => {
   return (
     <Routes>
+        {/* Public / Auth pages — Light mode */}
         <Route path="/" element={<PageTransition><Index /></PageTransition>} />
         <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
         <Route path="/forgot-password" element={<PageTransition><ForgotPassword /></PageTransition>} />
@@ -65,52 +67,53 @@ const AnimatedRoutes = () => {
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/for-architects" element={<PageTransition><ForArchitectsPage /></PageTransition>} />
-        
         <Route path="/for-authorities" element={<PageTransition><ForAuthoritiesPage /></PageTransition>} />
         <Route path="/book-a-demo" element={<Navigate to="/pilot-demo" replace />} />
         
-        {/* Production Workspace Routes (formerly Pilot Demo) */}
+        {/* Pilot Auth — Light mode */}
         <Route path="/pilot-demo" element={<Navigate to="/pilot-demo/create-account" replace />} />
         <Route path="/pilot-demo/register" element={<Navigate to="/pilot-demo/create-account" replace />} />
         <Route path="/pilot-demo/activation-sent" element={<PageTransition><PilotActivationSent /></PageTransition>} />
         <Route path="/pilot-demo/create-account" element={<PageTransition><PilotCreateAccount /></PageTransition>} />
         <Route path="/pilot-demo/login" element={<PageTransition><PilotLogin /></PageTransition>} />
         <Route path="/pilot-demo/forgot-password" element={<PageTransition><PilotForgotPassword /></PageTransition>} />
-        <Route path="/pilot-demo/dashboard" element={<PageTransition><PilotDashboard /></PageTransition>} />
-        <Route path="/pilot-demo/projects" element={<PageTransition><PilotProjects /></PageTransition>} />
-        <Route path="/pilot-demo/contacts" element={<PageTransition><PilotContacts /></PageTransition>} />
-        <Route path="/pilot-demo/financial" element={<PageTransition><PilotFinancial /></PageTransition>} />
-        <Route path="/pilot-demo/settings" element={<PageTransition><PilotSettings /></PageTransition>} />
-        <Route path="/pilot-demo/profile" element={<PageTransition><PilotProfile /></PageTransition>} />
-        <Route path="/pilot-demo/partnership-program" element={<PageTransition><PartnershipProgram /></PageTransition>} />
+
+        {/* Pilot Dashboard — Dark mode */}
+        <Route path="/pilot-demo/dashboard" element={<DarkModeWrapper><PageTransition><PilotDashboard /></PageTransition></DarkModeWrapper>} />
+        <Route path="/pilot-demo/projects" element={<DarkModeWrapper><PageTransition><PilotProjects /></PageTransition></DarkModeWrapper>} />
+        <Route path="/pilot-demo/contacts" element={<DarkModeWrapper><PageTransition><PilotContacts /></PageTransition></DarkModeWrapper>} />
+        <Route path="/pilot-demo/financial" element={<DarkModeWrapper><PageTransition><PilotFinancial /></PageTransition></DarkModeWrapper>} />
+        <Route path="/pilot-demo/settings" element={<DarkModeWrapper><PageTransition><PilotSettings /></PageTransition></DarkModeWrapper>} />
+        <Route path="/pilot-demo/profile" element={<DarkModeWrapper><PageTransition><PilotProfile /></PageTransition></DarkModeWrapper>} />
+        <Route path="/pilot-demo/partnership-program" element={<DarkModeWrapper><PageTransition><PartnershipProgram /></PageTransition></DarkModeWrapper>} />
         
         {/* Workspace registration redirect */}
         <Route path="/register/workspace" element={<Navigate to="/pilot-demo/create-account" replace />} />
         
-        {/* Demo Dashboard — shows Jan/Maria/Lisa mock environment */}
-        <Route path="/dashboard/demo" element={<PageTransition><ClientDashboard /></PageTransition>} />
+        {/* Demo Dashboard — Dark mode */}
+        <Route path="/dashboard/demo" element={<DarkModeWrapper><PageTransition><ClientDashboard /></PageTransition></DarkModeWrapper>} />
         
-        {/* Dashboard Routes */}
-        <Route path="/dashboard/partner" element={<ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnerHome /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/admin" element={<ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><AdminDashboard /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/licenses" element={<ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><CompanyLicenseManager /></PageTransition></ProtectedRoute>} />
+        {/* Dashboard Routes — Dark mode */}
+        <Route path="/dashboard/partner" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnerHome /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/admin" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><AdminDashboard /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/licenses" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><CompanyLicenseManager /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
         <Route path="/dashboard/lm" element={<Navigate to="/dashboard/licenses" replace />} />
-        <Route path="/dashboard/client/home" element={<ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ClientDashboard /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/partnership-program" element={<ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnershipProgram /></PageTransition></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><PageTransition><Profile /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/settings" element={<ProtectedRoute><PageTransition><Settings /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/projects" element={<ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ProjectsDashboard /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/nox-settings" element={<ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><NoxDashboard /></PageTransition></ProtectedRoute>} />
+        <Route path="/dashboard/client/home" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ClientDashboard /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/partnership-program" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnershipProgram /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/profile" element={<DarkModeWrapper><ProtectedRoute><PageTransition><Profile /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/settings" element={<DarkModeWrapper><ProtectedRoute><PageTransition><Settings /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/projects" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ProjectsDashboard /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/nox-settings" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><NoxDashboard /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
         <Route path="/dashboard/nox" element={<Navigate to="/dashboard/nox-settings" replace />} />
-        <Route path="/dashboard/authority" element={<ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityHome /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/authority/projects" element={<ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityProjects /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/authority/regulatory" element={<ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityRegulatoryHub /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/authority/spatial" element={<ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthoritySpatialAnalysis /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/authority/settings" element={<ProtectedRoute allowedRoles={['owner', 'admin', 'authority']}><PageTransition><AuthoritySettings /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/contacts" element={<ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ContactsDashboard /></PageTransition></ProtectedRoute>} />
-        <Route path="/dashboard/mail" element={<ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><MailDashboard /></PageTransition></ProtectedRoute>} />
+        <Route path="/dashboard/authority" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityHome /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/authority/projects" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityProjects /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/authority/regulatory" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityRegulatoryHub /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/authority/spatial" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthoritySpatialAnalysis /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/authority/settings" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority']}><PageTransition><AuthoritySettings /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/contacts" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ContactsDashboard /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
+        <Route path="/dashboard/mail" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><MailDashboard /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
         <Route path="/dashboard/project-binder" element={<Navigate to="/dashboard/projects" replace />} />
-        <Route path="/dashboard/financial" element={<ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin']}><PageTransition><FinancialDashboard /></PageTransition></ProtectedRoute>} />
+        <Route path="/dashboard/financial" element={<DarkModeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin']}><PageTransition><FinancialDashboard /></PageTransition></ProtectedRoute></DarkModeWrapper>} />
         <Route path="/auth" element={<Navigate to="/login" replace />} />
         <Route path="/projects" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<NotFound />} />
