@@ -155,10 +155,10 @@ export default function ClientDashboard() {
       <div className="h-[100dvh] overflow-hidden bg-background flex flex-col">
         <TopNavigation />
 
-        <main className="flex-1 min-h-0 overflow-y-auto container mx-auto px-4 py-5 flex flex-col">
+        <main className="flex-1 min-h-0 overflow-y-auto container mx-auto px-4 py-5 max-w-5xl">
 
           {/* Demo Marquee Banner */}
-          <div className="rounded-2xl border border-primary/20 bg-primary/5 py-2.5 mb-4 shrink-0 overflow-hidden">
+          <div className="rounded-xl border border-primary/20 bg-primary/5 py-2.5 mb-5 overflow-hidden">
             <div className="flex animate-marquee whitespace-nowrap">
               {Array.from({ length: 4 }).map((_, i) =>
               <span key={i} className="flex items-center gap-6 mx-6 text-[13px] text-muted-foreground">
@@ -175,157 +175,133 @@ export default function ClientDashboard() {
           </div>
 
           {/* Header */}
-          <header className="mb-4 shrink-0">
+          <header className="mb-6">
             <p className="text-sm text-muted-foreground mb-0.5">
               {new Date().toLocaleDateString(language === 'nl' ? 'nl-BE' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
-            <h1 className="text-3xl tracking-tight leading-[1.15] text-foreground font-semibold text-balance">
+            <h1 className="text-3xl tracking-tight leading-[1.15] text-foreground font-semibold">
               {greeting()}, {currentUser?.name?.split(' ')[0]}.
             </h1>
             {summaryLine && <p className="text-sm text-muted-foreground mt-1">{summaryLine}</p>}
           </header>
 
-          {/* Bento Grid — fills remaining viewport */}
-          <div
-            className="flex-1 min-h-0 grid gap-2"
-            style={{
-              gridTemplateColumns: '1fr 1fr 1fr',
-              gridTemplateRows: 'auto auto auto auto 1fr'
-            }}>
-
-            {/* ═══ ROW 1: Insights (2col) + New Project / Todo (1col) ═══ */}
-            <div
-              className="rounded-2xl p-4 flex flex-col justify-center bg-background border border-border"
-              style={{ gridColumn: '1 / 3', gridRow: '1' }}>
-              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">
-                {t('dashboard.client.smartInsights')}
-              </p>
-              <div className="space-y-2">
-                {(smartInsights.length > 0 ? smartInsights : [
-                { text: language === 'nl' ? 'NOx rapport ontbreekt bij 1 actief project' : 'NOx report missing for 1 active project', type: 'warning' as const },
-                { text: language === 'nl' ? 'Uw team telt 6 actieve leden' : 'Your team has 6 active members', type: 'neutral' as const }]).
-                map((insight, i) =>
-                <div key={i} className="flex items-start gap-2">
-                    <span className={cn('w-1.5 h-1.5 rounded-full mt-1.5 shrink-0',
-                  insight.type === 'warning' ? 'bg-foreground/50' : 'bg-foreground/25'
-                  )} />
-                    <p className="text-sm leading-relaxed text-muted-foreground">{insight.text}</p>
-                  </div>
-                )}
-              </div>
+          {/* KPI Row */}
+          <div className="grid grid-cols-3 gap-3 mb-3">
+            <div className="rounded-xl border border-border p-5">
+              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">Team</p>
+              <p className="text-2xl font-semibold text-foreground leading-none">{stats.totalEmployees || 6}</p>
+              <p className="text-sm text-muted-foreground mt-1">{t('dashboard.client.activeMembers')}</p>
             </div>
-
-            <div className="flex flex-col gap-2" style={{ gridColumn: '3', gridRow: '1' }}>
-              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-1">
-                {language === 'nl' ? 'Volgende stap' : 'Next step'}
-              </p>
-              <button
-                onClick={() => navigate('/register/workspace')}
-                className="w-full flex items-center justify-center rounded-lg px-3 py-2 text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
-                {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
-              </button>
-              <button
-                onClick={() => setShowInviteManager(true)}
-                className="w-full flex items-center justify-center rounded-lg px-3 py-2 text-xs font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
-              </button>
-
-
-              
+            <div className="rounded-xl border border-border p-5">
+              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">{t('dashboard.nav.projects')}</p>
+              <p className="text-2xl font-semibold text-foreground leading-none">{stats.totalProjects || 3}</p>
+              <p className="text-sm text-muted-foreground mt-1">{stats.activeProjects || 2} {language === 'nl' ? 'actief' : 'active'}</p>
             </div>
-
-            {/* ═══ ROW 2: Team stat ═══ */}
-            <div className="rounded-2xl border border-border p-4 flex flex-col justify-between" style={{ gridColumn: '1', gridRow: '2' }}>
-              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground">Team</p>
-              <div>
-                <p className="text-2xl font-semibold text-foreground leading-none">{stats.totalEmployees || 6}</p>
-                <p className="text-sm text-muted-foreground mt-0.5">{t('dashboard.client.activeMembers')}</p>
-              </div>
+            <div className="rounded-xl border border-border p-5">
+              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">To do</p>
+              <p className="text-2xl font-semibold text-foreground leading-none">{todoCount}</p>
+              <p className="text-sm text-muted-foreground mt-1">{language === 'nl' ? 'openstaand' : 'pending'}</p>
             </div>
+          </div>
 
-            {/* Action Required (spans rows 2-3, cols 2-3) */}
-            <div
-              className="rounded-2xl border border-border p-3.5 overflow-y-auto"
-              style={{ gridColumn: '2 / 4', gridRow: '2 / 4' }}>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.client.actionRequired')}</span>
-                <span className="text-sm text-muted-foreground">{displayActions.length}</span>
+          {/* Two-column: Actions + Next Step */}
+          <div className="grid grid-cols-3 gap-3 mb-3">
+            {/* Action Required */}
+            <div className="col-span-2 rounded-xl border border-border p-5">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.client.actionRequired')}</p>
+                <span className="text-xs text-muted-foreground">{displayActions.length}</span>
               </div>
-              <div className="space-y-0.5">
+              <div className="space-y-1">
                 {displayActions.map((task) =>
                 <button
                   key={task.id}
                   onClick={task.action}
-                  className="w-full flex items-start gap-2 px-1.5 py-2 text-left rounded-lg hover:bg-muted/50 transition-colors">
-                    <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-muted-foreground/30" />
+                  className="w-full flex items-start gap-3 py-2.5 text-left rounded-lg hover:bg-muted/40 transition-colors px-2 -mx-2">
+                    <span className="w-1.5 h-1.5 rounded-full mt-[7px] shrink-0 bg-muted-foreground/30" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-foreground">{task.title}</p>
-                      <p className="text-sm text-muted-foreground">{task.description}</p>
+                      <p className="text-sm text-foreground leading-snug">{task.title}</p>
+                      <p className="text-[13px] text-muted-foreground mt-0.5">{task.description}</p>
                     </div>
                   </button>
                 )}
               </div>
             </div>
 
-            {/* ═══ ROW 3: Projects stat ═══ */}
-            <div className="rounded-2xl border border-border p-4 flex flex-col justify-between" style={{ gridColumn: '1', gridRow: '3' }}>
-              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.nav.projects')}</p>
-              <div>
-                <p className="text-2xl font-semibold text-foreground leading-none">{stats.totalProjects || 3}</p>
-                <p className="text-sm text-muted-foreground mt-0.5">{stats.activeProjects || 2} {language === 'nl' ? 'actief' : 'active'}</p>
+            {/* Next Step */}
+            <div className="rounded-xl border border-border p-5 flex flex-col">
+              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">
+                {language === 'nl' ? 'Volgende stap' : 'Next step'}
+              </p>
+              <div className="flex flex-col gap-2 mt-auto">
+                <button
+                  onClick={() => navigate('/register/workspace')}
+                  className="w-full rounded-lg px-4 py-2.5 text-sm font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
+                  {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
+                </button>
+                <button
+                  onClick={() => setShowInviteManager(true)}
+                  className="w-full rounded-lg px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
+                </button>
               </div>
             </div>
-
-            {/* ═══ ROW 4: Partner Program + Workspace CTA ═══ */}
-            <div
-              className="rounded-2xl border border-border p-4"
-              style={{ gridColumn: '1 / 3', gridRow: '4' }}>
-              <div>
-                <h3 className="text-sm font-semibold text-foreground mb-1">
-                  {language === 'nl' ? 'OxiCloud Partner Programma' : 'OxiCloud Partner Program'}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {language === 'nl' ?
-                  'Zet elk project om in omzet. Als OxiCloud-partner verdient uw bureau automatisch commissie bij elk gegenereerd NOx-rapport — zonder administratieve last. Bouwheren ontvangen een transparante offerte en betalen via overschrijving. Uw commissie wordt rechtstreeks op uw bedrijfsrekening gestort.' :
-                  'Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account.'}
-                </p>
-              </div>
-            </div>
-
-            
-
-
-
-
-            
-
-            {/* ═══ ROW 5: Setup — full width (only for first-time users) ═══ */}
-            {isFirstTimeUser && isClientOwnerOrAdmin &&
-            <div
-              className="rounded-2xl border border-border p-4 overflow-y-auto"
-              style={{ gridColumn: '1 / 4', gridRow: '5' }}>
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <h2 className="text-sm font-semibold">{t('dashboard.client.completeSetup')}</h2>
-                    <p className="text-sm text-muted-foreground">{t('dashboard.client.setupWorkspace')}</p>
-                  </div>
-                  <span className="text-sm text-muted-foreground">{completedSteps}/{setupSteps.length}</span>
-                </div>
-                <div className="space-y-1">
-                  {setupSteps.map((step, index) =>
-                <button key={step.key} onClick={() => navigate(step.path, { state: { activeTab: step.tab } })} className={cn("w-full flex items-center gap-2.5 p-2 rounded-xl text-left transition-colors", step.done ? "opacity-40" : "hover:bg-muted/50")}>
-                      <div className={cn("w-4.5 h-4.5 rounded-full flex items-center justify-center text-[9px]", step.done ? "bg-foreground text-background" : "border border-border text-muted-foreground")}>
-                        {step.done ? <CheckCircle2 className="h-3 w-3" /> : index + 1}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className={cn("text-sm", step.done && "line-through text-muted-foreground")}>{step.label}</p>
-                      </div>
-                    </button>
-                )}
-                </div>
-              </div>
-            }
           </div>
+
+          {/* Insights */}
+          <div className="rounded-xl border border-border p-5 mb-3">
+            <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">
+              {t('dashboard.client.smartInsights')}
+            </p>
+            <div className="space-y-2">
+              {(smartInsights.length > 0 ? smartInsights : [
+              { text: language === 'nl' ? 'NOx rapport ontbreekt bij 1 actief project' : 'NOx report missing for 1 active project', type: 'warning' as const },
+              { text: language === 'nl' ? 'Uw team telt 6 actieve leden' : 'Your team has 6 active members', type: 'neutral' as const }]).
+              map((insight, i) =>
+              <div key={i} className="flex items-start gap-2.5">
+                  <span className={cn('w-1.5 h-1.5 rounded-full mt-[7px] shrink-0',
+                insight.type === 'warning' ? 'bg-foreground/50' : 'bg-foreground/20'
+                )} />
+                  <p className="text-sm leading-relaxed text-muted-foreground">{insight.text}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Partner Program */}
+          <div className="rounded-xl border border-border p-5 mb-3">
+            <h3 className="text-sm font-semibold text-foreground mb-1.5">
+              {language === 'nl' ? 'OxiCloud Partner Programma' : 'OxiCloud Partner Program'}
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {language === 'nl' ?
+              'Zet elk project om in omzet. Als OxiCloud-partner verdient uw bureau automatisch commissie bij elk gegenereerd NOx-rapport — zonder administratieve last. Bouwheren ontvangen een transparante offerte en betalen via overschrijving. Uw commissie wordt rechtstreeks op uw bedrijfsrekening gestort.' :
+              'Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account.'}
+            </p>
+          </div>
+
+          {/* Setup Checklist */}
+          {isFirstTimeUser && isClientOwnerOrAdmin &&
+          <div className="rounded-xl border border-border p-5 mb-3">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h2 className="text-sm font-semibold">{t('dashboard.client.completeSetup')}</h2>
+                  <p className="text-sm text-muted-foreground">{t('dashboard.client.setupWorkspace')}</p>
+                </div>
+                <span className="text-sm text-muted-foreground">{completedSteps}/{setupSteps.length}</span>
+              </div>
+              <div className="space-y-1">
+                {setupSteps.map((step, index) =>
+              <button key={step.key} onClick={() => navigate(step.path, { state: { activeTab: step.tab } })} className={cn("w-full flex items-center gap-2.5 p-2 rounded-lg text-left transition-colors", step.done ? "opacity-40" : "hover:bg-muted/40")}>
+                    <div className={cn("w-5 h-5 rounded-full flex items-center justify-center text-[10px]", step.done ? "bg-foreground text-background" : "border border-border text-muted-foreground")}>
+                      {step.done ? <CheckCircle2 className="h-3 w-3" /> : index + 1}
+                    </div>
+                    <p className={cn("text-sm", step.done && "line-through text-muted-foreground")}>{step.label}</p>
+                  </button>
+              )}
+              </div>
+            </div>
+          }
         </main>
       </div>
 
