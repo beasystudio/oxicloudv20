@@ -173,52 +173,10 @@ export default function PilotDashboard() {
             {summaryLine && <p className="text-sm text-muted-foreground mt-1">{summaryLine}</p>}
           </motion.div>
 
-          {/* Row 1: Setup checklist (first-time) OR Open Tasks */}
-          {isFirstTimeUser ?
+          {/* Row 1: Onboarding Checklist */}
           <motion.div {...fade(0.15)} className="mb-2.5">
-              <Card>
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <h2 className="text-sm font-semibold text-foreground">{t('pilot.dashboard.completeConfig')}</h2>
-                    <p className="text-xs text-muted-foreground">{t('pilot.dashboard.setupWorkspace')}</p>
-                  </div>
-                  <span className="text-sm text-muted-foreground">{completedSteps}/{setupSteps.length}</span>
-                </div>
-                <div className="space-y-1">
-                  {setupSteps.map((step, index) =>
-                <button
-                  key={step.key}
-                  onClick={() => setActiveOnboarding(step.flow)}
-                  className={cn("w-full flex items-center gap-2.5 p-2 rounded-xl text-left transition-colors", step.done ? "opacity-40" : "hover:bg-muted/50")}>
-                      <div className={cn("w-4.5 h-4.5 rounded-full flex items-center justify-center text-[9px]", step.done ? "bg-foreground text-background" : "border border-border text-muted-foreground")}>
-                        {step.done ? <CheckCircle2 className="h-3 w-3" /> : index + 1}
-                      </div>
-                      <p className={cn("text-sm", step.done && "line-through text-muted-foreground")}>{step.label}</p>
-                    </button>
-                )}
-                </div>
-              </Card>
-            </motion.div> :
-          <motion.div {...fade(0.15)} className="mb-2.5">
-              <Card>
-                <Label className="mb-2">{language === 'nl' ? 'OPENSTAANDE TAKEN' : 'OPEN TASKS'}</Label>
-                <div className="space-y-0.5">
-                  {displayActions.map((task) =>
-                <button
-                  key={task.id}
-                  onClick={task.action}
-                  className="w-full flex items-start gap-2 px-1.5 py-2 text-left rounded-lg hover:bg-muted/50 transition-colors">
-                      <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-muted-foreground/30" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-foreground">{task.title}</p>
-                        <p className="text-xs text-muted-foreground">{task.description}</p>
-                      </div>
-                    </button>
-                )}
-                </div>
-              </Card>
-            </motion.div>
-          }
+            <OnboardingChecklist />
+          </motion.div>
 
           {/* Row 2: Partner Program */}
           <motion.div {...fade(0.18)} className="mb-2.5">
