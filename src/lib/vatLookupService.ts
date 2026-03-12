@@ -29,6 +29,8 @@ export interface KBOCompanyData {
     lastName: string;
     role: string;
   };
+  email?: string;
+  phone?: string;
 }
 
 export interface VATLookupResult {
