@@ -330,6 +330,7 @@ export default function PilotSettings() {
               activeId={activeTab}
               onSelect={(id) => setActiveTab(id)}
               layoutId="pilotSettingsPillToggle"
+              className="bg-[#cccccc]"
             />
           </div>
 
