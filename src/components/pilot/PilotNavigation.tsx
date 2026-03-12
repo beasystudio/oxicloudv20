@@ -26,7 +26,7 @@ export function PilotNavigation({
   const [showAccountSwitch, setShowAccountSwitch] = useState(false);
   if (!user || !company) return null;
   const isActive = (path: string) => location.pathname === path;
-  const getInitials = (name: string) => name.split(' ').map(n => n[0]).join('').toUpperCase();
+  const getInitials = (name: string) => name.split(' ').map((n) => n[0]).join('').toUpperCase();
   const handleLogout = () => {
     clearAllPilotData();
     navigate('/');
@@ -34,10 +34,10 @@ export function PilotNavigation({
   const NavItem = ({
     to,
     label
-  }: {
-    to: string;
-    label: string;
-  }) => <Link to={to} className={cn("flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200", isActive(to) ? "bg-primary/10 text-primary border border-primary/20" : "bg-muted/50 text-muted-foreground hover:bg-primary/10 hover:text-primary")}>
+
+
+
+  }: {to: string;label: string;}) => <Link to={to} className={cn("flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200", isActive(to) ? "bg-primary/10 text-primary border border-primary/20" : "bg-muted/50 text-muted-foreground hover:bg-primary/10 hover:text-primary")}>
       <span className="hidden lg:inline text-xs">{label}</span>
     </Link>;
   return <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
@@ -47,14 +47,14 @@ export function PilotNavigation({
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                {companyLogo ? (
-                  <img src={companyLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-muted border border-border" />
-                ) : (
-                  <span className="font-semibold text-sm text-foreground">{company.name}</span>
-                )}
-                <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-primary/30 text-primary">
-                  Workspace
-                </Badge>
+                {companyLogo ?
+              <img src={companyLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-muted border border-border" /> :
+
+              <span className="font-semibold text-sm text-foreground">{company.name}</span>
+              }
+                
+
+              
               </div>
             </div>
 
@@ -109,11 +109,11 @@ export function PilotNavigation({
 
             {/* Language Toggle */}
             <Button
-              variant="ghost"
-              size="sm"
-              className="h-9 px-3 text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground hover:bg-muted/50"
-              onClick={() => setLanguage(language === 'en' ? 'nl' : 'en')}
-            >
+            variant="ghost"
+            size="sm"
+            className="h-9 px-3 text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            onClick={() => setLanguage(language === 'en' ? 'nl' : 'en')}>
+            
               {language === 'en' ? 'EN' : 'NL'}
             </Button>
 
@@ -128,7 +128,7 @@ export function PilotNavigation({
             <div className="w-px h-6 bg-border mx-1" />
 
             {/* User menu */}
-            <DropdownMenu open={profileMenuOpen} onOpenChange={(open) => { setProfileMenuOpen(open); if (!open) setShowAccountSwitch(false); }}>
+            <DropdownMenu open={profileMenuOpen} onOpenChange={(open) => {setProfileMenuOpen(open);if (!open) setShowAccountSwitch(false);}}>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 hover:opacity-80 transition-opacity rounded-lg p-1.5 hover:bg-muted">
                   <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs font-medium">
@@ -138,8 +138,8 @@ export function PilotNavigation({
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-[240px] p-0">
-                {!showAccountSwitch ? (
-                  <>
+                {!showAccountSwitch ?
+              <>
                     <div className="px-4 py-3">
                       <p className="font-medium text-sm">{user.firstName} {user.lastName}</p>
                       <p className="text-xs text-muted-foreground">{user.email}</p>
@@ -157,8 +157,8 @@ export function PilotNavigation({
                         {t('pilot.nav.signOut')}
                       </DropdownMenuItem>
                     </div>
-                  </>
-                ) : null}
+                  </> :
+              null}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
