@@ -85,8 +85,8 @@ export function PilotNavigation({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Setup Guide - navigate to dashboard to show checklist */}
-            <Button variant="ghost" size="sm" className="h-9 gap-1.5 text-xs" onClick={() => navigate('/pilot-demo/dashboard')}>
+            {/* Setup Guide - navigate to dashboard with showGuide param */}
+            <Button variant="ghost" size="sm" className="h-9 gap-1.5 text-xs" onClick={() => navigate('/pilot-demo/dashboard?showGuide=true')}>
                 <HelpCircle className="h-4 w-4" />
                 <span className="hidden sm:inline">{t('pilot.nav.setupGuide')}</span>
               </Button>

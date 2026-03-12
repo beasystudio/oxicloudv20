@@ -54,6 +54,7 @@ interface OnboardingStep {
 interface OnboardingChecklistProps {
   onComplete?: () => void;
   onDismiss?: () => void;
+  forceShow?: boolean;
 }
 
 /* ═══════════════════════════════════════════════
@@ -380,7 +381,7 @@ function WorkspaceReadyPanel({ onComplete, onClose, nl }: {onComplete: () => voi
 /* ═══════════════════════════════════════════════
    MAIN CHECKLIST
    ═══════════════════════════════════════════════ */
-export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingChecklistProps) => {
+export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: OnboardingChecklistProps) => {
   const { currentUser } = useMockAuth();
   const { language } = useLanguage();
   const isCeo = currentUser?.role === 'client_owner';
@@ -434,7 +435,7 @@ export const OnboardingChecklist = ({ onComplete, onDismiss }: OnboardingCheckli
     setActiveStep(step.id);
   };
 
-  if (allDone) return null;
+  if (allDone && !forceShow) return null;
 
   const progressPct = Math.round(completedCount / steps.length * 100);
 

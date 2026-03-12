@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { OnboardingChecklist } from '@/components/onboarding/OnboardingChecklist';
@@ -29,6 +29,7 @@ const fade = (d: number) => ({ initial: { opacity: 0, y: 8 } as const, animate: 
 
 export default function PilotDashboard() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { t, language } = useLanguage();
   const session = getPilotSession();
   const user = getPilotUser();
@@ -99,7 +100,7 @@ export default function PilotDashboard() {
 
           {/* Setup Guide (OnboardingChecklist) */}
           <motion.div {...fade(0.15)} className="mb-2.5">
-            <OnboardingChecklist />
+            <OnboardingChecklist forceShow={searchParams.get('showGuide') === 'true'} />
           </motion.div>
 
           {/* Partner Program */}
