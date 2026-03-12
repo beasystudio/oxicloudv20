@@ -270,9 +270,6 @@ function ProfessionalTypeSelection({
             onClick={() => onSelect(pt.id)}
             className="group w-full flex items-center gap-4 p-4 rounded-xl border border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 text-left"
           >
-            <div className="w-10 h-10 rounded-lg bg-white/10 group-hover:bg-primary/15 flex items-center justify-center transition-colors shrink-0">
-              <span className="text-white/50 group-hover:text-primary transition-colors">{pt.icon}</span>
-            </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-white group-hover:text-white transition-colors">{pt.label}</p>
               <p className="text-xs text-white/35 mt-0.5">{pt.description}</p>
