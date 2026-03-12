@@ -40,7 +40,7 @@ export default function DemoDashboard() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    navigate('/login');
+    window.location.href = '/login';
   };
 
   const fade = (d: number) => ({ initial: { opacity: 0, y: 8 } as const, animate: { opacity: 1, y: 0 } as const, transition: { delay: d, duration: 0.3 } });
