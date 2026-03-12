@@ -193,6 +193,7 @@ export function PilotOnboardingFlow1({ onComplete, onClose, initialStep, onStepC
 
   const handleComplete = () => {
     completeOnboardingFlow(1);
+    onStepComplete?.('team');
     toast.success('Bedrijf & team ingesteld');
     onComplete();
   };
