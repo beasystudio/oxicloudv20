@@ -7,11 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, ChevronDown, ChevronRight, Download, Building2, User, ArrowUp, ArrowDown, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { PillToggle } from '@/components/ui/pill-toggle';
 import {
   getPilotSession, getPilotUser, getPilotCompany, getPilotContacts, getPilotEmployees,
   addPilotContact, PilotContact
@@ -343,76 +341,49 @@ export default function PilotContacts() {
       <div className="min-h-screen bg-background">
         <PilotNavigation />
         <div className="container mx-auto px-4 py-6">
-          <PillToggle
-            items={[
-              { id: 'company', label: t('pilot.contacts.company') },
-              { id: 'person', label: t('pilot.contacts.person') },
-            ] as const}
-            activeId={viewMode}
-            onSelect={(id) => setViewMode(id as 'company' | 'person')}
-            layoutId="pilotContactsToggle"
-            className="mb-6"
-          />
 
-          {/* Main Layout */}
-          <div className="flex gap-6 h-[calc(100vh-180px)]">
-            {/* Left Panel - Filters */}
-            <Card className="w-80 shrink-0 flex flex-col">
-              <CardHeader className="pb-3 shrink-0">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{t('pilot.contacts.searchFilters')}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 flex-1 overflow-y-auto">
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">{t('pilot.contacts.searchContact')}</Label>
+          {/* Search & Filter Bar with Company/Person toggle — matches Demo */}
+          <Card className="mb-4">
+            <CardContent className="py-3 px-4">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center border rounded-md overflow-hidden shrink-0">
+                  <button
+                    onClick={() => setViewMode('company')}
+                    className={cn("px-3 py-1.5 text-xs font-medium transition-colors",
+                      viewMode === 'company' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {t('pilot.contacts.company')}
+                  </button>
+                  <button
+                    onClick={() => setViewMode('person')}
+                    className={cn("px-3 py-1.5 text-xs font-medium transition-colors border-l",
+                      viewMode === 'person' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {t('pilot.contacts.person')}
+                  </button>
+                </div>
+                <div className="flex-1">
                   <Input placeholder={t('pilot.contacts.searchPlaceholder')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="h-8 text-sm" />
                 </div>
-
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="adv-search" className="text-xs text-muted-foreground cursor-pointer">{t('pilot.contacts.advancedSearch')}</Label>
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="adv-search" className="text-xs text-muted-foreground cursor-pointer whitespace-nowrap">{t('pilot.contacts.advancedSearch')}</Label>
                   <Switch id="adv-search" checked={advancedSearch} onCheckedChange={setAdvancedSearch} />
                 </div>
+                <Button variant="outline" className="h-8 text-sm" onClick={() => { setSearchTerm(''); setSelectedTypes([]); }}>
+                  {t('pilot.contacts.clear')}
+                </Button>
+                <Button variant="outline" className="h-8 text-sm" onClick={() => toast.info(t('pilot.contacts.exportSoon'))}>
+                  <Download className="h-3 w-3 mr-1" />{t('pilot.contacts.export')}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
-                <div className="space-y-2 pt-2">
-                  <Label className="text-xs text-muted-foreground">{t('pilot.contacts.selectContactTypes')}</Label>
-                  <div className="space-y-0.5 max-h-[280px] overflow-y-auto pr-1">
-                    {PILOT_CONTACT_TYPES.map(type => (
-                      <div key={type.id}>
-                        <div className="flex items-center space-x-2 py-1">
-                          {type.children ? (
-                            <button onClick={() => toggleCategory(type.id)} className="p-0.5 hover:bg-muted rounded">
-                              {expandedCategories.includes(type.id) ? <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" /> : <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />}
-                            </button>
-                          ) : <span className="w-4" />}
-                          <Checkbox id={type.id} checked={selectedTypes.includes(type.id)} onCheckedChange={() => toggleType(type.id)} className="h-3.5 w-3.5" />
-                          <Label htmlFor={type.id} className="text-xs cursor-pointer flex-1">{type.label}</Label>
-                        </div>
-                        {type.children && expandedCategories.includes(type.id) && (
-                          <div className="ml-4 border-l pl-2 space-y-0.5">
-                            {type.children.map(child => (
-                              <div key={child.id} className="flex items-center space-x-2 py-0.5">
-                                <span className="w-4" />
-                                <Checkbox id={child.id} checked={selectedTypes.includes(child.id)} onCheckedChange={() => toggleType(child.id)} className="h-3.5 w-3.5" />
-                                <Label htmlFor={child.id} className="text-xs cursor-pointer flex-1">{child.label}</Label>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex gap-2 pt-4">
-                  <Button variant="outline" className="flex-1 h-8 text-sm" onClick={() => { setSearchTerm(''); setSelectedTypes([]); }}>{t('pilot.contacts.clear')}</Button>
-                  <Button variant="outline" className="h-8 text-sm" onClick={() => toast.info(t('pilot.contacts.exportSoon'))}>
-                    <Download className="h-3 w-3 mr-1" />{t('pilot.contacts.export')}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Right Panel - Contacts Table */}
-            <Card className="flex-1 flex flex-col min-h-0">
+          {/* Main Content - Full Width */}
+          <div className="h-[calc(100vh-230px)]">
+            <Card className="h-full flex flex-col min-h-0">
               <CardHeader className="pb-3 shrink-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -446,14 +417,13 @@ export default function PilotContacts() {
                   {viewMode === 'person' ? (
                     /* ═══ PERSOON WEERGAVE ═══ */
                     <div>
-                      <div className="grid grid-cols-[minmax(180px,1.2fr)_minmax(140px,1fr)_minmax(160px,1fr)_minmax(200px,1.2fr)_130px] gap-4 px-6 py-3 border-b border-border bg-background text-[11px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20">
+                      <div className="grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 border-b border-border bg-background text-[11px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20">
                         <div>{t('pilot.contacts.name')}</div>
                         <div>{t('pilot.contacts.companyLabel')}</div>
-                         <div>{t('pilot.contacts.function')}</div>
-                         <div>{t('pilot.contacts.email')}</div>
-                         <div>{t('pilot.contacts.telephone')}</div>
-                       </div>
-                       {filteredPersons.length === 0 ? (
+                        <div>{t('pilot.contacts.email')}</div>
+                        <div>{t('pilot.contacts.telephone')}</div>
+                      </div>
+                      {filteredPersons.length === 0 ? (
                         <div className="text-center py-16 text-muted-foreground">
                           <User className="h-12 w-12 mx-auto mb-4 opacity-40" />
                           <p className="text-base font-medium mb-2">{t('pilot.contacts.noContactsYet')}</p>
@@ -463,12 +433,11 @@ export default function PilotContacts() {
                         filteredPersons.map(p => (
                           <div
                             key={p.id}
-                            className="grid grid-cols-[minmax(180px,1.2fr)_minmax(140px,1fr)_minmax(160px,1fr)_minmax(200px,1.2fr)_130px] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 relative hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1"
+                            className="grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 relative hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1"
                             onDoubleClick={() => handlePersonDoubleClick({ ...p, company: p.company })}
                           >
                             <div className="text-sm font-medium group-hover:text-black transition-colors">{p.name}</div>
                             <div className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors">{p.company}</div>
-                            <div className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors">{p.function}</div>
                             <div className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors truncate">{p.email}</div>
                             <div className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors">{p.telephone}</div>
                           </div>
