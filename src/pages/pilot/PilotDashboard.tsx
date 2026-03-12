@@ -244,23 +244,33 @@ export default function PilotDashboard() {
           <div className="max-w-sm w-full bg-card border border-border rounded-2xl shadow-2xl overflow-hidden">
             <div className="p-8 space-y-6">
               <div className="space-y-1.5">
-                <h2 className="text-xl font-semibold tracking-tight text-foreground">{t('pilot.dashboard.welcome')}</h2>
-                <p className="text-sm text-muted-foreground leading-relaxed">{t('pilot.dashboard.welcomeDesc')}</p>
+                <h2 className="text-xl font-semibold tracking-tight text-foreground">
+                  {language === 'nl' ? 'Welkom bij OxiCloud' : 'Welcome to OxiCloud'}
+                </h2>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {language === 'nl'
+                    ? 'We begeleiden u stap voor stap bij het instellen van uw bedrijf en team, zodat u meteen aan de slag kunt met projecten.'
+                    : 'We will guide you step by step to set up your company and team, so you can get started with projects right away.'}
+                </p>
               </div>
               <div className="space-y-2">
-                {[t('pilot.dashboard.stepCompany'), t('pilot.dashboard.stepTeam'), t('pilot.dashboard.stepProject')].map((step, i) =>
-              <div key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
+                {[
+                  language === 'nl' ? 'Bedrijfsgegevens invullen' : 'Fill in company details',
+                  language === 'nl' ? 'Team uitnodigen' : 'Invite team',
+                  language === 'nl' ? 'Eerste project aanmaken' : 'Create first project',
+                ].map((step, i) =>
+                  <div key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
                     <div className="h-5 w-5 rounded-full border border-border bg-muted flex items-center justify-center shrink-0 text-xs font-medium text-foreground">{i + 1}</div>
                     {step}
                   </div>
-              )}
+                )}
               </div>
               <div className="flex gap-2.5 pt-1">
                 <Button variant="ghost" size="sm" onClick={handleSkipOnboarding} className="flex-1 text-muted-foreground hover:text-foreground">
-                  {t('pilot.dashboard.later')}
+                  {language === 'nl' ? 'Later' : 'Later'}
                 </Button>
-                <Button onClick={handleStartOnboarding} size="sm" className="flex-1 font-medium">
-                  {t('pilot.dashboard.startSetup')}
+                <Button onClick={handleStartOnboarding} size="sm" className="flex-1 font-medium bg-[#c8e64a] text-foreground hover:bg-[#b8d63a]">
+                  {language === 'nl' ? 'Start Setup →' : 'Start Setup →'}
                 </Button>
               </div>
             </div>
