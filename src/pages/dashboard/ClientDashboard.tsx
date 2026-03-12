@@ -294,12 +294,12 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            <div
-              className="rounded-2xl border border-border p-4 flex flex-col justify-between"
-              style={{ gridColumn: '3', gridRow: '4' }}>
-              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.client.todo')}</p>
-              <span className="text-2xl font-semibold text-foreground leading-none">{todoCount || 1}</span>
-            </div>
+            
+
+
+
+
+            
 
             {/* ═══ ROW 5: Setup — full width (only for first-time users) ═══ */}
             {isFirstTimeUser && isClientOwnerOrAdmin &&
