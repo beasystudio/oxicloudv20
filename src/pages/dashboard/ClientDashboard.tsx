@@ -5,9 +5,7 @@ import { TopNavigation } from '@/components/TopNavigation';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
-import {
-  FileText, CreditCard, UserPlus, Clock, Plus,
-  CheckCircle2, ChevronRight, Zap } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 import { getEmployeesByCompany, getCompanyStats, isCompanyDataSeeded, type CompanyEmployee } from '@/lib/mockCompanyDB';
 import { getSettingsStatus, type SettingsStatus } from '@/lib/settingsValidator';
 import { getNoxProjects, type NoxProject } from '@/lib/noxProjectStore';
