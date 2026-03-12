@@ -262,22 +262,6 @@ export default function PilotDashboard() {
             </motion.div>
           </div>
 
-          {/* Row 1: New Project + To Do */}
-          <div className="grid grid-cols-12 gap-2.5 mb-2.5">
-            <motion.div {...fade(0.15)} className="col-span-12 lg:col-span-7">
-              
-
-
-              
-            </motion.div>
-
-            <motion.div {...fade(0.18)} className="col-span-12 lg:col-span-5 flex flex-col gap-2.5">
-              <button
-                onClick={() => setActiveOnboarding(2)}
-                className="h-12 rounded-2xl bg-foreground text-background hover:bg-foreground/90 font-semibold text-sm w-full shrink-0 transition-colors">
-                
-                {language === 'nl' ? 'Nieuw Project' : 'New Project'}
-              </button>
               
 
 
