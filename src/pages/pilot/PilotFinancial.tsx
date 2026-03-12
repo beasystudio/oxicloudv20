@@ -5,7 +5,7 @@ import { PilotNavigation } from '@/components/pilot/PilotNavigation';
 import { PillToggle } from '@/components/ui/pill-toggle';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ChevronDown, Wallet } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getPilotSession, getPilotUser, getPilotCompany, getPilotQuotes, getPilotProjects, getPilotReports } from '@/lib/pilotSessionStore';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -25,8 +25,8 @@ export default function PilotFinancial() {
   const quotes = getPilotQuotes();
   const projects = getPilotProjects();
   const reports = getPilotReports();
-  const paidQuotes = quotes.filter(q => q.status === 'paid');
-  const pendingQuotes = quotes.filter(q => q.status === 'sent');
+  const paidQuotes = quotes.filter((q) => q.status === 'paid');
+  const pendingQuotes = quotes.filter((q) => q.status === 'sent');
   const COMMISSION_RATE = 0.15;
   const totalPaidByClients = paidQuotes.reduce((sum, q) => sum + q.totalAmount, 0);
   const totalPending = pendingQuotes.reduce((sum, q) => sum + q.totalAmount, 0);
@@ -47,10 +47,10 @@ export default function PilotFinancial() {
           <div className="flex items-center justify-between mb-8">
             <div />
             <div className="flex items-center gap-2">
-              <Select value={selectedYear.toString()} onValueChange={v => setSelectedYear(parseInt(v))}>
+              <Select value={selectedYear.toString()} onValueChange={(v) => setSelectedYear(parseInt(v))}>
                 <SelectTrigger className="w-24 h-9"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {[2024, 2025].map(y => <SelectItem key={y} value={y.toString()}>{y}</SelectItem>)}
+                  {[2024, 2025].map((y) => <SelectItem key={y} value={y.toString()}>{y}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
@@ -76,7 +76,7 @@ export default function PilotFinancial() {
                <span className="text-[10px] text-muted-foreground uppercase tracking-[0.14em] font-medium">{t('dashboard.financial.projects')}</span>
                <div>
                  <p className="text-3xl font-semibold tracking-tight text-foreground">{projects.length}</p>
-                 <p className="text-xs text-muted-foreground mt-0.5">{reports.filter(r => r.status === 'completed').length} {t('dashboard.financial.reportsDelivered')}</p>
+                 <p className="text-xs text-muted-foreground mt-0.5">{reports.filter((r) => r.status === 'completed').length} {t('dashboard.financial.reportsDelivered')}</p>
                </div>
              </div>
              <div className="col-span-6 md:col-span-3 flex flex-col justify-between p-5 rounded-2xl border border-border/40 bg-muted/20 min-h-[120px]">
@@ -92,14 +92,14 @@ export default function PilotFinancial() {
           <div className="space-y-6">
             <div className="mb-8">
               <PillToggle
-                 items={[
-                    { id: 'commissions', label: t('dashboard.financial.commissions') },
-                    { id: 'overview', label: t('dashboard.financial.overview') },
-                  ]}
-                 activeId={activeTab}
-                onSelect={setActiveTab}
-                layoutId="pilotFinancialPillToggle"
-              />
+              items={[
+              { id: 'commissions', label: t('dashboard.financial.commissions') },
+              { id: 'overview', label: t('dashboard.financial.overview') }]
+              }
+              activeId={activeTab}
+              onSelect={setActiveTab}
+              layoutId="pilotFinancialPillToggle" />
+            
             </div>
 
             {/* Commissions Tab */}
@@ -126,8 +126,8 @@ export default function PilotFinancial() {
                      {paidQuotes.length === 0 ? <div className="text-center py-12 text-muted-foreground">
                          
                           <p className="font-medium">{t('dashboard.financial.noCommissionsYet')}</p>
-                        </div> : paidQuotes.map(q => {
-                    const project = projects.find(p => p.id === q.projectId);
+                        </div> : paidQuotes.map((q) => {
+                    const project = projects.find((p) => p.id === q.projectId);
                     const commission = q.totalAmount * COMMISSION_RATE;
                     return <div key={q.id} className="flex items-center justify-between py-3 px-4 -mx-4 hover:bg-muted/50 rounded-lg transition-colors">
                             <div>
@@ -152,8 +152,8 @@ export default function PilotFinancial() {
                      <span className="text-sm text-muted-foreground">{pendingQuotes.length} {t('dashboard.financial.pending')}</span>
                   </div>
                   <div className="space-y-2">
-                    {pendingQuotes.map(q => {
-                  const project = projects.find(p => p.id === q.projectId);
+                    {pendingQuotes.map((q) => {
+                  const project = projects.find((p) => p.id === q.projectId);
                   return <div key={q.id} className="flex items-center justify-between py-3 px-4 -mx-4 bg-chart-4/5 rounded-lg">
                           <div>
                             <p className="font-medium text-sm">{project?.name || 'Project'}</p>
@@ -172,7 +172,7 @@ export default function PilotFinancial() {
             {/* Overview Tab */}
             {activeTab === 'overview' && <div className="mt-6">
               <div className="text-center py-16 text-muted-foreground">
-                <Wallet className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                
                  <p className="font-medium">{t('dashboard.financial.overview')}</p>
                   <p className="text-sm mt-1">{t('dashboard.financial.noCommissionsYet')}</p>
                </div>
