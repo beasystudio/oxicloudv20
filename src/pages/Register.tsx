@@ -309,9 +309,6 @@ function GovernmentNotice({
       </motion.div>
 
       <motion.div variants={item} className="text-center py-4">
-        <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-6">
-          <Landmark className="w-8 h-8 text-white/50" />
-        </div>
         <h2 className="text-2xl font-semibold text-white mb-3">Government Access</h2>
         <p className="text-white/40 text-sm max-w-sm mx-auto leading-relaxed mb-8">
           Government accounts require a dedicated onboarding process with identity verification and domain validation.
