@@ -119,7 +119,7 @@ export default function Settings() {
             items={TABS}
             activeId={activeTab}
             onSelect={(id) => handleTabChange(id)}
-            layoutId="settingsPillToggle" className="bg-[#cccccc]" />
+            layoutId="settingsPillToggle" />
           
         </div>
 
