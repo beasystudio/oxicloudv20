@@ -167,6 +167,7 @@ export function PilotOnboardingFlow1({ onComplete, onClose, initialStep, onStepC
       legalForm: companyForm.legalForm
     });
     toast.success('Bedrijfsgegevens opgeslagen');
+    onStepComplete?.('company');
     scrollToTop();
     setCurrentStep('team');
   };
