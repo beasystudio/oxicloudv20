@@ -92,7 +92,7 @@ export default function PilotDashboard() {
             <p className="text-xs text-muted-foreground mb-0.5">
               {new Date().toLocaleDateString(language === 'nl' ? 'nl-BE' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
-            <h1 className="text-[1.75rem] font-medium tracking-tight leading-[1.1] text-foreground">
+            <h1 className="text-[1.75rem] tracking-tight leading-[1.1] text-foreground font-semibold">
               {greeting()}, {user.firstName}.
             </h1>
             {summaryLine && <p className="text-sm text-muted-foreground mt-1">{summaryLine}</p>}
