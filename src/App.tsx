@@ -40,7 +40,6 @@ import AuthoritySpatialAnalysis from "./pages/dashboard/authority/AuthoritySpati
 import AuthoritySettings from "./pages/dashboard/authority/AuthoritySettings";
 // Pilot Demo pages (now Production Workspace flow)
 import PilotLanding from "./pages/pilot/PilotLanding";
-import PilotRegister from "./pages/pilot/PilotRegister";
 import PilotActivationSent from "./pages/pilot/PilotActivationSent";
 import PilotCreateAccount from "./pages/pilot/PilotCreateAccount";
 import PilotLogin from "./pages/pilot/PilotLogin";
@@ -70,8 +69,8 @@ const AnimatedRoutes = () => {
         <Route path="/book-a-demo" element={<Navigate to="/pilot-demo" replace />} />
         
         {/* Production Workspace Routes (formerly Pilot Demo) */}
-        <Route path="/pilot-demo" element={<PageTransition><PilotLanding /></PageTransition>} />
-        <Route path="/pilot-demo/register" element={<PageTransition><PilotRegister /></PageTransition>} />
+        <Route path="/pilot-demo" element={<Navigate to="/pilot-demo/create-account" replace />} />
+        <Route path="/pilot-demo/register" element={<Navigate to="/pilot-demo/create-account" replace />} />
         <Route path="/pilot-demo/activation-sent" element={<PageTransition><PilotActivationSent /></PageTransition>} />
         <Route path="/pilot-demo/create-account" element={<PageTransition><PilotCreateAccount /></PageTransition>} />
         <Route path="/pilot-demo/login" element={<PageTransition><PilotLogin /></PageTransition>} />
@@ -83,8 +82,8 @@ const AnimatedRoutes = () => {
         <Route path="/pilot-demo/settings" element={<PageTransition><PilotSettings /></PageTransition>} />
         <Route path="/pilot-demo/partnership-program" element={<PageTransition><PartnershipProgram /></PageTransition>} />
         
-        {/* Workspace registration (reuses existing KBO form) */}
-        <Route path="/register/workspace" element={<PageTransition><PilotLanding /></PageTransition>} />
+        {/* Workspace registration redirect */}
+        <Route path="/register/workspace" element={<Navigate to="/pilot-demo/create-account" replace />} />
         
         {/* Demo Dashboard — shows Jan/Maria/Lisa mock environment */}
         <Route path="/dashboard/demo" element={<PageTransition><ClientDashboard /></PageTransition>} />

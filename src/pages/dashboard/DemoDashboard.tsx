@@ -182,7 +182,7 @@ export default function DemoDashboard() {
                   Create your company Workspace to access the Partner Program, create real projects, and start earning commission. It's completely free.
                 </p>
                 <div className="flex gap-2">
-                  <Button onClick={() => navigate('/register/workspace')} className="gap-1.5">
+                  <Button onClick={() => navigate('/pilot-demo/create-account')} className="gap-1.5">
                     
                     Create my Workspace
                     <ArrowRight className="w-3.5 h-3.5" />
