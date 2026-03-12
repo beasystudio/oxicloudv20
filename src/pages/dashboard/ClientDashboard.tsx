@@ -269,15 +269,32 @@ export default function ClientDashboard() {
           </div>
 
           {/* Partner Program */}
-          <div className="rounded-xl border border-border p-5 mb-3">
-            <h3 className="text-sm font-semibold text-foreground mb-1.5">
-              {language === 'nl' ? 'OxiCloud Partner Programma' : 'OxiCloud Partner Program'}
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {language === 'nl' ?
-              'Zet elk project om in omzet. Als OxiCloud-partner verdient uw bureau automatisch commissie bij elk gegenereerd NOx-rapport — zonder administratieve last. Bouwheren ontvangen een transparante offerte en betalen via overschrijving. Uw commissie wordt rechtstreeks op uw bedrijfsrekening gestort.' :
-              'Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account.'}
+          <div className="rounded-xl border border-border p-5 mb-3 flex flex-col items-center text-center">
+            <p className="text-[13px] text-muted-foreground leading-relaxed max-w-lg">
+              {language === 'nl'
+                ? 'Als OxiCloud-partner verdient uw bureau automatisch commissie bij elk gegenereerd NOx-rapport — zonder administratieve last. Klik om de details te bekijken.'
+                : 'As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Click to see detailed.'}
             </p>
+            <button
+              onClick={() => navigate('/dashboard/partnership-program')}
+              className="text-sm font-semibold text-primary hover:underline mt-3"
+            >
+              {language === 'nl' ? 'Bekijk OxiCloud Partnerprogramma' : 'View OxiCloud Partnership Program'}
+            </button>
+            <div className="flex flex-col gap-2 w-full max-w-xs mt-4">
+              <button
+                onClick={() => navigate('/register/workspace')}
+                className="w-full rounded-xl px-4 py-3 text-sm font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors"
+              >
+                {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
+              </button>
+              <button
+                onClick={() => setShowInviteManager(true)}
+                className="w-full rounded-xl px-4 py-3 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors"
+              >
+                {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
+              </button>
+            </div>
           </div>
 
           {/* Setup Checklist */}
