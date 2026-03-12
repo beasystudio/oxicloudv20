@@ -195,32 +195,36 @@ function CategorySelection({
         {/* Professional card */}
         <button
           onClick={() => onSelect('professional')}
-          className="group relative text-left p-6 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
+          className="group relative flex flex-col justify-between text-left p-6 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 min-h-[180px]"
         >
-          <h3 className="text-lg font-semibold text-white mb-1.5">Professional</h3>
-          <p className="text-sm text-white/40 leading-relaxed">
-            Architect, engineer, surveyor, or related design professional.
-          </p>
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <h3 className="text-lg font-semibold text-white">Professional</h3>
+              <span className="px-2 py-0.5 rounded-full bg-primary/15 text-primary text-[10px] font-semibold uppercase tracking-wider">
+                Free
+              </span>
+            </div>
+            <p className="text-sm text-white/40 leading-relaxed">
+              Architect, engineer, surveyor, or related design professional.
+            </p>
+          </div>
           <div className="mt-4 flex items-center gap-1.5 text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
             <span>Continue</span>
             <ArrowUpRight size={12} className="group-hover:rotate-45 transition-transform" />
-          </div>
-          <div className="absolute top-4 right-4">
-            <span className="px-2 py-0.5 rounded-full bg-primary/15 text-primary text-[10px] font-semibold uppercase tracking-wider">
-              Free
-            </span>
           </div>
         </button>
 
         {/* Government card */}
         <button
           onClick={() => onSelect('government')}
-          className="group relative text-left p-6 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300"
+          className="group relative flex flex-col justify-between text-left p-6 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 min-h-[180px]"
         >
-          <h3 className="text-lg font-semibold text-white mb-1.5">Government</h3>
-          <p className="text-sm text-white/40 leading-relaxed">
-            Municipality, province, or federal/regional authority.
-          </p>
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-3">Government</h3>
+            <p className="text-sm text-white/40 leading-relaxed">
+              Municipality, province, or federal/regional authority.
+            </p>
+          </div>
           <div className="mt-4 flex items-center gap-1.5 text-xs text-white/50 opacity-0 group-hover:opacity-100 transition-opacity">
             <span>Continue</span>
             <ArrowUpRight size={12} className="group-hover:rotate-45 transition-transform" />
