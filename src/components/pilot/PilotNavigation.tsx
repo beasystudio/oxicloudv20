@@ -6,7 +6,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { Bell, ChevronDown, LogOut, HelpCircle, Plus, BarChart, Loader, ArrowLeft } from 'lucide-react';
+import { Bell, ChevronDown, LogOut, HelpCircle, Plus, BarChart, Loader, ArrowLeft, Moon, Sun } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
 import { getPilotSession, getPilotUser, getPilotCompany, getPilotOnboarding, clearAllPilotData, getPilotCompanyLogo } from '@/lib/pilotSessionStore';
 import { useLanguage } from '@/i18n/LanguageContext';
 interface PilotNavigationProps {
@@ -17,6 +18,7 @@ export function PilotNavigation({
 }: PilotNavigationProps) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
   const user = getPilotUser();
   const company = getPilotCompany();
@@ -96,6 +98,11 @@ export function PilotNavigation({
               <Link to="/pilot-demo/financial" title="Financial Dashboard">
                 <BarChart className="h-4 w-4" />
               </Link>
+            </Button>
+
+            {/* Theme Toggle */}
+            <Button variant="ghost" size="icon" className="h-9 w-9" onClick={toggleTheme} title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
+              {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </Button>
 
             {/* Notifications */}

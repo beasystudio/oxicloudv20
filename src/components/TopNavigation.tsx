@@ -15,8 +15,10 @@ import { getNotifications, deleteNotification, getUnreadCount, type Notification
 import { ScrollArea } from "./ui/scroll-area";
 import { useLanguage, type Language } from "@/i18n/LanguageContext";
 import { supabase } from '@/integrations/supabase/client';
+import { useTheme } from '@/contexts/ThemeContext';
 export const TopNavigation = () => {
   const { language, setLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const {
     currentUser,
     logout,
@@ -321,6 +323,11 @@ export const TopNavigation = () => {
               <BarChart className="h-4 w-4" />
             </Link>
           </Button>}
+
+        {/* Theme Toggle */}
+        <Button variant="ghost" size="icon" className="h-9 w-9" onClick={toggleTheme} title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
+          {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+        </Button>
 
         {/* Notifications */}
         <DropdownMenu>
