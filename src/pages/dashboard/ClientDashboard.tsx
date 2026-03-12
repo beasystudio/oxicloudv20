@@ -338,7 +338,7 @@ export default function ClientDashboard() {
             ) : (
               <div
                 className="rounded-2xl border border-border p-4 overflow-y-auto"
-                style={{ gridColumn: '1 / 4', gridRow: '4' }}>
+                style={{ gridColumn: '1 / 4', gridRow: '5' }}>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.client.actionRequired')}</span>
                   <span className="text-sm text-muted-foreground">{displayActions.length}</span>
