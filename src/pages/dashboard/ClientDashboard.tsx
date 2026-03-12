@@ -35,11 +35,11 @@ export default function ClientDashboard() {
       if (!isMounted) return;
 
       if (session?.user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('workspace_id')
-          .eq('id', session.user.id)
-          .single();
+        const { data: profile } = await supabase.
+        from('profiles').
+        select('workspace_id').
+        eq('id', session.user.id).
+        single();
 
         if (!isMounted) return;
 
@@ -262,13 +262,13 @@ export default function ClientDashboard() {
             {/* Partner Card */}
             <div className="rounded-xl border border-border p-5 flex flex-col items-center text-center justify-between">
               <p className="text-[13px] text-muted-foreground leading-relaxed mb-3 max-w-[240px]">
-                {language === 'nl'
-                  ? 'Verdien automatisch commissie op elk NOx-rapport. Geen voorschot, geen admin.'
-                  : 'Earn automatic commission on every NOx report. No upfront cost, no admin.'}
+                {language === 'nl' ?
+                'Verdien automatisch commissie op elk NOx-rapport. Geen voorschot, geen admin.' :
+                'Earn automatic commission on every NOx report. No upfront cost, no admin.'}
               </p>
               <button
                 onClick={() => navigate('/dashboard/partnership-program')}
-                className="text-sm font-semibold text-primary hover:underline mb-4">
+                className="text-sm font-semibold hover:underline mb-4 text-black">
                 {language === 'nl' ? 'Bekijk OxiCloud Partnerprogramma' : 'View OxiCloud Partnership Program'}
               </button>
               <div className="flex flex-col gap-2 w-full">
