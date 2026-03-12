@@ -190,7 +190,7 @@ export default function PilotDashboard() {
               </button>
               <Card>
                 <Label>TODO</Label>
-                <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{todoCount}</p>
+                
               </Card>
             </motion.div>
           </div>
