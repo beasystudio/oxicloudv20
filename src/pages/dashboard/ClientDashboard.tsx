@@ -162,8 +162,8 @@ export default function ClientDashboard() {
           {/* Demo Marquee Banner */}
           <div className="rounded-2xl border border-primary/20 bg-primary/5 py-2.5 mb-4 shrink-0 overflow-hidden">
             <div className="flex animate-marquee whitespace-nowrap">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <span key={i} className="flex items-center gap-6 mx-6 text-[13px] text-muted-foreground">
+              {Array.from({ length: 4 }).map((_, i) =>
+              <span key={i} className="flex items-center gap-6 mx-6 text-[13px] text-muted-foreground">
                   <span className="font-medium text-foreground">
                     {language === 'nl' ? 'U verkent momenteel de OxiCloud Demo-omgeving.' : 'You are currently exploring the OxiCloud Demo Environment.'}
                   </span>
@@ -172,7 +172,7 @@ export default function ClientDashboard() {
                   </span>
                   <span className="text-primary">•</span>
                 </span>
-              ))}
+              )}
             </div>
           </div>
 
@@ -218,12 +218,12 @@ export default function ClientDashboard() {
             </div>
 
             <div className="flex flex-col gap-2" style={{ gridColumn: '3', gridRow: '1' }}>
-              <button
-                onClick={() => setShowCreateProjectDialog(true)}
-                className="flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors whitespace-nowrap">
-                <Plus className="h-3.5 w-3.5" />
-                {t('dashboard.client.newProject')}
-              </button>
+              
+
+
+
+
+              
               <div className="flex-1 rounded-xl border border-border p-3.5 flex flex-col justify-between min-h-[60px]">
                 <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.client.todo')}</p>
                 <span className="text-2xl font-semibold text-foreground leading-none">{todoCount || 1}</span>
