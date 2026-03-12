@@ -34,7 +34,7 @@ export function PilotNavigation({
   const NavItem = ({
     to,
     label
-  }: {to: string;label: string;}) => <Link to={to} className={cn("flex items-center gap-1.5 px-5 py-2 rounded-full text-sm font-medium transition-all duration-200", isActive(to) ? "bg-primary text-primary-foreground shadow-sm" : "bg-transparent border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground")}>
+  }: {to: string;label: string;}) => <Link to={to} className={cn("flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all duration-200", isActive(to) ? "bg-primary text-primary-foreground shadow-sm" : "bg-transparent border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground")}>
       <span>{label}</span>
     </Link>;
   return <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
