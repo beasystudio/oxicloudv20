@@ -12,6 +12,7 @@ import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { getAvatarByEmail } from '@/lib/avatarMap';
 import { supabase } from '@/integrations/supabase/client';
+import { LanguageToggle } from '@/components/LanguageToggle';
 import loginBackground from '@/assets/login-monochrome.jpg';
 
 interface DemoAccount {
@@ -182,8 +183,9 @@ const Login = () => {
 
         <div className="w-full lg:w-1/2 flex items-center justify-center px-8 lg:px-12 xl:px-16 overflow-y-auto">
           <motion.div variants={container} initial="hidden" animate="show" className="max-w-[400px] w-full py-12">
-            <motion.div variants={item} className="mb-16">
+            <motion.div variants={item} className="mb-16 flex items-center justify-between">
               <Link to="/" className="font-semibold text-lg tracking-tight text-white">OxiCloud</Link>
+              <LanguageToggle />
             </motion.div>
 
             <motion.div variants={item} className="mb-10">
