@@ -238,7 +238,7 @@ const Login = () => {
                 onClick={() => setShowQuickAccess(!showQuickAccess)}
                 className="w-full flex items-center justify-center gap-2 py-2 text-xs text-white/30 hover:text-white/50 transition-colors">
                 
-                Quick access to demo accounts
+                Quick access to my accounts
                 {showQuickAccess ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               </button>
 
@@ -283,11 +283,11 @@ const Login = () => {
 
             {/* Pilot demo link */}
             <motion.div variants={item} className="mt-6">
-              <button onClick={() => navigate('/pilot-demo')}
+              <button onClick={() => navigate('/register')}
               className="group w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-white/8 bg-white/[0.02] hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
                 <div className="flex-1 text-left min-w-0">
-                  <p className="text-sm font-medium text-white/80 group-hover:text-white transition-colors">{t('login.newToOxi')}</p>
-                  <p className="text-xs text-white/30 mt-0.5 whitespace-nowrap">{t('login.tryDemo')}</p>
+                  <p className="text-sm font-medium text-white/80 group-hover:text-white transition-colors">New to OxiCloud?</p>
+                  <p className="text-xs text-white/30 mt-0.5 whitespace-nowrap">Create your free account</p>
                 </div>
                 <div className="w-8 h-8 rounded-lg bg-white/10 group-hover:bg-primary group-hover:rotate-45 flex items-center justify-center transition-all duration-300 shrink-0">
                   <ArrowUpRight size={14} className="text-white/40 group-hover:text-primary-foreground transition-colors" />
@@ -299,9 +299,8 @@ const Login = () => {
               <div className="flex items-center justify-center">
                 <Link to="/forgot-password" className="text-xs text-white/40 hover:text-primary transition-colors">{t('login.forgotPassword')}</Link>
               </div>
-              <div className="flex items-center justify-between text-xs text-white/30">
+              <div className="flex items-center justify-center text-xs text-white/30">
                 <Link to="/register" className="hover:text-primary transition-colors">{t('login.createAccount')}</Link>
-                <Link to="/activation" className="hover:text-primary transition-colors">{t('login.activateAccount')}</Link>
               </div>
             </motion.div>
           </motion.div>
