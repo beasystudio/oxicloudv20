@@ -314,7 +314,7 @@ export default function ClientDashboard() {
             {isFirstTimeUser && isClientOwnerOrAdmin ? (
               <div
                 className="rounded-2xl border border-border p-4 overflow-y-auto"
-                style={{ gridColumn: '1 / 4', gridRow: '4' }}>
+                style={{ gridColumn: '1 / 4', gridRow: '5' }}>
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <h2 className="text-sm font-semibold">{t('dashboard.client.completeSetup')}</h2>
