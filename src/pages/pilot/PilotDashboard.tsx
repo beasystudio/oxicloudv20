@@ -231,7 +231,7 @@ export default function PilotDashboard() {
                     <span className={cn('w-1.5 h-1.5 rounded-full mt-1.5 shrink-0',
                   insight.type === 'warning' ? 'bg-background/50' : 'bg-background/25'
                   )} />
-                    <p className="text-sm leading-relaxed text-background/70">{insight.text}</p>
+                    <p className="text-sm leading-relaxed text-secondary">{insight.text}</p>
                   </div>
                 )}
               </div>
