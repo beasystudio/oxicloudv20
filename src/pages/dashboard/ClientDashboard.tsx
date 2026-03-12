@@ -234,10 +234,6 @@ export default function ClientDashboard() {
 
 
               
-              <div className="flex-1 rounded-xl border border-border p-3.5 flex flex-col justify-between min-h-[60px]">
-                <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.client.todo')}</p>
-                <span className="text-2xl font-semibold text-foreground leading-none">{todoCount || 1}</span>
-              </div>
             </div>
 
             {/* ═══ ROW 2: Team stat ═══ */}
