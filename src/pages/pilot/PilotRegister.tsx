@@ -52,6 +52,12 @@ export default function PilotRegister() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const session = getPilotSession();
+  if (!session) {
+    navigate('/pilot-demo');
+    return null;
+  }
+
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm(prev => ({ ...prev, [field]: e.target.value }));
 
