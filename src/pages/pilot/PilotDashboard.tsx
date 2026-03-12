@@ -188,10 +188,10 @@ export default function PilotDashboard() {
                 
                 {language === 'nl' ? 'Nieuw Project' : 'New Project'}
               </button>
-              <Card>
-                <Label>TODO</Label>
-                
-              </Card>
+              
+
+
+              
             </motion.div>
           </div>
 
