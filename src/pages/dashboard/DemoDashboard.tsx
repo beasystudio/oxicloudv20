@@ -3,11 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import {
-  Info, ArrowRight, Users, Plus,
-  FolderKanban, BookOpen, CreditCard, CheckCircle,
-  Sparkles, Send,
-} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { InviteManagerDialog } from '@/components/demo/InviteManagerDialog';
 import { PartnerProgramModal } from '@/components/demo/PartnerProgramModal';
@@ -78,10 +73,7 @@ export default function DemoDashboard() {
               <div className="flex animate-marquee whitespace-nowrap">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <span key={i} className="flex items-center gap-6 mx-6 text-[13px] text-muted-foreground">
-                    <span className="flex items-center gap-2">
-                      <Info className="w-3.5 h-3.5 text-primary shrink-0" />
-                      <span className="font-medium text-foreground">You are currently exploring the OxiCloud Demo Environment.</span>
-                    </span>
+                    <span className="font-medium text-foreground">You are currently exploring the OxiCloud Demo Environment.</span>
                     <span>All data is fictional. Create a Workspace to start working for real.</span>
                     <span className="text-primary">•</span>
                   </span>
@@ -122,9 +114,8 @@ export default function DemoDashboard() {
             <motion.div {...fade(0.18)} className="col-span-12 lg:col-span-5 flex flex-col gap-2.5">
               <Button
                 onClick={() => navigate('/dashboard/projects')}
-                className="h-12 rounded-2xl bg-foreground text-background hover:bg-foreground/90 font-semibold text-sm gap-2 w-full shrink-0"
+                className="h-12 rounded-2xl bg-foreground text-background hover:bg-foreground/90 font-semibold text-sm w-full shrink-0"
               >
-                <Plus className="w-4 h-4" />
                 New Project
               </Button>
               <Card>
@@ -134,7 +125,7 @@ export default function DemoDashboard() {
             </motion.div>
           </div>
 
-          {/* Row 2: Team + Projects | Recent Activity */}
+          {/* Row 2: Team + Projects | Action Required */}
           <div className="grid grid-cols-12 gap-2.5 mb-2.5">
             <motion.div {...fade(0.2)} className="col-span-12 lg:col-span-3 grid grid-rows-2 gap-2.5">
               <Card>
@@ -150,16 +141,9 @@ export default function DemoDashboard() {
             </motion.div>
 
             <motion.div {...fade(0.22)} className="col-span-12 lg:col-span-9">
-              <Card>
-                <Label>Recent Activity</Label>
-                <div className="mt-2.5">
-                  {ACTIVITIES.map((a, i) => (
-                    <div key={i} className="flex items-center justify-between py-1">
-                      <span className="text-[13px] text-foreground">{a.label}</span>
-                      <span className="text-xs text-muted-foreground shrink-0 ml-3">{a.time}</span>
-                    </div>
-                  ))}
-                </div>
+              <Card className="flex items-center justify-between">
+                <Label>Action Required</Label>
+                <span className="text-sm font-semibold text-foreground">3</span>
               </Card>
             </motion.div>
           </div>
@@ -168,19 +152,10 @@ export default function DemoDashboard() {
           <div className="grid grid-cols-12 gap-2.5 mb-2.5">
             <motion.div {...fade(0.25)} className="col-span-12 lg:col-span-7">
               <Card>
-                <div className="flex items-start gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-3.5 h-3.5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">OxiCloud Partner Program</p>
-                    <p className="text-[13px] text-muted-foreground mt-1 leading-relaxed">
-                      Architects earn commission when their firm creates a project and generates a NOx report.
-                      The client pays for the report via bank transfer after receiving a quote.
-                      Commission is transferred to the company's bank account.
-                    </p>
-                  </div>
-                </div>
+                <p className="text-sm font-semibold text-foreground">OxiCloud Partner Program</p>
+                <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">
+                  Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account. No invoicing. No chasing. Just build, and get paid.
+                </p>
               </Card>
             </motion.div>
 
@@ -190,17 +165,15 @@ export default function DemoDashboard() {
                 <div className="space-y-2 mt-2.5">
                   <Button
                     onClick={() => navigate('/pilot-demo/create-account')}
-                    className="w-full h-9 rounded-full bg-background text-foreground hover:bg-background/90 text-xs font-semibold gap-1.5"
+                    className="w-full h-9 rounded-full bg-background text-foreground hover:bg-background/90 text-xs font-semibold"
                   >
-                    <Plus className="w-3.5 h-3.5" />
                     Create my Workspace
                   </Button>
                   <Button
                     variant="outline"
                     onClick={() => setShowInviteDialog(true)}
-                    className="w-full h-9 rounded-full border-background/20 text-background hover:bg-background/10 text-xs gap-1.5"
+                    className="w-full h-9 rounded-full border-background/20 text-background hover:bg-background/10 text-xs"
                   >
-                    <Send className="w-3.5 h-3.5" />
                     Invite my manager
                   </Button>
                 </div>
@@ -208,30 +181,21 @@ export default function DemoDashboard() {
             </motion.div>
           </div>
 
-          {/* Row 4: Action Required */}
-          <motion.div {...fade(0.29)} className="mb-4">
-            <Card className="flex items-center justify-between">
-              <Label>Action Required</Label>
-              <span className="text-sm font-semibold text-foreground">3</span>
-            </Card>
-          </motion.div>
-
-          {/* Row 5: Explore Modules */}
+          {/* Row 4: Explore Modules */}
           <motion.div {...fade(0.3)} className="mb-6">
             <Label className="mb-2">Explore Modules</Label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
               {[
-                { label: 'Projecten', desc: 'Browse sample projects', icon: FolderKanban, path: '/dashboard/projects' },
-                { label: 'Contacten', desc: 'View sample contacts', icon: Users, path: '/dashboard/contacts' },
-                { label: 'Financieel', desc: 'Settlement overview', icon: CreditCard, path: '/dashboard/financial' },
-                { label: 'Partnership', desc: 'Program details', icon: BookOpen, path: '/dashboard/partnership-program' },
+                { label: 'Projecten', desc: 'Browse sample projects', path: '/dashboard/projects' },
+                { label: 'Contacten', desc: 'View sample contacts', path: '/dashboard/contacts' },
+                { label: 'Financieel', desc: 'Settlement overview', path: '/dashboard/financial' },
+                { label: 'Partnership', desc: 'Program details', path: '/dashboard/partnership-program' },
               ].map((mod) => (
                 <div
                   key={mod.label}
                   onClick={() => navigate(mod.path)}
                   className="rounded-2xl border border-border bg-card px-4 py-3 cursor-pointer hover:border-foreground/20 transition-colors"
                 >
-                  <mod.icon className="w-4 h-4 text-muted-foreground mb-1.5" />
                   <p className="text-sm font-medium text-foreground">{mod.label}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{mod.desc}</p>
                 </div>
@@ -243,10 +207,7 @@ export default function DemoDashboard() {
           <motion.div {...fade(0.35)}>
             <div className="flex items-center justify-center gap-5 text-xs text-muted-foreground">
               {['100% free for architects', 'No subscriptions', 'No credit card'].map((t) => (
-                <span key={t} className="flex items-center gap-1.5">
-                  <CheckCircle className="w-3.5 h-3.5 text-primary" />
-                  {t}
-                </span>
+                <span key={t}>{t}</span>
               ))}
             </div>
           </motion.div>
