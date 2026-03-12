@@ -1,11 +1,10 @@
 import { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { ArrowRight, Search, Loader2, CheckCircle2, AlertCircle, Building2, ShieldAlert } from 'lucide-react';
+import { ArrowRight, Search, Loader2, CheckCircle2, AlertCircle, Building2, ShieldAlert, Globe } from 'lucide-react';
 import { lookupVATNumber, type KBOCompanyData } from '@/lib/vatLookupService';
 import {
   getPilotSession, createPilotSession, createPilotUser, createPilotCompany,
@@ -16,42 +15,127 @@ import { logAuditEvent } from '@/lib/securityAuditStore';
 /* ── Accepted NACE-BEL codes ── */
 const ACCEPTED_NACE_CODES = ['71111', '71112', '71121', '71122', '71129', '71201', '71202'];
 
+/* ── i18n ── */
+const T = {
+  nl: {
+    title: 'Workspace aanmaken',
+    subtitle: 'Registreer uw bedrijf. Het BTW-nummer is uw unieke identificatie.',
+    company: 'Bedrijfsgegevens',
+    vat: 'BTW-nummer',
+    lookup: 'Opzoeken',
+    lookupSuccess: 'Gegevens opgehaald',
+    companyName: 'Bedrijfsnaam',
+    peppolId: 'Peppol ID',
+    street: 'Straat',
+    nr: 'Nr',
+    postal: 'Postcode',
+    city: 'Gemeente',
+    country: 'Land',
+    contact: 'Primair contact',
+    fullName: 'Volledige naam',
+    email: 'E-mailadres',
+    phone: 'Telefoonnummer',
+    security: 'Beveiliging',
+    password: 'Wachtwoord',
+    confirmPw: 'Bevestig wachtwoord',
+    minChars: 'Min. 8 tekens',
+    terms: 'Voorwaarden',
+    agreeTerms: 'Ik ga akkoord met de',
+    termsLink: 'Algemene Voorwaarden',
+    agreePrivacy: 'Ik ga akkoord met het',
+    privacyLink: 'Privacybeleid',
+    submit: 'Account Aanmaken',
+    submitting: 'Account aanmaken…',
+    hasAccount: 'Heeft u al een account?',
+    login: 'Inloggen',
+    back: 'Terug',
+    required: 'Verplicht',
+    invalidEmail: 'Ongeldig e-mailadres',
+    pwMinChars: 'Minimaal 8 tekens',
+    pwMismatch: 'Wachtwoorden komen niet overeen',
+    fillAll: 'Vul alle verplichte velden in',
+    notFound: 'Bedrijf niet gevonden',
+    notFoundMsg: 'We konden geen bedrijf vinden met dit BTW-nummer in de Belgische Kruispuntbank van Ondernemingen. Controleer het BTW-nummer en probeer opnieuw.',
+    inactive: 'Inactief bedrijf',
+    inactiveMsg: 'Dit bedrijf lijkt inactief te zijn in de Belgische Kruispuntbank van Ondernemingen. Alleen actieve bedrijven kunnen zich registreren.',
+    ineligible: 'Uw bedrijf komt momenteel niet in aanmerking',
+    ineligibleMsg: 'Ons platform is momenteel alleen beschikbaar voor architecten- en ingenieursbureaus. Volgens de Belgische Kruispuntbank van Ondernemingen is uw bedrijf geregistreerd onder een andere activiteitensector.',
+    contactSupport: 'Contact support',
+    backToReg: 'Terug naar registratie',
+  },
+  en: {
+    title: 'Create Workspace',
+    subtitle: 'Register your company. The VAT number is your unique identifier.',
+    company: 'Company details',
+    vat: 'VAT number',
+    lookup: 'Lookup',
+    lookupSuccess: 'Data retrieved',
+    companyName: 'Company name',
+    peppolId: 'Peppol ID',
+    street: 'Street',
+    nr: 'Nr',
+    postal: 'Postal code',
+    city: 'City',
+    country: 'Country',
+    contact: 'Primary contact',
+    fullName: 'Full name',
+    email: 'Email address',
+    phone: 'Phone number',
+    security: 'Security',
+    password: 'Password',
+    confirmPw: 'Confirm password',
+    minChars: 'Min. 8 characters',
+    terms: 'Terms',
+    agreeTerms: 'I agree to the',
+    termsLink: 'Terms & Conditions',
+    agreePrivacy: 'I agree to the',
+    privacyLink: 'Privacy Policy',
+    submit: 'Create Account',
+    submitting: 'Creating account…',
+    hasAccount: 'Already have an account?',
+    login: 'Sign in',
+    back: 'Back',
+    required: 'Required',
+    invalidEmail: 'Invalid email',
+    pwMinChars: 'Minimum 8 characters',
+    pwMismatch: 'Passwords do not match',
+    fillAll: 'Please fill in all required fields',
+    notFound: 'Company not found',
+    notFoundMsg: 'We couldn\'t find a company with this VAT number in the Belgian Crossroads Bank for Enterprises. Please check the VAT number and try again.',
+    inactive: 'Inactive company',
+    inactiveMsg: 'This company appears to be inactive in the Belgian Crossroads Bank for Enterprises. Only active companies can register.',
+    ineligible: 'Your company is currently not eligible',
+    ineligibleMsg: 'Our platform is currently available only to architecture and engineering firms. According to the Belgian Crossroads Bank for Enterprises, your company is registered under a different activity sector.',
+    contactSupport: 'Contact support',
+    backToReg: 'Back to registration',
+  },
+} as const;
+
+type Lang = 'nl' | 'en';
 type LookupStatus = 'idle' | 'loading' | 'success' | 'error-not-found' | 'error-inactive' | 'error-nace';
 
 export default function PilotCreateAccount() {
   const navigate = useNavigate();
   const vatInputRef = useRef<HTMLInputElement>(null);
+  const [lang, setLang] = useState<Lang>('nl');
+  const t = T[lang];
 
-  // ── Form state (all hooks before any returns) ──
   const [vatInput, setVatInput] = useState('');
   const [lookupStatus, setLookupStatus] = useState<LookupStatus>('idle');
   const [kboData, setKboData] = useState<KBOCompanyData | null>(null);
 
   const [form, setForm] = useState({
-    companyName: '',
-    legalForm: '',
-    peppolId: '',
-    street: '',
-    number: '',
-    postalCode: '',
-    city: '',
-    country: 'Belgium',
-    contactName: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    termsAccepted: false,
-    privacyAccepted: false,
+    companyName: '', legalForm: '', peppolId: '',
+    street: '', number: '', postalCode: '', city: '', country: 'Belgium',
+    contactName: '', email: '', phone: '',
+    password: '', confirmPassword: '',
+    termsAccepted: false, privacyAccepted: false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Ensure session exists (auto-create if navigating directly)
-  if (!getPilotSession()) {
-    createPilotSession();
-  }
+  if (!getPilotSession()) createPilotSession();
 
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm(prev => ({ ...prev, [field]: e.target.value }));
@@ -61,28 +145,11 @@ export default function PilotCreateAccount() {
     if (!vatInput.trim()) return;
     setLookupStatus('loading');
     setKboData(null);
-
     const result = await lookupVATNumber(vatInput, true);
-
-    if (!result.success || !result.data) {
-      setLookupStatus('error-not-found');
-      return;
-    }
-
+    if (!result.success || !result.data) { setLookupStatus('error-not-found'); return; }
     const data = result.data;
-
-    if (data.status && data.status.toLowerCase() !== 'active') {
-      setLookupStatus('error-inactive');
-      setKboData(data);
-      return;
-    }
-
-    if (data.naceCode && !ACCEPTED_NACE_CODES.includes(data.naceCode)) {
-      setLookupStatus('error-nace');
-      setKboData(data);
-      return;
-    }
-
+    if (data.status && data.status.toLowerCase() !== 'active') { setLookupStatus('error-inactive'); setKboData(data); return; }
+    if (data.naceCode && !ACCEPTED_NACE_CODES.includes(data.naceCode)) { setLookupStatus('error-nace'); setKboData(data); return; }
     setKboData(data);
     setForm(prev => ({
       ...prev,
@@ -99,375 +166,226 @@ export default function PilotCreateAccount() {
       phone: data.phone || prev.phone,
     }));
     setLookupStatus('success');
-    toast.success('Bedrijfsgegevens opgehaald uit het KBO-register');
+    toast.success(lang === 'nl' ? 'Bedrijfsgegevens opgehaald uit het KBO-register' : 'Company data retrieved from KBO registry');
   };
 
   // ── Validation ──
   const validate = (): boolean => {
-    const errs: Record<string, string> = {};
-    if (!form.companyName.trim()) errs.companyName = 'Verplicht';
-    if (!form.peppolId.trim()) errs.peppolId = 'Verplicht';
-    if (!form.contactName.trim()) errs.contactName = 'Verplicht';
-    if (!form.email.trim()) errs.email = 'Verplicht';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'Ongeldig e-mailadres';
-    if (!form.phone.trim()) errs.phone = 'Verplicht';
-    if (!form.password) errs.password = 'Verplicht';
-    else if (form.password.length < 8) errs.password = 'Minimaal 8 tekens';
-    if (form.password !== form.confirmPassword) errs.confirmPassword = 'Wachtwoorden komen niet overeen';
-    if (!form.termsAccepted) errs.terms = 'Vereist';
-    if (!form.privacyAccepted) errs.privacy = 'Vereist';
-    setErrors(errs);
-    return Object.keys(errs).length === 0;
+    const e: Record<string, string> = {};
+    if (!form.companyName.trim()) e.companyName = t.required;
+    if (!form.peppolId.trim()) e.peppolId = t.required;
+    if (!form.contactName.trim()) e.contactName = t.required;
+    if (!form.email.trim()) e.email = t.required;
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = t.invalidEmail;
+    if (!form.phone.trim()) e.phone = t.required;
+    if (!form.password) e.password = t.required;
+    else if (form.password.length < 8) e.password = t.pwMinChars;
+    if (form.password !== form.confirmPassword) e.confirmPassword = t.pwMismatch;
+    if (!form.termsAccepted) e.terms = t.required;
+    if (!form.privacyAccepted) e.privacy = t.required;
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
-  // ── Submit — creates pilot company, user, and redirects ──
+  // ── Submit ──
   const handleSubmit = async () => {
-    if (!validate()) {
-      toast.error('Vul alle verplichte velden in');
-      return;
-    }
+    if (!validate()) { toast.error(t.fillAll); return; }
     setIsSubmitting(true);
     await new Promise(r => setTimeout(r, 800));
-
-    // Create pilot company
     const fullAddress = form.number ? `${form.street} ${form.number}` : form.street;
-    const company = createPilotCompany({
-      name: form.companyName,
-      vatNumber: vatInput || '',
-      legalAddress: fullAddress,
-      postalCode: form.postalCode,
-      city: form.city,
-      country: form.country,
-      peppolId: form.peppolId,
-      legalForm: form.legalForm,
-    });
-
-    // Create pilot user (owner)
+    const company = createPilotCompany({ name: form.companyName, vatNumber: vatInput || '', legalAddress: fullAddress, postalCode: form.postalCode, city: form.city, country: form.country, peppolId: form.peppolId, legalForm: form.legalForm });
     const nameParts = form.contactName.split(' ');
     const firstName = nameParts[0] || '';
     const lastName = nameParts.slice(1).join(' ') || '';
-    const user = createPilotUser({
-      email: form.email,
-      firstName,
-      lastName,
-      phone: form.phone,
-      password: form.password,
-    });
-
-    // Add user as first employee (owner)
-    addPilotEmployee({
-      firstName,
-      lastName,
-      email: form.email,
-      phone: form.phone,
-      function: 'Zaakvoerder',
-      employeeType: 'employee',
-      companyId: company.id,
-    });
-
-    // Log security events
-    logAuditEvent({
-      eventType: 'account_created',
-      userId: user.id,
-      userEmail: user.email,
-      description: `Account aangemaakt voor ${form.companyName}`,
-      metadata: { companyId: company.id, companyName: company.name },
-    });
-
-    logAuditEvent({
-      eventType: 'role_assigned',
-      userId: user.id,
-      userEmail: user.email,
-      description: `Rol OWNER automatisch toegewezen aan ${firstName} ${lastName}`,
-      metadata: { role: 'OWNER', automatic: true },
-    });
-
-    // Initialize onboarding
-    updatePilotOnboarding({
-      flow1Complete: false,
-      flow2Complete: false,
-      flow3Complete: false,
-      currentFlow: 1,
-      currentStep: 0,
-    });
-
+    const user = createPilotUser({ email: form.email, firstName, lastName, phone: form.phone, password: form.password });
+    addPilotEmployee({ firstName, lastName, email: form.email, phone: form.phone, function: 'Zaakvoerder', employeeType: 'employee', companyId: company.id });
+    logAuditEvent({ eventType: 'account_created', userId: user.id, userEmail: user.email, description: `Account aangemaakt voor ${form.companyName}`, metadata: { companyId: company.id, companyName: company.name } });
+    logAuditEvent({ eventType: 'role_assigned', userId: user.id, userEmail: user.email, description: `Rol OWNER automatisch toegewezen aan ${firstName} ${lastName}`, metadata: { role: 'OWNER', automatic: true } });
+    updatePilotOnboarding({ flow1Complete: false, flow2Complete: false, flow3Complete: false, currentFlow: 1, currentStep: 0 });
     sessionStorage.removeItem('pilot_registration');
-    toast.success('Account succesvol aangemaakt! Log nu in met uw gegevens.');
+    toast.success(lang === 'nl' ? 'Account succesvol aangemaakt!' : 'Account created successfully!');
     navigate('/pilot-demo/login');
   };
 
+  const resetLookup = () => { setLookupStatus('idle'); setVatInput(''); };
+
   // ── Edge case screens ──
-  if (lookupStatus === 'error-not-found') {
-    return (
-      <Shell>
-        <ErrorCard
-          icon={<AlertCircle className="h-8 w-8 text-destructive" />}
-          title="Bedrijf niet gevonden"
-          message="We konden geen bedrijf vinden met dit BTW-nummer in de Belgische Kruispuntbank van Ondernemingen. Controleer het BTW-nummer en probeer opnieuw."
-          onBack={() => { setLookupStatus('idle'); setVatInput(''); }}
-        />
-      </Shell>
-    );
-  }
-
-  if (lookupStatus === 'error-inactive') {
-    return (
-      <Shell>
-        <ErrorCard
-          icon={<Building2 className="h-8 w-8 text-destructive" />}
-          title="Inactief bedrijf"
-          message="Dit bedrijf lijkt inactief te zijn in de Belgische Kruispuntbank van Ondernemingen. Alleen actieve bedrijven kunnen zich registreren."
-          onBack={() => { setLookupStatus('idle'); setVatInput(''); }}
-        />
-      </Shell>
-    );
-  }
-
-  if (lookupStatus === 'error-nace') {
-    return (
-      <Shell>
-        <ErrorCard
-          icon={<ShieldAlert className="h-8 w-8 text-amber-500" />}
-          title="Uw bedrijf komt momenteel niet in aanmerking"
-          message="Ons platform is momenteel alleen beschikbaar voor architecten- en ingenieursbureaus. Volgens de Belgische Kruispuntbank van Ondernemingen is uw bedrijf geregistreerd onder een andere activiteitensector. Als u denkt dat dit onjuist is of uw bedrijf ook architectuur- of ingenieursdiensten uitvoert, neem dan contact op met ons team."
-          onBack={() => { setLookupStatus('idle'); setVatInput(''); }}
-          showContactSupport
-        />
-      </Shell>
-    );
-  }
+  if (lookupStatus === 'error-not-found') return <Shell lang={lang} setLang={setLang} t={t}><ErrorCard icon={<AlertCircle className="h-6 w-6 text-destructive" />} title={t.notFound} message={t.notFoundMsg} onBack={resetLookup} backLabel={t.backToReg} /></Shell>;
+  if (lookupStatus === 'error-inactive') return <Shell lang={lang} setLang={setLang} t={t}><ErrorCard icon={<Building2 className="h-6 w-6 text-destructive" />} title={t.inactive} message={t.inactiveMsg} onBack={resetLookup} backLabel={t.backToReg} /></Shell>;
+  if (lookupStatus === 'error-nace') return <Shell lang={lang} setLang={setLang} t={t}><ErrorCard icon={<ShieldAlert className="h-6 w-6 text-amber-500" />} title={t.ineligible} message={t.ineligibleMsg} onBack={resetLookup} backLabel={t.backToReg} showContactSupport contactLabel={t.contactSupport} /></Shell>;
 
   return (
-    <Shell>
+    <Shell lang={lang} setLang={setLang} t={t}>
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-[620px] bg-background rounded-2xl border border-border/50 shadow-[0_2px_24px_-6px_rgba(0,0,0,0.06)] p-8 md:p-10"
+        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-[540px] bg-background rounded-xl border border-border/50 shadow-sm"
       >
-        <h1 className="text-[22px] font-semibold tracking-tight text-foreground mb-1">
-          Workspace aanmaken
-        </h1>
-        <p className="text-sm text-muted-foreground mb-8">
-          Registreer uw bedrijf om te beginnen. Het BTW-nummer is uw unieke identificatie.
-        </p>
+        {/* Header */}
+        <div className="px-7 pt-7 pb-5 border-b border-border/40">
+          <h1 className="text-lg font-semibold tracking-tight text-foreground">{t.title}</h1>
+          <p className="text-[13px] text-muted-foreground mt-0.5">{t.subtitle}</p>
+        </div>
 
-        {/* ── Section: Bedrijfsgegevens ── */}
-        <SectionHeader label="Bedrijfsgegevens" />
-
-        {/* BTW Lookup */}
-        <div className="mb-4">
-          <Label className="text-xs text-muted-foreground uppercase tracking-wider mb-1.5 block">BTW-nummer</Label>
-          <div className="flex gap-2">
-            <Input
-              ref={vatInputRef}
-              placeholder="BE 0123.456.789"
-              value={vatInput}
-              onChange={e => { setVatInput(e.target.value); if (lookupStatus === 'success') setLookupStatus('idle'); }}
-              onKeyDown={e => e.key === 'Enter' && handleVATLookup()}
-              className="h-10 flex-1"
-            />
-            <button
-              type="button"
-              onClick={handleVATLookup}
-              disabled={lookupStatus === 'loading' || !vatInput.trim()}
-              className="h-10 px-4 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium flex items-center gap-2 hover:bg-secondary/80 transition-colors disabled:opacity-40"
-            >
-              {lookupStatus === 'loading' ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Search className="h-4 w-4" />
-              )}
-              Opzoeken
-            </button>
-          </div>
-          {lookupStatus === 'success' && (
-            <div className="flex items-center gap-1.5 mt-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
-              <span className="text-xs text-primary">Gegevens opgehaald — {kboData?.naceDescription || 'Architectenactiviteiten'}</span>
+        <div className="px-7 py-5 space-y-5">
+          {/* ── Bedrijfsgegevens ── */}
+          <Section label={t.company}>
+            <div className="flex gap-2">
+              <Input ref={vatInputRef} placeholder="BE 0123.456.789" value={vatInput}
+                onChange={e => { setVatInput(e.target.value); if (lookupStatus === 'success') setLookupStatus('idle'); }}
+                onKeyDown={e => e.key === 'Enter' && handleVATLookup()}
+                className="h-9 flex-1 text-[13px]"
+              />
+              <button type="button" onClick={handleVATLookup} disabled={lookupStatus === 'loading' || !vatInput.trim()}
+                className="h-9 px-3.5 rounded-md bg-foreground text-background text-[13px] font-medium flex items-center gap-1.5 hover:bg-foreground/90 transition-colors disabled:opacity-30 shrink-0"
+              >
+                {lookupStatus === 'loading' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Search className="h-3.5 w-3.5" />}
+                {t.lookup}
+              </button>
             </div>
-          )}
+            {lookupStatus === 'success' && (
+              <div className="flex items-center gap-1.5 -mt-1">
+                <CheckCircle2 className="h-3 w-3 text-primary" />
+                <span className="text-[11px] text-primary">{t.lookupSuccess} — {kboData?.naceDescription || 'Architectenactiviteiten'}</span>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-3">
+              <F label={`${t.companyName} *`} value={form.companyName} onChange={set('companyName')} error={errors.companyName} span={2} />
+              <F label={`${t.peppolId} *`} value={form.peppolId} onChange={set('peppolId')} placeholder="0208:BE0123456789" error={errors.peppolId} span={2} />
+              <F label={t.street} value={form.street} onChange={set('street')} />
+              <F label={t.nr} value={form.number} onChange={set('number')} />
+              <F label={t.postal} value={form.postalCode} onChange={set('postalCode')} />
+              <F label={t.city} value={form.city} onChange={set('city')} />
+              <F label={t.country} value={form.country} onChange={set('country')} span={2} />
+            </div>
+          </Section>
+
+          {/* ── Primair Contact ── */}
+          <Section label={t.contact}>
+            <div className="grid grid-cols-1 gap-3">
+              <F label={`${t.fullName} *`} value={form.contactName} onChange={set('contactName')} error={errors.contactName} />
+              <F label={`${t.email} *`} value={form.email} onChange={set('email')} type="email" placeholder="info@firma.be" error={errors.email} />
+              <F label={`${t.phone} *`} value={form.phone} onChange={set('phone')} type="tel" placeholder="+32 470 00 00 00" error={errors.phone} />
+            </div>
+          </Section>
+
+          {/* ── Beveiliging ── */}
+          <Section label={t.security}>
+            <div className="grid grid-cols-2 gap-3">
+              <F label={`${t.password} *`} value={form.password} onChange={set('password')} type="password" placeholder={t.minChars} error={errors.password} />
+              <F label={`${t.confirmPw} *`} value={form.confirmPassword} onChange={set('confirmPassword')} type="password" error={errors.confirmPassword} />
+            </div>
+          </Section>
+
+          {/* ── Voorwaarden ── */}
+          <Section label={t.terms}>
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <Checkbox checked={form.termsAccepted} onCheckedChange={v => setForm(p => ({ ...p, termsAccepted: !!v }))} className="h-3.5 w-3.5" />
+                <span className="text-[13px] text-foreground">{t.agreeTerms} <Link to="/contact" className="text-primary underline underline-offset-2">{t.termsLink}</Link></span>
+              </label>
+              {errors.terms && <p className="text-[11px] text-destructive pl-5">{errors.terms}</p>}
+              <label className="flex items-center gap-2 cursor-pointer">
+                <Checkbox checked={form.privacyAccepted} onCheckedChange={v => setForm(p => ({ ...p, privacyAccepted: !!v }))} className="h-3.5 w-3.5" />
+                <span className="text-[13px] text-foreground">{t.agreePrivacy} <Link to="/contact" className="text-primary underline underline-offset-2">{t.privacyLink}</Link></span>
+              </label>
+              {errors.privacy && <p className="text-[11px] text-destructive pl-5">{errors.privacy}</p>}
+            </div>
+          </Section>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="col-span-2">
-            <FormField label="Bedrijfsnaam *" value={form.companyName} onChange={set('companyName')} error={errors.companyName} />
-          </div>
-          <div className="col-span-2">
-            <FormField label="Peppol ID *" value={form.peppolId} onChange={set('peppolId')} placeholder="0208:BE0123456789" error={errors.peppolId} />
-          </div>
+        {/* Footer */}
+        <div className="px-7 pb-6 pt-1">
+          <button type="button" onClick={handleSubmit} disabled={isSubmitting}
+            className="w-full h-10 flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-semibold text-[13px] transition-all duration-200 hover:shadow-[0_0_24px_-6px_hsl(var(--primary)/0.4)] active:scale-[0.98] disabled:opacity-50"
+          >
+            {isSubmitting ? <><Loader2 className="h-3.5 w-3.5 animate-spin" />{t.submitting}</> : <>{t.submit}<ArrowRight className="h-3.5 w-3.5" /></>}
+          </button>
+          <p className="text-[11px] text-muted-foreground/50 mt-4 text-center">
+            {t.hasAccount}{' '}<Link to="/pilot-demo/login" className="text-primary underline underline-offset-2">{t.login}</Link>
+          </p>
         </div>
-
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <FormField label="Straat" value={form.street} onChange={set('street')} />
-          <FormField label="Nr" value={form.number} onChange={set('number')} />
-          <FormField label="Postcode" value={form.postalCode} onChange={set('postalCode')} />
-          <FormField label="Gemeente" value={form.city} onChange={set('city')} />
-          <div className="col-span-2">
-            <FormField label="Land" value={form.country} onChange={set('country')} />
-          </div>
-        </div>
-
-        {/* ── Section: Primair Contact ── */}
-        <SectionHeader label="Primair contact" className="mt-8" />
-        <div className="grid grid-cols-1 gap-4 mb-4">
-          <FormField label="Volledige naam *" value={form.contactName} onChange={set('contactName')} error={errors.contactName} />
-          <FormField label="E-mailadres *" value={form.email} onChange={set('email')} type="email" placeholder="info@firma.be" error={errors.email} />
-          <FormField label="Telefoonnummer *" value={form.phone} onChange={set('phone')} type="tel" placeholder="+32 470 00 00 00" error={errors.phone} />
-        </div>
-
-        {/* ── Section: Beveiliging ── */}
-        <SectionHeader label="Beveiliging" className="mt-8" />
-        <div className="grid grid-cols-1 gap-4 mb-4">
-          <FormField label="Wachtwoord *" value={form.password} onChange={set('password')} type="password" placeholder="Min. 8 tekens" error={errors.password} />
-          <FormField label="Bevestig wachtwoord *" value={form.confirmPassword} onChange={set('confirmPassword')} type="password" error={errors.confirmPassword} />
-        </div>
-
-        {/* ── Section: Voorwaarden ── */}
-        <SectionHeader label="Voorwaarden" className="mt-8" />
-        <div className="space-y-3 mb-8">
-          <div className="flex items-start gap-2.5">
-            <Checkbox
-              id="terms"
-              checked={form.termsAccepted}
-              onCheckedChange={v => setForm(prev => ({ ...prev, termsAccepted: !!v }))}
-              className="mt-0.5"
-            />
-            <label htmlFor="terms" className="text-sm text-foreground cursor-pointer">
-              Ik ga akkoord met de <Link to="/contact" className="text-primary underline underline-offset-2">Algemene Voorwaarden</Link>
-            </label>
-          </div>
-          {errors.terms && <p className="text-xs text-destructive ml-6">{errors.terms}</p>}
-
-          <div className="flex items-start gap-2.5">
-            <Checkbox
-              id="privacy"
-              checked={form.privacyAccepted}
-              onCheckedChange={v => setForm(prev => ({ ...prev, privacyAccepted: !!v }))}
-              className="mt-0.5"
-            />
-            <label htmlFor="privacy" className="text-sm text-foreground cursor-pointer">
-              Ik ga akkoord met het <Link to="/contact" className="text-primary underline underline-offset-2">Privacybeleid</Link>
-            </label>
-          </div>
-          {errors.privacy && <p className="text-xs text-destructive ml-6">{errors.privacy}</p>}
-        </div>
-
-        {/* ── Submit ── */}
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          className="w-full h-12 flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm transition-all duration-200 hover:shadow-[0_0_30px_-6px_hsl(108_96%_52%/0.4)] active:scale-[0.98] disabled:opacity-60"
-        >
-          {isSubmitting ? (
-            <span className="flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Account aanmaken…
-            </span>
-          ) : (
-            <>
-              Account Aanmaken
-              <ArrowRight className="h-4 w-4" />
-            </>
-          )}
-        </button>
-
-        <p className="text-[11px] text-muted-foreground/50 mt-6 text-center">
-          Heeft u al een account?{' '}
-          <Link to="/pilot-demo/login" className="text-primary underline underline-offset-2">Inloggen</Link>
-        </p>
       </motion.div>
     </Shell>
   );
 }
 
-/* ── Layout Shell ── */
-function Shell({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
+/* ── Shell ── */
+function Shell({ children, lang, setLang, t }: { children: React.ReactNode; lang: Lang; setLang: (l: Lang) => void; t: typeof T.nl }) {
   return (
     <div className="min-h-screen bg-muted/30 flex flex-col">
       <header className="border-b border-border/40 bg-background">
-        <div className="flex items-center justify-between px-6 h-14 max-w-screen-xl mx-auto">
-          <button onClick={() => navigate(-1)} className="text-sm font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
-            OxiCloud
-          </button>
-          <Link to="/dashboard/demo" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-            Terug <ArrowRight className="h-3 w-3" />
-          </Link>
+        <div className="flex items-center justify-between px-6 h-12 max-w-screen-xl mx-auto">
+          <span className="text-sm font-semibold tracking-tight text-foreground">OxiCloud</span>
+          <div className="flex items-center gap-3">
+            <button onClick={() => setLang(lang === 'nl' ? 'en' : 'nl')}
+              className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors font-medium"
+            >
+              <Globe className="h-3 w-3" />
+              {lang === 'nl' ? 'EN' : 'NL'}
+            </button>
+            <Link to="/dashboard/demo" className="text-[11px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+              {t.back} <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
         </div>
       </header>
-      <div className="flex-1 flex items-start justify-center px-6 py-10 overflow-y-auto">
+      <div className="flex-1 flex items-start justify-center px-4 py-8 overflow-y-auto">
         {children}
       </div>
     </div>
   );
 }
 
-/* ── Section Header ── */
-function SectionHeader({ label, className = '' }: { label: string; className?: string }) {
+/* ── Section ── */
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className={`mb-4 ${className}`}>
-      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{label}</h3>
-      <div className="h-px bg-border/40 mt-2" />
+    <div className="space-y-3">
+      <div className="flex items-center gap-3">
+        <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">{label}</span>
+        <div className="flex-1 h-px bg-border/40" />
+      </div>
+      {children}
     </div>
   );
 }
 
-/* ── Form Field ── */
-function FormField({
-  label, value, onChange, type = 'text', placeholder, error,
-}: {
+/* ── Field ── */
+function F({ label, value, onChange, type = 'text', placeholder, error, span }: {
   label: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: string; placeholder?: string; error?: string;
+  type?: string; placeholder?: string; error?: string; span?: number;
 }) {
   return (
-    <div className="space-y-1.5">
-      <Label className="text-xs text-muted-foreground">{label}</Label>
-      <Input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={`h-10 ${error ? 'border-destructive/60 ring-1 ring-destructive/20' : ''}`}
+    <div className={`space-y-1 ${span === 2 ? 'col-span-2' : ''}`}>
+      <label className="text-[11px] font-medium text-muted-foreground">{label}</label>
+      <Input type={type} value={value} onChange={onChange} placeholder={placeholder}
+        className={`h-9 text-[13px] ${error ? 'border-destructive/60 ring-1 ring-destructive/20' : ''}`}
       />
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {error && <p className="text-[10px] text-destructive">{error}</p>}
     </div>
   );
 }
 
 /* ── Error Card ── */
-function ErrorCard({
-  icon, title, message, onBack, showContactSupport = false,
-}: {
-  icon: React.ReactNode; title: string; message: string;
-  onBack: () => void; showContactSupport?: boolean;
-}) {
+function ErrorCard({ icon, title, message, onBack, backLabel, showContactSupport = false, contactLabel }:
+  { icon: React.ReactNode; title: string; message: string; onBack: () => void; backLabel: string; showContactSupport?: boolean; contactLabel?: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="w-full max-w-[480px] bg-background rounded-2xl border border-border/50 shadow-[0_2px_24px_-6px_rgba(0,0,0,0.06)] p-8 md:p-10 text-center"
+    <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+      className="w-full max-w-[420px] bg-background rounded-xl border border-border/50 shadow-sm p-8 text-center"
     >
-      <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-5">
-        {icon}
-      </div>
-      <h2 className="text-lg font-semibold text-foreground mb-2">{title}</h2>
-      <p className="text-sm text-muted-foreground mb-8 leading-relaxed">{message}</p>
-      <div className="flex flex-col gap-3">
+      <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">{icon}</div>
+      <h2 className="text-base font-semibold text-foreground mb-1.5">{title}</h2>
+      <p className="text-[13px] text-muted-foreground mb-6 leading-relaxed">{message}</p>
+      <div className="flex flex-col gap-2">
         {showContactSupport && (
-          <Link
-            to="/contact"
-            className="inline-flex items-center justify-center h-10 px-5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
-          >
-            Contact support
+          <Link to="/contact" className="inline-flex items-center justify-center h-9 px-4 rounded-lg bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-colors">
+            {contactLabel}
           </Link>
         )}
-        <button
-          onClick={onBack}
-          className="inline-flex items-center justify-center h-10 px-5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted/50 transition-colors"
-        >
-          Terug naar registratie
+        <button onClick={onBack} className="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-border text-[13px] font-medium text-foreground hover:bg-muted/50 transition-colors">
+          {backLabel}
         </button>
       </div>
     </motion.div>
