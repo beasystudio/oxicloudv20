@@ -12,6 +12,7 @@ import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { getAvatarByEmail } from '@/lib/avatarMap';
 import { supabase } from '@/integrations/supabase/client';
+import { LanguageToggle } from '@/components/LanguageToggle';
 import loginBackground from '@/assets/login-monochrome.jpg';
 
 interface DemoAccount {
