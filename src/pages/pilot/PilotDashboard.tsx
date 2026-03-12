@@ -7,6 +7,7 @@ import { CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card as ShadCard } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { OnboardingChecklist } from '@/components/onboarding/OnboardingChecklist';
 import { getPilotSession, getPilotUser, getPilotCompany, getPilotOnboarding, getPilotStats, getPilotProjects, getPilotEmployees } from '@/lib/pilotSessionStore';
 import { PilotNavigation } from '@/components/pilot/PilotNavigation';
 import { PilotOnboardingFlow1 } from '@/components/pilot/PilotOnboardingFlow1';
