@@ -49,6 +49,7 @@ import PilotProjects from "./pages/pilot/PilotProjects";
 import PilotContacts from "./pages/pilot/PilotContacts";
 import PilotFinancial from "./pages/pilot/PilotFinancial";
 import PilotSettings from "./pages/pilot/PilotSettings";
+import PilotProfile from "./pages/pilot/PilotProfile";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,7 @@ const AnimatedRoutes = () => {
         <Route path="/pilot-demo/contacts" element={<PageTransition><PilotContacts /></PageTransition>} />
         <Route path="/pilot-demo/financial" element={<PageTransition><PilotFinancial /></PageTransition>} />
         <Route path="/pilot-demo/settings" element={<PageTransition><PilotSettings /></PageTransition>} />
+        <Route path="/pilot-demo/profile" element={<PageTransition><PilotProfile /></PageTransition>} />
         <Route path="/pilot-demo/partnership-program" element={<PageTransition><PartnershipProgram /></PageTransition>} />
         
         {/* Workspace registration redirect */}
