@@ -29,6 +29,8 @@ export interface KBOCompanyData {
     lastName: string;
     role: string;
   };
+  email?: string;
+  phone?: string;
 }
 
 export interface VATLookupResult {
@@ -89,84 +91,54 @@ function generateMockCompanyData(vatNumber: string): KBOCompanyData {
   // 10 realistic Belgian architecture/engineering firms for demo
   const mockCompanies = [
     { 
-      name: 'Architectenbureau Van Der Berg BV', 
-      form: 'BV', 
-      street: 'Lange Nieuwstraat', 
-      city: 'Antwerpen',
-      postalCode: '2000',
-      director: { firstName: 'Jan', lastName: 'Van Der Berg', role: 'Zaakvoerder' }
+      name: 'Architectenbureau Van Der Berg BV', form: 'BV', street: 'Lange Nieuwstraat', city: 'Antwerpen', postalCode: '2000',
+      director: { firstName: 'Jan', lastName: 'Van Der Berg', role: 'Zaakvoerder' },
+      email: 'info@vanderberg-arch.be', phone: '+32 3 225 14 78'
     },
     { 
-      name: 'Studio Bouwmeester', 
-      form: 'BV', 
-      street: 'Korenmarkt', 
-      city: 'Gent',
-      postalCode: '9000',
-      director: { firstName: 'Sophie', lastName: 'Claes', role: 'Zaakvoerder' }
+      name: 'Studio Bouwmeester', form: 'BV', street: 'Korenmarkt', city: 'Gent', postalCode: '9000',
+      director: { firstName: 'Sophie', lastName: 'Claes', role: 'Zaakvoerder' },
+      email: 'info@studiobouwmeester.be', phone: '+32 9 233 56 12'
     },
     { 
-      name: 'Atelier Moderne Architecten', 
-      form: 'NV', 
-      street: 'Bondgenotenlaan', 
-      city: 'Leuven',
-      postalCode: '3000',
-      director: { firstName: 'Thomas', lastName: 'Willems', role: 'Gedelegeerd Bestuurder' }
+      name: 'Atelier Moderne Architecten', form: 'NV', street: 'Bondgenotenlaan', city: 'Leuven', postalCode: '3000',
+      director: { firstName: 'Thomas', lastName: 'Willems', role: 'Gedelegeerd Bestuurder' },
+      email: 'contact@ateliermoderne.be', phone: '+32 16 30 22 90'
     },
     { 
-      name: 'Design & Build Partners', 
-      form: 'BV', 
-      street: 'Meir', 
-      city: 'Antwerpen',
-      postalCode: '2000',
-      director: { firstName: 'Emma', lastName: 'Peeters', role: 'Zaakvoerder' }
+      name: 'Design & Build Partners', form: 'BV', street: 'Meir', city: 'Antwerpen', postalCode: '2000',
+      director: { firstName: 'Emma', lastName: 'Peeters', role: 'Zaakvoerder' },
+      email: 'emma@designbuild.be', phone: '+32 3 201 44 55'
     },
     { 
-      name: 'Vlaams Architectencollectief', 
-      form: 'CV', 
-      street: 'Grote Markt', 
-      city: 'Brugge',
-      postalCode: '8000',
-      director: { firstName: 'Pieter', lastName: 'Maes', role: 'Bestuurder' }
+      name: 'Vlaams Architectencollectief', form: 'CV', street: 'Grote Markt', city: 'Brugge', postalCode: '8000',
+      director: { firstName: 'Pieter', lastName: 'Maes', role: 'Bestuurder' },
+      email: 'secretariaat@vlaarchi.be', phone: '+32 50 34 18 63'
     },
     { 
-      name: 'Architectengroep Limburg', 
-      form: 'BV', 
-      street: 'Kunstlaan', 
-      city: 'Hasselt',
-      postalCode: '3500',
-      director: { firstName: 'Lien', lastName: 'Hendricks', role: 'Zaakvoerder' }
+      name: 'Architectengroep Limburg', form: 'BV', street: 'Kunstlaan', city: 'Hasselt', postalCode: '3500',
+      director: { firstName: 'Lien', lastName: 'Hendricks', role: 'Zaakvoerder' },
+      email: 'info@archgroep-limburg.be', phone: '+32 11 28 73 40'
     },
     { 
-      name: 'Kust Architecten', 
-      form: 'BV', 
-      street: 'Zeedijk', 
-      city: 'Oostende',
-      postalCode: '8400',
-      director: { firstName: 'Marc', lastName: 'Dubois', role: 'Zaakvoerder' }
+      name: 'Kust Architecten', form: 'BV', street: 'Zeedijk', city: 'Oostende', postalCode: '8400',
+      director: { firstName: 'Marc', lastName: 'Dubois', role: 'Zaakvoerder' },
+      email: 'marc@kustarchitecten.be', phone: '+32 59 70 22 15'
     },
     { 
-      name: 'Bureau Duurzaam Bouwen', 
-      form: 'BV', 
-      street: 'Stationsstraat', 
-      city: 'Mechelen',
-      postalCode: '2800',
-      director: { firstName: 'Inge', lastName: 'Wouters', role: 'Zaakvoerder' }
+      name: 'Bureau Duurzaam Bouwen', form: 'BV', street: 'Stationsstraat', city: 'Mechelen', postalCode: '2800',
+      director: { firstName: 'Inge', lastName: 'Wouters', role: 'Zaakvoerder' },
+      email: 'inge@duurzaambouwen.be', phone: '+32 15 41 88 30'
     },
     { 
-      name: 'Architectuurstudio Schelde', 
-      form: 'NV', 
-      street: 'Scheldelaan', 
-      city: 'Antwerpen',
-      postalCode: '2000',
-      director: { firstName: 'Bart', lastName: 'Janssen', role: 'Gedelegeerd Bestuurder' }
+      name: 'Architectuurstudio Schelde', form: 'NV', street: 'Scheldelaan', city: 'Antwerpen', postalCode: '2000',
+      director: { firstName: 'Bart', lastName: 'Janssen', role: 'Gedelegeerd Bestuurder' },
+      email: 'bart@studioschelde.be', phone: '+32 3 238 90 11'
     },
     { 
-      name: 'Groep Ruimte & Ontwerp', 
-      form: 'BV', 
-      street: 'Diestsestraat', 
-      city: 'Leuven',
-      postalCode: '3000',
-      director: { firstName: 'An', lastName: 'De Bruyn', role: 'Zaakvoerder' }
+      name: 'Groep Ruimte & Ontwerp', form: 'BV', street: 'Diestsestraat', city: 'Leuven', postalCode: '3000',
+      director: { firstName: 'An', lastName: 'De Bruyn', role: 'Zaakvoerder' },
+      email: 'an@ruimteontwerp.be', phone: '+32 16 23 45 67'
     },
   ];
   
@@ -192,6 +164,8 @@ function generateMockCompanyData(vatNumber: string): KBOCompanyData {
     naceCode: '71111',
     naceDescription: 'Architectenactiviteiten',
     director: mock.director,
+    email: mock.email,
+    phone: mock.phone,
   };
 }
 

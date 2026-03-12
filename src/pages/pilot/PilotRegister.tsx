@@ -102,6 +102,8 @@ export default function PilotRegister() {
       city: data.city || prev.city,
       country: data.country || 'Belgium',
       contactName: data.director ? `${data.director.firstName} ${data.director.lastName}` : prev.contactName,
+      email: data.email || prev.email,
+      phone: data.phone || prev.phone,
     }));
     setLookupStatus('success');
     toast.success('Bedrijfsgegevens opgehaald uit het KBO-register');
