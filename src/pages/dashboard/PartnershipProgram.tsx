@@ -132,14 +132,19 @@ export default function PartnershipProgram() {
 
           {/* CTA */}
           <div className="rounded-2xl border border-border/50 bg-muted/20 p-8 text-center">
-            <h3 className="text-base font-semibold mb-2">Ready to start earning?</h3>
+            <h3 className="text-base font-semibold mb-2">Ready to get started?</h3>
             <p className="text-sm text-muted-foreground mb-6 max-w-xs mx-auto">
-              Create your first project and submit a NOx pre-estimation.
+              Create your workspace to start submitting projects and earning commissions.
             </p>
-            <Button onClick={() => navigate('/dashboard/projects')} className="px-6">
-              Go to projects
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
+            <div className="flex flex-col gap-2 max-w-xs mx-auto">
+              <Button onClick={() => navigate('/register/workspace')} className="px-6">
+                Create my Workspace
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+              <Button variant="outline" onClick={() => navigate(-1)} className="px-6">
+                Invite my manager
+              </Button>
+            </div>
           </div>
         </main>
       </div>
