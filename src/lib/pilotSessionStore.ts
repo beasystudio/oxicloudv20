@@ -688,14 +688,19 @@ export const clearAllPilotData = (): void => {
   sessionStorage.removeItem(PILOT_SESSION_KEY);
   sessionStorage.removeItem(PILOT_USER_KEY);
   sessionStorage.removeItem(PILOT_COMPANY_KEY);
-  sessionStorage.removeItem(PILOT_CONTACTS_KEY);
   sessionStorage.removeItem(PILOT_PROJECTS_KEY);
+  sessionStorage.removeItem(PILOT_CONTACTS_KEY);
   sessionStorage.removeItem(PILOT_QUOTES_KEY);
   sessionStorage.removeItem(PILOT_REPORTS_KEY);
   sessionStorage.removeItem(PILOT_EMPLOYEES_KEY);
   sessionStorage.removeItem(PILOT_ONBOARDING_KEY);
+  sessionStorage.removeItem(PILOT_COMPANY_LOGO_KEY);
+  // Also clear onboarding checklist localStorage
+  localStorage.removeItem('oxicloud_onboarding_v2');
+  localStorage.removeItem('oxicloud_onboarding_completed');
+  localStorage.removeItem('oxicloud_onboarding_checklist');
+  localStorage.removeItem('oxicloud_onboarding_step');
 };
-
 // Reset pilot demo (clears everything and starts fresh)
 export const resetPilotDemo = (): void => {
   clearAllPilotData();
@@ -706,6 +711,9 @@ export const getPilotStats = () => {
   const projects = getPilotProjects();
   const quotes = getPilotQuotes();
   const employees = getPilotEmployees();
+  // Deduplicate by email to avoid counting the owner twice
+  const uniqueEmails = new Set(employees.map(e => e.email.toLowerCase()));
+  const uniqueCount = uniqueEmails.size;
   
   return {
     totalProjects: projects.length,
@@ -714,6 +722,6 @@ export const getPilotStats = () => {
     pendingQuotes: quotes.filter(q => q.status === 'sent').length,
     paidQuotes: quotes.filter(q => q.status === 'paid').length,
     totalRevenue: quotes.filter(q => q.status === 'paid').reduce((sum, q) => sum + q.totalAmount, 0),
-    teamSize: employees.length || 1, // At least 1 (the owner)
+    teamSize: uniqueCount || 1, // At least 1 (the owner)
   };
 };
