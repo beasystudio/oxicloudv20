@@ -197,9 +197,6 @@ function CategorySelection({
           onClick={() => onSelect('professional')}
           className="group relative text-left p-6 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
         >
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-            <Building2 className="w-6 h-6 text-primary" />
-          </div>
           <h3 className="text-lg font-semibold text-white mb-1.5">Professional</h3>
           <p className="text-sm text-white/40 leading-relaxed">
             Architect, engineer, surveyor, or related design professional.
