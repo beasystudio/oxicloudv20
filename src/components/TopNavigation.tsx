@@ -324,6 +324,11 @@ export const TopNavigation = () => {
             </Link>
           </Button>}
 
+        {/* Theme Toggle */}
+        <Button variant="ghost" size="icon" className="h-9 w-9" onClick={toggleTheme} title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
+          {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+        </Button>
+
         {/* Notifications */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
