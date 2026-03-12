@@ -167,10 +167,100 @@ export default function PilotDashboard() {
               {new Date().toLocaleDateString(language === 'nl' ? 'nl-BE' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
             <h1 className="text-[2rem] font-bold tracking-tight leading-[1.1] text-foreground">
-              {greeting()},<br />{user.firstName}.
+              {greeting()}, {user.firstName}.
             </h1>
             {summaryLine && <p className="text-sm text-muted-foreground mt-1">{summaryLine}</p>}
           </motion.div>
+
+          {/* Row 1: Setup checklist (first-time) OR Open Tasks */}
+          {isFirstTimeUser ?
+          <motion.div {...fade(0.15)} className="mb-2.5">
+              <Card>
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h2 className="text-sm font-semibold text-foreground">{t('pilot.dashboard.completeConfig')}</h2>
+                    <p className="text-xs text-muted-foreground">{t('pilot.dashboard.setupWorkspace')}</p>
+                  </div>
+                  <span className="text-sm text-muted-foreground">{completedSteps}/{setupSteps.length}</span>
+                </div>
+                <div className="space-y-1">
+                  {setupSteps.map((step, index) =>
+                <button
+                  key={step.key}
+                  onClick={() => setActiveOnboarding(step.flow)}
+                  className={cn("w-full flex items-center gap-2.5 p-2 rounded-xl text-left transition-colors", step.done ? "opacity-40" : "hover:bg-muted/50")}>
+                      <div className={cn("w-4.5 h-4.5 rounded-full flex items-center justify-center text-[9px]", step.done ? "bg-foreground text-background" : "border border-border text-muted-foreground")}>
+                        {step.done ? <CheckCircle2 className="h-3 w-3" /> : index + 1}
+                      </div>
+                      <p className={cn("text-sm", step.done && "line-through text-muted-foreground")}>{step.label}</p>
+                    </button>
+                )}
+                </div>
+              </Card>
+            </motion.div> :
+          <motion.div {...fade(0.15)} className="mb-2.5">
+              <Card>
+                <Label className="mb-2">{language === 'nl' ? 'OPENSTAANDE TAKEN' : 'OPEN TASKS'}</Label>
+                <div className="space-y-0.5">
+                  {displayActions.map((task) =>
+                <button
+                  key={task.id}
+                  onClick={task.action}
+                  className="w-full flex items-start gap-2 px-1.5 py-2 text-left rounded-lg hover:bg-muted/50 transition-colors">
+                      <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-muted-foreground/30" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-foreground">{task.title}</p>
+                        <p className="text-xs text-muted-foreground">{task.description}</p>
+                      </div>
+                    </button>
+                )}
+                </div>
+              </Card>
+            </motion.div>
+          }
+
+          {/* Row 2: Partner Program */}
+          <motion.div {...fade(0.18)} className="mb-2.5">
+            <Card>
+              <p className="text-sm font-semibold text-foreground">
+                {language === 'nl' ? 'OxiCloud Partner Programma' : 'OxiCloud Partner Program'}
+              </p>
+              <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">
+                {language === 'nl' ?
+                'Zet elk project om in omzet. Als OxiCloud-partner verdient uw bureau automatisch commissie bij elk gegenereerd NOx-rapport — zonder administratieve last. Bouwheren ontvangen een transparante offerte en betalen via overschrijving. Uw commissie wordt rechtstreeks op uw bedrijfsrekening gestort.' :
+                'Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account.'}
+              </p>
+            </Card>
+          </motion.div>
+
+          {/* Row 3: New Project + Team/Projects/Todo */}
+          <div className="grid grid-cols-12 gap-2.5 mb-2.5">
+            <motion.div {...fade(0.2)} className="col-span-12 lg:col-span-5">
+              <button
+                onClick={() => setActiveOnboarding(2)}
+                className="h-12 rounded-2xl bg-foreground text-background hover:bg-foreground/90 font-semibold text-sm w-full shrink-0 transition-colors">
+                {language === 'nl' ? 'Nieuw Project' : 'New Project'}
+              </button>
+            </motion.div>
+
+            <motion.div {...fade(0.22)} className="col-span-12 lg:col-span-7 grid grid-cols-3 gap-2.5">
+              <Card>
+                <Label>TEAM</Label>
+                <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{stats.teamSize}</p>
+                <p className="text-xs text-muted-foreground">{t('pilot.dashboard.activeMembers')}</p>
+              </Card>
+              <Card>
+                <Label>{language === 'nl' ? 'PROJECTEN' : 'PROJECTS'}</Label>
+                <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{stats.totalProjects}</p>
+                <p className="text-xs text-muted-foreground">{stats.activeProjects} {language === 'nl' ? 'actief' : 'active'}</p>
+              </Card>
+              <Card>
+                <Label>{language === 'nl' ? 'TE DOEN' : 'TO DO'}</Label>
+                <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{todoCount}</p>
+                <p className="text-xs text-muted-foreground">{language === 'nl' ? 'openstaand' : 'pending'}</p>
+              </Card>
+            </motion.div>
+          </div>
 
           {/* Row 1: New Project + To Do */}
           <div className="grid grid-cols-12 gap-2.5 mb-2.5">
