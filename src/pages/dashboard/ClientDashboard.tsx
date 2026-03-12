@@ -282,8 +282,8 @@ export default function ClientDashboard() {
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {language === 'nl' ?
-                  'Zet elk project om in omzet. Als OxiCloud-partner verdient uw bureau automatisch commissie bij elk gegenereerd NOx-rapport — zonder administratieve last. Bouwheren ontvangen een transparante offerte en betalen via overschrijving. Uw commissie wordt rechtstreeks op uw bedrijfsrekening gestort. Geen facturatie. Geen opvolging. Gewoon bouwen en betaald worden.' :
-                  'Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account. No invoicing. No chasing. Just build, and get paid.'}
+                  'Zet elk project om in omzet. Als OxiCloud-partner verdient uw bureau automatisch commissie bij elk gegenereerd NOx-rapport — zonder administratieve last. Bouwheren ontvangen een transparante offerte en betalen via overschrijving. Uw commissie wordt rechtstreeks op uw bedrijfsrekening gestort.' :
+                  'Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account.'}
                 </p>
               </div>
             </div>
