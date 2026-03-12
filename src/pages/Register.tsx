@@ -98,9 +98,12 @@ export default function Register() {
         {/* Top bar */}
         <div className="flex items-center justify-between px-6 lg:px-12 py-5">
           <Link to="/" className="text-white font-semibold text-lg tracking-tight">OxiCloud</Link>
-          <Link to="/login" className="text-xs text-white/40 hover:text-primary transition-colors">
-            Already have an account? <span className="text-primary font-medium">Sign in</span>
-          </Link>
+          <div className="flex items-center gap-4">
+            <LanguageToggle />
+            <Link to="/login" className="text-xs text-white/40 hover:text-primary transition-colors">
+              Already have an account? <span className="text-primary font-medium">Sign in</span>
+            </Link>
+          </div>
         </div>
 
         {/* Main content */}
