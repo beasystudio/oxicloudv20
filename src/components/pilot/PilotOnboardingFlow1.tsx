@@ -26,6 +26,8 @@ import { COUNTRIES } from '@/types/user';
 interface Props {
   onComplete: () => void;
   onClose: () => void;
+  initialStep?: Step;
+  onStepComplete?: (stepId: 'company' | 'team') => void;
 }
 
 type Step = 'vat-lookup' | 'company-details' | 'team';
