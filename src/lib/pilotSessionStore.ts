@@ -688,14 +688,19 @@ export const clearAllPilotData = (): void => {
   sessionStorage.removeItem(PILOT_SESSION_KEY);
   sessionStorage.removeItem(PILOT_USER_KEY);
   sessionStorage.removeItem(PILOT_COMPANY_KEY);
-  sessionStorage.removeItem(PILOT_CONTACTS_KEY);
   sessionStorage.removeItem(PILOT_PROJECTS_KEY);
+  sessionStorage.removeItem(PILOT_CONTACTS_KEY);
   sessionStorage.removeItem(PILOT_QUOTES_KEY);
   sessionStorage.removeItem(PILOT_REPORTS_KEY);
   sessionStorage.removeItem(PILOT_EMPLOYEES_KEY);
   sessionStorage.removeItem(PILOT_ONBOARDING_KEY);
+  sessionStorage.removeItem(PILOT_COMPANY_LOGO_KEY);
+  // Also clear onboarding checklist localStorage
+  localStorage.removeItem('oxicloud_onboarding_v2');
+  localStorage.removeItem('oxicloud_onboarding_completed');
+  localStorage.removeItem('oxicloud_onboarding_checklist');
+  localStorage.removeItem('oxicloud_onboarding_step');
 };
-
 // Reset pilot demo (clears everything and starts fresh)
 export const resetPilotDemo = (): void => {
   clearAllPilotData();
