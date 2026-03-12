@@ -21,7 +21,14 @@ import { Handshake, Send } from 'lucide-react';
 export default function ClientDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser, selectedCompanyId, getSelectedCompany } = useMockAuth();
+  const { currentUser, selectedCompanyId, getSelectedCompany, login } = useMockAuth();
+  
+  // Auto-login as Jan when accessing /dashboard/demo without a mock user
+  useEffect(() => {
+    if (!currentUser && location.pathname === '/dashboard/demo') {
+      login('jan@gdesign.be', 'demo123');
+    }
+  }, [currentUser, location.pathname, login]);
   const { toast } = useToast();
   const { t, language } = useLanguage();
   const [employees, setEmployees] = useState<CompanyEmployee[]>([]);
