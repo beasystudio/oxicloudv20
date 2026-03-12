@@ -91,7 +91,7 @@ export default function PilotDashboard() {
             <p className="text-xs text-muted-foreground mb-0.5">
               {new Date().toLocaleDateString(language === 'nl' ? 'nl-BE' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
-            <h1 className="text-[2rem] font-bold tracking-tight leading-[1.1] text-foreground">
+            <h1 className="text-[1.75rem] font-medium tracking-tight leading-[1.1] text-foreground">
               {greeting()}, {user.firstName}.
             </h1>
             {summaryLine && <p className="text-sm text-muted-foreground mt-1">{summaryLine}</p>}
@@ -135,18 +135,6 @@ export default function PilotDashboard() {
             </Card>
           </motion.div>
 
-          {/* Footer */}
-          <motion.div {...fade(0.3)}>
-            <div className="flex items-center justify-center gap-5 text-xs text-muted-foreground">
-              {[
-                language === 'nl' ? '100% gratis voor architecten' : '100% free for architects',
-                language === 'nl' ? 'Geen abonnementen' : 'No subscriptions',
-                language === 'nl' ? 'Geen kredietkaart' : 'No credit card',
-              ].map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </div>
-          </motion.div>
         </div>
       </div>
     </>
