@@ -72,28 +72,20 @@ export default function DemoDashboard() {
         </header>
 
         <div className="max-w-[1120px] mx-auto px-5 py-6 pb-16">
-          {/* Demo Banner */}
+          {/* Demo Marquee Banner */}
           <motion.div {...fade(0.05)} className="mb-5">
-            <div className="rounded-2xl border border-border bg-card px-5 py-3 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 min-w-0">
-                <Info className="w-4 h-4 text-primary shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-[13px] font-medium text-foreground leading-tight">
-                    You are currently exploring the OxiCloud Demo Environment.
-                  </p>
-                  <p className="text-[12px] text-muted-foreground leading-tight mt-0.5">
-                    All data is fictional. Create a Workspace to start working for real.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <Button size="sm" className="h-8 px-4 text-xs font-semibold rounded-full" onClick={() => navigate('/pilot-demo/create-account')}>
-                  Create my Workspace
-                </Button>
-                <Button variant="outline" size="sm" className="h-8 px-4 text-xs rounded-full gap-1.5" onClick={() => setShowInviteDialog(true)}>
-                  <Send className="w-3 h-3" />
-                  Invite my manager
-                </Button>
+            <div className="rounded-2xl border border-border bg-card py-2.5 overflow-hidden">
+              <div className="flex animate-marquee whitespace-nowrap">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <span key={i} className="flex items-center gap-6 mx-6 text-[13px] text-muted-foreground">
+                    <span className="flex items-center gap-2">
+                      <Info className="w-3.5 h-3.5 text-primary shrink-0" />
+                      <span className="font-medium text-foreground">You are currently exploring the OxiCloud Demo Environment.</span>
+                    </span>
+                    <span>All data is fictional. Create a Workspace to start working for real.</span>
+                    <span className="text-primary">•</span>
+                  </span>
+                ))}
               </div>
             </div>
           </motion.div>
