@@ -17,7 +17,7 @@ export function SecurityOverviewPanel() {
   const pilotUser = getPilotUser();
   const employees = getPilotEmployees();
 
-  const loadData = () => { setInvitations(getInvitations()); };
+  const loadData = () => {setInvitations(getInvitations());};
 
   useEffect(() => {
     loadData();
@@ -33,14 +33,14 @@ export function SecurityOverviewPanel() {
     }
   };
 
-  const pendingInvitations = invitations.filter(i => i.status === 'pending');
+  const pendingInvitations = invitations.filter((i) => i.status === 'pending');
   const auditEvents = getAuditLog();
 
   const statusConfig = {
     pending: { label: t('security.statusPending'), icon: Clock, color: 'bg-amber-500/10 text-amber-600 border-amber-500/20' },
     accepted: { label: t('security.statusAccepted'), icon: CheckCircle, color: 'bg-primary/10 text-primary border-primary/20' },
     expired: { label: t('security.statusExpired'), icon: Clock, color: 'bg-muted text-muted-foreground border-border' },
-    revoked: { label: t('security.statusRevoked'), icon: XCircle, color: 'bg-destructive/10 text-destructive border-destructive/20' },
+    revoked: { label: t('security.statusRevoked'), icon: XCircle, color: 'bg-destructive/10 text-destructive border-destructive/20' }
   };
 
   return (
@@ -66,13 +66,13 @@ export function SecurityOverviewPanel() {
         </Card>
       </div>
 
-      {pilotUser && (
-        <Card className="p-4 border-primary/20 bg-primary/5">
+      {pilotUser &&
+      <Card className="p-4 border-primary/20 bg-primary/5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-                <Shield className="h-5 w-5 text-primary" />
-              </div>
+              
+
+            
               <div>
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-semibold">{pilotUser.firstName} {pilotUser.lastName}</p>
@@ -87,22 +87,22 @@ export function SecurityOverviewPanel() {
             </Button>
           </div>
         </Card>
-      )}
+      }
 
-      {invitations.length > 0 && (
-        <Card className="border-border/50">
+      {invitations.length > 0 &&
+      <Card className="border-border/50">
           <div className="p-5 pb-3">
             <h3 className="text-sm font-semibold mb-1">{t('security.invitations')}</h3>
             <p className="text-xs text-muted-foreground">{t('security.manageInvitations')}</p>
           </div>
           <div className="px-5 pb-5 space-y-2">
-            {invitations.map(inv => {
-              const status = statusConfig[inv.status];
-              const StatusIcon = status.icon;
-              const expiresIn = Math.ceil((new Date(inv.expiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+            {invitations.map((inv) => {
+            const status = statusConfig[inv.status];
+            const StatusIcon = status.icon;
+            const expiresIn = Math.ceil((new Date(inv.expiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 
-              return (
-                <div key={inv.id} className="flex items-center justify-between py-3 border-b border-border/30 last:border-0">
+            return (
+              <div key={inv.id} className="flex items-center justify-between py-3 border-b border-border/30 last:border-0">
                   <div className="flex items-center gap-3">
                     <StatusIcon className="h-4 w-4 text-muted-foreground" />
                     <div>
@@ -115,17 +115,17 @@ export function SecurityOverviewPanel() {
                       </div>
                     </div>
                   </div>
-                  {inv.status === 'pending' && (
-                    <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:text-destructive" onClick={() => handleRevoke(inv.id)}>
+                  {inv.status === 'pending' &&
+                <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:text-destructive" onClick={() => handleRevoke(inv.id)}>
                       {t('security.revoke')}
                     </Button>
-                  )}
-                </div>
-              );
-            })}
+                }
+                </div>);
+
+          })}
           </div>
         </Card>
-      )}
+      }
 
       <SecurityAuditLog />
 
@@ -134,8 +134,8 @@ export function SecurityOverviewPanel() {
         onOpenChange={setInviteOpen}
         ownerId={pilotUser?.id || ''}
         ownerEmail={pilotUser?.email || ''}
-        onInvited={loadData}
-      />
-    </div>
-  );
+        onInvited={loadData} />
+      
+    </div>);
+
 }
