@@ -21,6 +21,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { PilotOnboardingFlow1 } from '@/components/pilot/PilotOnboardingFlow1';
 
 /* ─── Storage ─── */
 const STORAGE_KEY = 'oxicloud_onboarding_v2';
@@ -513,11 +514,20 @@ export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: Onboar
 
       {/* Step Modals */}
       <AnimatePresence>
-        {activeStep === 'company-profile' &&
-        <CompanyProfilePanel nl={nl} onComplete={() => markComplete('company-profile')} onClose={() => setActiveStep(null)} />
-        }
-        {activeStep === 'team-setup' &&
-        <TeamSetupPanel nl={nl} onComplete={() => markComplete('team-setup')} onClose={() => setActiveStep(null)} />
+        {(activeStep === 'company-profile' || activeStep === 'team-setup') &&
+        <PilotOnboardingFlow1
+          initialStep={activeStep === 'team-setup' ? 'team' : 'company-details'}
+          onStepComplete={(stepId) => {
+            if (stepId === 'company') markComplete('company-profile');
+            if (stepId === 'team') markComplete('team-setup');
+          }}
+          onComplete={() => {
+            markComplete('company-profile');
+            markComplete('team-setup');
+            setActiveStep(null);
+          }}
+          onClose={() => setActiveStep(null)}
+        />
         }
         {activeStep === 'contact-config' &&
         <ContactConfigPanel nl={nl} onComplete={() => markComplete('contact-config')} onClose={() => setActiveStep(null)} />

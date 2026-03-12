@@ -26,6 +26,8 @@ import { COUNTRIES } from '@/types/user';
 interface Props {
   onComplete: () => void;
   onClose: () => void;
+  initialStep?: Step;
+  onStepComplete?: (stepId: 'company' | 'team') => void;
 }
 
 type Step = 'vat-lookup' | 'company-details' | 'team';
@@ -62,7 +64,7 @@ function mockKBOLookup(vatInput: string) {
   };
 }
 
-export function PilotOnboardingFlow1({ onComplete, onClose }: Props) {
+export function PilotOnboardingFlow1({ onComplete, onClose, initialStep, onStepComplete }: Props) {
   const company = getPilotCompany();
   const user = getPilotUser();
   const employees = getPilotEmployees();
@@ -75,7 +77,7 @@ export function PilotOnboardingFlow1({ onComplete, onClose }: Props) {
   // Auto-run VAT lookup on mount — skip the lookup screen entirely
   const autoData = useMemo(() => mockKBOLookup(company?.vatNumber || 'BE0885703733'), []);
 
-  const [currentStep, setCurrentStep] = useState<Step>('company-details');
+  const [currentStep, setCurrentStep] = useState<Step>(initialStep || 'company-details');
 
   // --- VAT lookup ---
   const [vatInput, setVatInput] = useState(autoData.vatNumber);
@@ -165,6 +167,7 @@ export function PilotOnboardingFlow1({ onComplete, onClose }: Props) {
       legalForm: companyForm.legalForm
     });
     toast.success('Bedrijfsgegevens opgeslagen');
+    onStepComplete?.('company');
     scrollToTop();
     setCurrentStep('team');
   };
@@ -190,6 +193,7 @@ export function PilotOnboardingFlow1({ onComplete, onClose }: Props) {
 
   const handleComplete = () => {
     completeOnboardingFlow(1);
+    onStepComplete?.('team');
     toast.success('Bedrijf & team ingesteld');
     onComplete();
   };
