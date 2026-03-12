@@ -196,58 +196,133 @@ function TeamSetupPanel({ onComplete, onClose, nl }: {onComplete: () => void;onC
 
 /* Step 3: Contact Configuration */
 function ContactConfigPanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
-  const defaultTypes = nl ?
-  ['Opdrachtgever', 'Bouwheer', 'Aannemer', 'Ingenieur'] :
-  ['Client', 'Building Owner', 'Contractor', 'Engineer'];
-  const [types, setTypes] = useState(defaultTypes);
-  const [newType, setNewType] = useState('');
+  // Build editable state from DEFAULT_TAXONOMY
+  const [taxonomy, setTaxonomy] = useState(() =>
+    DEFAULT_TAXONOMY.map((group) => ({
+      hoofdtype: group.hoofdtype,
+      subtypes: group.subtypes.map((st) => ({ name: st, isDefault: true })),
+      isDefault: true,
+    }))
+  );
+  const [editingCell, setEditingCell] = useState<{ groupIdx: number; subIdx: number } | null>(null);
+  const [editValue, setEditValue] = useState('');
+  const [newSubtype, setNewSubtype] = useState<{ [groupIdx: number]: string }>({});
+
+  const startRename = (groupIdx: number, subIdx: number, currentName: string) => {
+    setEditingCell({ groupIdx, subIdx });
+    setEditValue(currentName);
+  };
+
+  const confirmRename = () => {
+    if (!editingCell || !editValue.trim()) { setEditingCell(null); return; }
+    setTaxonomy((prev) => {
+      const next = prev.map((g, gi) => gi === editingCell.groupIdx ? {
+        ...g,
+        subtypes: g.subtypes.map((s, si) => si === editingCell.subIdx ? { ...s, name: editValue.trim() } : s)
+      } : g);
+      return next;
+    });
+    setEditingCell(null);
+  };
+
+  const addSubtype = (groupIdx: number) => {
+    const val = (newSubtype[groupIdx] || '').trim();
+    if (!val) return;
+    setTaxonomy((prev) => prev.map((g, gi) => gi === groupIdx ? {
+      ...g,
+      subtypes: [...g.subtypes, { name: val, isDefault: false }]
+    } : g));
+    setNewSubtype((prev) => ({ ...prev, [groupIdx]: '' }));
+  };
+
+  const removeCustomSubtype = (groupIdx: number, subIdx: number) => {
+    setTaxonomy((prev) => prev.map((g, gi) => gi === groupIdx ? {
+      ...g,
+      subtypes: g.subtypes.filter((_, si) => si !== subIdx)
+    } : g));
+  };
 
   return (
     <StepModal title={nl ? 'Contactconfiguratie' : 'Configure Contacts'} onClose={onClose}>
-      <div className="space-y-4">
+      <div className="space-y-5">
         <p className="text-sm text-muted-foreground">
-          {nl ? 'Definieer uw contacttypes voor projecten. U kunt dit later aanpassen.' : 'Define your contact types for projects. You can adjust this later.'}
+          {nl
+            ? 'Dit is de standaard contacttaxonomie. U kunt namen aanpassen of subtypes toevoegen.'
+            : 'This is the default contact taxonomy. You can rename or add subtypes.'}
         </p>
 
-        <div className="space-y-1.5">
-          {types.map((type, i) =>
-          <div key={i} className="flex items-center justify-between px-3 py-2 rounded-lg border border-border bg-background">
-              <span className="text-sm text-foreground">{type}</span>
-              <button onClick={() => setTypes(types.filter((_, j) => j !== i))} className="text-muted-foreground hover:text-foreground">
-                <X className="w-3.5 h-3.5" />
-              </button>
+        {taxonomy.map((group, gi) => (
+          <div key={gi} className="space-y-1">
+            {/* Group header */}
+            <div className="flex items-center gap-2 px-3 py-2 rounded-t-lg bg-muted/60 border border-border">
+              <span className="text-sm font-semibold text-foreground">{group.hoofdtype}</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium">
+                {nl ? 'Verplicht' : 'Required'}
+              </span>
             </div>
-          )}
-        </div>
 
-        <div className="flex gap-2">
-          <Input
-            placeholder={nl ? 'Nieuw contacttype' : 'New contact type'}
-            value={newType}
-            onChange={(e) => setNewType(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && newType.trim()) {
-                setTypes([...types, newType.trim()]);
-                setNewType('');
-              }
-            }} />
-          
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={!newType.trim()}
-            onClick={() => {setTypes([...types, newType.trim()]);setNewType('');}}>
-            
-            <Plus className="w-4 h-4" />
-          </Button>
-        </div>
+            {/* Subtypes */}
+            <div className="border border-t-0 border-border rounded-b-lg divide-y divide-border overflow-hidden">
+              {group.subtypes.map((sub, si) => (
+                <div key={si} className="flex items-center justify-between px-3 py-2 bg-background">
+                  {editingCell?.groupIdx === gi && editingCell?.subIdx === si ? (
+                    <Input
+                      autoFocus
+                      value={editValue}
+                      onChange={(e) => setEditValue(e.target.value)}
+                      onBlur={confirmRename}
+                      onKeyDown={(e) => { if (e.key === 'Enter') confirmRename(); if (e.key === 'Escape') setEditingCell(null); }}
+                      className="h-7 text-sm max-w-[200px]"
+                    />
+                  ) : (
+                    <span
+                      className="text-sm text-foreground cursor-pointer hover:text-primary transition-colors"
+                      onClick={() => startRename(gi, si, sub.name)}
+                      title={nl ? 'Klik om te hernoemen' : 'Click to rename'}
+                    >
+                      {sub.name}
+                    </span>
+                  )}
+                  {!sub.isDefault ? (
+                    <button
+                      onClick={() => removeCustomSubtype(gi, si)}
+                      className="text-muted-foreground hover:text-destructive transition-colors"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  ) : (
+                    <span className="text-[10px] text-muted-foreground/60">{nl ? 'standaard' : 'default'}</span>
+                  )}
+                </div>
+              ))}
+
+              {/* Add new subtype */}
+              <div className="flex items-center gap-2 px-3 py-2 bg-muted/20">
+                <Input
+                  placeholder={nl ? 'Nieuw subtype toevoegen...' : 'Add new subtype...'}
+                  value={newSubtype[gi] || ''}
+                  onChange={(e) => setNewSubtype((prev) => ({ ...prev, [gi]: e.target.value }))}
+                  onKeyDown={(e) => { if (e.key === 'Enter') addSubtype(gi); }}
+                  className="h-7 text-sm flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 px-0"
+                />
+                <button
+                  onClick={() => addSubtype(gi)}
+                  disabled={!(newSubtype[gi] || '').trim()}
+                  className="text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
 
         <Button onClick={onComplete} className="w-full mt-2">
           {nl ? 'Bevestigen & doorgaan' : 'Confirm & continue'}
         </Button>
       </div>
-    </StepModal>);
-
+    </StepModal>
+  );
 }
 
 /* Step 4: Financial Agreement */
