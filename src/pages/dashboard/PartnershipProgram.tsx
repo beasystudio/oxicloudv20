@@ -33,7 +33,7 @@ export default function PartnershipProgram() {
       <div className="min-h-screen bg-background">
         <TopNavigation />
 
-        <main className="container mx-auto px-6 py-12 max-w-2xl">
+        <main className="container mx-auto px-6 py-12 max-w-3xl">
           {/* Back */}
           <Button
             variant="ghost"
