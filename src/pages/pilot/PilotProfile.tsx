@@ -1,133 +1,169 @@
 import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
-import { PilotNavigation } from '@/components/pilot/PilotNavigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { getPilotSession, getPilotUser, getPilotCompany, updatePilotUser } from '@/lib/pilotSessionStore';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
+import { User, Lock, Bell } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { PilotNavigation } from '@/components/pilot/PilotNavigation';
 import { useLanguage } from '@/i18n/LanguageContext';
-import { toast } from 'sonner';
-import { User, Mail, Phone, Building2, Shield } from 'lucide-react';
+import { getPilotSession, getPilotUser, updatePilotUser } from '@/lib/pilotSessionStore';
 
 export default function PilotProfile() {
   const navigate = useNavigate();
-  const { language } = useLanguage();
-  const nl = language === 'nl';
+  const { t } = useLanguage();
+  const { toast } = useToast();
   const session = getPilotSession();
   const user = getPilotUser();
-  const company = getPilotCompany();
 
-  const [firstName, setFirstName] = useState(user?.firstName || '');
-  const [lastName, setLastName] = useState(user?.lastName || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [phone, setPhone] = useState(user?.phone || '');
+  const [name, setName] = useState(user ? `${user.firstName} ${user.lastName}` : '');
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [pushNotifications, setPushNotifications] = useState(false);
+  const [weeklyReport, setWeeklyReport] = useState(true);
 
   useEffect(() => {
     if (!session || !user) navigate('/pilot-demo');
   }, []);
 
-  if (!session || !user || !company) return null;
+  if (!session || !user) return null;
 
-  const getInitials = (name: string) => name.split(' ').map(n => n[0]).join('').toUpperCase();
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsUpdatingProfile(true);
+    const parts = name.trim().split(' ');
+    const firstName = parts[0] || '';
+    const lastName = parts.slice(1).join(' ') || '';
+    updatePilotUser({ firstName, lastName });
+    toast({ title: t('dashboard.profilePage.title'), description: "Your profile information has been updated successfully." });
+    setIsUpdatingProfile(false);
+  };
 
-  const handleSave = () => {
-    updatePilotUser({ firstName, lastName, phone });
-    toast.success(nl ? 'Profiel bijgewerkt' : 'Profile updated');
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      toast({ title: "Error", description: "New passwords do not match", variant: "destructive" });
+      return;
+    }
+    setIsChangingPassword(true);
+    toast({ title: t('dashboard.profilePage.changePassword'), description: "Your password has been changed successfully." });
+    setCurrentPassword(''); setNewPassword(''); setConfirmPassword('');
+    setIsChangingPassword(false);
+  };
+
+  const handleSavePreferences = () => {
+    toast({ title: t('dashboard.profilePage.preferences'), description: "Your notification preferences have been updated." });
   };
 
   return (
-    <>
-      <Helmet>
-        <title>{nl ? 'Profiel' : 'Profile'} - OxiCloud</title>
-      </Helmet>
+    <div className="min-h-screen bg-background">
+      <PilotNavigation />
+      <div className="container mx-auto py-8 px-4 max-w-4xl">
+        <div className="mb-8">
+          <h1 className="font-bold text-foreground text-2xl">{t('dashboard.profilePage.title')}</h1>
+          <p className="text-muted-foreground mt-2">
+            {t('dashboard.profilePage.personalInfo')}
+          </p>
+        </div>
 
-      <div className="min-h-screen bg-background overflow-y-auto flex flex-col">
-        <PilotNavigation />
-
-        <div className="max-w-[640px] mx-auto px-5 py-8 pb-16 w-full">
-          <h1 className="text-lg font-semibold text-foreground mb-6">
-            {nl ? 'Mijn profiel' : 'My Profile'}
-          </h1>
-
-          {/* Avatar & name header */}
-          <Card className="p-6 mb-4">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="h-14 w-14 rounded-full bg-muted flex items-center justify-center text-muted-foreground text-lg font-semibold">
-                {getInitials(`${user.firstName} ${user.lastName}`)}
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <User className="h-5 w-5 text-primary" />
+                <CardTitle>{t('dashboard.profilePage.personalInfo')}</CardTitle>
               </div>
-              <div>
-                <p className="text-base font-semibold text-foreground">{user.firstName} {user.lastName}</p>
-                <p className="text-xs text-muted-foreground">{user.email}</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground flex items-center gap-1.5">
-                  <User className="h-3 w-3" />
-                  {nl ? 'Voornaam' : 'First name'}
-                </Label>
-                <Input value={firstName} onChange={e => setFirstName(e.target.value)} className="h-9 text-sm" />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground flex items-center gap-1.5">
-                  <User className="h-3 w-3" />
-                  {nl ? 'Achternaam' : 'Last name'}
-                </Label>
-                <Input value={lastName} onChange={e => setLastName(e.target.value)} className="h-9 text-sm" />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground flex items-center gap-1.5">
-                  <Mail className="h-3 w-3" />
-                  E-mail
-                </Label>
-                <Input value={email} disabled className="h-9 text-sm bg-muted/50" />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground flex items-center gap-1.5">
-                  <Phone className="h-3 w-3" />
-                  {nl ? 'Telefoon' : 'Phone'}
-                </Label>
-                <Input value={phone} onChange={e => setPhone(e.target.value)} className="h-9 text-sm" />
-              </div>
-            </div>
-
-            <div className="flex justify-end mt-5">
-              <Button onClick={handleSave} size="sm">
-                {nl ? 'Opslaan' : 'Save'}
-              </Button>
-            </div>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleUpdateProfile} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">{t('dashboard.profilePage.email')}</Label>
+                  <Input id="email" type="email" value={user.email} disabled className="bg-muted" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="name">{t('dashboard.profilePage.name')}</Label>
+                  <Input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                </div>
+                <Button type="submit" disabled={isUpdatingProfile}>
+                  {isUpdatingProfile ? t('dashboard.profilePage.updating') : t('dashboard.profilePage.updateProfile')}
+                </Button>
+              </form>
+            </CardContent>
           </Card>
 
-          {/* Company info (read-only) */}
-          <Card className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Building2 className="h-4 w-4 text-muted-foreground" />
-              <h2 className="text-sm font-semibold text-foreground">{nl ? 'Bedrijf' : 'Company'}</h2>
-            </div>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <p className="text-xs text-muted-foreground mb-0.5">{nl ? 'Naam' : 'Name'}</p>
-                <p className="text-foreground">{company.name}</p>
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Lock className="h-5 w-5 text-primary" />
+                <CardTitle>{t('dashboard.profilePage.changePassword')}</CardTitle>
               </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-0.5">{nl ? 'BTW-nummer' : 'VAT Number'}</p>
-                <p className="text-foreground">{company.vatNumber || '—'}</p>
-              </div>
-              <div className="col-span-2">
-                <p className="text-xs text-muted-foreground mb-0.5">{nl ? 'Rol' : 'Role'}</p>
-                <div className="flex items-center gap-1.5">
-                  <Shield className="h-3 w-3 text-primary" />
-                  <span className="text-foreground">Owner / Zaakvoerder</span>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleChangePassword} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="currentPassword">{t('dashboard.profilePage.currentPassword')}</Label>
+                  <Input id="currentPassword" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword">{t('dashboard.profilePage.newPassword')}</Label>
+                  <Input id="newPassword" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">{t('dashboard.profilePage.confirmPassword')}</Label>
+                  <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                </div>
+                <Button type="submit" disabled={isChangingPassword}>
+                  {isChangingPassword ? t('dashboard.profilePage.changingPassword') : t('dashboard.profilePage.changePasswordBtn')}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Bell className="h-5 w-5 text-primary" />
+                <CardTitle>{t('dashboard.profilePage.preferences')}</CardTitle>
               </div>
-            </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="email-notifications">{t('dashboard.profilePage.emailNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('dashboard.profilePage.emailNotificationsDesc')}</p>
+                </div>
+                <Switch id="email-notifications" checked={emailNotifications} onCheckedChange={setEmailNotifications} />
+              </div>
+              <Separator />
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="push-notifications">{t('dashboard.profilePage.pushNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('dashboard.profilePage.pushNotificationsDesc')}</p>
+                </div>
+                <Switch id="push-notifications" checked={pushNotifications} onCheckedChange={setPushNotifications} />
+              </div>
+              <Separator />
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="weekly-report">{t('dashboard.profilePage.weeklyReport')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('dashboard.profilePage.weeklyReportDesc')}</p>
+                </div>
+                <Switch id="weekly-report" checked={weeklyReport} onCheckedChange={setWeeklyReport} />
+              </div>
+              <Button onClick={handleSavePreferences} className="mt-4">
+                {t('dashboard.profilePage.updateProfile')}
+              </Button>
+            </CardContent>
           </Card>
         </div>
       </div>
-    </>
+    </div>
   );
 }
