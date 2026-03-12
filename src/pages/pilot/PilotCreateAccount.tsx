@@ -313,7 +313,7 @@ export default function PilotCreateAccount() {
 }
 
 /* ── Shell ── */
-function Shell({ children, lang, setLang, t }: { children: React.ReactNode; lang: Lang; setLang: (l: Lang) => void; t: typeof T.nl }) {
+function Shell({ children, lang, setLang, t }: { children: React.ReactNode; lang: Lang; setLang: (l: Lang) => void; t: (typeof T)[Lang] }) {
   return (
     <div className="min-h-screen bg-muted/30 flex flex-col">
       <header className="border-b border-border/40 bg-background">
