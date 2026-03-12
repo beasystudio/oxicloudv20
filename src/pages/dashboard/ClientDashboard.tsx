@@ -326,8 +326,8 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* ═══ ROW 5: Action Required / Setup — full width (bottom) ═══ */}
-            {isFirstTimeUser && isClientOwnerOrAdmin ?
+            {/* ═══ ROW 5: Setup — full width (only for first-time users) ═══ */}
+            {isFirstTimeUser && isClientOwnerOrAdmin &&
             <div
               className="rounded-2xl border border-border p-4 overflow-y-auto"
               style={{ gridColumn: '1 / 4', gridRow: '5' }}>
@@ -350,24 +350,8 @@ export default function ClientDashboard() {
                     </button>
                 )}
                 </div>
-              </div> :
-
-            <div
-              className="rounded-2xl border border-border p-4 overflow-y-auto"
-              style={{ gridColumn: '1 / 4', gridRow: '5' }}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{t('dashboard.client.actionRequired')}</span>
-                  <span className="text-sm text-muted-foreground">{displayActions.length}</span>
-                </div>
-                <div className="space-y-0.5">
-                  {displayActions.map((task) =>
-                <button
-                  key={task.id}
-                  onClick={task.action}
-                  className="w-full flex items-start gap-2 px-1.5 py-2 text-left rounded-lg hover:bg-muted/50 transition-colors">
-                      <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-muted-foreground/30" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-foreground">{task.title}</p>
+              </div>
+            }
                         <p className="text-sm text-muted-foreground">{task.description}</p>
                       </div>
                     </button>
