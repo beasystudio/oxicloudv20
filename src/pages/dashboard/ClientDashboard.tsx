@@ -369,6 +369,7 @@ export default function ClientDashboard() {
         onOpenChange={setShowCreateProjectDialog}
         companyId={selectedCompanyId || ''}
         onProjectCreated={() => { setShowCreateProjectDialog(false); navigate('/dashboard/projects'); }} />
+      <InviteManagerDialog open={showInviteManager} onOpenChange={setShowInviteManager} />
     </>
   );
 }

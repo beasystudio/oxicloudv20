@@ -180,7 +180,7 @@ export default function PilotDashboard() {
     <>
       <Helmet>
         <title>{company.name} - OxiCloud</title>
-        <meta name="description" content="Your company dashboard" />
+        <meta name="description" content="Your production workspace" />
       </Helmet>
 
       <div className="h-[100dvh] overflow-hidden bg-background flex flex-col">
