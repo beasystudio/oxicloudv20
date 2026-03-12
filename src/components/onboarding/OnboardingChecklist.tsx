@@ -336,8 +336,8 @@ function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: {onComplete
       <div className="space-y-4">
         <p className="text-sm text-muted-foreground">
           {isCeo ?
-          nl ? 'Als CEO dient u de volgende overeenkomsten eenmalig te accepteren.' : 'As CEO, you must accept the following agreements once.' :
-          nl ? 'Deze overeenkomsten zijn reeds goedgekeurd door uw CEO.' : 'These agreements have already been approved by your CEO.'
+          nl ? 'Nog twee kleine handtekeningen en dan kan het feest beginnen! 🎉' : 'Just two quick sign-offs and you\'re all set! 🎉' :
+          nl ? 'Goed nieuws — uw CEO heeft dit al voor u geregeld. ✅' : 'Good news — your CEO already took care of this one. ✅'
           }
         </p>
 
@@ -348,12 +348,12 @@ function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: {onComplete
               <span className="font-medium">Self-billing {nl ? 'overeenkomst' : 'agreement'}</span>
               <span className="text-muted-foreground">
                 {nl ?
-                ' — Na ontvangst van betaling stellen wij namens u een self-billing factuur op voor de commissie-uitbetaling.' :
-                ' — Upon payment receipt, we issue a self-billing invoice on your behalf for commission settlement.'}
+                ' — Wij regelen de factuur voor u wanneer er een commissie binnenkomt. Makkelijk toch?' :
+                ' — We\'ll handle the invoicing for you whenever a commission comes in. Easy peasy.'}
               </span>
               <button type="button" className="block text-primary text-xs mt-1 hover:underline">
                 <Download className="inline h-3 w-3 mr-1" />
-                {nl ? 'Download overeenkomst (PDF)' : 'Download agreement (PDF)'}
+                {nl ? 'Bekijk overeenkomst (PDF)' : 'View agreement (PDF)'}
               </button>
             </div>
           </label>
@@ -364,8 +364,8 @@ function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: {onComplete
               <span className="font-medium">{nl ? 'Offerte-autorisatie' : 'Quote authorization'}</span>
               <span className="text-muted-foreground">
                 {nl ?
-                ' — Ik autoriseer OxiCloud om offertes namens mijn bedrijf naar eindklanten te versturen.' :
-                ' — I authorize OxiCloud to send quotes to end clients on behalf of my company.'}
+                ' — Geef ons een duimpje omhoog om offertes namens uw bedrijf te mogen versturen.' :
+                ' — Give us the thumbs-up to send quotes to your clients on your company\'s behalf.'}
               </span>
             </div>
           </label>
