@@ -6,7 +6,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { Bell, ChevronDown, LogOut, HelpCircle, Plus, BarChart, Loader, ArrowLeft } from 'lucide-react';
+import { Bell, ChevronDown, LogOut, HelpCircle, Plus, BarChart, Loader, ArrowLeft, Moon, Sun } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
 import { getPilotSession, getPilotUser, getPilotCompany, getPilotOnboarding, clearAllPilotData, getPilotCompanyLogo } from '@/lib/pilotSessionStore';
 import { useLanguage } from '@/i18n/LanguageContext';
 interface PilotNavigationProps {
