@@ -16,7 +16,7 @@ import { isPilotAccount, isPilotCompany, getEmptyStats } from '@/lib/pilotAccoun
 import { PaymentSuccessDialog } from '@/components/oxicloud/PaymentSuccessDialog';
 import { CreateNewProjectDialog } from '@/components/projects/CreateNewProjectDialog';
 import { InviteManagerDialog } from '@/components/demo/InviteManagerDialog';
-import { Handshake, Send } from 'lucide-react';
+
 
 export default function ClientDashboard() {
   const navigate = useNavigate();
@@ -276,20 +276,15 @@ export default function ClientDashboard() {
             <div
               className="rounded-2xl border border-border p-4"
               style={{ gridColumn: '1 / 3', gridRow: '4' }}>
-              <div className="flex items-start gap-3">
-                <div className="p-2 rounded-xl bg-primary/10 shrink-0">
-                  <Handshake className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-foreground mb-1">
-                    {language === 'nl' ? 'OxiCloud Partner Programma' : 'OxiCloud Partner Program'}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {language === 'nl' ?
-                    'Architecten verdienen commissie wanneer hun bureau een project aanmaakt en een NOx rapport genereert. De bouwheer betaalt het rapport via overschrijving na ontvangst van een offerte. Commissie wordt overgemaakt naar de bankrekening van het bedrijf.' :
-                    'Architects earn commission when their firm creates a project and generates a NOx report. The client pays for the report via bank transfer after receiving a quote. Commission is transferred to the company\'s bank account.'}
-                  </p>
-                </div>
+              <div>
+                <h3 className="text-sm font-semibold text-foreground mb-1">
+                  {language === 'nl' ? 'OxiCloud Partner Programma' : 'OxiCloud Partner Program'}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {language === 'nl' ?
+                  'Zet elk project om in omzet. Als OxiCloud-partner verdient uw bureau automatisch commissie bij elk gegenereerd NOx-rapport — zonder administratieve last. Bouwheren ontvangen een transparante offerte en betalen via overschrijving. Uw commissie wordt rechtstreeks op uw bedrijfsrekening gestort. Geen facturatie. Geen opvolging. Gewoon bouwen en betaald worden.' :
+                  'Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account. No invoicing. No chasing. Just build, and get paid.'}
+                </p>
               </div>
             </div>
 
@@ -302,14 +297,12 @@ export default function ClientDashboard() {
               <div className="space-y-2">
                 <button
                   onClick={() => navigate('/register/workspace')}
-                  className="w-full flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
-                  <Plus className="h-3 w-3" />
+                  className="w-full flex items-center justify-center rounded-lg px-3 py-2 text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors">
                   {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
                 </button>
                 <button
                   onClick={() => setShowInviteManager(true)}
-                  className="w-full flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                  <Send className="h-3 w-3" />
+                  className="w-full flex items-center justify-center rounded-lg px-3 py-2 text-xs font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
                   {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
                 </button>
               </div>
