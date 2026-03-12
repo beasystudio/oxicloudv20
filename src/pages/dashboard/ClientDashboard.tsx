@@ -230,10 +230,10 @@ export default function ClientDashboard() {
 
             {/* Partner Card */}
             <div className="rounded-xl border border-border p-5 flex flex-col items-center text-center">
-              <p className="text-[13px] text-muted-foreground leading-relaxed mb-3 max-w-[260px]">
+              <p className="text-[13px] text-muted-foreground leading-relaxed mb-3 max-w-[240px]">
                 {language === 'nl'
-                  ? 'Als OxiCloud partner verdient uw bureau een commissie telkens wanneer een NOx-rapport wordt gegenereerd — automatisch, zonder administratieve overhead.'
-                  : 'As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead.'}
+                  ? 'Verdien automatisch commissie op elk NOx-rapport. Geen voorschot, geen admin.'
+                  : 'Earn automatic commission on every NOx report. No upfront cost, no admin.'}
               </p>
               <button
                 onClick={() => navigate('/dashboard/partnership-program')}
