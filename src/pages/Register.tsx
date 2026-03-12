@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle, CheckCircle, Building2, Landmark, ArrowLeft, Ruler, Compass, Map } from 'lucide-react';
+import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { supabase } from '@/integrations/supabase/client';
 
