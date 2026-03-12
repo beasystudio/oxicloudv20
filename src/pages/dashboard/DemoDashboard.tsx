@@ -162,24 +162,35 @@ export default function DemoDashboard() {
             </motion.div>
           </div>
 
-          {/* Row 3: Partner Program | To Do */}
-          <div className="grid grid-cols-12 gap-2.5 mb-2.5">
-            <motion.div {...fade(0.25)} className="col-span-12 lg:col-span-7">
-              <Card>
-                <p className="text-sm font-semibold text-foreground">OxiCloud Partner Program</p>
-                <p className="text-[13px] text-muted-foreground mt-1.5 leading-relaxed">
-                  Turn every project into revenue. As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Clients receive a transparent quote and pay via bank transfer. Your commission settles directly to your company account. No invoicing. No chasing. Just build, and get paid.
-                </p>
-              </Card>
-            </motion.div>
-
-            <motion.div {...fade(0.27)} className="col-span-12 lg:col-span-5">
-              <Card>
-                <Label>To do</Label>
-                <p className="text-2xl font-bold tracking-tight text-foreground mt-1">3</p>
-              </Card>
-            </motion.div>
-          </div>
+          {/* Row 3: Partner + Actions */}
+          <motion.div {...fade(0.25)} className="mb-2.5">
+            <Card className="flex flex-col items-center text-center px-6 py-5 gap-4">
+              <p className="text-[13px] text-muted-foreground leading-relaxed max-w-sm">
+                As an OxiCloud partner, your firm earns a commission each time a NOx report is generated — automatically, with zero admin overhead. Click to see detailed.
+              </p>
+              <button
+                onClick={() => navigate('/dashboard/partnership-program')}
+                className="text-sm font-semibold text-primary hover:underline"
+              >
+                View OxiCloud Partnership Program
+              </button>
+              <div className="flex flex-col gap-2 w-full max-w-xs">
+                <Button
+                  onClick={() => navigate('/pilot-demo/create-account')}
+                  className="h-12 rounded-2xl bg-foreground text-background hover:bg-foreground/90 font-semibold text-sm w-full"
+                >
+                  Create my Workspace
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowInviteDialog(true)}
+                  className="h-12 rounded-2xl text-sm w-full"
+                >
+                  Invite my manager
+                </Button>
+              </div>
+            </Card>
+          </motion.div>
 
           {/* Row 4: Explore Modules */}
           <motion.div {...fade(0.3)} className="mb-6">
