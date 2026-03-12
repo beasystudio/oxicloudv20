@@ -81,6 +81,7 @@ const AnimatedRoutes = () => {
         <Route path="/pilot-demo/contacts" element={<PageTransition><PilotContacts /></PageTransition>} />
         <Route path="/pilot-demo/financial" element={<PageTransition><PilotFinancial /></PageTransition>} />
         <Route path="/pilot-demo/settings" element={<PageTransition><PilotSettings /></PageTransition>} />
+        <Route path="/pilot-demo/profile" element={<PageTransition><PilotProfile /></PageTransition>} />
         <Route path="/pilot-demo/partnership-program" element={<PageTransition><PartnershipProgram /></PageTransition>} />
         
         {/* Workspace registration redirect */}
