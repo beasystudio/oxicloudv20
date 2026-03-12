@@ -16,7 +16,7 @@ interface PillToggleProps {
 
 export function PillToggle({ items, activeId, onSelect, layoutId = 'pillToggleBg', className }: PillToggleProps) {
   return (
-    <div className={cn("inline-flex items-center gap-0.5 p-0.5 rounded-full bg-muted/60 border border-border/40", className)}>
+    <div className={cn("inline-flex items-center gap-0.5 p-0.5 rounded-full bg-muted/20 border border-border/20", className)}>
       {items.map(item => (
         <button
           key={item.id}
