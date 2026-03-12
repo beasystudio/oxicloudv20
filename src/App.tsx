@@ -86,8 +86,8 @@ const AnimatedRoutes = () => {
         {/* Workspace registration (reuses existing KBO form) */}
         <Route path="/register/workspace" element={<PageTransition><PilotLanding /></PageTransition>} />
         
-        {/* Demo Dashboard (for real auth users without workspace) */}
-        <Route path="/dashboard/demo" element={<PageTransition><DemoDashboard /></PageTransition>} />
+        {/* Demo Dashboard — shows Jan/Maria/Lisa mock environment */}
+        <Route path="/dashboard/demo" element={<PageTransition><ClientDashboard /></PageTransition>} />
         
         {/* Dashboard Routes */}
         <Route path="/dashboard/partner" element={<ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnerHome /></PageTransition></ProtectedRoute>} />
