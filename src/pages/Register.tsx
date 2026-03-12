@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle, CheckCircle, Building2, Landmark, ArrowLeft, Ruler, Compass, Map } from 'lucide-react';
+import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -15,13 +15,12 @@ interface ProfessionalType {
   id: string;
   label: string;
   description: string;
-  icon: React.ReactNode;
 }
 
 const professionalTypes: ProfessionalType[] = [
-  { id: 'architect', label: 'Architect', description: 'Registered architect or architecture firm', icon: <Compass className="w-5 h-5" /> },
-  { id: 'engineer', label: 'Engineer', description: 'Structural, civil, or environmental engineer', icon: <Ruler className="w-5 h-5" /> },
-  { id: 'surveyor', label: 'Surveyor', description: 'Land surveyor or geometer', icon: <Map className="w-5 h-5" /> },
+  { id: 'architect', label: 'Architect', description: 'Registered architect or architecture firm' },
+  { id: 'engineer', label: 'Engineer', description: 'Structural, civil, or environmental engineer' },
+  { id: 'surveyor', label: 'Surveyor', description: 'Land surveyor or geometer' },
 ];
 
 export default function Register() {
@@ -198,9 +197,6 @@ function CategorySelection({
           onClick={() => onSelect('professional')}
           className="group relative text-left p-6 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
         >
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-            <Building2 className="w-6 h-6 text-primary" />
-          </div>
           <h3 className="text-lg font-semibold text-white mb-1.5">Professional</h3>
           <p className="text-sm text-white/40 leading-relaxed">
             Architect, engineer, surveyor, or related design professional.
@@ -221,9 +217,6 @@ function CategorySelection({
           onClick={() => onSelect('government')}
           className="group relative text-left p-6 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300"
         >
-          <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4 group-hover:bg-white/15 transition-colors">
-            <Landmark className="w-6 h-6 text-white/60" />
-          </div>
           <h3 className="text-lg font-semibold text-white mb-1.5">Government</h3>
           <p className="text-sm text-white/40 leading-relaxed">
             Municipality, province, or federal/regional authority.
@@ -277,9 +270,6 @@ function ProfessionalTypeSelection({
             onClick={() => onSelect(pt.id)}
             className="group w-full flex items-center gap-4 p-4 rounded-xl border border-white/10 bg-white/[0.03] hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 text-left"
           >
-            <div className="w-10 h-10 rounded-lg bg-white/10 group-hover:bg-primary/15 flex items-center justify-center transition-colors shrink-0">
-              <span className="text-white/50 group-hover:text-primary transition-colors">{pt.icon}</span>
-            </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-white group-hover:text-white transition-colors">{pt.label}</p>
               <p className="text-xs text-white/35 mt-0.5">{pt.description}</p>
@@ -319,9 +309,6 @@ function GovernmentNotice({
       </motion.div>
 
       <motion.div variants={item} className="text-center py-4">
-        <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-6">
-          <Landmark className="w-8 h-8 text-white/50" />
-        </div>
         <h2 className="text-2xl font-semibold text-white mb-3">Government Access</h2>
         <p className="text-white/40 text-sm max-w-sm mx-auto leading-relaxed mb-8">
           Government accounts require a dedicated onboarding process with identity verification and domain validation.
