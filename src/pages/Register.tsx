@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { LanguageToggle } from '@/components/LanguageToggle';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { supabase } from '@/integrations/supabase/client';
 
 type UserCategory = null | 'professional' | 'government';
