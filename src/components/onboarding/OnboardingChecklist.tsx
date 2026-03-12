@@ -336,7 +336,7 @@ function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: {onComplete
       <div className="space-y-4">
         <p className="text-sm text-muted-foreground">
           {isCeo ?
-          nl ? 'Nog twee kleine handtekeningen en dan kan het feest beginnen! 🎉' : 'Just two quick sign-offs and you\'re all set! 🎉' :
+          nl ? 'Nog twee kleine handtekeningen en dan kan het feest beginnen!' : 'Just two quick sign-offs and you\'re all set!' :
           nl ? 'Goed nieuws — uw CEO heeft dit al voor u geregeld. ✅' : 'Good news — your CEO already took care of this one. ✅'
           }
         </p>
