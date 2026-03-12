@@ -18,6 +18,7 @@ export function PilotNavigation({
 }: PilotNavigationProps) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
   const user = getPilotUser();
   const company = getPilotCompany();
