@@ -76,39 +76,39 @@ const AnimatedRoutes = () => {
         <Route path="/pilot-demo/login" element={<ThemeWrapper><PageTransition><PilotLogin /></PageTransition></ThemeWrapper>} />
         <Route path="/pilot-demo/forgot-password" element={<ThemeWrapper><PageTransition><PilotForgotPassword /></PageTransition></ThemeWrapper>} />
 
-        {/* Pilot Dashboard — always dark */}
-        <Route path="/pilot-demo/dashboard" element={<ThemeWrapper forceDark><PageTransition><PilotDashboard /></PageTransition></ThemeWrapper>} />
-        <Route path="/pilot-demo/projects" element={<ThemeWrapper forceDark><PageTransition><PilotProjects /></PageTransition></ThemeWrapper>} />
-        <Route path="/pilot-demo/contacts" element={<ThemeWrapper forceDark><PageTransition><PilotContacts /></PageTransition></ThemeWrapper>} />
-        <Route path="/pilot-demo/financial" element={<ThemeWrapper forceDark><PageTransition><PilotFinancial /></PageTransition></ThemeWrapper>} />
-        <Route path="/pilot-demo/settings" element={<ThemeWrapper forceDark><PageTransition><PilotSettings /></PageTransition></ThemeWrapper>} />
-        <Route path="/pilot-demo/profile" element={<ThemeWrapper forceDark><PageTransition><PilotProfile /></PageTransition></ThemeWrapper>} />
-        <Route path="/pilot-demo/partnership-program" element={<ThemeWrapper forceDark><PageTransition><PartnershipProgram /></PageTransition></ThemeWrapper>} />
+        {/* Pilot Dashboard — theme-aware */}
+        <Route path="/pilot-demo/dashboard" element={<ThemeWrapper><PageTransition><PilotDashboard /></PageTransition></ThemeWrapper>} />
+        <Route path="/pilot-demo/projects" element={<ThemeWrapper><PageTransition><PilotProjects /></PageTransition></ThemeWrapper>} />
+        <Route path="/pilot-demo/contacts" element={<ThemeWrapper><PageTransition><PilotContacts /></PageTransition></ThemeWrapper>} />
+        <Route path="/pilot-demo/financial" element={<ThemeWrapper><PageTransition><PilotFinancial /></PageTransition></ThemeWrapper>} />
+        <Route path="/pilot-demo/settings" element={<ThemeWrapper><PageTransition><PilotSettings /></PageTransition></ThemeWrapper>} />
+        <Route path="/pilot-demo/profile" element={<ThemeWrapper><PageTransition><PilotProfile /></PageTransition></ThemeWrapper>} />
+        <Route path="/pilot-demo/partnership-program" element={<ThemeWrapper><PageTransition><PartnershipProgram /></PageTransition></ThemeWrapper>} />
         
         <Route path="/register/workspace" element={<Navigate to="/pilot-demo/create-account" replace />} />
         
-        {/* Dashboard — always dark */}
-        <Route path="/dashboard/demo" element={<ThemeWrapper forceDark><PageTransition><ClientDashboard /></PageTransition></ThemeWrapper>} />
-        <Route path="/dashboard/partner" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnerHome /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/admin" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><AdminDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/licenses" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><CompanyLicenseManager /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        {/* Dashboard — theme-aware */}
+        <Route path="/dashboard/demo" element={<ThemeWrapper><PageTransition><ClientDashboard /></PageTransition></ThemeWrapper>} />
+        <Route path="/dashboard/partner" element={<ThemeWrapper><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnerHome /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/admin" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><AdminDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/licenses" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><CompanyLicenseManager /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/lm" element={<Navigate to="/dashboard/licenses" replace />} />
-        <Route path="/dashboard/client/home" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ClientDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/partnership-program" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnershipProgram /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/profile" element={<ThemeWrapper forceDark><ProtectedRoute><PageTransition><Profile /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/settings" element={<ThemeWrapper forceDark><ProtectedRoute><PageTransition><Settings /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/projects" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ProjectsDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/nox-settings" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><NoxDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/client/home" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ClientDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/partnership-program" element={<ThemeWrapper><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnershipProgram /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/profile" element={<ThemeWrapper><ProtectedRoute><PageTransition><Profile /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/settings" element={<ThemeWrapper><ProtectedRoute><PageTransition><Settings /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/projects" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ProjectsDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/nox-settings" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><NoxDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/nox" element={<Navigate to="/dashboard/nox-settings" replace />} />
-        <Route path="/dashboard/authority" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityHome /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/authority/projects" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityProjects /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/authority/regulatory" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityRegulatoryHub /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/authority/spatial" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthoritySpatialAnalysis /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/authority/settings" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin', 'authority']}><PageTransition><AuthoritySettings /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/contacts" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ContactsDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/mail" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><MailDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/authority" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityHome /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/authority/projects" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityProjects /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/authority/regulatory" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityRegulatoryHub /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/authority/spatial" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthoritySpatialAnalysis /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/authority/settings" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority']}><PageTransition><AuthoritySettings /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/contacts" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ContactsDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/mail" element={<ThemeWrapper><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><MailDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/project-binder" element={<Navigate to="/dashboard/projects" replace />} />
-        <Route path="/dashboard/financial" element={<ThemeWrapper forceDark><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin']}><PageTransition><FinancialDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
+        <Route path="/dashboard/financial" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin']}><PageTransition><FinancialDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/auth" element={<Navigate to="/login" replace />} />
         <Route path="/projects" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<NotFound />} />
