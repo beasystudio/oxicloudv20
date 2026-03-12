@@ -155,7 +155,7 @@ export default function ClientDashboard() {
       <div className="h-[100dvh] overflow-hidden bg-background flex flex-col">
         <TopNavigation />
 
-        <main className="flex-1 min-h-0 overflow-y-auto container mx-auto px-4 py-5 max-w-5xl">
+        <main className="flex-1 min-h-0 overflow-y-auto container mx-auto px-5 py-6 max-w-[1120px]">
 
           {/* Demo Marquee Banner */}
           <div className="rounded-xl border border-primary/20 bg-primary/5 py-2.5 mb-5 overflow-hidden">
