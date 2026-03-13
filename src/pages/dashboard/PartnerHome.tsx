@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Plus, ArrowRight, Check, Clock, Settings, FolderKanban, Users, Info, HelpCircle } from 'lucide-react';
 import { ModuleOnboardingTour, OnboardingTooltip } from '@/components/onboarding/ModuleOnboardingTour';
+import { ProductionWelcomeModal } from '@/components/demo/ProductionWelcomeModal';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { isPilotAccount as checkPilotAccount, getEmptyDashboardData, resetPilotOnboarding, isOnboardingComplete, completeOnboarding, getOnboardingProgress } from '@/lib/pilotAccountUtils';
 import { cn } from '@/lib/utils';
@@ -44,6 +45,7 @@ const PartnerHome = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
   const [checklist, setChecklist] = useState({
     partnerTermsRead: false,
     companySetup: false,
@@ -428,6 +430,9 @@ const PartnerHome = () => {
         {/* Onboarding Tour */}
         <AnimatePresence>
           {showOnboarding && <ModuleOnboardingTour module="home" onComplete={handleOnboardingComplete} onSkip={handleOnboardingSkip} />}
+        </AnimatePresence>
+        <AnimatePresence>
+          {showWelcomeModal && <ProductionWelcomeModal userName={currentUser?.name?.split(' ')[0] || 'there'} onClose={() => setShowWelcomeModal(false)} />}
         </AnimatePresence>
       </div>
     </>;

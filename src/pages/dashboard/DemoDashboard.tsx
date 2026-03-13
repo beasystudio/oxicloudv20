@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { InviteManagerDialog } from '@/components/demo/InviteManagerDialog';
-import { PartnerProgramModal } from '@/components/demo/PartnerProgramModal';
+import { DemoWelcomeModal } from '@/components/demo/DemoWelcomeModal';
 
 const INSIGHTS = [
   'NOx report missing for 1 active project',
@@ -21,7 +21,7 @@ export default function DemoDashboard() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
   const [showInviteDialog, setShowInviteDialog] = useState(false);
-  const [showPartnerModal, setShowPartnerModal] = useState(true);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -227,7 +227,7 @@ export default function DemoDashboard() {
 
       <InviteManagerDialog open={showInviteDialog} onOpenChange={setShowInviteDialog} />
       <AnimatePresence>
-        {showPartnerModal && <PartnerProgramModal onClose={() => setShowPartnerModal(false)} />}
+        {showWelcomeModal && <DemoWelcomeModal onClose={() => setShowWelcomeModal(false)} />}
       </AnimatePresence>
     </>
   );

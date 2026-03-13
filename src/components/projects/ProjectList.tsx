@@ -24,10 +24,10 @@ export const ProjectList = ({ projects, selectedProject, onSelectProject }: Proj
               key={project.id}
               onClick={() => onSelectProject(project)}
               className={cn(
-                'w-full text-left p-3 rounded-md mb-2 transition-colors',
+                'w-full text-left p-3 rounded-md mb-2 transition-colors group',
                 selectedProject?.id === project.id
-                  ? 'bg-primary text-primary-foreground'
-                  : 'hover:bg-accent'
+                  ? 'bg-secondary text-secondary-foreground'
+                  : 'hover:bg-muted/50 hover:text-primary'
               )}
             >
               <div className="font-medium truncate">{project.name}</div>
