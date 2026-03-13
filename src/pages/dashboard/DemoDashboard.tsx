@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { InviteManagerDialog } from '@/components/demo/InviteManagerDialog';
-import { PartnerProgramModal } from '@/components/demo/PartnerProgramModal';
+import { DemoWelcomeModal } from '@/components/demo/DemoWelcomeModal';
 
 const INSIGHTS = [
   'NOx report missing for 1 active project',
