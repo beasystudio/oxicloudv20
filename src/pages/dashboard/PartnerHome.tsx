@@ -45,6 +45,7 @@ const PartnerHome = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
   const [checklist, setChecklist] = useState({
     partnerTermsRead: false,
     companySetup: false,
