@@ -21,7 +21,7 @@ export default function DemoDashboard() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
   const [showInviteDialog, setShowInviteDialog] = useState(false);
-  const [showPartnerModal, setShowPartnerModal] = useState(true);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
