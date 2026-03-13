@@ -227,7 +227,7 @@ export default function DemoDashboard() {
 
       <InviteManagerDialog open={showInviteDialog} onOpenChange={setShowInviteDialog} />
       <AnimatePresence>
-        {showPartnerModal && <PartnerProgramModal onClose={() => setShowPartnerModal(false)} />}
+        {showWelcomeModal && <DemoWelcomeModal onClose={() => setShowWelcomeModal(false)} />}
       </AnimatePresence>
     </>
   );
