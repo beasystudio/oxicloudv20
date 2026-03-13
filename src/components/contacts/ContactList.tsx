@@ -238,7 +238,7 @@ export function ContactList({ onRefresh }: ContactListProps) {
                             className={cn(
                               "w-full flex items-center justify-between py-1.5 px-2 rounded-md text-xs transition-colors",
                               selectedType === node.type && selectedSubtype === subtype
-                                ? "bg-primary/10 text-primary font-medium"
+                                ? "bg-secondary text-secondary-foreground font-medium"
                                 : "hover:bg-muted text-muted-foreground"
                             )}
                           >
