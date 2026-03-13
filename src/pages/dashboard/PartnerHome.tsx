@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Plus, ArrowRight, Check, Clock, Settings, FolderKanban, Users, Info, HelpCircle } from 'lucide-react';
 import { ModuleOnboardingTour, OnboardingTooltip } from '@/components/onboarding/ModuleOnboardingTour';
+import { ProductionWelcomeModal } from '@/components/demo/ProductionWelcomeModal';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { isPilotAccount as checkPilotAccount, getEmptyDashboardData, resetPilotOnboarding, isOnboardingComplete, completeOnboarding, getOnboardingProgress } from '@/lib/pilotAccountUtils';
 import { cn } from '@/lib/utils';
