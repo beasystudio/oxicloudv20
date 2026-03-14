@@ -837,10 +837,10 @@ const ContactsDashboard = () => {
   const isOwnerOrAdmin = currentUser?.role === 'owner' || currentUser?.role === 'admin';
   const isClientOwnerOrAdmin = currentUser?.role === 'client_owner' || currentUser?.role === 'client_admin';
   const selectedCompany = getSelectedCompany();
-  
+
   // Check if this is the pilot account - they should see empty data
   const isPilot = isPilotAccount(currentUser?.email) || isPilotCompany(selectedCompanyId);
-  
+
   // Contact type tree - empty for pilot, demo data for others
   const contactTypeTree = isPilot ? [] : DEMO_CONTACT_TYPE_TREE;
 
@@ -851,17 +851,17 @@ const ContactsDashboard = () => {
   // Company-scoped contacts: GDesign and 4TAKT should see completely separate contact pools
   const getCompanyScopedCompanies = () => {
     if (isPilot) return [];
-    
+
     // Admin sees ALL companies' contacts
     if (isOwnerOrAdmin) {
       return DEMO_COMPANIES;
     }
-    
+
     // Filter out the user's own company and other internal companies
     const isGDesign = selectedCompanyId === 'gdesign';
     const is4Takt = selectedCompanyId === '4takt';
-    
-    return DEMO_COMPANIES.filter(c => {
+
+    return DEMO_COMPANIES.filter((c) => {
       if (INTERNAL_COMPANY_IDS.includes(c.id)) return false;
       if (isGDesign) {
         const gdesignClients = ['pauwels-vastgoed', 'bouwgroep-vandijk', 'elektricien-nv', 'dakwerken-peeters', 'stabiliteit-partners', 'gemeente-leuven', 'artebeau'];
@@ -880,13 +880,13 @@ const ContactsDashboard = () => {
     setCompanies(getCompanyScopedCompanies());
   }, [refreshKey, isPilot, selectedCompanyId]);
   const toggleCategory = (categoryId: string) => {
-    setExpandedCategories(prev => prev.includes(categoryId) ? prev.filter(id => id !== categoryId) : [...prev, categoryId]);
+    setExpandedCategories((prev) => prev.includes(categoryId) ? prev.filter((id) => id !== categoryId) : [...prev, categoryId]);
   };
   const toggleTypeSelection = (typeId: string) => {
-    setSelectedTypes(prev => prev.includes(typeId) ? prev.filter(id => id !== typeId) : [...prev, typeId]);
+    setSelectedTypes((prev) => prev.includes(typeId) ? prev.filter((id) => id !== typeId) : [...prev, typeId]);
   };
   const toggleCompanyExpand = (companyId: string) => {
-    setExpandedCompanies(prev => prev.includes(companyId) ? prev.filter(id => id !== companyId) : [...prev, companyId]);
+    setExpandedCompanies((prev) => prev.includes(companyId) ? prev.filter((id) => id !== companyId) : [...prev, companyId]);
   };
 
   // Handle double-click to edit contact
@@ -930,7 +930,7 @@ const ContactsDashboard = () => {
   };
 
   // Filter and sort companies
-  const filteredCompanies = companies.filter(company => {
+  const filteredCompanies = companies.filter((company) => {
     const matchesSearch = !searchTerm || company.name.toLowerCase().includes(searchTerm.toLowerCase()) || company.email.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   }).sort((a, b) => {
@@ -949,15 +949,15 @@ const ContactsDashboard = () => {
   // Monitor contacts for admin
   const monitorSubscriptions = isOwnerOrAdmin ? getMonitorSubscriptions() : [];
 
-  const renderMonitorContacts = () => (
-    <div className="space-y-4">
+  const renderMonitorContacts = () =>
+  <div className="space-y-4">
       <div>
         <h2 className="text-sm font-semibold">{language === 'nl' ? 'Monitor Contacten' : 'Monitor Contacts'}</h2>
         <p className="text-xs text-muted-foreground">{monitorSubscriptions.length} {language === 'nl' ? 'gemeenten' : 'municipalities'}</p>
       </div>
       <div className="space-y-2">
-        {monitorSubscriptions.map(sub => (
-          <div key={sub.id} className="rounded-2xl border border-border p-4 hover:bg-muted/20 transition-colors">
+        {monitorSubscriptions.map((sub) =>
+      <div key={sub.id} className="rounded-2xl border border-border p-4 hover:bg-muted/20 transition-colors">
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2">
@@ -973,40 +973,40 @@ const ContactsDashboard = () => {
               </div>
             </div>
           </div>
-        ))}
-        {monitorSubscriptions.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground">
+      )}
+        {monitorSubscriptions.length === 0 &&
+      <div className="rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground">
             <p>{language === 'nl' ? 'Geen gemeentecontacten' : 'No municipality contacts'}</p>
           </div>
-        )}
+      }
       </div>
-    </div>
-  );
+    </div>;
+
 
   return <div className="min-h-screen bg-background">
       <TopNavigation />
       <div className="container mx-auto px-4 py-6">
         {/* Admin product tabs */}
-        {isOwnerOrAdmin && (
-          <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-6">
+        {isOwnerOrAdmin &&
+      <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-6">
             <button
-              onClick={() => setAdminProductTab('oxicloud')}
-              className={cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-xs font-medium transition-all",
-                adminProductTab === 'oxicloud' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-              )}
-            >
+          onClick={() => setAdminProductTab('oxicloud')}
+          className={cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-xs font-medium transition-all",
+          adminProductTab === 'oxicloud' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+          )}>
+          
               OxiCloud
             </button>
             <button
-              onClick={() => setAdminProductTab('monitor')}
-              className={cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-xs font-medium transition-all",
-                adminProductTab === 'monitor' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-              )}
-            >
+          onClick={() => setAdminProductTab('monitor')}
+          className={cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-xs font-medium transition-all",
+          adminProductTab === 'monitor' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+          )}>
+          
               Monitor
             </button>
           </div>
-        )}
+      }
 
         {isOwnerOrAdmin && adminProductTab === 'monitor' ? renderMonitorContacts() : <>
 
@@ -1018,22 +1018,22 @@ const ContactsDashboard = () => {
                 <button
                   onClick={() => setViewMode('company')}
                   className={cn("px-3 py-1.5 text-xs font-medium transition-colors",
-                    viewMode === 'company' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
+                  viewMode === 'company' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                  )}>
+                  
                   {t('dashboard.contactsDashboard.company')}
                 </button>
                 <button
                   onClick={() => setViewMode('person')}
                   className={cn("px-3 py-1.5 text-xs font-medium transition-colors border-l",
-                    viewMode === 'person' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
+                  viewMode === 'person' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                  )}>
+                  
                   {t('dashboard.contactsDashboard.person')}
                 </button>
               </div>
               <div className="flex-1">
-                <Input placeholder={t('dashboard.contactsDashboard.searchContacts')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="h-8 text-sm" />
+                <Input placeholder={t('dashboard.contactsDashboard.searchContacts')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="h-8 text-sm" />
               </div>
               <div className="flex items-center gap-2">
                  <Label htmlFor="advanced-search" className="text-xs text-muted-foreground cursor-pointer whitespace-nowrap">
@@ -1076,7 +1076,7 @@ const ContactsDashboard = () => {
 
                   {/* Expand All / Collapse All Buttons */}
                   {viewMode === 'company' && <>
-                      <Button variant="outline" size="sm" onClick={() => setExpandedCompanies(filteredCompanies.map(c => c.id))} disabled={expandedCompanies.length === filteredCompanies.length} className="h-8 gap-1.5 text-xs">
+                      <Button variant="outline" size="sm" onClick={() => setExpandedCompanies(filteredCompanies.map((c) => c.id))} disabled={expandedCompanies.length === filteredCompanies.length} className="h-8 gap-1.5 text-xs">
                         <ArrowDown className="h-3 w-3" />
                         {t('common.showAll')}
                       </Button>
@@ -1091,7 +1091,7 @@ const ContactsDashboard = () => {
             <CardContent className="p-0 flex-1 flex flex-col min-h-0 overflow-hidden">
               <div className="flex-1 overflow-auto min-h-0">
               {viewMode === 'person' ? (/* Person View */
-              <div>
+                <div>
                   {/* Table Header */}
                    <div className="grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 border-b border-border bg-background text-[11px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20">
                      <div>{t('dashboard.contactsDashboard.name')}</div>
@@ -1102,34 +1102,34 @@ const ContactsDashboard = () => {
 
                   {/* Person Rows - filter by company scope */}
                   {(() => {
-                    const scopedCompanyNames = getCompanyScopedCompanies().map(c => c.name);
-                    const filteredPersons = isPilot ? [] : DEMO_PERSONS.filter(p => scopedCompanyNames.includes(p.company));
+                    const scopedCompanyNames = getCompanyScopedCompanies().map((c) => c.name);
+                    const filteredPersons = isPilot ? [] : DEMO_PERSONS.filter((p) => scopedCompanyNames.includes(p.company));
                     return filteredPersons.length === 0 ? <div className="text-center py-16 text-muted-foreground">
                       <User className="h-12 w-12 mx-auto mb-4 opacity-40" />
                        <p className="text-base font-medium mb-2">{t('dashboard.contactsDashboard.noContactsFound')}</p>
                        <p className="text-xs">{t('dashboard.contactsDashboard.noPersonsAvailable')}</p>
                     </div> : filteredPersons.map((person, index) => <div key={person.id} className={cn("grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg", "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 relative hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")} onDoubleClick={() => {
-                  const contact: UnifiedContact = {
-                    id: person.id,
-                    name: person.name,
-                    company: person.company,
-                    email: person.email,
-                    mobilePhone: '',
-                    workPhone: person.telephone,
-                    homePhone: '',
-                    contactCategory: 'algemeen',
-                    isCompany: false
-                  };
-                  setSelectedContact(contact);
-                  setIsEditDialogOpen(true);
-                }}>
+                      const contact: UnifiedContact = {
+                        id: person.id,
+                        name: person.name,
+                        company: person.company,
+                        email: person.email,
+                        mobilePhone: '',
+                        workPhone: person.telephone,
+                        homePhone: '',
+                        contactCategory: 'algemeen',
+                        isCompany: false
+                      };
+                      setSelectedContact(contact);
+                      setIsEditDialogOpen(true);
+                    }}>
                       <div className="text-sm font-medium text-foreground group-hover:text-black transition-colors">{person.name}</div>
                       <div className="text-muted-foreground text-xs group-hover:text-black/80 transition-colors">{person.company}</div>
                       <div className="text-muted-foreground text-xs truncate group-hover:text-black/80 transition-colors">{person.email}</div>
                       <div className="text-muted-foreground text-xs group-hover:text-black/80 transition-colors">{person.telephone}</div>
                     </div>);
                   })()} </div>) : (/* Company View */
-              companies.length === 0 ? <div className="text-center py-16 text-muted-foreground">
+                companies.length === 0 ? <div className="text-center py-16 text-muted-foreground">
                      <p className="text-base font-medium mb-2">{t('dashboard.contactsDashboard.noContactsFound')}</p>
                      <p className="text-xs">{t('dashboard.contactsDashboard.noCompaniesAvailable')}</p>
                   </div> : <div className="py-2">
@@ -1161,8 +1161,8 @@ const ContactsDashboard = () => {
                         {/* Expanded Content */}
                         {expandedCompanies.includes(company.id) && (company.employees.length > 0 || company.addresses.length > 0) && <div className="bg-background/60 rounded-b-xl mx-1">
                             {/* CONTACTPERSONEN Section */}
-                            {company.employees.length > 0 && <div className="px-6 py-4 ml-8 border-l-2 border-primary/30 dark:bg-transparent bg-foreground/[0.03] rounded-xl">
-                                <div className="flex items-center gap-2 text-[10px] font-semibold text-primary uppercase tracking-wider mb-3">
+                            {company.employees.length > 0 && <div className="px-6 py-4 ml-8 border-l-2 border-primary/30">
+                                <div className="flex items-center gap-2 text-[10px] font-semibold text-primary uppercase tracking-wider mb-3 bg-black">
                                   {t('dashboard.contactsDashboard.contactPersons')}
                                   <span className="ml-1 px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.employees.length}</span>
                                 </div>
@@ -1172,7 +1172,7 @@ const ContactsDashboard = () => {
                                    <div>{t('dashboard.contactsDashboard.phone')}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                  {company.employees.map(emp => <div key={emp.id} className="grid grid-cols-[minmax(160px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-sm hover:shadow-md hover:shadow-[hsl(var(--neon-lime))]/10 hover:scale-[1.01] cursor-pointer transition-all group/emp relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40" onDoubleClick={() => handleEmployeeDoubleClick(emp, company)}>
+                                  {company.employees.map((emp) => <div key={emp.id} className="grid grid-cols-[minmax(160px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-sm hover:shadow-md hover:shadow-[hsl(var(--neon-lime))]/10 hover:scale-[1.01] cursor-pointer transition-all group/emp relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40" onDoubleClick={() => handleEmployeeDoubleClick(emp, company)}>
                                       <div className="font-medium text-foreground group-hover/emp:text-black">{emp.name}</div>
                                       <div className="text-muted-foreground truncate group-hover/emp:text-black/70">{emp.email}</div>
                                       <div className="text-muted-foreground group-hover/emp:text-black/70">{emp.telephone}</div>
@@ -1181,8 +1181,8 @@ const ContactsDashboard = () => {
                               </div>}
 
                             {/* VESTIGINGEN / ADRESSEN Section */}
-                            {company.addresses.length > 0 && <div className={cn("px-6 py-4 ml-8 border-l-2 border-primary/30 dark:bg-transparent bg-foreground/[0.03] rounded-xl", company.employees.length > 0 && "border-t border-border/30")}>
-                                <div className="flex items-center gap-2 text-[10px] font-semibold text-primary uppercase tracking-wider mb-3">
+                            {company.addresses.length > 0 && <div className={cn("px-6 py-4 ml-8 border-l-2 border-primary/30", company.employees.length > 0 && "border-t border-border/30")}>
+                                <div className="flex items-center gap-2 text-[10px] font-semibold text-primary uppercase tracking-wider mb-3 bg-black">
                                   {t('dashboard.contactsDashboard.branchesAddresses')}
                                   <span className="ml-1 px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.addresses.length}</span>
                                 </div>
@@ -1194,7 +1194,7 @@ const ContactsDashboard = () => {
                                    <div>{t('dashboard.contactsDashboard.municipality')}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                  {company.addresses.map(addr => <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-sm hover:shadow-md hover:shadow-[hsl(var(--neon-lime))]/10 hover:scale-[1.01] cursor-pointer transition-all group/addr relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40">
+                                  {company.addresses.map((addr) => <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-sm hover:shadow-md hover:shadow-[hsl(var(--neon-lime))]/10 hover:scale-[1.01] cursor-pointer transition-all group/addr relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40">
                                       <div className="font-medium text-foreground group-hover/addr:text-black">{addr.name}</div>
                                       <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.street}</div>
                                       <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.number}</div>
