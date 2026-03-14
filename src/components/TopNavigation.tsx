@@ -318,11 +318,18 @@ export const TopNavigation = () => {
         {(currentUser.role === 'client_owner' || currentUser.role === 'client_admin') && selectedCompanyId && <GlobalAddMenu companyId={selectedCompanyId} />}
 
         {/* Financial Dashboard quick access */}
-        {showFinancialMenu && <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", isActive('/dashboard/financial') && "bg-primary/10")}>
+        {showFinancialMenu && <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", isActive('/dashboard/financial') && "bg-primary text-primary-foreground")}>
             <Link to="/dashboard/financial" title="Financial Dashboard">
               <BarChart className="h-4 w-4" />
             </Link>
           </Button>}
+
+        {/* Settings - next to Financial */}
+        {showSettings && <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", (isActive('/dashboard/settings') || isActive('/dashboard/nox-settings') || isActive('/dashboard/authority/settings')) && "bg-primary text-primary-foreground")}>
+            <Link to={settingsLink}>
+              <Settings2 className="h-4 w-4" />
+            </Link>
+           </Button>}
 
         {/* Theme Toggle */}
         <Button variant="ghost" size="icon" className="h-9 w-9" onClick={toggleTheme} title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
@@ -416,14 +423,6 @@ export const TopNavigation = () => {
             </ScrollArea>
           </DropdownMenuContent>
         </DropdownMenu>
-
-
-        {/* Settings */}
-        {showSettings && <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", (isActive('/dashboard/settings') || isActive('/dashboard/nox-settings') || isActive('/dashboard/authority/settings')) && "bg-primary text-primary-foreground")}>
-            <Link to={settingsLink}>
-              <Settings2 className="h-4 w-4" />
-            </Link>
-           </Button>}
 
         {/* Language Switcher */}
         <Button
