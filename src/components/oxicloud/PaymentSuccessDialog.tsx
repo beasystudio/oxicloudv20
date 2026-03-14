@@ -5,7 +5,7 @@
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, PartyPopper, ArrowRight } from "lucide-react";
+import { PartyPopper, ArrowRight } from "lucide-react";
 
 interface PaymentSuccessDialogProps {
   open: boolean;
@@ -35,24 +35,24 @@ export function PaymentSuccessDialog({
         {/* Content */}
         <div className="p-6 space-y-4">
           <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-            <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+            
             <div>
-              <p className="text-sm font-medium">Next Steps</p>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-sm font-medium text-center">Next Steps</p>
+              <p className="text-xs text-muted-foreground mt-1 text-center">
                 Complete the NOₓ Assessment to finalize your project.
               </p>
             </div>
           </div>
 
-          <Button 
-            onClick={() => onOpenChange(false)} 
-            className="w-full gap-2"
-          >
+          <Button
+            onClick={() => onOpenChange(false)}
+            className="w-full gap-2">
+            
             Continue to Project
             <ArrowRight className="h-4 w-4" />
           </Button>
         </div>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>);
+
 }
