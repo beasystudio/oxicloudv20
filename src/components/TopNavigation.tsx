@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useMockAuth } from "@/contexts/MockAuthContext";
-import { Upload, X, ChevronDown, AlertCircle, Bell, Home, FolderKanban, Building2, Gavel, Map, Plus, Moon, Sun, Users, BarChart, Loader, Trash2, CheckCircle2, CreditCard, ArrowLeft, LogOut } from "lucide-react";
+import { Upload, X, ChevronDown, AlertCircle, Bell, Home, FolderKanban, Building2, Gavel, Map, Plus, Moon, Sun, Users, BarChart, Settings2, Trash2, CheckCircle2, CreditCard, ArrowLeft, LogOut } from "lucide-react";
 
 import { useRef, useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
