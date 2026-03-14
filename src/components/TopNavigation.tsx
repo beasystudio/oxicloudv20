@@ -419,9 +419,9 @@ export const TopNavigation = () => {
 
 
         {/* Settings */}
-        {showSettings && <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", (isActive('/dashboard/settings') || isActive('/dashboard/nox-settings') || isActive('/dashboard/authority/settings')) && "bg-primary/10")}>
+        {showSettings && <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", (isActive('/dashboard/settings') || isActive('/dashboard/nox-settings') || isActive('/dashboard/authority/settings')) && "bg-primary text-primary-foreground")}>
             <Link to={settingsLink}>
-              <Loader className="h-4 w-4 bg-transparent text-primary-foreground" />
+              <Settings2 className="h-4 w-4" />
             </Link>
            </Button>}
 
