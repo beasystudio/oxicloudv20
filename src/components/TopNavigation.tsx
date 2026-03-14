@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useMockAuth } from "@/contexts/MockAuthContext";
-import { Upload, X, ChevronDown, AlertCircle, Bell, Home, FolderKanban, Building2, Gavel, Map, Plus, Moon, Sun, Users, BarChart, Settings2, Trash2, CheckCircle2, CreditCard, ArrowLeft, LogOut } from "lucide-react";
+import { Upload, X, ChevronDown, AlertCircle, Bell, Home, FolderKanban, Building2, Gavel, Map, Plus, Moon, Sun, Users, BarChart, Loader, Trash2, CheckCircle2, CreditCard, ArrowLeft, LogOut } from "lucide-react";
 
 import { useRef, useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -86,7 +86,7 @@ export const TopNavigation = () => {
       if (Array.isArray(companies) && companies.length > 0 && companies[0].logoUrl) {
         return companies[0].logoUrl;
       }
-    } catch { /* ignore */ }
+    } catch {/* ignore */}
     return null;
   })();
 
@@ -203,19 +203,19 @@ export const TopNavigation = () => {
     icon: Icon,
     label,
     isActiveRoute
-  }: {to: string; icon: React.ElementType; label: string; isActiveRoute: boolean;}) => (
-    <Link
-      to={to}
-      className={cn(
-        "flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all duration-200",
-        isActiveRoute
-          ? "bg-primary text-primary-foreground shadow-sm"
-          : "bg-transparent border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
-      )}
-    >
+  }: {to: string;icon: React.ElementType;label: string;isActiveRoute: boolean;}) =>
+  <Link
+    to={to}
+    className={cn(
+      "flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all duration-200",
+      isActiveRoute ?
+      "bg-primary text-primary-foreground shadow-sm" :
+      "bg-transparent border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
+    )}>
+    
       <span>{label}</span>
-    </Link>
-  );
+    </Link>;
+
 
   // Logo/Branding section
   const renderBranding = () => {
@@ -421,17 +421,17 @@ export const TopNavigation = () => {
         {/* Settings */}
         {showSettings && <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", (isActive('/dashboard/settings') || isActive('/dashboard/nox-settings') || isActive('/dashboard/authority/settings')) && "bg-primary/10")}>
             <Link to={settingsLink}>
-              <Settings2 className="h-4 w-4 bg-transparent text-primary" />
+              <Loader className="h-4 w-4 bg-transparent text-primary-foreground" />
             </Link>
            </Button>}
 
         {/* Language Switcher */}
         <Button
-          variant="ghost"
-          size="sm"
-          className="h-9 px-3 text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground hover:bg-muted/50"
-          onClick={() => setLanguage(language === 'en' ? 'nl' : 'en')}
-        >
+        variant="ghost"
+        size="sm"
+        className="h-9 px-3 text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground hover:bg-muted/50"
+        onClick={() => setLanguage(language === 'en' ? 'nl' : 'en')}>
+        
           {language === 'en' ? 'EN' : 'NL'}
         </Button>
 
@@ -494,15 +494,15 @@ export const TopNavigation = () => {
                   <span className="text-sm font-medium">{t('dashboard.nav.switchAccount')}</span>
                 </div>
                 <div
-                  className={cn(
-                    "max-h-80 overflow-y-auto p-1.5 overscroll-contain",
-                    "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-                    "hover:[scrollbar-width:thin] hover:[&::-webkit-scrollbar]:block hover:[&::-webkit-scrollbar]:w-1.5 hover:[&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-border/80 hover:[&::-webkit-scrollbar-track]:bg-transparent"
-                  )}
-                >
+              className={cn(
+                "max-h-80 overflow-y-auto p-1.5 overscroll-contain",
+                "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+                "hover:[scrollbar-width:thin] hover:[&::-webkit-scrollbar]:block hover:[&::-webkit-scrollbar]:w-1.5 hover:[&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-border/80 hover:[&::-webkit-scrollbar-track]:bg-transparent"
+              )}>
+              
                   {teamMembers.map((member) => {
-                    const isCurrentUser = currentUser.email === member.general.workEmail;
-                    return (
+                const isCurrentUser = currentUser.email === member.general.workEmail;
+                return (
                   <DropdownMenuItem
                     key={member.id}
                     onSelect={() => handleSwitchAccount(member.general.workEmail)}
@@ -514,24 +514,24 @@ export const TopNavigation = () => {
                         <div className="flex items-center gap-3 w-full">
                           <div className="h-9 w-9 rounded-full bg-muted overflow-hidden shrink-0">
                             {getAvatarUrl({ email: member.general.workEmail }) ?
-                      <img src={getAvatarUrl({ email: member.general.workEmail })} alt={`${member.general.firstName} ${member.general.lastName}`} className="h-full w-full object-cover" /> :
+                        <img src={getAvatarUrl({ email: member.general.workEmail })} alt={`${member.general.firstName} ${member.general.lastName}`} className="h-full w-full object-cover" /> :
 
-                      <div className="h-full w-full flex items-center justify-center text-xs font-medium text-muted-foreground">
+                        <div className="h-full w-full flex items-center justify-center text-xs font-medium text-muted-foreground">
                                 {getInitials(`${member.general.firstName} ${member.general.lastName}`)}
                               </div>
-                      }
+                        }
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium truncate">{member.general.firstName} {member.general.lastName}</p>
                             <p className="text-xs text-muted-foreground truncate">{member.general.workEmail}</p>
                           </div>
                           {isCurrentUser &&
-                    <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                    }
+                      <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                      }
                         </div>
-                      </DropdownMenuItem>
-                      );
-                    })}
+                      </DropdownMenuItem>);
+
+              })}
                 </div>
               </>
           }
