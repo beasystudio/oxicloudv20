@@ -1161,7 +1161,7 @@ const ContactsDashboard = () => {
                         {/* Expanded Content */}
                         {expandedCompanies.includes(company.id) && (company.employees.length > 0 || company.addresses.length > 0) && <div className="bg-background/60 rounded-b-xl mx-1">
                             {/* CONTACTPERSONEN Section */}
-                            {company.employees.length > 0 && <div className="px-6 py-4 ml-8 border-l-2 border-primary/30 dark:bg-transparent bg-muted rounded-xl">
+                            {company.employees.length > 0 && <div className="px-6 py-4 ml-8 border-l-2 border-primary/30 dark:bg-transparent bg-foreground/[0.03] rounded-xl">
                                 <div className="flex items-center gap-2 text-[10px] font-semibold text-primary uppercase tracking-wider mb-3">
                                   {t('dashboard.contactsDashboard.contactPersons')}
                                   <span className="ml-1 px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.employees.length}</span>
@@ -1181,7 +1181,7 @@ const ContactsDashboard = () => {
                               </div>}
 
                             {/* VESTIGINGEN / ADRESSEN Section */}
-                            {company.addresses.length > 0 && <div className={cn("px-6 py-4 ml-8 border-l-2 border-primary/30 dark:bg-transparent bg-muted rounded-xl", company.employees.length > 0 && "border-t border-border/30")}>
+                            {company.addresses.length > 0 && <div className={cn("px-6 py-4 ml-8 border-l-2 border-primary/30 dark:bg-transparent bg-foreground/[0.03] rounded-xl", company.employees.length > 0 && "border-t border-border/30")}>
                                 <div className="flex items-center gap-2 text-[10px] font-semibold text-primary uppercase tracking-wider mb-3">
                                   {t('dashboard.contactsDashboard.branchesAddresses')}
                                   <span className="ml-1 px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.addresses.length}</span>
