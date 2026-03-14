@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useMockAuth } from "@/contexts/MockAuthContext";
-import { Upload, X, ChevronDown, AlertCircle, Bell, Home, FolderKanban, Building2, Gavel, Map, Plus, Moon, Sun, Users, BarChart, Loader, Trash2, CheckCircle2, CreditCard, ArrowLeft, LogOut } from "lucide-react";
+import { Upload, X, ChevronDown, AlertCircle, Bell, Home, FolderKanban, Building2, Gavel, Map, Plus, Moon, Sun, Users, BarChart, Settings2, Trash2, CheckCircle2, CreditCard, ArrowLeft, LogOut } from "lucide-react";
 
 import { useRef, useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -419,9 +419,9 @@ export const TopNavigation = () => {
 
 
         {/* Settings */}
-        {showSettings && <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", (isActive('/dashboard/settings') || isActive('/dashboard/nox-settings') || isActive('/dashboard/authority/settings')) && "bg-primary/10")}>
+        {showSettings && <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", (isActive('/dashboard/settings') || isActive('/dashboard/nox-settings') || isActive('/dashboard/authority/settings')) && "bg-primary text-primary-foreground")}>
             <Link to={settingsLink}>
-              <Loader className="h-4 w-4 bg-transparent text-primary-foreground" />
+              <Settings2 className="h-4 w-4" />
             </Link>
            </Button>}
 
