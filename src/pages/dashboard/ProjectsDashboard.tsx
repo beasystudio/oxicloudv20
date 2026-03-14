@@ -1428,7 +1428,7 @@ const ProjectsDashboard = () => {
                               </div>
 
                               {/* VESTIGINGEN / ADRESSEN Section */}
-                              <div className={cn("px-4 py-3 ml-6 border-l-2 border-primary/30", persons.length > 0 && "border-t border-border/30")}>
+                              <div className={cn("px-4 py-3 ml-6 border-l-2 border-primary/30 dark:bg-transparent bg-foreground/[0.03] rounded-xl", persons.length > 0 && "border-t border-border/30")}>
                                 <div className="flex items-center gap-1.5 text-[9px] font-semibold text-primary uppercase tracking-wider mb-2">
                                   VESTIGINGEN / ADRESSEN
                                   <span className="ml-1 px-1.5 py-0.5 bg-primary/15 rounded-full text-[8px] font-bold">1</span>
