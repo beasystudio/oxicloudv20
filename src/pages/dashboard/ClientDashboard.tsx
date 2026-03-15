@@ -189,7 +189,10 @@ export default function ClientDashboard() {
         <main className="flex-1 min-h-0 overflow-y-auto container mx-auto px-5 py-6 max-w-[1120px]">
 
           {/* Demo Marquee Banner */}
-          <div className="rounded-xl border border-primary/20 bg-primary/5 py-2.5 mb-5 overflow-hidden">
+          <div className="relative rounded-xl bg-primary/5 py-2.5 mb-5 overflow-hidden">
+            {/* Fade edges */}
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
             <div className="flex animate-marquee whitespace-nowrap">
               {Array.from({ length: 4 }).map((_, i) =>
               <span key={i} className="flex items-center gap-6 mx-6 text-[13px] text-muted-foreground">
