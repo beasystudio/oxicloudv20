@@ -1184,9 +1184,11 @@ const ContactsDashboard = () => {
 
                             {/* VESTIGINGEN / ADRESSEN Section */}
                             {company.addresses.length > 0 && <div className={cn("px-6 py-4 ml-8 border-l-2 border-primary/30", company.employees.length > 0 && "border-t border-border/30")}>
-                                <div className="flex items-center gap-2 text-[10px] font-semibold text-primary uppercase tracking-wider mb-3 bg-black">
-                                  {t('dashboard.contactsDashboard.branchesAddresses')}
-                                  <span className="ml-1 px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.addresses.length}</span>
+                                <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider mb-3">
+                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-primary dark:bg-transparent dark:text-primary">
+                                    {t('dashboard.contactsDashboard.branchesAddresses')}
+                                    <span className="px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.addresses.length}</span>
+                                  </span>
                                 </div>
                                  <div className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 text-[10px] font-medium text-muted-foreground mb-2 pb-2 border-b border-border/40">
                                    <div>{t('dashboard.contactsDashboard.name')}</div>

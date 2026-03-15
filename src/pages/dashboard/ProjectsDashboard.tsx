@@ -1431,9 +1431,11 @@ const ProjectsDashboard = () => {
 
                               {/* VESTIGINGEN / ADRESSEN Section */}
                               <div className={cn("px-4 py-3 ml-6 border-l-2 border-primary/30", persons.length > 0 && "border-t border-border/30")}>
-                                <div className="flex items-center gap-1.5 text-[9px] font-semibold text-primary uppercase tracking-wider mb-2 bg-black">
-                                  VESTIGINGEN / ADRESSEN
-                                  <span className="ml-1 px-1.5 py-0.5 bg-primary/15 rounded-full text-[8px] font-bold">1</span>
+                                <div className="flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-wider mb-2">
+                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-primary dark:bg-transparent dark:text-primary">
+                                    VESTIGINGEN / ADRESSEN
+                                    <span className="px-1.5 py-0.5 bg-primary/15 rounded-full text-[8px] font-bold">1</span>
+                                  </span>
                                 </div>
                                  <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 text-[9px] font-medium text-muted-foreground mb-1.5 pb-1.5 border-b border-border/40">
                                    <div>Naam</div>
