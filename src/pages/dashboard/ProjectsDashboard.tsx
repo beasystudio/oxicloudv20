@@ -1407,9 +1407,11 @@ const ProjectsDashboard = () => {
                           {expandedCompanies.has(company) && persons.length > 0 && <div className="bg-background/60 rounded-b-xl mx-0.5">
                               {/* CONTACTPERSONEN Section */}
                               <div className="px-4 py-3 ml-6 border-l-2 border-primary/30">
-                                <div className="flex items-center gap-1.5 text-[9px] font-semibold text-primary uppercase tracking-wider mb-2 bg-black">
-                                  {t('dashboard.projectsDashboard.contactPersons')}
-                                  <span className="ml-1 px-1.5 py-0.5 bg-primary/15 rounded-full text-[8px] font-bold">{persons.length}</span>
+                                <div className="flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-wider mb-2">
+                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-primary dark:bg-transparent dark:text-primary">
+                                    {t('dashboard.projectsDashboard.contactPersons')}
+                                    <span className="px-1.5 py-0.5 bg-primary/15 rounded-full text-[8px] font-bold">{persons.length}</span>
+                                  </span>
                                 </div>
                                  <div className="grid grid-cols-[minmax(100px,1fr)_minmax(120px,1fr)_minmax(140px,1.2fr)_90px] gap-2 text-[9px] font-medium text-muted-foreground mb-1.5 pb-1.5 border-b border-border/40">
                                    <div>{t('dashboard.projectsDashboard.name')}</div>
