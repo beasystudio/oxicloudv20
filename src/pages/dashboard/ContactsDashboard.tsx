@@ -1162,9 +1162,11 @@ const ContactsDashboard = () => {
                         {expandedCompanies.includes(company.id) && (company.employees.length > 0 || company.addresses.length > 0) && <div className="bg-background/60 rounded-b-xl mx-1">
                             {/* CONTACTPERSONEN Section */}
                             {company.employees.length > 0 && <div className="px-6 py-4 ml-8 border-l-2 border-primary/30">
-                                <div className="flex items-center gap-2 text-[10px] font-semibold text-primary uppercase tracking-wider mb-3 bg-black">
-                                  {t('dashboard.contactsDashboard.contactPersons')}
-                                  <span className="ml-1 px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.employees.length}</span>
+                                <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider mb-3">
+                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-primary dark:bg-transparent dark:text-primary">
+                                    {t('dashboard.contactsDashboard.contactPersons')}
+                                    <span className="px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.employees.length}</span>
+                                  </span>
                                 </div>
                                  <div className="grid grid-cols-[minmax(160px,1fr)_minmax(220px,1.2fr)_130px] gap-4 text-[10px] font-medium text-muted-foreground mb-2 pb-2 border-b border-border/40">
                                    <div>{t('dashboard.contactsDashboard.name')}</div>
