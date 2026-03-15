@@ -260,28 +260,40 @@ export default function ClientDashboard() {
             </div>
 
             {/* Partner Card */}
-            <div className="rounded-xl border border-border p-5 flex flex-col items-center text-center justify-between">
-              <p className="text-[13px] text-muted-foreground leading-relaxed mb-3 max-w-[240px]">
-                {language === 'nl' ?
-                'Verdien automatisch commissie op elk NOx-rapport. Geen voorschot, geen admin.' :
-                'Earn automatic commission on every NOx report. No upfront cost, no admin.'}
-              </p>
-              <button
-                onClick={() => navigate('/dashboard/partnership-program')}
-                className="text-sm font-semibold hover:underline mb-4 text-black">
-                {language === 'nl' ? 'Bekijk OxiCloud Partnerprogramma' : 'View OxiCloud Partnership Program'}
-              </button>
-              <div className="flex flex-col gap-2 w-full">
-                <button
-                  onClick={() => navigate('/register/workspace')}
-                  className="w-full rounded-xl px-4 py-3 text-sm font-semibold transition-colors bg-[#c6f655] text-secondary">
-                  {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
-                </button>
-                <button
-                  onClick={() => setShowInviteManager(true)}
-                  className="w-full rounded-xl px-4 py-3 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                  {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
-                </button>
+            <div className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
+              {/* Header band */}
+              <div className="bg-foreground px-5 py-3">
+                <p className="text-[10px] uppercase tracking-[0.15em] font-semibold text-primary">
+                  {language === 'nl' ? 'Partnerprogramma' : 'Partner Program'}
+                </p>
+                <p className="text-sm font-semibold text-primary-foreground mt-0.5 dark:text-background">
+                  {language === 'nl' ? 'Verdien 40% commissie' : 'Earn 40% commission'}
+                </p>
+              </div>
+              {/* Body */}
+              <div className="p-5 flex flex-col flex-1 justify-between">
+                <p className="text-[13px] text-muted-foreground leading-relaxed mb-5">
+                  {language === 'nl' ?
+                  'Op elk NOx-rapport dat via jouw workspace loopt. Geen voorschot, geen admin.' :
+                  'On every NOx report through your workspace. No upfront cost, no admin.'}
+                </p>
+                <div className="flex flex-col gap-2 w-full">
+                  <button
+                    onClick={() => navigate('/register/workspace')}
+                    className="w-full rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors bg-primary text-primary-foreground hover:bg-primary/90">
+                    {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
+                  </button>
+                  <button
+                    onClick={() => setShowInviteManager(true)}
+                    className="w-full rounded-lg px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                    {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
+                  </button>
+                  <button
+                    onClick={() => navigate('/dashboard/partnership-program')}
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors mt-1 underline underline-offset-2">
+                    {language === 'nl' ? 'Meer info →' : 'Learn more →'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
