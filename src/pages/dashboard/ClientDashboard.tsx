@@ -266,7 +266,7 @@ export default function ClientDashboard() {
                 <p className="text-[10px] uppercase tracking-[0.15em] font-semibold text-primary">
                   {language === 'nl' ? 'Partnerprogramma' : 'Partner Program'}
                 </p>
-                <p className="text-sm font-semibold text-primary-foreground mt-0.5 dark:text-background">
+                <p className="text-sm font-semibold text-background mt-0.5">
                   {language === 'nl' ? 'Verdien 40% commissie' : 'Earn 40% commission'}
                 </p>
               </div>
