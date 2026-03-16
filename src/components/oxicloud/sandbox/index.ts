@@ -1,4 +1,5 @@
 export { SandboxRouter } from './SandboxRouter';
+export { SandboxWorkspace } from './SandboxWorkspace';
 export { SandboxProjectionPanel } from './SandboxProjectionPanel';
 export { BouwfasePuntbronnenSandbox } from './BouwfasePuntbronnenSandbox';
 export { BouwfaseLijnbronnenSandbox } from './BouwfaseLijnbronnenSandbox';
