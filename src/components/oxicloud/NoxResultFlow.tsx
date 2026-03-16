@@ -8,7 +8,7 @@ import { NoxCommissionScreen } from './nox-results/NoxCommissionScreen';
 import { NoxExceedanceScreen } from './nox-results/NoxExceedanceScreen';
 import { NoxComplianceAchievedScreen } from './nox-results/NoxComplianceAchievedScreen';
 import { SettlementPlatformStep } from './quote-flow/SettlementPlatformStep';
-import { SandboxRouter } from './sandbox';
+import { SandboxRouter, SandboxWorkspace } from './sandbox';
 import { SplitPhaseFlow } from './split-phase';
 import { PassendeBeoordelingFlow } from './PassendeBeoordelingFlow';
 import { toast } from 'sonner';
@@ -264,12 +264,9 @@ export function NoxResultFlow({
 
     case 'sandbox':
       return (
-        <SandboxRouter
-          initialType={sandboxType}
-          exceedingTypes={exceedingTypes}
+        <SandboxWorkspace
           onComplete={handleSandboxComplete}
           onBack={handleSandboxBack}
-          results={results}
         />
       );
 
