@@ -264,12 +264,9 @@ export function NoxResultFlow({
 
     case 'sandbox':
       return (
-        <SandboxRouter
-          initialType={sandboxType}
-          exceedingTypes={exceedingTypes}
+        <SandboxWorkspace
           onComplete={handleSandboxComplete}
           onBack={handleSandboxBack}
-          results={results}
         />
       );
 
