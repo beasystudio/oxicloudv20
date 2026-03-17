@@ -24,7 +24,7 @@ import {
   Eye,
 } from 'lucide-react';
 
-import { type PBStatus, SEED_PROJECT, QUOTE_LINE_ITEMS, COMMISSION_RATE } from './types';
+import { type PBStatus, buildPBProjectData, QUOTE_LINE_ITEMS, COMMISSION_RATE } from './types';
 import { DevStatusSimulator } from './DevStatusSimulator';
 import { TemporaryReport } from './TemporaryReport';
 import { StatusBanner } from './StatusBanner';
