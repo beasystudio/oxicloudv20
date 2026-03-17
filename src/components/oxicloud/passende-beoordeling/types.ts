@@ -30,19 +30,51 @@ export interface PBProjectData {
   noxImpact: number;
   threshold: number;
   overshoot: number;
+  clientName: string;
   clientEmail: string;
+  architectName: string;
   scanDate: string;
+  referenceNumber: string;
 }
 
-export const SEED_PROJECT: PBProjectData = {
-  name: 'Residentie Brugge Noord',
-  address: 'Noordzandstraat 14, Brugge',
-  noxImpact: 38.4,
-  threshold: 32.0,
-  overshoot: 6.4,
-  clientEmail: 'j.dejong@opdrachtgever.nl',
-  scanDate: new Date().toLocaleDateString('nl-BE'),
-};
+/**
+ * Build PB project data from existing mock project records.
+ * Uses the first GDesign demo project by default.
+ */
+export function buildPBProjectData(): PBProjectData {
+  // Pull from existing mock data via localStorage
+  const stored = localStorage.getItem('oxicloud_local_projects');
+  let name = 'Pauwels Herent';
+  let address = 'Luchthavenlaan 16-18, 1800 Vilvoorde, Belgium';
+  let managerName = 'Geoffrey Draelants';
+
+  if (stored) {
+    try {
+      const projects = JSON.parse(stored);
+      if (projects.length > 0) {
+        const p = projects[0];
+        name = p.name || name;
+        address = p.location || address;
+        managerName = p.managerName || managerName;
+      }
+    } catch {
+      // fallback to defaults
+    }
+  }
+
+  return {
+    name,
+    address,
+    noxImpact: 38.4,
+    threshold: 32.0,
+    overshoot: 6.4,
+    clientName: 'Pauwels NV',
+    clientEmail: 'info@pauwels-nv.be',
+    architectName: managerName,
+    scanDate: new Date().toLocaleDateString('nl-BE'),
+    referenceNumber: 'OXI-2026-00847',
+  };
+}
 
 export const QUOTE_LINE_ITEMS = [
   { description: 'Passende Beoordeling — Uitvoering', amount: 2400 },
