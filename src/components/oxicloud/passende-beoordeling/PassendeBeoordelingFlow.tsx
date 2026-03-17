@@ -9,22 +9,22 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
+  DialogDescription } from
+'@/components/ui/dialog';
 import { toast } from 'sonner';
 import { OxiCloudProject, CalculationResults } from '@/types/oxicloud';
 import {
   FileText,
   Download,
   CheckCircle2,
-  Send,
+
   AlertTriangle,
   ArrowRight,
   RefreshCw,
-  Eye,
-} from 'lucide-react';
+  Eye } from
+'lucide-react';
 
-import { type PBStatus, buildPBProjectData, QUOTE_LINE_ITEMS, COMMISSION_RATE } from './types';
+import { type PBStatus, SEED_PROJECT, QUOTE_LINE_ITEMS, COMMISSION_RATE } from './types';
 import { DevStatusSimulator } from './DevStatusSimulator';
 import { TemporaryReport } from './TemporaryReport';
 import { StatusBanner } from './StatusBanner';
@@ -45,7 +45,7 @@ export function PassendeBeoordelingFlow({
   project,
   results,
   onComplete,
-  onBack,
+  onBack
 }: PassendeBeoordelingFlowProps) {
   const [pbStatus, setPbStatus] = useState<PBStatus>('input_complete');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -54,10 +54,10 @@ export function PassendeBeoordelingFlow({
   const [edgeCases, setEdgeCases] = useState({
     noResponse14Days: false,
     quoteExpired: false,
-    slaMissed: false,
+    slaMissed: false
   });
 
-  const [pbProject] = useState(() => buildPBProjectData());
+  const pbProject = SEED_PROJECT;
   const subtotal = QUOTE_LINE_ITEMS.reduce((s, i) => s + i.amount, 0);
   const commission = subtotal * COMMISSION_RATE;
   const quoteSentDate = new Date().toLocaleDateString('nl-BE');
@@ -97,10 +97,10 @@ export function PassendeBeoordelingFlow({
   // Timeline step mapping for statuses 3-5
   const getTimelineStep = (): number => {
     switch (pbStatus) {
-      case 'awaiting_payment': return 0;
-      case 'paid': return 2;
-      case 'report_delivered': return 3;
-      default: return -1;
+      case 'awaiting_payment':return 0;
+      case 'paid':return 2;
+      case 'report_delivered':return 3;
+      default:return -1;
     }
   };
 
@@ -112,8 +112,8 @@ export function PassendeBeoordelingFlow({
         currentStatus={pbStatus}
         onStatusChange={setPbStatus}
         edgeCases={edgeCases}
-        onToggleEdgeCase={toggleEdgeCase}
-      />
+        onToggleEdgeCase={toggleEdgeCase} />
+      
 
       {/* Section Header */}
       <Separator />
@@ -137,30 +137,30 @@ export function PassendeBeoordelingFlow({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: 0.25 }}
-          className="space-y-4"
-        >
+          className="space-y-4">
+          
           {/* ─── STATUS 0: ON HOLD ─── */}
-          {pbStatus === 'on_hold' && (
-            <>
+          {pbStatus === 'on_hold' &&
+          <>
               <StatusBanner variant="grey">
                 Project on hold — De opdrachtgever heeft aangegeven momenteel niet verder te willen
                 gaan met de Passende Beoordeling.
               </StatusBanner>
               <TemporaryReport project={pbProject} condensed />
               <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => openConfirm('reactivate')}
-              >
+              variant="outline"
+              className="w-full"
+              onClick={() => openConfirm('reactivate')}>
+              
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Opdrachtgever wil toch doorgaan — Hervatten
               </Button>
             </>
-          )}
+          }
 
           {/* ─── STATUS 1: INPUT COMPLETE ─── */}
-          {pbStatus === 'input_complete' && (
-            <>
+          {pbStatus === 'input_complete' &&
+          <>
               <TemporaryReport project={pbProject} />
               <p className="text-xs text-muted-foreground">
                 Bespreek dit rapport met uw opdrachtgever en verkrijg diens goedkeuring voordat u een
@@ -168,10 +168,10 @@ export function PassendeBeoordelingFlow({
               </p>
               <div className="flex gap-3">
                 <Button
-                  variant="ghost"
-                  className="flex-1"
-                  onClick={() => setPbStatus('on_hold')}
-                >
+                variant="ghost"
+                className="flex-1"
+                onClick={() => setPbStatus('on_hold')}>
+                
                   Opdrachtgever gaat niet verder
                 </Button>
                 <Button className="flex-1" onClick={() => openConfirm('generate_quote')}>
@@ -180,11 +180,11 @@ export function PassendeBeoordelingFlow({
                 </Button>
               </div>
             </>
-          )}
+          }
 
           {/* ─── STATUS 2: QUOTE GENERATED ─── */}
-          {pbStatus === 'quote_generated' && (
-            <>
+          {pbStatus === 'quote_generated' &&
+          <>
               <TemporaryReport project={pbProject} condensed />
 
               <div className="rounded-xl border border-border bg-card p-5 space-y-4">
@@ -208,14 +208,14 @@ export function PassendeBeoordelingFlow({
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
-                      {QUOTE_LINE_ITEMS.map((item) => (
-                        <tr key={item.description}>
+                      {QUOTE_LINE_ITEMS.map((item) =>
+                    <tr key={item.description}>
                           <td className="px-4 py-2.5">{item.description}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums">
                             € {item.amount.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
                           </td>
                         </tr>
-                      ))}
+                    )}
                       <tr className="bg-muted/20">
                         <td className="px-4 py-2.5 font-medium">Subtotaal</td>
                         <td className="px-4 py-2.5 text-right font-medium tabular-nums">
@@ -255,41 +255,41 @@ export function PassendeBeoordelingFlow({
               </div>
 
               <Button className="w-full" onClick={handleSendQuote}>
-                <Send className="w-4 h-4 mr-2" />
+                
                 Offerte Versturen naar Opdrachtgever
               </Button>
             </>
-          )}
+          }
 
           {/* ─── STATUS 3: AWAITING PAYMENT ─── */}
-          {pbStatus === 'awaiting_payment' && (
-            <>
+          {pbStatus === 'awaiting_payment' &&
+          <>
               <StatusBanner variant="amber">
                 Wachten op betaling — Offerte verstuurd naar opdrachtgever. Betaling via
                 bankoverschrijving wordt verwacht.
               </StatusBanner>
 
-              {edgeCases.noResponse14Days && (
-                <StatusBanner variant="amber">
+              {edgeCases.noResponse14Days &&
+            <StatusBanner variant="amber">
                   Geen reactie ontvangen na 14 dagen. Een herinnering is automatisch verstuurd naar de
                   opdrachtgever.
                 </StatusBanner>
-              )}
+            }
 
-              {edgeCases.quoteExpired && (
-                <>
+              {edgeCases.quoteExpired &&
+            <>
                   <StatusBanner variant="red">
                     Offerte verlopen na 30 dagen.
                   </StatusBanner>
                   <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => setPbStatus('input_complete')}
-                  >
+                variant="outline"
+                className="w-full"
+                onClick={() => setPbStatus('input_complete')}>
+                
                     Nieuwe Offerte Aanvragen
                   </Button>
                 </>
-              )}
+            }
 
               <p className="text-xs text-muted-foreground">
                 De opdrachtgever dient het bedrag over te schrijven. Na verwerking van de betaling
@@ -315,22 +315,22 @@ export function PassendeBeoordelingFlow({
 
               <TimelineStepper currentStep={0} />
             </>
-          )}
+          }
 
           {/* ─── STATUS 4: PAID / REPORT IN PROGRESS ─── */}
-          {pbStatus === 'paid' && (
-            <>
+          {pbStatus === 'paid' &&
+          <>
               <StatusBanner variant="blue">
                 Rapport in uitvoering — Betaling bevestigd. Het OxiCloud-team is gestart met de
                 Passende Beoordeling.
               </StatusBanner>
 
-              {edgeCases.slaMissed && (
-                <StatusBanner variant="amber">
+              {edgeCases.slaMissed &&
+            <StatusBanner variant="amber">
                   Vertraging verwacht. Het OxiCloud-team heeft u geïnformeerd. Wij houden u op de
                   hoogte.
                 </StatusBanner>
-              )}
+            }
 
               <div className="rounded-xl border border-border bg-card p-5 space-y-2">
                 <p className="text-sm font-semibold">Verwachte oplevering</p>
@@ -347,11 +347,11 @@ export function PassendeBeoordelingFlow({
               <TemporaryReport project={pbProject} condensed />
               <TimelineStepper currentStep={2} />
             </>
-          )}
+          }
 
           {/* ─── STATUS 5: REPORT DELIVERED ─── */}
-          {pbStatus === 'report_delivered' && (
-            <>
+          {pbStatus === 'report_delivered' &&
+          <>
               <StatusBanner variant="green">
                 Rapport Geleverd — De Passende Beoordeling is afgerond en beschikbaar in uw dossier.
               </StatusBanner>
@@ -365,11 +365,11 @@ export function PassendeBeoordelingFlow({
                       <span className="text-sm">Tijdelijk Conformiteitsrapport — {pbProject.scanDate}</span>
                     </div>
                     <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-xs gap-1"
-                      onClick={() => toast.info('PDF wordt voorbereid en is straks beschikbaar.')}
-                    >
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs gap-1"
+                    onClick={() => toast.info('PDF wordt voorbereid en is straks beschikbaar.')}>
+                    
                       <Download className="w-3.5 h-3.5" />
                       Download
                     </Button>
@@ -380,11 +380,11 @@ export function PassendeBeoordelingFlow({
                       <span className="text-sm">Passende Beoordeling Rapport — {pbProject.scanDate}</span>
                     </div>
                     <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-xs gap-1"
-                      onClick={() => toast.info('Rapport wordt geladen...')}
-                    >
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs gap-1"
+                    onClick={() => toast.info('Rapport wordt geladen...')}>
+                    
                       <Download className="w-3.5 h-3.5" />
                       Download
                     </Button>
@@ -406,7 +406,7 @@ export function PassendeBeoordelingFlow({
 
               <TimelineStepper currentStep={4} />
             </>
-          )}
+          }
         </motion.div>
       </AnimatePresence>
 
@@ -420,9 +420,9 @@ export function PassendeBeoordelingFlow({
             </DialogTitle>
             <DialogDescription>
               {confirmDialogAction === 'generate_quote' &&
-                'Heeft u het tijdelijk rapport met uw opdrachtgever besproken en diens goedkeuring ontvangen?'}
+              'Heeft u het tijdelijk rapport met uw opdrachtgever besproken en diens goedkeuring ontvangen?'}
               {confirmDialogAction === 'reactivate' &&
-                'Bevestigt u dat de opdrachtgever akkoord gaat om verder te gaan?'}
+              'Bevestigt u dat de opdrachtgever akkoord gaat om verder te gaan?'}
             </DialogDescription>
           </DialogHeader>
           <div className="flex gap-3 pt-2">
@@ -441,8 +441,8 @@ export function PassendeBeoordelingFlow({
         open={showEmailPreview}
         onOpenChange={setShowEmailPreview}
         project={pbProject}
-        onConfirm={handleEmailConfirm}
-      />
-    </div>
-  );
+        onConfirm={handleEmailConfirm} />
+      
+    </div>);
+
 }
