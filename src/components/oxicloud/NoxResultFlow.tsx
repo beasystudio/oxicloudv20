@@ -10,7 +10,7 @@ import { NoxComplianceAchievedScreen } from './nox-results/NoxComplianceAchieved
 import { SettlementPlatformStep } from './quote-flow/SettlementPlatformStep';
 import { SandboxRouter, SandboxWorkspace } from './sandbox';
 import { SplitPhaseFlow } from './split-phase';
-import { PassendeBeoordelingFlow } from './PassendeBeoordelingFlow';
+import { PassendeBeoordelingFlow } from './passende-beoordeling';
 import { toast } from 'sonner';
 import { useLanguage } from '@/i18n/LanguageContext';
 
