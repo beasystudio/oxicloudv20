@@ -57,7 +57,7 @@ export function PassendeBeoordelingFlow({
     slaMissed: false
   });
 
-  const pbProject = SEED_PROJECT;
+  const pbProject = buildPBProjectData();
   const subtotal = QUOTE_LINE_ITEMS.reduce((s, i) => s + i.amount, 0);
   const commission = subtotal * COMMISSION_RATE;
   const quoteSentDate = new Date().toLocaleDateString('nl-BE');
