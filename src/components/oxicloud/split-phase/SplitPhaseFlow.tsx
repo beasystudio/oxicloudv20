@@ -1,19 +1,24 @@
+import { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { OxiCloudProject, CalculationResults } from '@/types/oxicloud';
-import { useLanguage } from '@/i18n/LanguageContext';
-import { LanguageToggle } from '@/components/LanguageToggle';
+import { 
+  SplitPhaseStep, 
+  SplitPhaseCalculation,
+  PhaseProject,
+  computeComplianceRatio,
+  computeMinimumRatio,
+  computeWorstCaseRatio,
+  createPhaseProjects,
+} from '@/types/splitPhase';
+import * as turf from '@turf/turf';
 
-import { useSplitPhase } from './useSplitPhase';
-import { MOCK_ORIGINAL_DATA } from './splitPhaseEngine';
-import { SPEntryScreen } from './SPEntryScreen';
-import { SPStap1Screen } from './SPStap1Screen';
-import { SPStap2Screen } from './SPStap2Screen';
-import { SPStap3Screen } from './SPStap3Screen';
-import { SPStap4Screen } from './SPStap4Screen';
-import { SPCompletion1Screen } from './SPCompletion1Screen';
-import { SPCompletion2Screen } from './SPCompletion2Screen';
-import { SPBinderCard } from './SPBinderCard';
+import { SplitPhaseIntroScreen } from './SplitPhaseIntroScreen';
+import { SplitPhaseCalculationScreen } from './SplitPhaseCalculationScreen';
+import { SplitPhaseFootprintScreen } from './SplitPhaseFootprintScreen';
+import { SplitPhasePreviewScreen } from './SplitPhasePreviewScreen';
+import { SplitPhaseConfirmationScreen } from './SplitPhaseConfirmationScreen';
+import { SplitPhaseCompleteScreen } from './SplitPhaseCompleteScreen';
 
 interface SplitPhaseFlowProps {
   project: OxiCloudProject;
@@ -22,96 +27,222 @@ interface SplitPhaseFlowProps {
   onBack: () => void;
 }
 
-export function SplitPhaseFlow({ project, results, onComplete, onBack }: SplitPhaseFlowProps) {
-  const { t } = useLanguage();
-  const sp = useSplitPhase();
-  const { session } = sp;
+/** Compute total footprint area from building footprint coordinates using Turf */
+function computeTotalFootprintArea(footprintCoords: number[][][]): number {
+  let total = 0;
+  for (const ring of footprintCoords) {
+    if (ring.length < 3) continue;
+    try {
+      const turfCoords = ring.map(([lat, lng]) => [lng, lat]);
+      turfCoords.push(turfCoords[0]); // close ring
+      const polygon = turf.polygon([turfCoords]);
+      total += turf.area(polygon);
+    } catch { /* skip invalid */ }
+  }
+  return Math.round(total);
+}
 
-  const handleExport = (phase: string) => {
-    sp.exportReport(phase);
-    toast.info(`${phase} report preparing...`);
+export function SplitPhaseFlow({
+  project,
+  results,
+  onComplete,
+  onBack,
+}: SplitPhaseFlowProps) {
+  const [step, setStep] = useState<SplitPhaseStep>('intro');
+  const [phase1Footprint, setPhase1Footprint] = useState<number>(0);
+
+  // Extract real project data from preEstimation
+  const mapData = project.preEstimation?.mapData;
+  const projectCenter: [number, number] | undefined = mapData?.projectCoordinates
+    ? [mapData.projectCoordinates.lat, mapData.projectCoordinates.lon]
+    : undefined;
+  const plotCoords: [number, number][] | undefined = mapData?.plotCoordinates
+    ? (mapData.plotCoordinates as [number, number][])
+    : undefined;
+  const buildingFootprints: [number, number][][] | undefined = mapData?.footprintCoords
+    ? (mapData.footprintCoords as [number, number][][])
+    : undefined;
+
+  // Compute real total footprint from building polygons, fallback to GFA
+  const totalFootprint = useMemo(() => {
+    if (mapData?.footprintCoords && mapData.footprintCoords.length > 0) {
+      const computed = computeTotalFootprintArea(mapData.footprintCoords);
+      if (computed > 0) return computed;
+    }
+    // Fallback to gross floor area from preEstimation entries
+    const entries = project.preEstimation?.projectTypeEntries;
+    if (entries && entries.length > 0) {
+      return entries.reduce((sum, e) => sum + (e.gfa || 0), 0);
+    }
+    return 1200; // final fallback
+  }, [mapData, project.preEstimation]);
+
+  const originalData = useMemo(() => ({
+    totalFootprint,
+    demolitionVolume: project.preEstimation?.sloopEntry?.demolitionVolume || 450,
+    equipmentHours: 2400,
+    trafficLV: 30000,
+    trafficHV: 4800,
+    operationalEquipment: 650,
+    operationalTrafficLV: 50000,
+    operationalTrafficHV: 8000,
+    constructionDuration: 180,
+  }), [totalFootprint, project.preEstimation]);
+
+  // Calculate the split phase parameters
+  const calculation = useMemo((): SplitPhaseCalculation => {
+    const projectEmission = 18.2; // Total project emissions in kg NOx
+    const threshold = 12.5; // Legal threshold
+    const minimumUtilizationRatio = 0.7;
+
+    const complianceRatio = computeComplianceRatio(projectEmission, threshold);
+    const minimumRatio = computeMinimumRatio(projectEmission, threshold, minimumUtilizationRatio);
+    
+    // Per emission type ratios (in production, calculate from actual emissions)
+    const emissionTypeRatios = {
+      demolition: 0.72,
+      constructionEquipment: 0.68,
+      constructionTraffic: 0.75,
+      operationalEquipment: 0.80,
+      operationalTraffic: 0.70,
+      operationalIndustrial: 0.85,
+    };
+
+    const ratioValues = Object.values(emissionTypeRatios);
+    const finalRatio = computeWorstCaseRatio(ratioValues, complianceRatio);
+    const candidateRatio = complianceRatio * 0.97;
+
+    return {
+      projectEmission,
+      threshold,
+      minimumUtilizationRatio,
+      complianceRatio,
+      minimumRatio,
+      candidateRatio,
+      finalRatio: Math.max(minimumRatio, finalRatio),
+      emissionTypeRatios,
+      phase1: null,
+      phase2: null,
+    };
+  }, []);
+
+  // Create phase projects based on footprint
+  const phases = useMemo(() => {
+    const ratio = phase1Footprint > 0 
+      ? phase1Footprint / originalData.totalFootprint 
+      : calculation.finalRatio;
+    
+    return createPhaseProjects(project.id, ratio, originalData);
+  }, [project.id, phase1Footprint, originalData, calculation.finalRatio]);
+
+  // Navigation handlers
+  const handleIntroNext = () => setStep('calculation');
+  const handleCalculationNext = () => setStep('footprint_map');
+  const handleFootprintConfirm = (footprint: number) => {
+    setPhase1Footprint(footprint);
+    setStep('phase1_preview');
+  };
+  const handlePreviewNext = () => setStep('confirmation');
+  const handleConfirmation = () => {
+    toast.success('Split phase simulation complete', {
+      description: 'Phase reports are ready for export.',
+    });
+    setStep('complete');
+  };
+
+  const handleDownloadPhase1 = () => {
+    toast.info('Preparing Phase 1 report...', {
+      description: 'Your PDF will be ready in a moment.',
+    });
+  };
+
+  const handleDownloadPhase2 = () => {
+    toast.info('Preparing Phase 2 report...', {
+      description: 'Your PDF will be ready in a moment.',
+    });
+  };
+
+  // Back navigation
+  const getBackHandler = () => {
+    switch (step) {
+      case 'intro': return onBack;
+      case 'calculation': return () => setStep('intro');
+      case 'footprint_map': return () => setStep('calculation');
+      case 'phase1_preview': return () => setStep('footprint_map');
+      case 'confirmation': return () => setStep('phase1_preview');
+      case 'complete': return onComplete;
+      default: return onBack;
+    }
   };
 
   return (
-    <div className="relative">
-      {/* NL | EN toggle */}
-      <div className="fixed top-4 right-4 z-50">
-        <LanguageToggle />
-      </div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={step}
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.2 }}
+      >
+        {step === 'intro' && (
+          <SplitPhaseIntroScreen
+            projectEmission={calculation.projectEmission}
+            threshold={calculation.threshold}
+            onContinue={handleIntroNext}
+            onBack={onBack}
+          />
+        )}
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={session.currentStep}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.2 }}
-        >
-          {session.currentStep === 'entry' && (
-            <SPEntryScreen
-              excessPercent={sp.excessPercent}
-              onContinue={sp.runCalculation}
-              onBack={onBack}
-            />
-          )}
+        {step === 'calculation' && (
+          <SplitPhaseCalculationScreen
+            calculation={calculation}
+            onContinue={handleCalculationNext}
+            onBack={() => setStep('intro')}
+          />
+        )}
 
-          {session.currentStep === 'stap1' && session.calcResult && (
-            <SPStap1Screen
-              calcResult={session.calcResult}
-              onContinue={sp.goToStap2}
-              onBack={() => sp.goBack('stap1')}
-            />
-          )}
+        {step === 'footprint_map' && (
+          <SplitPhaseFootprintScreen
+            calculation={calculation}
+            totalFootprint={originalData.totalFootprint}
+            plotCoordinates={plotCoords}
+            buildingFootprints={buildingFootprints}
+            projectCoordinates={projectCenter}
+            onConfirm={handleFootprintConfirm}
+            onBack={() => setStep('calculation')}
+          />
+        )}
 
-          {session.currentStep === 'stap2' && session.calcResult && (
-            <SPStap2Screen
-              calcResult={session.calcResult}
-              totalFootprintM2={MOCK_ORIGINAL_DATA.totalFootprintM2}
-              onConfirm={sp.confirmFootprint}
-              onBack={() => sp.goBack('stap2')}
-            />
-          )}
+        {step === 'phase1_preview' && (
+          <SplitPhasePreviewScreen
+            calculation={calculation}
+            phase1={phases.phase1}
+            phase2={phases.phase2}
+            onContinue={handlePreviewNext}
+            onBack={() => setStep('footprint_map')}
+          />
+        )}
 
-          {session.currentStep === 'stap3' && session.phase1Data && session.phase2Data && (
-            <SPStap3Screen
-              phase1={session.phase1Data}
-              phase2={session.phase2Data}
-              onContinue={sp.goToStap4}
-              onBack={() => sp.goBack('stap3')}
-            />
-          )}
+        {step === 'confirmation' && (
+          <SplitPhaseConfirmationScreen
+            phase1={phases.phase1}
+            phase2={phases.phase2}
+            onConfirm={handleConfirmation}
+            onBack={() => setStep('phase1_preview')}
+          />
+        )}
 
-          {session.currentStep === 'stap4' && session.phase1Data && session.phase2Data && (
-            <SPStap4Screen
-              phase1={session.phase1Data}
-              phase2={session.phase2Data}
-              checkboxes={session.checkboxes}
-              onToggleCheckbox={sp.toggleCheckbox}
-              onConfirm={sp.generateReports}
-              onBack={() => sp.goBack('stap4')}
-            />
-          )}
-
-          {session.currentStep === 'completion1' && session.phase1Data && session.phase2Data && (
-            <SPCompletion1Screen
-              phase1={session.phase1Data}
-              phase2={session.phase2Data}
-              projectName={project.name}
-              onExportPhase1={() => handleExport('Phase 1')}
-              onExportPhase2={() => handleExport('Phase 2')}
-              onContinue={sp.goToCompletion2}
-              onBackToProjects={onComplete}
-            />
-          )}
-
-          {session.currentStep === 'completion2' && (
-            <SPCompletion2Screen
-              onContinue={onComplete}
-              onBackToProjects={onComplete}
-            />
-          )}
-        </motion.div>
-      </AnimatePresence>
-    </div>
+        {step === 'complete' && (
+          <SplitPhaseCompleteScreen
+            phase1={phases.phase1}
+            phase2={phases.phase2}
+            projectName={project.name}
+            onDownloadPhase1={handleDownloadPhase1}
+            onDownloadPhase2={handleDownloadPhase2}
+            onBackToProjects={onComplete}
+          />
+        )}
+      </motion.div>
+    </AnimatePresence>
   );
 }
