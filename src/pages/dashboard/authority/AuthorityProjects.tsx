@@ -410,8 +410,8 @@ const AuthorityProjects = () => {
 
           {/* Project List - Names only */}
           <div className="space-y-0">
-            {filteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className="py-3 cursor-pointer transition-colors">
-                <span className="text-sm text-muted-foreground hover:text-foreground">
+            {filteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group", "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")}>
+                <span className="text-sm text-foreground group-hover:text-black transition-colors">
                   {project.projectName}
                 </span>
               </div>)}
