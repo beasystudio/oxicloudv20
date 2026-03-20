@@ -8,7 +8,7 @@ import { FlandersInteractiveMap } from './flanders-map';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 export const OxiCloudLanding = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
