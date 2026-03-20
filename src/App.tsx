@@ -19,6 +19,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import { ForArchitectsPage } from "./components/landing/ForArchitectsPage";
 import { ForAuthoritiesPage } from "./components/landing/ForAuthoritiesPage";
+import GovernmentRegister from "./pages/GovernmentRegister";
 import PartnerHome from "./pages/dashboard/PartnerHome";
 import PartnershipProgram from "./pages/dashboard/PartnershipProgram";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
@@ -66,6 +67,7 @@ const AnimatedRoutes = () => {
         <Route path="/contact" element={<ThemeWrapper><PageTransition><Contact /></PageTransition></ThemeWrapper>} />
         <Route path="/for-architects" element={<ThemeWrapper><PageTransition><ForArchitectsPage /></PageTransition></ThemeWrapper>} />
         <Route path="/for-authorities" element={<ThemeWrapper><PageTransition><ForAuthoritiesPage /></PageTransition></ThemeWrapper>} />
+        <Route path="/government-register" element={<ThemeWrapper><PageTransition><GovernmentRegister /></PageTransition></ThemeWrapper>} />
         <Route path="/book-a-demo" element={<Navigate to="/pilot-demo" replace />} />
         
         {/* Pilot Auth — theme-aware */}
