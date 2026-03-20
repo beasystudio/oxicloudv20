@@ -19,6 +19,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import { ForArchitectsPage } from "./components/landing/ForArchitectsPage";
 import { ForAuthoritiesPage } from "./components/landing/ForAuthoritiesPage";
+import GovernmentRegister from "./pages/GovernmentRegister";
 import PartnerHome from "./pages/dashboard/PartnerHome";
 import PartnershipProgram from "./pages/dashboard/PartnershipProgram";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
