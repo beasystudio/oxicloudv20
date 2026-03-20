@@ -66,6 +66,7 @@ const AnimatedRoutes = () => {
         <Route path="/contact" element={<ThemeWrapper><PageTransition><Contact /></PageTransition></ThemeWrapper>} />
         <Route path="/for-architects" element={<ThemeWrapper><PageTransition><ForArchitectsPage /></PageTransition></ThemeWrapper>} />
         <Route path="/for-authorities" element={<ThemeWrapper><PageTransition><ForAuthoritiesPage /></PageTransition></ThemeWrapper>} />
+        <Route path="/government-register" element={<ThemeWrapper><PageTransition><GovernmentRegister /></PageTransition></ThemeWrapper>} />
         <Route path="/book-a-demo" element={<Navigate to="/pilot-demo" replace />} />
         
         {/* Pilot Auth — theme-aware */}
