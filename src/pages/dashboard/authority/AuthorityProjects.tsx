@@ -328,22 +328,18 @@ const AuthorityProjects = () => {
           </CardHeader>
           <CardContent className="flex-1 flex flex-col min-h-0 overflow-hidden p-0">
             <div className="flex-1 overflow-auto min-h-0">
-              {defaultFilteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-5 px-5 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-xl group", "hover:bg-gradient-to-r hover:from-primary hover:to-primary/60")}>
-                  {/* Left - Thumbnail */}
-                  
-
+              {defaultFilteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-5 px-5 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group", "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")}>
                   {/* Center - Project Info */}
                   <div className="flex-1 min-w-0 space-y-0.5">
                     <div className="flex items-center gap-3">
-                      <h3 className="font-medium text-sm text-foreground group-hover:text-white transition-colors">
+                      <h3 className="font-medium text-sm text-foreground group-hover:text-black transition-colors">
                         {project.projectName}
                       </h3>
-                      
                     </div>
-                    <p className="text-xs text-muted-foreground group-hover:text-white/90 transition-colors">
+                    <p className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors">
                       {project.company}
                     </p>
-                    <p className="text-xs text-muted-foreground/80 truncate group-hover:text-white/70 transition-colors">
+                    <p className="text-xs text-muted-foreground/80 truncate group-hover:text-black/70 transition-colors">
                       {project.address}
                     </p>
                   </div>
@@ -351,13 +347,12 @@ const AuthorityProjects = () => {
                   {/* Right - Natura2000 Info */}
                   <div className="flex-shrink-0 text-right space-y-1 min-w-[200px]">
                     <div className="flex items-center justify-end gap-2">
-                      <span className="text-xs font-medium text-foreground group-hover:text-white transition-colors">{project.natura2000Site}</span>
+                      <span className="text-xs font-medium text-foreground group-hover:text-black transition-colors">{project.natura2000Site}</span>
                     </div>
-                    <div className="flex items-center justify-end gap-4 text-xs text-muted-foreground group-hover:text-white/80 transition-colors">
-                      
+                    <div className="flex items-center justify-end gap-4 text-xs text-muted-foreground group-hover:text-black/80 transition-colors">
                       <span>
-                        <span className="group-hover:text-white/60">Impact: </span>
-                        <span className={cn("font-semibold group-hover:text-background transition-colors", project.constructionProgress * 0.006 < 0.5 ? "text-primary" : "text-destructive")}>
+                        <span className="group-hover:text-black/60">Impact: </span>
+                        <span className={cn("font-semibold group-hover:text-black transition-colors", project.constructionProgress * 0.006 < 0.5 ? "text-primary" : "text-destructive")}>
                           {(project.constructionProgress * 0.006).toFixed(2)}%
                         </span>
                       </span>
@@ -365,7 +360,7 @@ const AuthorityProjects = () => {
                   </div>
 
                   {/* Arrow indicator */}
-                  <ChevronRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-white group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                  <ChevronRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-black group-hover:translate-x-0.5 transition-all flex-shrink-0" />
                 </div>)}
             </div>
 
@@ -415,8 +410,8 @@ const AuthorityProjects = () => {
 
           {/* Project List - Names only */}
           <div className="space-y-0">
-            {filteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className="py-3 cursor-pointer transition-colors">
-                <span className="text-sm text-muted-foreground hover:text-foreground">
+            {filteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group", "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")}>
+                <span className="text-sm text-foreground group-hover:text-black transition-colors">
                   {project.projectName}
                 </span>
               </div>)}
