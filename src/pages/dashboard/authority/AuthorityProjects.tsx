@@ -1445,14 +1445,14 @@ const AuthorityProjects = () => {
         {/* Traffic Details */}
         <Card className="border-border/40 shadow-none">
           <CardContent className="p-4">
-            <h4 className="text-sm font-semibold mb-3">Traffic Movement Analysis</h4>
+            <h4 className="text-sm font-semibold mb-3">{t('authority.projects.trafficMovementAnalysis')}</h4>
             <div className="grid grid-cols-2 gap-4 mb-3">
               <div>
-                <p className="text-xs text-muted-foreground">Annual Movements</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.annualMovements')}</p>
                 <span className="text-2xl font-bold">18,250</span>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Maximum Threshold</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.maximumThreshold')}</p>
                 <span className="text-2xl font-semibold text-muted-foreground">65,000</span>
               </div>
             </div>
