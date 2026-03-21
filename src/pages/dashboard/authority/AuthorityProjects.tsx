@@ -459,7 +459,7 @@ const AuthorityProjects = () => {
           </button>
           <button onClick={() => setPhaseTab('audit')} className={cn("pb-2 text-sm transition-colors flex items-center gap-1.5", phaseTab === 'audit' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
             <ClipboardList className="h-3.5 w-3.5" />
-            Audit Log
+            {t('authority.projects.auditLog')}
           </button>
         </div>
 
