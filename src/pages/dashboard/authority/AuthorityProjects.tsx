@@ -718,7 +718,7 @@ const AuthorityProjects = () => {
                 <div className="border-t border-border/30 pt-4">
                   <h5 className="text-xs font-medium mb-1">{t('authority.projects.evaluationFramework')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    The construction phase assessment evaluates nitrogen oxide emissions from two primary categories.
+                    {t('authority.projects.evaluationFrameworkDesc')}
                   </p>
                 </div>
                 <div>
