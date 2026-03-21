@@ -635,10 +635,10 @@ const AuthorityProjects = () => {
                   <span className="text-5xl font-bold tracking-tight">0.420</span>
                   <span className="text-2xl text-muted-foreground">%</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Total nitrogen impact during construction phase</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.totalNitrogenImpactOperation').replace('operational', 'construction')}</p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Legal Limit</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('authority.projects.legalLimit')}</p>
                 <p className="text-2xl font-semibold">1.00%</p>
               </div>
             </div>
