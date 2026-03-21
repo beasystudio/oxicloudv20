@@ -558,14 +558,13 @@ const AuthorityProjects = () => {
         {/* Ruimtelijke & ecologische context */}
         <Card className="border-border/50 shadow-sm">
           <CardContent className="p-6">
-            <h3 className="text-base font-medium mb-4 text-foreground">Ruimtelijke & ecologische context</h3>
+            <h3 className="text-base font-medium mb-4 text-foreground">{t('authority.projects.spatialContext')}</h3>
             <div className="flex gap-6">
-              {/* Left: Data */}
               <div className="flex-1 space-y-2">
-                <Row label="SPZ-H code" value={project.natura2000Code} />
-                <Row label="SPZ-H naam" value={project.natura2000Site} />
-                <Row label="Kritische Depositiewaarde" value="6 kg N/jaar" />
-                <Row label="Afstand" value={`${(project.distanceToHabitat * 1000).toFixed(0)} m`} />
+                <Row label={t('authority.projects.spzCode')} value={project.natura2000Code} />
+                <Row label={t('authority.projects.spzName')} value={project.natura2000Site} />
+                <Row label={t('authority.projects.criticalDepositionValue')} value="6 kg N/jaar" />
+                <Row label={t('authority.projects.distance')} value={`${(project.distanceToHabitat * 1000).toFixed(0)} m`} />
               </div>
 
               {/* Right: Action Buttons */}
