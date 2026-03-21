@@ -695,10 +695,9 @@ const AuthorityProjects = () => {
         {/* Conclusion */}
         <Card className="border-border/40 shadow-none">
           <CardContent className="p-4">
-            <h4 className="text-sm font-semibold mb-2">Conclusion</h4>
+            <h4 className="text-sm font-semibold mb-2">{t('authority.projects.conclusion')}</h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              The cumulative nitrogen impact during the construction phase (0.420%) remains below the 
-              1% de minimis threshold. A further appropriate assessment is not required for this project phase.
+              {t('authority.projects.conclusionConstruction').replace('{value}', '0.420')}
             </p>
           </CardContent>
         </Card>
