@@ -567,16 +567,15 @@ const AuthorityProjects = () => {
                 <Row label={t('authority.projects.distance')} value={`${(project.distanceToHabitat * 1000).toFixed(0)} m`} />
               </div>
 
-              {/* Right: Action Buttons */}
               <div className="flex flex-col gap-2 shrink-0">
                 <Button variant="outline" size="sm" className="text-xs justify-center h-8 px-4 border-border/60 rounded-full font-normal">
-                  Bekijk de lijst met planten
+                  {t('authority.projects.viewPlantList')}
                 </Button>
                 <Button variant="outline" size="sm" className="text-xs justify-center h-8 px-4 border-border/60 rounded-full font-normal">
-                  Zoek de locatie op
+                  {t('authority.projects.findLocation')}
                 </Button>
                 <Button variant="outline" size="sm" className="text-xs justify-center h-8 px-4 border-border/60 rounded-full font-normal">
-                  Raadpleeg VITO-tabellen
+                  {t('authority.projects.consultVitoTables')}
                 </Button>
               </div>
             </div>
