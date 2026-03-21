@@ -591,10 +591,10 @@ const AuthorityProjects = () => {
         {/* Stikstofemissie */}
         <Card className="border-border/50 shadow-sm">
           <CardContent className="p-6">
-            <h3 className="text-base font-medium mb-5 text-foreground">Stikstofemissie</h3>
+            <h3 className="text-base font-medium mb-5 text-foreground">{t('authority.projects.nitrogenEmission')}</h3>
             <div className="space-y-5">
-              <EmissionBar label="Bouwfase" value={0.85} color="orange" />
-              <EmissionBar label="Exploitatiefase" value={0.60} color="green" />
+              <EmissionBar label={t('authority.projects.constructionPhase')} value={0.85} color="orange" />
+              <EmissionBar label={t('authority.projects.operationalPhase')} value={0.60} color="green" />
             </div>
           </CardContent>
         </Card>
