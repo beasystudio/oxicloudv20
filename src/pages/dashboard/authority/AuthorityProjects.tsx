@@ -538,7 +538,7 @@ const AuthorityProjects = () => {
 
           {/* Projectbeschrijving */}
           <div className="pt-5 mt-5 border-t border-border/30">
-            <h4 className="text-base font-medium mb-3 text-foreground">Projectbeschrijving</h4>
+            <h4 className="text-base font-medium mb-3 text-foreground">{t('authority.projects.projectDescription')}</h4>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               {project.description}
             </p>
