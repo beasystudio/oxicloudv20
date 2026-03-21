@@ -629,7 +629,7 @@ const AuthorityProjects = () => {
             <div className="flex items-start justify-between">
               <div>
                 <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-xs px-3 py-1 mb-3">
-                  COMPLIANT
+                  {t('authority.projects.compliant')}
                 </Badge>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold tracking-tight">0.420</span>
