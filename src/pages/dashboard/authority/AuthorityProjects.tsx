@@ -439,7 +439,7 @@ const AuthorityProjects = () => {
         {/* Horizontal Phase Tabs - Left aligned */}
         <div className="flex gap-6 border-b border-border/40">
           <button onClick={() => setPhaseTab('overzicht')} className={cn("pb-2 text-sm transition-colors", phaseTab === 'overzicht' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
-            Overzicht
+            {t('authority.projects.overzicht')}
           </button>
           <button onClick={() => {
           setPhaseTab('aanlegfase');
