@@ -300,8 +300,8 @@ const AuthorityProjects = () => {
               <Input placeholder={t('authority.projects.filterByCompany')} className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterCompany} onChange={e => setDefaultFilterCompany(e.target.value)} />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Custom Fields</Label>
-              <Input placeholder="Search custom fields..." className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterCustom} onChange={e => setDefaultFilterCustom(e.target.value)} />
+              <Label className="text-xs font-medium text-muted-foreground">{t('authority.projects.customFields')}</Label>
+              <Input placeholder={t('authority.projects.searchCustomFields')} className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterCustom} onChange={e => setDefaultFilterCustom(e.target.value)} />
             </div>
           </CardContent>
           <div className="p-4 border-t border-border/40 shrink-0">
