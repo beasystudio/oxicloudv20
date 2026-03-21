@@ -1357,16 +1357,16 @@ const AuthorityProjects = () => {
         {/* Equipment Inventory */}
         <Card className="border-border/40 shadow-none">
           <CardContent className="p-4">
-            <h4 className="text-sm font-semibold mb-4">Building Systems Inventory</h4>
+            <h4 className="text-sm font-semibold mb-4">{t('authority.projects.buildingSystemsInventory')}</h4>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
                   <tr className="border-b border-border/40">
-                    <th className="text-left py-2.5 text-muted-foreground font-medium">System</th>
-                    <th className="text-center py-2.5 text-muted-foreground font-medium w-16">Qty</th>
-                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">Per Unit</th>
-                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">Total</th>
-                    <th className="text-right py-2.5 text-muted-foreground font-medium w-16">Share</th>
+                    <th className="text-left py-2.5 text-muted-foreground font-medium">{t('authority.projects.system')}</th>
+                    <th className="text-center py-2.5 text-muted-foreground font-medium w-16">{t('authority.projects.qty')}</th>
+                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">{t('authority.projects.perUnit')}</th>
+                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">{t('authority.projects.total')}</th>
+                    <th className="text-right py-2.5 text-muted-foreground font-medium w-16">{t('authority.projects.share')}</th>
                   </tr>
                 </thead>
                 <tbody>
