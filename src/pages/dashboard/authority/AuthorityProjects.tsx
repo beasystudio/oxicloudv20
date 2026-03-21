@@ -842,7 +842,7 @@ const AuthorityProjects = () => {
                 <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.stationaryMachineryConstruction')}</p>
               </div>
               <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-xs px-3 py-1">
-                COMPLIANT
+                {t('authority.projects.compliant')}
               </Badge>
             </div>
           </CardContent>
