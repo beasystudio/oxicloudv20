@@ -896,8 +896,8 @@ const AuthorityProjects = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h4 className="text-sm font-semibold">Equipment Inventory</h4>
-                <p className="text-xs text-muted-foreground">Stationary machines and emission breakdown</p>
+                <h4 className="text-sm font-semibold">{t('authority.projects.equipmentInventory')}</h4>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.stationaryMachinesBreakdown')}</p>
               </div>
             </div>
             
