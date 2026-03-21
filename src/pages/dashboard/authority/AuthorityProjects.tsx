@@ -1198,10 +1198,10 @@ const AuthorityProjects = () => {
                   <span className="text-5xl font-bold tracking-tight">0.280</span>
                   <span className="text-2xl text-muted-foreground">%</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Total nitrogen impact during operational phase</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.totalNitrogenImpactOperation')}</p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Legal Limit</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('authority.projects.legalLimit')}</p>
                 <p className="text-2xl font-semibold">1.00%</p>
               </div>
             </div>
