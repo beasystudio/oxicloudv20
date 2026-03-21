@@ -484,7 +484,7 @@ const AuthorityProjects = () => {
             {/* Left Sidebar */}
             <div className="flex flex-col gap-1.5 shrink-0">
               <button onClick={() => setAanlegSubTab('general')} className={cn("px-4 py-2 text-[11px] font-medium rounded-full transition-all text-left whitespace-nowrap border", aanlegSubTab === 'general' ? "bg-muted text-foreground border-border" : "text-muted-foreground border-transparent hover:bg-foreground hover:text-[hsl(var(--neon-lime))] hover:border-foreground")}>
-                GENERAL COMPLIANCE
+                {t('authority.projects.generalCompliance')}
               </button>
               <button onClick={() => setAanlegSubTab('puntbronnen')} className={cn("px-4 py-2 text-[11px] font-medium rounded-full transition-all text-left whitespace-nowrap border", aanlegSubTab === 'puntbronnen' ? "bg-muted text-foreground border-border" : "text-muted-foreground border-transparent hover:bg-foreground hover:text-[hsl(var(--neon-lime))] hover:border-foreground")}>
                 PUNTBRONNEN
