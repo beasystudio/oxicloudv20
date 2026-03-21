@@ -581,7 +581,7 @@ const AuthorityProjects = () => {
             </div>
             <div className="pt-4 mt-4 border-t border-border/30">
               <div className="flex items-start gap-2">
-                <span className="text-muted-foreground text-sm">Location:</span>
+                <span className="text-muted-foreground text-sm">{t('authority.projects.location')}:</span>
                 <span className="text-sm text-foreground">{project.address}</span>
               </div>
             </div>
