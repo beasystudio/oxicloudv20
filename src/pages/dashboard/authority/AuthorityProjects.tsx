@@ -283,7 +283,7 @@ const AuthorityProjects = () => {
         <Card className="w-72 shrink-0 flex flex-col border-border/60">
           <CardHeader className="pb-4 shrink-0 border-b border-border/40">
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Filters
+              {t('authority.projects.filters')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 flex-1 overflow-y-auto py-4">
