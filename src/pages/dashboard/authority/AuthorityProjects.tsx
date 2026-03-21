@@ -662,7 +662,7 @@ const AuthorityProjects = () => {
         <div className="grid grid-cols-2 gap-4">
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Point Sources</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.pointSources')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold text-inherit">0.216</span>
                 <span className="text-lg text-muted-foreground">%</span>
