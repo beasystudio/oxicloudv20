@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { TopNavigation } from '@/components/TopNavigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -125,6 +126,7 @@ const mockProjects: AuthorityProject[] = [{
 }];
 const AuthorityProjects = () => {
   const { currentUser } = useMockAuth();
+  const { t } = useLanguage();
   const location = useLocation();
 
   // View state
@@ -273,7 +275,7 @@ const AuthorityProjects = () => {
       {/* Global Search Bar - clickable to go to list view */}
       <div className="relative mb-6 cursor-pointer group" onClick={handleGlobalSearchClick}>
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors group-hover:text-primary" />
-        <Input placeholder="Search projects…" className="pl-12 h-12 text-base bg-background cursor-pointer border-border/60 transition-all group-hover:border-primary/50 group-hover:shadow-sm" readOnly />
+        <Input placeholder={t('authority.projects.searchProjects')} className="pl-12 h-12 text-base bg-background cursor-pointer border-border/60 transition-all group-hover:border-primary/50 group-hover:shadow-sm" readOnly />
       </div>
 
       <div className="flex gap-6 h-[calc(100vh-180px)]">
@@ -281,31 +283,31 @@ const AuthorityProjects = () => {
         <Card className="w-72 shrink-0 flex flex-col border-border/60">
           <CardHeader className="pb-4 shrink-0 border-b border-border/40">
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Filters
+              {t('authority.projects.filters')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 flex-1 overflow-y-auto py-4">
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Project Name</Label>
-              <Input placeholder="Filter by name..." className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterName} onChange={e => setDefaultFilterName(e.target.value)} />
+              <Label className="text-xs font-medium text-muted-foreground">{t('authority.projects.projectName')}</Label>
+              <Input placeholder={t('authority.projects.filterByName')} className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterName} onChange={e => setDefaultFilterName(e.target.value)} />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Location</Label>
-              <Input placeholder="Filter by location..." className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterLocation} onChange={e => setDefaultFilterLocation(e.target.value)} />
+              <Label className="text-xs font-medium text-muted-foreground">{t('authority.projects.location')}</Label>
+              <Input placeholder={t('authority.projects.filterByLocation')} className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterLocation} onChange={e => setDefaultFilterLocation(e.target.value)} />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Company</Label>
-              <Input placeholder="Filter by company..." className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterCompany} onChange={e => setDefaultFilterCompany(e.target.value)} />
+              <Label className="text-xs font-medium text-muted-foreground">{t('authority.projects.company')}</Label>
+              <Input placeholder={t('authority.projects.filterByCompany')} className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterCompany} onChange={e => setDefaultFilterCompany(e.target.value)} />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Custom Fields</Label>
-              <Input placeholder="Search custom fields..." className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterCustom} onChange={e => setDefaultFilterCustom(e.target.value)} />
+              <Label className="text-xs font-medium text-muted-foreground">{t('authority.projects.customFields')}</Label>
+              <Input placeholder={t('authority.projects.searchCustomFields')} className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterCustom} onChange={e => setDefaultFilterCustom(e.target.value)} />
             </div>
           </CardContent>
           <div className="p-4 border-t border-border/40 shrink-0">
             <div className="flex gap-2">
               <Button variant="outline" className="flex-1 h-9 text-xs font-medium border-border/60 hover:bg-muted/80" onClick={clearFilters}>
-                Clear All
+                {t('authority.projects.clearAll')}
               </Button>
               <Button variant="outline" className="h-9 text-xs font-medium border-border/60 hover:bg-muted/80">
                 <Download className="h-3.5 w-3.5" />
@@ -319,10 +321,10 @@ const AuthorityProjects = () => {
           <CardHeader className="pb-3 shrink-0 border-b border-border/40">
             <div className="flex items-center justify-between">
               <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Projects
+                {t('authority.projects.projects')}
               </CardTitle>
               <span className="text-xs text-muted-foreground">
-                {defaultFilteredProjects.length} results
+                {defaultFilteredProjects.length} {t('authority.projects.results')}
               </span>
             </div>
           </CardHeader>
@@ -351,7 +353,7 @@ const AuthorityProjects = () => {
                     </div>
                     <div className="flex items-center justify-end gap-4 text-xs text-muted-foreground group-hover:text-black/80 transition-colors">
                       <span>
-                        <span className="group-hover:text-black/60">Impact: </span>
+                        <span className="group-hover:text-black/60">{t('authority.projects.impact')}: </span>
                         <span className={cn("font-semibold group-hover:text-black transition-colors", project.constructionProgress * 0.006 < 0.5 ? "text-primary" : "text-destructive")}>
                           {(project.constructionProgress * 0.006).toFixed(2)}%
                         </span>
@@ -366,9 +368,9 @@ const AuthorityProjects = () => {
 
             {/* Footer */}
             <div className="flex items-center justify-between px-5 py-3 border-t border-border/40 text-xs text-muted-foreground shrink-0 bg-muted/20">
-              <span>{defaultFilteredProjects.length} projects found</span>
+              <span>{defaultFilteredProjects.length} {t('authority.projects.projectsFound')}</span>
               <div className="flex items-center gap-2">
-                <span>Show</span>
+                <span>{t('authority.projects.show')}</span>
                 <Select value={String(itemsPerPage)} onValueChange={v => setItemsPerPage(Number(v))}>
                   <SelectTrigger className="w-16 h-7 text-xs border-border/60">
                     <SelectValue />
@@ -391,7 +393,7 @@ const AuthorityProjects = () => {
       {/* Search Bar with border */}
       <div className="relative border rounded-lg bg-background">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input placeholder="Search projects..." className="pl-12 pr-12 h-12 text-base bg-transparent border-0 rounded-lg focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer" value={listSearchQuery} onChange={e => setListSearchQuery(e.target.value)} onClick={handleBackToDefault} autoFocus />
+        <Input placeholder={t('authority.projects.searchProjects')} className="pl-12 pr-12 h-12 text-base bg-transparent border-0 rounded-lg focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer" value={listSearchQuery} onChange={e => setListSearchQuery(e.target.value)} onClick={handleBackToDefault} autoFocus />
         <button onClick={handleCloseListView} className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 hover:bg-muted rounded-full transition-colors">
           <X className="h-5 w-5 text-muted-foreground" />
         </button>
@@ -403,8 +405,8 @@ const AuthorityProjects = () => {
           {/* Search toggle */}
           <div className="flex items-center gap-3 mb-6">
             <Switch id="active-projects" checked={searchMyActiveProjects} onCheckedChange={setSearchMyActiveProjects} />
-            <Label htmlFor="active-projects" className="text-sm text-muted-foreground">
-              Search in my active projects
+             <Label htmlFor="active-projects" className="text-sm text-muted-foreground">
+               {t('authority.projects.searchInActive')}
             </Label>
           </div>
 
@@ -418,7 +420,7 @@ const AuthorityProjects = () => {
           </div>
 
           {filteredProjects.length === 0 && <div className="text-center py-8 text-muted-foreground text-sm">
-              No projects found matching your search
+              {t('authority.projects.noProjectsFound')}
             </div>}
         </CardContent>
       </Card>
@@ -437,27 +439,27 @@ const AuthorityProjects = () => {
         {/* Horizontal Phase Tabs - Left aligned */}
         <div className="flex gap-6 border-b border-border/40">
           <button onClick={() => setPhaseTab('overzicht')} className={cn("pb-2 text-sm transition-colors", phaseTab === 'overzicht' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
-            Overzicht
+            {t('authority.projects.overzicht')}
           </button>
           <button onClick={() => {
           setPhaseTab('aanlegfase');
           setAanlegSubTab('general');
         }} className={cn("pb-2 text-sm transition-colors", phaseTab === 'aanlegfase' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
-            Aanlegfase
+            {t('authority.projects.aanlegfase')}
           </button>
           <button onClick={() => {
           setPhaseTab('exploitatiefase');
           setAanlegSubTab('general');
         }} className={cn("pb-2 text-sm transition-colors", phaseTab === 'exploitatiefase' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
-            Exploitatiefase
+            {t('authority.projects.exploitatiefase')}
           </button>
           <button onClick={() => setPhaseTab('validatie')} className={cn("pb-2 text-sm transition-colors flex items-center gap-1.5", phaseTab === 'validatie' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
             <Shield className="h-3.5 w-3.5" />
-            Validatie
+            {t('authority.projects.validatie')}
           </button>
           <button onClick={() => setPhaseTab('audit')} className={cn("pb-2 text-sm transition-colors flex items-center gap-1.5", phaseTab === 'audit' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
             <ClipboardList className="h-3.5 w-3.5" />
-            Audit Log
+            {t('authority.projects.auditLog')}
           </button>
         </div>
 
@@ -473,7 +475,7 @@ const AuthorityProjects = () => {
             <Card className="p-6">
               <div className="flex items-center gap-2 mb-4">
                 <ClipboardList className="h-4 w-4 text-muted-foreground" />
-                <h3 className="font-medium text-sm">Activity Log</h3>
+                <h3 className="font-medium text-sm">{t('authority.projects.activityLog')}</h3>
               </div>
               <MonitorAuditLog projectId={selectedProject.id} />
             </Card>
@@ -482,13 +484,13 @@ const AuthorityProjects = () => {
             {/* Left Sidebar */}
             <div className="flex flex-col gap-1.5 shrink-0">
               <button onClick={() => setAanlegSubTab('general')} className={cn("px-4 py-2 text-[11px] font-medium rounded-full transition-all text-left whitespace-nowrap border", aanlegSubTab === 'general' ? "bg-muted text-foreground border-border" : "text-muted-foreground border-transparent hover:bg-foreground hover:text-[hsl(var(--neon-lime))] hover:border-foreground")}>
-                GENERAL COMPLIANCE
+                {t('authority.projects.generalCompliance')}
               </button>
               <button onClick={() => setAanlegSubTab('puntbronnen')} className={cn("px-4 py-2 text-[11px] font-medium rounded-full transition-all text-left whitespace-nowrap border", aanlegSubTab === 'puntbronnen' ? "bg-muted text-foreground border-border" : "text-muted-foreground border-transparent hover:bg-foreground hover:text-[hsl(var(--neon-lime))] hover:border-foreground")}>
-                PUNTBRONNEN
+                {t('authority.projects.puntbronnen')}
               </button>
               <button onClick={() => setAanlegSubTab('lijnbronnen')} className={cn("px-4 py-2 text-[11px] font-medium rounded-full transition-all text-left whitespace-nowrap border", aanlegSubTab === 'lijnbronnen' ? "bg-muted text-foreground border-border" : "text-muted-foreground border-transparent hover:bg-foreground hover:text-[hsl(var(--neon-lime))] hover:border-foreground")}>
-                LIJNBRONNEN
+                {t('authority.projects.lijnbronnen')}
               </button>
             </div>
 
@@ -523,29 +525,29 @@ const AuthorityProjects = () => {
         <CardContent className="p-6">
           {/* Projectgegevens */}
           <div>
-            <h3 className="text-base font-medium mb-4 text-foreground">Projectgegevens</h3>
+           <h3 className="text-base font-medium mb-4 text-foreground">{t('authority.projects.projectDetails')}</h3>
             <div className="space-y-2">
-              <Row label="Project Name" value={project.projectName} />
-              <Row label="Project Number" value={project.projectCode} />
-              <Row label="Company" value={project.company} />
-              <Row label="Architect" value={project.architect} />
-              <Row label="Project Type" value={project.projectType} />
-              <Row label="Construction Type" value={project.constructionType} />
+              <Row label={t('authority.projects.projectName')} value={project.projectName} />
+              <Row label={t('authority.projects.projectNumber')} value={project.projectCode} />
+              <Row label={t('authority.projects.company')} value={project.company} />
+              <Row label={t('authority.projects.architect')} value={project.architect} />
+              <Row label={t('authority.projects.projectType')} value={project.projectType} />
+              <Row label={t('authority.projects.constructionType')} value={project.constructionType} />
             </div>
           </div>
 
           {/* Projectbeschrijving */}
           <div className="pt-5 mt-5 border-t border-border/30">
-            <h4 className="text-base font-medium mb-3 text-foreground">Projectbeschrijving</h4>
+            <h4 className="text-base font-medium mb-3 text-foreground">{t('authority.projects.projectDescription')}</h4>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               {project.description}
             </p>
 
             {/* Bouwlogistiek */}
-            <p className="text-muted-foreground text-sm mb-2">Bouwlogistiek</p>
+            <p className="text-muted-foreground text-sm mb-2">{t('authority.projects.constructionLogistics')}</p>
             <div className="space-y-2">
-              <Row label="Werkdagen/maand" value="20 dagen" />
-              <Row label="Werkuren/dag" value="8 uur (07:00 - 16:00)" />
+              <Row label={t('authority.projects.workdaysMonth')} value={t('authority.projects.workdaysMonthValue')} />
+              <Row label={t('authority.projects.workhoursDay')} value={t('authority.projects.workhoursDayValue')} />
             </div>
           </div>
         </CardContent>
@@ -556,32 +558,30 @@ const AuthorityProjects = () => {
         {/* Ruimtelijke & ecologische context */}
         <Card className="border-border/50 shadow-sm">
           <CardContent className="p-6">
-            <h3 className="text-base font-medium mb-4 text-foreground">Ruimtelijke & ecologische context</h3>
+            <h3 className="text-base font-medium mb-4 text-foreground">{t('authority.projects.spatialContext')}</h3>
             <div className="flex gap-6">
-              {/* Left: Data */}
               <div className="flex-1 space-y-2">
-                <Row label="SPZ-H code" value={project.natura2000Code} />
-                <Row label="SPZ-H naam" value={project.natura2000Site} />
-                <Row label="Kritische Depositiewaarde" value="6 kg N/jaar" />
-                <Row label="Afstand" value={`${(project.distanceToHabitat * 1000).toFixed(0)} m`} />
+                <Row label={t('authority.projects.spzCode')} value={project.natura2000Code} />
+                <Row label={t('authority.projects.spzName')} value={project.natura2000Site} />
+                <Row label={t('authority.projects.criticalDepositionValue')} value="6 kg N/jaar" />
+                <Row label={t('authority.projects.distance')} value={`${(project.distanceToHabitat * 1000).toFixed(0)} m`} />
               </div>
 
-              {/* Right: Action Buttons */}
               <div className="flex flex-col gap-2 shrink-0">
                 <Button variant="outline" size="sm" className="text-xs justify-center h-8 px-4 border-border/60 rounded-full font-normal">
-                  Bekijk de lijst met planten
+                  {t('authority.projects.viewPlantList')}
                 </Button>
                 <Button variant="outline" size="sm" className="text-xs justify-center h-8 px-4 border-border/60 rounded-full font-normal">
-                  Zoek de locatie op
+                  {t('authority.projects.findLocation')}
                 </Button>
                 <Button variant="outline" size="sm" className="text-xs justify-center h-8 px-4 border-border/60 rounded-full font-normal">
-                  Raadpleeg VITO-tabellen
+                  {t('authority.projects.consultVitoTables')}
                 </Button>
               </div>
             </div>
             <div className="pt-4 mt-4 border-t border-border/30">
               <div className="flex items-start gap-2">
-                <span className="text-muted-foreground text-sm">Location:</span>
+                <span className="text-muted-foreground text-sm">{t('authority.projects.location')}:</span>
                 <span className="text-sm text-foreground">{project.address}</span>
               </div>
             </div>
@@ -591,10 +591,10 @@ const AuthorityProjects = () => {
         {/* Stikstofemissie */}
         <Card className="border-border/50 shadow-sm">
           <CardContent className="p-6">
-            <h3 className="text-base font-medium mb-5 text-foreground">Stikstofemissie</h3>
+            <h3 className="text-base font-medium mb-5 text-foreground">{t('authority.projects.nitrogenEmission')}</h3>
             <div className="space-y-5">
-              <EmissionBar label="Bouwfase" value={0.85} color="orange" />
-              <EmissionBar label="Exploitatiefase" value={0.60} color="green" />
+              <EmissionBar label={t('authority.projects.constructionPhase')} value={0.85} color="orange" />
+              <EmissionBar label={t('authority.projects.operationalPhase')} value={0.60} color="green" />
             </div>
           </CardContent>
         </Card>
@@ -629,16 +629,16 @@ const AuthorityProjects = () => {
             <div className="flex items-start justify-between">
               <div>
                 <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-xs px-3 py-1 mb-3">
-                  COMPLIANT
+                  {t('authority.projects.compliant')}
                 </Badge>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold tracking-tight">0.420</span>
                   <span className="text-2xl text-muted-foreground">%</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Total nitrogen impact during construction phase</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.totalNitrogenImpactOperation').replace('operational', 'construction')}</p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Legal Limit</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('authority.projects.legalLimit')}</p>
                 <p className="text-2xl font-semibold">1.00%</p>
               </div>
             </div>
@@ -646,8 +646,8 @@ const AuthorityProjects = () => {
             {/* Progress Bar */}
             <div className="mt-6 space-y-2">
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Impact Progress</span>
-                <span>42% of limit used</span>
+                <span>{t('authority.projects.impactProgress')}</span>
+                <span>42% {t('authority.projects.ofLimitUsed')}</span>
               </div>
               <div className="h-3 bg-muted/40 rounded-full overflow-hidden">
                 <div className="h-full bg-[hsl(var(--neon-lime))] rounded-full transition-all" style={{
@@ -662,22 +662,22 @@ const AuthorityProjects = () => {
         <div className="grid grid-cols-2 gap-4">
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Point Sources</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.pointSources')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold text-inherit">0.216</span>
                 <span className="text-lg text-muted-foreground">%</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Stationary machinery emissions</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.stationaryMachinery')}</p>
             </CardContent>
           </Card>
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Line Sources</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.lineSources')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold text-inherit">0.204</span>
                 <span className="text-lg text-muted-foreground">%</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Traffic-related emissions</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.trafficRelated')}</p>
             </CardContent>
           </Card>
         </div>
@@ -685,9 +685,9 @@ const AuthorityProjects = () => {
         {/* Formula Box */}
         <Card className="border-border/40 shadow-none bg-muted/20">
           <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground mb-2">Total Construction Phase Impact Formula</p>
+            <p className="text-xs text-muted-foreground mb-2">{t('authority.projects.totalConstructionFormula')}</p>
             <p className="text-sm font-mono font-semibold">
-              Point Sources (0.216%) + Line Sources (0.204%) = <span className="text-[hsl(var(--neon-lime))] text-inherit">0.420%</span>
+              {t('authority.projects.pointSources')} (0.216%) + {t('authority.projects.lineSources')} (0.204%) = <span className="text-[hsl(var(--neon-lime))] text-inherit">0.420%</span>
             </p>
           </CardContent>
         </Card>
@@ -695,10 +695,9 @@ const AuthorityProjects = () => {
         {/* Conclusion */}
         <Card className="border-border/40 shadow-none">
           <CardContent className="p-4">
-            <h4 className="text-sm font-semibold mb-2">Conclusion</h4>
+            <h4 className="text-sm font-semibold mb-2">{t('authority.projects.conclusion')}</h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              The cumulative nitrogen impact during the construction phase (0.420%) remains below the 
-              1% de minimis threshold. A further appropriate assessment is not required for this project phase.
+              {t('authority.projects.conclusionConstruction').replace('{value}', '0.420')}
             </p>
           </CardContent>
         </Card>
@@ -709,7 +708,7 @@ const AuthorityProjects = () => {
             <CollapsibleTrigger asChild>
               <CardContent className="p-4 cursor-pointer hover:bg-muted/10 transition-colors">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Assessment Methodology</h4>
+                   <h4 className="text-sm font-semibold">{t('authority.projects.assessmentMethodology')}</h4>
                   {showMethodology ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardContent>
@@ -717,23 +716,21 @@ const AuthorityProjects = () => {
             <CollapsibleContent>
               <div className="px-4 pb-4 space-y-4">
                 <div className="border-t border-border/30 pt-4">
-                  <h5 className="text-xs font-medium mb-1">Evaluation Framework</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.evaluationFramework')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    The construction phase assessment evaluates nitrogen oxide emissions from two primary categories.
+                    {t('authority.projects.evaluationFrameworkDesc')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Point Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.pointSources')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    Emissions from stationary construction equipment including asphalt machines, bulldozers, 
-                    generators, excavators, cranes, and combustion equipment.
+                    {t('authority.projects.pointSourcesDesc')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Line Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.lineSources')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    Traffic-related emissions from light vehicles (personnel, deliveries, finishing) and heavy 
-                    vehicles (earthworks, foundations, shell construction).
+                    {t('authority.projects.lineSourcesDesc')}
                   </p>
                 </div>
                 <div>
@@ -754,7 +751,7 @@ const AuthorityProjects = () => {
             <CollapsibleTrigger asChild>
               <CardContent className="p-4 cursor-pointer hover:bg-muted/10 transition-colors">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Data Sources</h4>
+                  <h4 className="text-sm font-semibold">{t('authority.projects.dataSources')}</h4>
                   {showDataSources ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardContent>
@@ -837,15 +834,15 @@ const AuthorityProjects = () => {
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Total Emissions</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.totalEmissions')}</p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold tracking-tight">307.5</span>
                   <span className="text-xl text-muted-foreground">kg NOₓ</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Stationary machinery during construction</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.stationaryMachineryConstruction')}</p>
               </div>
               <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-xs px-3 py-1">
-                COMPLIANT
+                {t('authority.projects.compliant')}
               </Badge>
             </div>
           </CardContent>
@@ -855,22 +852,22 @@ const AuthorityProjects = () => {
         <div className="grid grid-cols-2 gap-4">
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Maximum Threshold</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.maximumThreshold')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">5,000</span>
                 <span className="text-lg text-muted-foreground">kg NOₓ</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Legal limit for point sources</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.legalLimitPointSources')}</p>
             </CardContent>
           </Card>
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Impact Level</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.impactLevel')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold text-[hsl(var(--neon-lime))] text-inherit">6.15</span>
                 <span className="text-lg text-muted-foreground">%</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Of maximum threshold used</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.ofMaxThreshold')}</p>
             </CardContent>
           </Card>
         </div>
@@ -879,7 +876,7 @@ const AuthorityProjects = () => {
         <Card className="border-border/40 shadow-none">
           <CardContent className="p-4">
             <div className="flex justify-between items-center mb-2">
-              <p className="text-sm font-medium">Compliance Progress</p>
+              <p className="text-sm font-medium">{t('authority.projects.complianceProgress')}</p>
               <span className="text-sm font-semibold text-[hsl(var(--neon-lime))] text-inherit">6.15%</span>
             </div>
             <div className="h-3 bg-muted/40 rounded-full overflow-hidden">
@@ -899,8 +896,8 @@ const AuthorityProjects = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h4 className="text-sm font-semibold">Equipment Inventory</h4>
-                <p className="text-xs text-muted-foreground">Stationary machines and emission breakdown</p>
+                <h4 className="text-sm font-semibold">{t('authority.projects.equipmentInventory')}</h4>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.stationaryMachinesBreakdown')}</p>
               </div>
             </div>
             
@@ -908,11 +905,11 @@ const AuthorityProjects = () => {
               <table className="w-full text-xs">
                 <thead>
                   <tr className="border-b border-border/40">
-                    <th className="text-left py-2.5 text-muted-foreground font-medium">Equipment</th>
-                    <th className="text-center py-2.5 text-muted-foreground font-medium w-16">Qty</th>
-                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">Per Unit</th>
-                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">Total</th>
-                    <th className="text-right py-2.5 text-muted-foreground font-medium w-16">Share</th>
+                    <th className="text-left py-2.5 text-muted-foreground font-medium">{t('authority.projects.equipment')}</th>
+                    <th className="text-center py-2.5 text-muted-foreground font-medium w-16">{t('authority.projects.qty')}</th>
+                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">{t('authority.projects.perUnit')}</th>
+                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">{t('authority.projects.total')}</th>
+                    <th className="text-right py-2.5 text-muted-foreground font-medium w-16">{t('authority.projects.share')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -924,7 +921,7 @@ const AuthorityProjects = () => {
                       <td className="text-right py-2.5 text-muted-foreground">{item.percentage}%</td>
                     </tr>)}
                   <tr className="font-semibold bg-muted/20">
-                    <td className="py-2.5">Total</td>
+                    <td className="py-2.5">{t('authority.projects.total')}</td>
                     <td className="text-center py-2.5"></td>
                     <td className="text-center py-2.5"></td>
                     <td className="text-center py-2.5 text-[hsl(var(--neon-lime))] text-inherit">307.5</td>
@@ -939,7 +936,7 @@ const AuthorityProjects = () => {
         {/* Formula Box */}
         <Card className="border-border/40 shadow-none bg-muted/20">
           <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground mb-2">Calculation Formula</p>
+            <p className="text-xs text-muted-foreground mb-2">{t('authority.projects.calculationFormula')}</p>
             <p className="text-sm font-mono font-semibold">
               307.5 / 5,000 × 100 = <span className="text-[hsl(var(--neon-lime))] text-inherit">6.15%</span>
             </p>
@@ -952,7 +949,7 @@ const AuthorityProjects = () => {
             <CollapsibleTrigger asChild>
               <CardContent className="p-4 cursor-pointer hover:bg-muted/10 transition-colors">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Assessment</h4>
+                   <h4 className="text-sm font-semibold">{t('authority.projects.assessment')}</h4>
                   {showAssessment ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardContent>
@@ -960,14 +957,10 @@ const AuthorityProjects = () => {
             <CollapsibleContent>
               <div className="px-4 pb-4 space-y-3 border-t border-border/30 pt-4">
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  The table above compares the maximum emissions from stationary sources during the 
-                  construction phase with the maximum emissions at which the 1% de minimis threshold is not exceeded.
+                  {t('authority.projects.assessmentPoint1')}
                 </p>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Assuming a KDW of 6 kg N/ha/year and a distance of 1 m to the boundary of the nearest 
-                  SBZ-H — according to the step-by-step plan (step 2) from the information session on 
-                  Mobility and the Nitrogen Decree (dated 21/08/2024) — the emissions from stationary 
-                  sources during the construction phase will remain below the threshold.
+                  {t('authority.projects.assessmentPoint2')}
                 </p>
               </div>
             </CollapsibleContent>
@@ -980,7 +973,7 @@ const AuthorityProjects = () => {
             <CollapsibleTrigger asChild>
               <CardContent className="p-4 cursor-pointer hover:bg-muted/10 transition-colors">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Methodology</h4>
+                  <h4 className="text-sm font-semibold">{t('authority.projects.methodology')}</h4>
                   {showMethodology ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardContent>
@@ -988,24 +981,21 @@ const AuthorityProjects = () => {
             <CollapsibleContent>
               <div className="px-4 pb-4 space-y-3 border-t border-border/30 pt-4">
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Data Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.dataSources')}</h5>
                   <p className="text-[10px] text-muted-foreground">
-                    Various nitrogen-emitting machines will be used during the construction phase. Emissions 
-                    were estimated using the government-provided calculation frameworks.
+                    {t('authority.projects.dataSourcesDesc')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Calculation Formula</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.calculationFormula')}</h5>
                   <p className="text-[10px] text-muted-foreground">
-                    Derived from the official Excel spreadsheet provided by the government for emission 
-                    calculations from stationary sources during the construction phase.
+                    {t('authority.projects.calculationFormulaDesc')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Vehicle Type Classification</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.vehicleClassification')}</h5>
                   <p className="text-[10px] text-muted-foreground">
-                    Estimated using a probability-based inference method combined with "rule-of-thumb" 
-                    heuristics — proprietary to OxiCloud.
+                    {t('authority.projects.vehicleClassificationDesc')}
                   </p>
                 </div>
               </div>
@@ -1029,15 +1019,15 @@ const AuthorityProjects = () => {
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Total Traffic Emissions</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.totalTrafficEmissions')}</p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold tracking-tight">210</span>
                   <span className="text-xl text-muted-foreground">kg NOₓ</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Traffic during construction phase</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.trafficConstruction')}</p>
               </div>
               <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-xs px-3 py-1">
-                COMPLIANT
+                {t('authority.projects.compliant')}
               </Badge>
             </div>
           </CardContent>
@@ -1047,22 +1037,22 @@ const AuthorityProjects = () => {
         <div className="grid grid-cols-2 gap-4">
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Light Vehicles</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.lightVehicles')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">130</span>
                 <span className="text-lg text-muted-foreground">kg NOₓ</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">62% of total emissions</p>
+              <p className="text-xs text-muted-foreground mt-1">62% {t('authority.projects.ofTotalEmissions')}</p>
             </CardContent>
           </Card>
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Heavy Vehicles</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.heavyVehicles')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">80</span>
                 <span className="text-lg text-muted-foreground">kg NOₓ</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">38% of total emissions</p>
+              <p className="text-xs text-muted-foreground mt-1">38% {t('authority.projects.ofTotalEmissions')}</p>
             </CardContent>
           </Card>
         </div>
@@ -1072,18 +1062,18 @@ const AuthorityProjects = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h4 className="text-sm font-semibold">Light Vehicles</h4>
-                <p className="text-xs text-muted-foreground">Personnel, transport, deliveries, finishing work</p>
+                <h4 className="text-sm font-semibold">{t('authority.projects.lightVehicles')}</h4>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.personnelTransport')}</p>
               </div>
-              <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-[10px] px-2">BELOW THRESHOLD</Badge>
+              <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-[10px] px-2">{t('authority.projects.belowThreshold')}</Badge>
             </div>
             <div className="grid grid-cols-2 gap-4 mb-3">
               <div>
-                <p className="text-xs text-muted-foreground">Project Movements</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.projectMovements')}</p>
                 <span className="text-2xl font-bold">1,250</span>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Maximum Threshold</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.maximumThreshold')}</p>
                 <span className="text-2xl font-semibold text-muted-foreground">8,500</span>
               </div>
             </div>
@@ -1092,7 +1082,7 @@ const AuthorityProjects = () => {
               width: '14.7%'
             }} />
             </div>
-            <p className="text-xs text-muted-foreground text-right mt-1">14.7% of limit</p>
+            <p className="text-xs text-muted-foreground text-right mt-1">14.7% {t('authority.projects.ofLimit')}</p>
           </CardContent>
         </Card>
 
@@ -1101,18 +1091,18 @@ const AuthorityProjects = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h4 className="text-sm font-semibold">Heavy Vehicles</h4>
-                <p className="text-xs text-muted-foreground">Earthworks, foundations, shell construction</p>
+                <h4 className="text-sm font-semibold">{t('authority.projects.heavyVehicles')}</h4>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.earthworksFoundations')}</p>
               </div>
-              <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-[10px] px-2">BELOW THRESHOLD</Badge>
+              <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-[10px] px-2">{t('authority.projects.belowThreshold')}</Badge>
             </div>
             <div className="grid grid-cols-2 gap-4 mb-3">
               <div>
-                <p className="text-xs text-muted-foreground">Project Movements</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.projectMovements')}</p>
                 <span className="text-2xl font-bold">450</span>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Maximum Threshold</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.maximumThreshold')}</p>
                 <span className="text-2xl font-semibold text-muted-foreground">2,800</span>
               </div>
             </div>
@@ -1121,7 +1111,7 @@ const AuthorityProjects = () => {
               width: '16.1%'
             }} />
             </div>
-            <p className="text-xs text-muted-foreground text-right mt-1">16.1% of limit</p>
+            <p className="text-xs text-muted-foreground text-right mt-1">16.1% {t('authority.projects.ofLimit')}</p>
           </CardContent>
         </Card>
 
@@ -1131,7 +1121,7 @@ const AuthorityProjects = () => {
             <CollapsibleTrigger asChild>
               <CardContent className="p-4 cursor-pointer hover:bg-muted/10 transition-colors">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Assessment</h4>
+                  <h4 className="text-sm font-semibold">{t('authority.projects.assessment')}</h4>
                   {showAssessment ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardContent>
@@ -1139,12 +1129,10 @@ const AuthorityProjects = () => {
             <CollapsibleContent>
               <div className="px-4 pb-4 space-y-3 border-t border-border/30 pt-4">
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  The data compares transport movements generated by this project with the maximum 
-                  number of traffic movements that does not exceed the 1% de minimis threshold.
+                  {t('authority.projects.assessmentTraffic1')}
                 </p>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Assuming a KDW of 6 kg N/ha/year and a distance of 1 m to the boundary of the nearest 
-                  SBZ-H — the project does not exceed this threshold.
+                  {t('authority.projects.assessmentTraffic2')}
                 </p>
               </div>
             </CollapsibleContent>
@@ -1157,7 +1145,7 @@ const AuthorityProjects = () => {
             <CollapsibleTrigger asChild>
               <CardContent className="p-4 cursor-pointer hover:bg-muted/10 transition-colors">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Methodology & Data Sources</h4>
+                  <h4 className="text-sm font-semibold">{t('authority.projects.methodologyDataSources')}</h4>
                   {showMethodology ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardContent>
@@ -1204,16 +1192,16 @@ const AuthorityProjects = () => {
             <div className="flex items-start justify-between">
               <div>
                 <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-xs px-3 py-1 mb-3">
-                  COMPLIANT
+                  {t('authority.projects.compliant')}
                 </Badge>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold tracking-tight">0.280</span>
                   <span className="text-2xl text-muted-foreground">%</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Total nitrogen impact during operational phase</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.totalNitrogenImpactOperation')}</p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Legal Limit</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('authority.projects.legalLimit')}</p>
                 <p className="text-2xl font-semibold">1.00%</p>
               </div>
             </div>
@@ -1221,8 +1209,8 @@ const AuthorityProjects = () => {
             {/* Progress Bar */}
             <div className="mt-6 space-y-2">
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Impact Progress</span>
-                <span>28% of limit used</span>
+                <span>{t('authority.projects.impactProgress')}</span>
+                <span>28% {t('authority.projects.ofLimitUsed')}</span>
               </div>
               <div className="h-3 bg-muted/40 rounded-full overflow-hidden">
                 <div className="h-full bg-emerald-500 rounded-full transition-all" style={{
@@ -1237,22 +1225,22 @@ const AuthorityProjects = () => {
         <div className="grid grid-cols-2 gap-4">
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Point Sources</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.pointSources')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">0.120</span>
                 <span className="text-lg text-muted-foreground">%</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Heating and ventilation</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.heatingVentilation')}</p>
             </CardContent>
           </Card>
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Line Sources</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.lineSources')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">0.160</span>
                 <span className="text-lg text-muted-foreground">%</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Resident and visitor traffic</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.residentVisitorTraffic')}</p>
             </CardContent>
           </Card>
         </div>
@@ -1260,9 +1248,9 @@ const AuthorityProjects = () => {
         {/* Formula Box */}
         <Card className="border-border/40 shadow-none bg-muted/20">
           <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground mb-2">Total Operational Phase Impact Formula</p>
+            <p className="text-xs text-muted-foreground mb-2">{t('authority.projects.totalOperationalFormula')}</p>
             <p className="text-sm font-mono font-semibold">
-              Point Sources (0.120%) + Line Sources (0.160%) = <span className="text-emerald-500">0.280%</span>
+              {t('authority.projects.pointSources')} (0.120%) + {t('authority.projects.lineSources')} (0.160%) = <span className="text-emerald-500">0.280%</span>
             </p>
           </CardContent>
         </Card>
@@ -1270,10 +1258,9 @@ const AuthorityProjects = () => {
         {/* Conclusion */}
         <Card className="border-border/40 shadow-none">
           <CardContent className="p-4">
-            <h4 className="text-sm font-semibold mb-2">Conclusion</h4>
+            <h4 className="text-sm font-semibold mb-2">{t('authority.projects.conclusion')}</h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              The cumulative nitrogen impact during the operational phase (0.280%) remains below the 
-              1% de minimis threshold. A further appropriate assessment is not required for this project phase.
+              {t('authority.projects.conclusionOperation').replace('{value}', '0.280')}
             </p>
           </CardContent>
         </Card>
@@ -1284,7 +1271,7 @@ const AuthorityProjects = () => {
             <CollapsibleTrigger asChild>
               <CardContent className="p-4 cursor-pointer hover:bg-muted/10 transition-colors">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Assessment Methodology</h4>
+                  <h4 className="text-sm font-semibold">{t('authority.projects.assessmentMethodology')}</h4>
                   {showMethodology ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardContent>
@@ -1292,21 +1279,21 @@ const AuthorityProjects = () => {
             <CollapsibleContent>
               <div className="px-4 pb-4 space-y-4 border-t border-border/30 pt-4">
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Evaluation Framework</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.evaluationFramework')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    The operational phase assessment evaluates ongoing nitrogen emissions from building systems and traffic.
+                    {t('authority.projects.operationalEvaluation')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Point Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.pointSources')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    Emissions from heating systems, ventilation units, and any on-site generators or equipment.
+                    {t('authority.projects.pointSourcesDesc')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Line Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.lineSources')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    Traffic-related emissions from residents, employees, visitors, and delivery vehicles.
+                    {t('authority.projects.lineSourcesDesc')}
                   </p>
                 </div>
               </div>
@@ -1353,15 +1340,15 @@ const AuthorityProjects = () => {
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Total Emissions</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.totalEmissions')}</p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold tracking-tight">40</span>
                   <span className="text-xl text-muted-foreground">kg NOₓ/year</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Building systems during operation</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.buildingSystemsDuringOperation')}</p>
               </div>
               <Badge className="bg-emerald-500 text-white text-xs px-3 py-1">
-                COMPLIANT
+                {t('authority.projects.compliant')}
               </Badge>
             </div>
           </CardContent>
@@ -1370,16 +1357,16 @@ const AuthorityProjects = () => {
         {/* Equipment Inventory */}
         <Card className="border-border/40 shadow-none">
           <CardContent className="p-4">
-            <h4 className="text-sm font-semibold mb-4">Building Systems Inventory</h4>
+            <h4 className="text-sm font-semibold mb-4">{t('authority.projects.buildingSystemsInventory')}</h4>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
                   <tr className="border-b border-border/40">
-                    <th className="text-left py-2.5 text-muted-foreground font-medium">System</th>
-                    <th className="text-center py-2.5 text-muted-foreground font-medium w-16">Qty</th>
-                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">Per Unit</th>
-                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">Total</th>
-                    <th className="text-right py-2.5 text-muted-foreground font-medium w-16">Share</th>
+                    <th className="text-left py-2.5 text-muted-foreground font-medium">{t('authority.projects.system')}</th>
+                    <th className="text-center py-2.5 text-muted-foreground font-medium w-16">{t('authority.projects.qty')}</th>
+                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">{t('authority.projects.perUnit')}</th>
+                    <th className="text-center py-2.5 text-muted-foreground font-medium w-20">{t('authority.projects.total')}</th>
+                    <th className="text-right py-2.5 text-muted-foreground font-medium w-16">{t('authority.projects.share')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1391,7 +1378,7 @@ const AuthorityProjects = () => {
                       <td className="text-right py-2.5 text-muted-foreground">{item.percentage}%</td>
                     </tr>)}
                   <tr className="font-semibold bg-muted/20">
-                    <td className="py-2.5">Total</td>
+                    <td className="py-2.5">{t('authority.projects.total')}</td>
                     <td className="text-center py-2.5"></td>
                     <td className="text-center py-2.5"></td>
                     <td className="text-center py-2.5 text-emerald-500">40</td>
@@ -1417,15 +1404,15 @@ const AuthorityProjects = () => {
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Total Traffic Emissions</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.totalTrafficEmissions')}</p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold tracking-tight">85</span>
                   <span className="text-xl text-muted-foreground">kg NOₓ/year</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Operational traffic</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.operationalTraffic')}</p>
               </div>
               <Badge className="bg-emerald-500 text-white text-xs px-3 py-1">
-                COMPLIANT
+                {t('authority.projects.compliant')}
               </Badge>
             </div>
           </CardContent>
@@ -1435,22 +1422,22 @@ const AuthorityProjects = () => {
         <div className="grid grid-cols-2 gap-4">
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Resident Traffic</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.residentTraffic')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">55</span>
                 <span className="text-lg text-muted-foreground">kg NOₓ/year</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Daily commutes and personal travel</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.dailyCommutes')}</p>
             </CardContent>
           </Card>
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Visitor & Delivery</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.visitorDelivery')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">30</span>
                 <span className="text-lg text-muted-foreground">kg NOₓ/year</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Guests, services, and deliveries</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.guestsServicesDeliveries')}</p>
             </CardContent>
           </Card>
         </div>
@@ -1458,14 +1445,14 @@ const AuthorityProjects = () => {
         {/* Traffic Details */}
         <Card className="border-border/40 shadow-none">
           <CardContent className="p-4">
-            <h4 className="text-sm font-semibold mb-3">Traffic Movement Analysis</h4>
+            <h4 className="text-sm font-semibold mb-3">{t('authority.projects.trafficMovementAnalysis')}</h4>
             <div className="grid grid-cols-2 gap-4 mb-3">
               <div>
-                <p className="text-xs text-muted-foreground">Annual Movements</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.annualMovements')}</p>
                 <span className="text-2xl font-bold">18,250</span>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Maximum Threshold</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.maximumThreshold')}</p>
                 <span className="text-2xl font-semibold text-muted-foreground">65,000</span>
               </div>
             </div>
@@ -1474,7 +1461,7 @@ const AuthorityProjects = () => {
               width: '28%'
             }} />
             </div>
-            <p className="text-xs text-muted-foreground text-right mt-1">28% of limit</p>
+            <p className="text-xs text-muted-foreground text-right mt-1">28% {t('authority.projects.ofLimit')}</p>
           </CardContent>
         </Card>
       </div>;
@@ -1530,30 +1517,30 @@ const AuthorityProjects = () => {
       {/* Right: Technical Parameters */}
       <Card className="border-border/40 shadow-none">
         <CardContent className="p-4">
-          <h3 className="text-xs font-semibold mb-4 text-foreground/80">Technische parameters</h3>
+          <h3 className="text-xs font-semibold mb-4 text-foreground/80">{t('authority.projects.technicalParams')}</h3>
           <div className="grid grid-cols-2 gap-x-6 gap-y-3">
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Ground Floor Area</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.groundFloorArea')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.groundFloorArea} m²</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Number of Floors</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.numberOfFloors')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.numberOfFloors}</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Demolition Volume</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.demolitionVolume')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.demolitionVolume} m³</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">New Build Volume</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.newBuildVolume')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.newBuildVolume} m³</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Parking Spaces</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.parkingSpaces')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.parkingSpaces}</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Energy Connection</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.energyConnection')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.energyConnection}</p>
             </div>
           </div>
@@ -1600,7 +1587,7 @@ const AuthorityProjects = () => {
       </div>
       <div className="flex justify-between text-xs text-muted-foreground">
         <span>0%</span>
-        <span>Threshold: 1.00%</span>
+        <span>{t('authority.projects.threshold')}: 1.00%</span>
       </div>
     </div>;
   // Validation Tab - wraps MonitorValidationFlow with project data mapping
