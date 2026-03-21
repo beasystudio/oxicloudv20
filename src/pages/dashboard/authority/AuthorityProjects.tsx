@@ -1235,12 +1235,12 @@ const AuthorityProjects = () => {
           </Card>
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Line Sources</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.lineSources')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">0.160</span>
                 <span className="text-lg text-muted-foreground">%</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Resident and visitor traffic</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.residentVisitorTraffic')}</p>
             </CardContent>
           </Card>
         </div>
