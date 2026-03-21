@@ -525,14 +525,14 @@ const AuthorityProjects = () => {
         <CardContent className="p-6">
           {/* Projectgegevens */}
           <div>
-            <h3 className="text-base font-medium mb-4 text-foreground">Projectgegevens</h3>
+           <h3 className="text-base font-medium mb-4 text-foreground">{t('authority.projects.projectDetails')}</h3>
             <div className="space-y-2">
-              <Row label="Project Name" value={project.projectName} />
-              <Row label="Project Number" value={project.projectCode} />
-              <Row label="Company" value={project.company} />
-              <Row label="Architect" value={project.architect} />
-              <Row label="Project Type" value={project.projectType} />
-              <Row label="Construction Type" value={project.constructionType} />
+              <Row label={t('authority.projects.projectName')} value={project.projectName} />
+              <Row label={t('authority.projects.projectNumber')} value={project.projectCode} />
+              <Row label={t('authority.projects.company')} value={project.company} />
+              <Row label={t('authority.projects.architect')} value={project.architect} />
+              <Row label={t('authority.projects.projectType')} value={project.projectType} />
+              <Row label={t('authority.projects.constructionType')} value={project.constructionType} />
             </div>
           </div>
 
