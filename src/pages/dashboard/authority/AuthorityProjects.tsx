@@ -420,7 +420,7 @@ const AuthorityProjects = () => {
           </div>
 
           {filteredProjects.length === 0 && <div className="text-center py-8 text-muted-foreground text-sm">
-              No projects found matching your search
+              {t('authority.projects.noProjectsFound')}
             </div>}
         </CardContent>
       </Card>
