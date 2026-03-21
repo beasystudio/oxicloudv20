@@ -1098,11 +1098,11 @@ const AuthorityProjects = () => {
             </div>
             <div className="grid grid-cols-2 gap-4 mb-3">
               <div>
-                <p className="text-xs text-muted-foreground">Project Movements</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.projectMovements')}</p>
                 <span className="text-2xl font-bold">450</span>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Maximum Threshold</p>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.maximumThreshold')}</p>
                 <span className="text-2xl font-semibold text-muted-foreground">2,800</span>
               </div>
             </div>
