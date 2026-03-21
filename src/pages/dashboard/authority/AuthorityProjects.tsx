@@ -288,8 +288,8 @@ const AuthorityProjects = () => {
           </CardHeader>
           <CardContent className="space-y-4 flex-1 overflow-y-auto py-4">
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Project Name</Label>
-              <Input placeholder="Filter by name..." className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterName} onChange={e => setDefaultFilterName(e.target.value)} />
+              <Label className="text-xs font-medium text-muted-foreground">{t('authority.projects.projectName')}</Label>
+              <Input placeholder={t('authority.projects.filterByName')} className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterName} onChange={e => setDefaultFilterName(e.target.value)} />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs font-medium text-muted-foreground">Location</Label>
