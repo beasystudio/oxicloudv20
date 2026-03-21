@@ -544,10 +544,10 @@ const AuthorityProjects = () => {
             </p>
 
             {/* Bouwlogistiek */}
-            <p className="text-muted-foreground text-sm mb-2">Bouwlogistiek</p>
+            <p className="text-muted-foreground text-sm mb-2">{t('authority.projects.constructionLogistics')}</p>
             <div className="space-y-2">
-              <Row label="Werkdagen/maand" value="20 dagen" />
-              <Row label="Werkuren/dag" value="8 uur (07:00 - 16:00)" />
+              <Row label={t('authority.projects.workdaysMonth')} value={t('authority.projects.workdaysMonthValue')} />
+              <Row label={t('authority.projects.workhoursDay')} value={t('authority.projects.workhoursDayValue')} />
             </div>
           </div>
         </CardContent>
