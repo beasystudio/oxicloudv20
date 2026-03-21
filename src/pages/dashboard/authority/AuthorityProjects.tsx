@@ -685,9 +685,9 @@ const AuthorityProjects = () => {
         {/* Formula Box */}
         <Card className="border-border/40 shadow-none bg-muted/20">
           <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground mb-2">Total Construction Phase Impact Formula</p>
+            <p className="text-xs text-muted-foreground mb-2">{t('authority.projects.totalConstructionFormula')}</p>
             <p className="text-sm font-mono font-semibold">
-              Point Sources (0.216%) + Line Sources (0.204%) = <span className="text-[hsl(var(--neon-lime))] text-inherit">0.420%</span>
+              {t('authority.projects.pointSources')} (0.216%) + {t('authority.projects.lineSources')} (0.204%) = <span className="text-[hsl(var(--neon-lime))] text-inherit">0.420%</span>
             </p>
           </CardContent>
         </Card>
