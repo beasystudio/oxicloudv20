@@ -126,6 +126,7 @@ const mockProjects: AuthorityProject[] = [{
 }];
 const AuthorityProjects = () => {
   const { currentUser } = useMockAuth();
+  const { t } = useLanguage();
   const location = useLocation();
 
   // View state
