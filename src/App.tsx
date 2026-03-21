@@ -36,8 +36,6 @@ import Settings from "./pages/dashboard/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthorityHome from "./pages/dashboard/authority/AuthorityHome";
 import AuthorityProjects from "./pages/dashboard/authority/AuthorityProjects";
-import AuthorityRegulatoryHub from "./pages/dashboard/authority/AuthorityRegulatoryHub";
-import AuthoritySpatialAnalysis from "./pages/dashboard/authority/AuthoritySpatialAnalysis";
 import AuthoritySettings from "./pages/dashboard/authority/AuthoritySettings";
 import PilotLanding from "./pages/pilot/PilotLanding";
 import PilotActivationSent from "./pages/pilot/PilotActivationSent";
