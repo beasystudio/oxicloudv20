@@ -1587,7 +1587,7 @@ const AuthorityProjects = () => {
       </div>
       <div className="flex justify-between text-xs text-muted-foreground">
         <span>0%</span>
-        <span>Threshold: 1.00%</span>
+        <span>{t('authority.projects.threshold')}: 1.00%</span>
       </div>
     </div>;
   // Validation Tab - wraps MonitorValidationFlow with project data mapping
