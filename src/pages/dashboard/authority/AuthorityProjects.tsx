@@ -368,9 +368,9 @@ const AuthorityProjects = () => {
 
             {/* Footer */}
             <div className="flex items-center justify-between px-5 py-3 border-t border-border/40 text-xs text-muted-foreground shrink-0 bg-muted/20">
-              <span>{defaultFilteredProjects.length} projects found</span>
+              <span>{defaultFilteredProjects.length} {t('authority.projects.projectsFound')}</span>
               <div className="flex items-center gap-2">
-                <span>Show</span>
+                <span>{t('authority.projects.show')}</span>
                 <Select value={String(itemsPerPage)} onValueChange={v => setItemsPerPage(Number(v))}>
                   <SelectTrigger className="w-16 h-7 text-xs border-border/60">
                     <SelectValue />
