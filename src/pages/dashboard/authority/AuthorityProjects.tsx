@@ -445,7 +445,7 @@ const AuthorityProjects = () => {
           setPhaseTab('aanlegfase');
           setAanlegSubTab('general');
         }} className={cn("pb-2 text-sm transition-colors", phaseTab === 'aanlegfase' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
-            Aanlegfase
+            {t('authority.projects.aanlegfase')}
           </button>
           <button onClick={() => {
           setPhaseTab('exploitatiefase');
