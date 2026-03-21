@@ -936,7 +936,7 @@ const AuthorityProjects = () => {
         {/* Formula Box */}
         <Card className="border-border/40 shadow-none bg-muted/20">
           <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground mb-2">Calculation Formula</p>
+            <p className="text-xs text-muted-foreground mb-2">{t('authority.projects.calculationFormula')}</p>
             <p className="text-sm font-mono font-semibold">
               307.5 / 5,000 × 100 = <span className="text-[hsl(var(--neon-lime))] text-inherit">6.15%</span>
             </p>
