@@ -1037,12 +1037,12 @@ const AuthorityProjects = () => {
         <div className="grid grid-cols-2 gap-4">
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Light Vehicles</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.lightVehicles')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">130</span>
                 <span className="text-lg text-muted-foreground">kg NOₓ</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">62% of total emissions</p>
+              <p className="text-xs text-muted-foreground mt-1">62% {t('authority.projects.ofTotalEmissions')}</p>
             </CardContent>
           </Card>
           <Card className="border-border/40 shadow-none">
