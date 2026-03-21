@@ -324,7 +324,7 @@ const AuthorityProjects = () => {
                 {t('authority.projects.projects')}
               </CardTitle>
               <span className="text-xs text-muted-foreground">
-                {defaultFilteredProjects.length} results
+                {defaultFilteredProjects.length} {t('authority.projects.results')}
               </span>
             </div>
           </CardHeader>
