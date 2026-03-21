@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { TopNavigation } from '@/components/TopNavigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
