@@ -1062,10 +1062,10 @@ const AuthorityProjects = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h4 className="text-sm font-semibold">Light Vehicles</h4>
-                <p className="text-xs text-muted-foreground">Personnel, transport, deliveries, finishing work</p>
+                <h4 className="text-sm font-semibold">{t('authority.projects.lightVehicles')}</h4>
+                <p className="text-xs text-muted-foreground">{t('authority.projects.personnelTransport')}</p>
               </div>
-              <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-[10px] px-2">BELOW THRESHOLD</Badge>
+              <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-[10px] px-2">{t('authority.projects.belowThreshold')}</Badge>
             </div>
             <div className="grid grid-cols-2 gap-4 mb-3">
               <div>
