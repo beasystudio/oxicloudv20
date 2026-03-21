@@ -393,7 +393,7 @@ const AuthorityProjects = () => {
       {/* Search Bar with border */}
       <div className="relative border rounded-lg bg-background">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input placeholder="Search projects..." className="pl-12 pr-12 h-12 text-base bg-transparent border-0 rounded-lg focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer" value={listSearchQuery} onChange={e => setListSearchQuery(e.target.value)} onClick={handleBackToDefault} autoFocus />
+        <Input placeholder={t('authority.projects.searchProjects')} className="pl-12 pr-12 h-12 text-base bg-transparent border-0 rounded-lg focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer" value={listSearchQuery} onChange={e => setListSearchQuery(e.target.value)} onClick={handleBackToDefault} autoFocus />
         <button onClick={handleCloseListView} className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 hover:bg-muted rounded-full transition-colors">
           <X className="h-5 w-5 text-muted-foreground" />
         </button>
