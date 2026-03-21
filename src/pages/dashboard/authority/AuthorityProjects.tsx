@@ -921,7 +921,7 @@ const AuthorityProjects = () => {
                       <td className="text-right py-2.5 text-muted-foreground">{item.percentage}%</td>
                     </tr>)}
                   <tr className="font-semibold bg-muted/20">
-                    <td className="py-2.5">Total</td>
+                    <td className="py-2.5">{t('authority.projects.total')}</td>
                     <td className="text-center py-2.5"></td>
                     <td className="text-center py-2.5"></td>
                     <td className="text-center py-2.5 text-[hsl(var(--neon-lime))] text-inherit">307.5</td>
