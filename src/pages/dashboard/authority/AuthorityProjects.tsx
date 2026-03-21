@@ -876,7 +876,7 @@ const AuthorityProjects = () => {
         <Card className="border-border/40 shadow-none">
           <CardContent className="p-4">
             <div className="flex justify-between items-center mb-2">
-              <p className="text-sm font-medium">Compliance Progress</p>
+              <p className="text-sm font-medium">{t('authority.projects.complianceProgress')}</p>
               <span className="text-sm font-semibold text-[hsl(var(--neon-lime))] text-inherit">6.15%</span>
             </div>
             <div className="h-3 bg-muted/40 rounded-full overflow-hidden">
