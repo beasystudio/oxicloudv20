@@ -839,7 +839,7 @@ const AuthorityProjects = () => {
                   <span className="text-5xl font-bold tracking-tight">307.5</span>
                   <span className="text-xl text-muted-foreground">kg NOₓ</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Stationary machinery during construction</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.stationaryMachineryConstruction')}</p>
               </div>
               <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-xs px-3 py-1">
                 COMPLIANT
