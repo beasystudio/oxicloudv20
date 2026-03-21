@@ -1019,15 +1019,15 @@ const AuthorityProjects = () => {
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Total Traffic Emissions</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.totalTrafficEmissions')}</p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold tracking-tight">210</span>
                   <span className="text-xl text-muted-foreground">kg NOₓ</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">Traffic during construction phase</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('authority.projects.trafficConstruction')}</p>
               </div>
               <Badge className="bg-[hsl(var(--neon-lime))] text-foreground text-xs px-3 py-1">
-                COMPLIANT
+                {t('authority.projects.compliant')}
               </Badge>
             </div>
           </CardContent>
