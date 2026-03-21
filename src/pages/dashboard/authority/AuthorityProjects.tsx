@@ -292,8 +292,8 @@ const AuthorityProjects = () => {
               <Input placeholder={t('authority.projects.filterByName')} className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterName} onChange={e => setDefaultFilterName(e.target.value)} />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-muted-foreground">Location</Label>
-              <Input placeholder="Filter by location..." className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterLocation} onChange={e => setDefaultFilterLocation(e.target.value)} />
+              <Label className="text-xs font-medium text-muted-foreground">{t('authority.projects.location')}</Label>
+              <Input placeholder={t('authority.projects.filterByLocation')} className="h-9 text-sm border-border/60 focus:border-primary/50" value={defaultFilterLocation} onChange={e => setDefaultFilterLocation(e.target.value)} />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs font-medium text-muted-foreground">Company</Label>
