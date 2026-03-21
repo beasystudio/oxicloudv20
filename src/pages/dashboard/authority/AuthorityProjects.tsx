@@ -475,7 +475,7 @@ const AuthorityProjects = () => {
             <Card className="p-6">
               <div className="flex items-center gap-2 mb-4">
                 <ClipboardList className="h-4 w-4 text-muted-foreground" />
-                <h3 className="font-medium text-sm">Activity Log</h3>
+                <h3 className="font-medium text-sm">{t('authority.projects.activityLog')}</h3>
               </div>
               <MonitorAuditLog projectId={selectedProject.id} />
             </Card>
