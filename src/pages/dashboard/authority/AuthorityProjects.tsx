@@ -981,24 +981,21 @@ const AuthorityProjects = () => {
             <CollapsibleContent>
               <div className="px-4 pb-4 space-y-3 border-t border-border/30 pt-4">
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Data Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.dataSources')}</h5>
                   <p className="text-[10px] text-muted-foreground">
-                    Various nitrogen-emitting machines will be used during the construction phase. Emissions 
-                    were estimated using the government-provided calculation frameworks.
+                    {t('authority.projects.dataSourcesDesc')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Calculation Formula</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.calculationFormula')}</h5>
                   <p className="text-[10px] text-muted-foreground">
-                    Derived from the official Excel spreadsheet provided by the government for emission 
-                    calculations from stationary sources during the construction phase.
+                    {t('authority.projects.calculationFormulaDesc')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Vehicle Type Classification</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.vehicleClassification')}</h5>
                   <p className="text-[10px] text-muted-foreground">
-                    Estimated using a probability-based inference method combined with "rule-of-thumb" 
-                    heuristics — proprietary to OxiCloud.
+                    {t('authority.projects.vehicleClassificationDesc')}
                   </p>
                 </div>
               </div>
