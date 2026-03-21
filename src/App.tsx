@@ -36,8 +36,6 @@ import Settings from "./pages/dashboard/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthorityHome from "./pages/dashboard/authority/AuthorityHome";
 import AuthorityProjects from "./pages/dashboard/authority/AuthorityProjects";
-import AuthorityRegulatoryHub from "./pages/dashboard/authority/AuthorityRegulatoryHub";
-import AuthoritySpatialAnalysis from "./pages/dashboard/authority/AuthoritySpatialAnalysis";
 import AuthoritySettings from "./pages/dashboard/authority/AuthoritySettings";
 import PilotLanding from "./pages/pilot/PilotLanding";
 import PilotActivationSent from "./pages/pilot/PilotActivationSent";
@@ -104,8 +102,6 @@ const AnimatedRoutes = () => {
         <Route path="/dashboard/nox" element={<Navigate to="/dashboard/nox-settings" replace />} />
         <Route path="/dashboard/authority" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityHome /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/authority/projects" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityProjects /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/authority/regulatory" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthorityRegulatoryHub /></PageTransition></ProtectedRoute></ThemeWrapper>} />
-        <Route path="/dashboard/authority/spatial" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority', 'authority_standard']}><PageTransition><AuthoritySpatialAnalysis /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/authority/settings" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'authority']}><PageTransition><AuthoritySettings /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/contacts" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin', 'client_owner', 'client_admin', 'client_user']}><PageTransition><ContactsDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/mail" element={<ThemeWrapper><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><MailDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />

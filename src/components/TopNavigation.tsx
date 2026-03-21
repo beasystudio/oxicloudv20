@@ -300,8 +300,6 @@ export const TopNavigation = () => {
       return <div className="flex items-center gap-2">
           <NavItem to="/dashboard/authority" icon={Home} label={t('dashboard.nav.home')} isActiveRoute={isActive('/dashboard/authority')} />
           <NavItem to="/dashboard/authority/projects" icon={FolderKanban} label={t('dashboard.nav.projects')} isActiveRoute={isActive('/dashboard/authority/projects')} />
-          <NavItem to="/dashboard/authority/regulatory" icon={Gavel} label={t('dashboard.nav.regulations')} isActiveRoute={isActive('/dashboard/authority/regulatory')} />
-          <NavItem to="/dashboard/authority/spatial" icon={Map} label={t('dashboard.nav.spatial')} isActiveRoute={isActive('/dashboard/authority/spatial')} />
         </div>;
     }
     return null;
