@@ -487,7 +487,7 @@ const AuthorityProjects = () => {
                 {t('authority.projects.generalCompliance')}
               </button>
               <button onClick={() => setAanlegSubTab('puntbronnen')} className={cn("px-4 py-2 text-[11px] font-medium rounded-full transition-all text-left whitespace-nowrap border", aanlegSubTab === 'puntbronnen' ? "bg-muted text-foreground border-border" : "text-muted-foreground border-transparent hover:bg-foreground hover:text-[hsl(var(--neon-lime))] hover:border-foreground")}>
-                PUNTBRONNEN
+                {t('authority.projects.puntbronnen')}
               </button>
               <button onClick={() => setAanlegSubTab('lijnbronnen')} className={cn("px-4 py-2 text-[11px] font-medium rounded-full transition-all text-left whitespace-nowrap border", aanlegSubTab === 'lijnbronnen' ? "bg-muted text-foreground border-border" : "text-muted-foreground border-transparent hover:bg-foreground hover:text-[hsl(var(--neon-lime))] hover:border-foreground")}>
                 LIJNBRONNEN
