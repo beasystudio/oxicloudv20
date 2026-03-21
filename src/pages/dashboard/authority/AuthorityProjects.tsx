@@ -451,7 +451,7 @@ const AuthorityProjects = () => {
           setPhaseTab('exploitatiefase');
           setAanlegSubTab('general');
         }} className={cn("pb-2 text-sm transition-colors", phaseTab === 'exploitatiefase' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
-            Exploitatiefase
+            {t('authority.projects.exploitatiefase')}
           </button>
           <button onClick={() => setPhaseTab('validatie')} className={cn("pb-2 text-sm transition-colors flex items-center gap-1.5", phaseTab === 'validatie' ? "text-foreground border-b-2 border-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
             <Shield className="h-3.5 w-3.5" />
