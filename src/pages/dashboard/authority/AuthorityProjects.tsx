@@ -1422,12 +1422,12 @@ const AuthorityProjects = () => {
         <div className="grid grid-cols-2 gap-4">
           <Card className="border-border/40 shadow-none">
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Resident Traffic</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.residentTraffic')}</p>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold">55</span>
                 <span className="text-lg text-muted-foreground">kg NOₓ/year</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Daily commutes and personal travel</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.dailyCommutes')}</p>
             </CardContent>
           </Card>
           <Card className="border-border/40 shadow-none">
