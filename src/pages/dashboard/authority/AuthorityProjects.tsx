@@ -957,14 +957,10 @@ const AuthorityProjects = () => {
             <CollapsibleContent>
               <div className="px-4 pb-4 space-y-3 border-t border-border/30 pt-4">
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  The table above compares the maximum emissions from stationary sources during the 
-                  construction phase with the maximum emissions at which the 1% de minimis threshold is not exceeded.
+                  {t('authority.projects.assessmentPoint1')}
                 </p>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Assuming a KDW of 6 kg N/ha/year and a distance of 1 m to the boundary of the nearest 
-                  SBZ-H — according to the step-by-step plan (step 2) from the information session on 
-                  Mobility and the Nitrogen Decree (dated 21/08/2024) — the emissions from stationary 
-                  sources during the construction phase will remain below the threshold.
+                  {t('authority.projects.assessmentPoint2')}
                 </p>
               </div>
             </CollapsibleContent>
