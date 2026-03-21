@@ -1517,30 +1517,30 @@ const AuthorityProjects = () => {
       {/* Right: Technical Parameters */}
       <Card className="border-border/40 shadow-none">
         <CardContent className="p-4">
-          <h3 className="text-xs font-semibold mb-4 text-foreground/80">Technische parameters</h3>
+          <h3 className="text-xs font-semibold mb-4 text-foreground/80">{t('authority.projects.technicalParams')}</h3>
           <div className="grid grid-cols-2 gap-x-6 gap-y-3">
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Ground Floor Area</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.groundFloorArea')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.groundFloorArea} m²</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Number of Floors</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.numberOfFloors')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.numberOfFloors}</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Demolition Volume</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.demolitionVolume')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.demolitionVolume} m³</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">New Build Volume</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.newBuildVolume')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.newBuildVolume} m³</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Parking Spaces</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.parkingSpaces')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.parkingSpaces}</p>
             </div>
             <div className="space-y-0.5">
-              <span className="text-muted-foreground text-[10px]">Energy Connection</span>
+              <span className="text-muted-foreground text-[10px]">{t('authority.projects.energyConnection')}</span>
               <p className="font-medium text-[11px]">{project.technicalParams.energyConnection}</p>
             </div>
           </div>
