@@ -1209,8 +1209,8 @@ const AuthorityProjects = () => {
             {/* Progress Bar */}
             <div className="mt-6 space-y-2">
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Impact Progress</span>
-                <span>28% of limit used</span>
+                <span>{t('authority.projects.impactProgress')}</span>
+                <span>28% {t('authority.projects.ofLimitUsed')}</span>
               </div>
               <div className="h-3 bg-muted/40 rounded-full overflow-hidden">
                 <div className="h-full bg-emerald-500 rounded-full transition-all" style={{
