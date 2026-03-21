@@ -834,7 +834,7 @@ const AuthorityProjects = () => {
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Total Emissions</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('authority.projects.totalEmissions')}</p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold tracking-tight">307.5</span>
                   <span className="text-xl text-muted-foreground">kg NOₓ</span>
