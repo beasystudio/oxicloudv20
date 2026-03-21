@@ -353,7 +353,7 @@ const AuthorityProjects = () => {
                     </div>
                     <div className="flex items-center justify-end gap-4 text-xs text-muted-foreground group-hover:text-black/80 transition-colors">
                       <span>
-                        <span className="group-hover:text-black/60">Impact: </span>
+                        <span className="group-hover:text-black/60">{t('authority.projects.impact')}: </span>
                         <span className={cn("font-semibold group-hover:text-black transition-colors", project.constructionProgress * 0.006 < 0.5 ? "text-primary" : "text-destructive")}>
                           {(project.constructionProgress * 0.006).toFixed(2)}%
                         </span>
