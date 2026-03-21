@@ -275,7 +275,7 @@ const AuthorityProjects = () => {
       {/* Global Search Bar - clickable to go to list view */}
       <div className="relative mb-6 cursor-pointer group" onClick={handleGlobalSearchClick}>
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors group-hover:text-primary" />
-        <Input placeholder="Search projects…" className="pl-12 h-12 text-base bg-background cursor-pointer border-border/60 transition-all group-hover:border-primary/50 group-hover:shadow-sm" readOnly />
+        <Input placeholder={t('authority.projects.searchProjects')} className="pl-12 h-12 text-base bg-background cursor-pointer border-border/60 transition-all group-hover:border-primary/50 group-hover:shadow-sm" readOnly />
       </div>
 
       <div className="flex gap-6 h-[calc(100vh-180px)]">
