@@ -321,7 +321,7 @@ const AuthorityProjects = () => {
           <CardHeader className="pb-3 shrink-0 border-b border-border/40">
             <div className="flex items-center justify-between">
               <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Projects
+                {t('authority.projects.projects')}
               </CardTitle>
               <span className="text-xs text-muted-foreground">
                 {defaultFilteredProjects.length} results
