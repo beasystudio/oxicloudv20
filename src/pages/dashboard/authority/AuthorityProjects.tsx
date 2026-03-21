@@ -867,7 +867,7 @@ const AuthorityProjects = () => {
                 <span className="text-3xl font-bold text-[hsl(var(--neon-lime))] text-inherit">6.15</span>
                 <span className="text-lg text-muted-foreground">%</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Of maximum threshold used</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('authority.projects.ofMaxThreshold')}</p>
             </CardContent>
           </Card>
         </div>
