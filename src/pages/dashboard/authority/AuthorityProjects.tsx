@@ -708,7 +708,7 @@ const AuthorityProjects = () => {
             <CollapsibleTrigger asChild>
               <CardContent className="p-4 cursor-pointer hover:bg-muted/10 transition-colors">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Assessment Methodology</h4>
+                   <h4 className="text-sm font-semibold">{t('authority.projects.assessmentMethodology')}</h4>
                   {showMethodology ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardContent>
