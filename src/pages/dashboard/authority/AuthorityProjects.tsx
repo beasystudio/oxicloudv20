@@ -722,10 +722,9 @@ const AuthorityProjects = () => {
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Point Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.pointSources')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    Emissions from stationary construction equipment including asphalt machines, bulldozers, 
-                    generators, excavators, cranes, and combustion equipment.
+                    {t('authority.projects.pointSourcesDesc')}
                   </p>
                 </div>
                 <div>
