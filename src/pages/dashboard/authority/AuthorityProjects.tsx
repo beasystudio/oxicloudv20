@@ -405,8 +405,8 @@ const AuthorityProjects = () => {
           {/* Search toggle */}
           <div className="flex items-center gap-3 mb-6">
             <Switch id="active-projects" checked={searchMyActiveProjects} onCheckedChange={setSearchMyActiveProjects} />
-            <Label htmlFor="active-projects" className="text-sm text-muted-foreground">
-              Search in my active projects
+             <Label htmlFor="active-projects" className="text-sm text-muted-foreground">
+               {t('authority.projects.searchInActive')}
             </Label>
           </div>
 
