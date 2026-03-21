@@ -1271,7 +1271,7 @@ const AuthorityProjects = () => {
             <CollapsibleTrigger asChild>
               <CardContent className="p-4 cursor-pointer hover:bg-muted/10 transition-colors">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Assessment Methodology</h4>
+                  <h4 className="text-sm font-semibold">{t('authority.projects.assessmentMethodology')}</h4>
                   {showMethodology ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardContent>
@@ -1279,21 +1279,21 @@ const AuthorityProjects = () => {
             <CollapsibleContent>
               <div className="px-4 pb-4 space-y-4 border-t border-border/30 pt-4">
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Evaluation Framework</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.evaluationFramework')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    The operational phase assessment evaluates ongoing nitrogen emissions from building systems and traffic.
+                    {t('authority.projects.operationalEvaluation')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Point Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.pointSources')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    Emissions from heating systems, ventilation units, and any on-site generators or equipment.
+                    {t('authority.projects.pointSourcesDesc')}
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Line Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.lineSources')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    Traffic-related emissions from residents, employees, visitors, and delivery vehicles.
+                    {t('authority.projects.lineSourcesDesc')}
                   </p>
                 </div>
               </div>
