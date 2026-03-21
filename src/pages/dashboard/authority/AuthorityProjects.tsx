@@ -728,10 +728,9 @@ const AuthorityProjects = () => {
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-medium mb-1">Line Sources</h5>
+                  <h5 className="text-xs font-medium mb-1">{t('authority.projects.lineSources')}</h5>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
-                    Traffic-related emissions from light vehicles (personnel, deliveries, finishing) and heavy 
-                    vehicles (earthworks, foundations, shell construction).
+                    {t('authority.projects.lineSourcesDesc')}
                   </p>
                 </div>
                 <div>
