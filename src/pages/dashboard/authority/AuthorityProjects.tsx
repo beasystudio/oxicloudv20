@@ -1461,7 +1461,7 @@ const AuthorityProjects = () => {
               width: '28%'
             }} />
             </div>
-            <p className="text-xs text-muted-foreground text-right mt-1">28% of limit</p>
+            <p className="text-xs text-muted-foreground text-right mt-1">28% {t('authority.projects.ofLimit')}</p>
           </CardContent>
         </Card>
       </div>;
