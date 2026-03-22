@@ -177,9 +177,9 @@ html {
     scroll-behavior: smooth;
   }
 
-  /* Enforce 0px radii globally */
+  /* Enforce pill/round globally — override the brutalist 0px rule */
   *, *::before, *::after {
-    border-radius: 0px !important;
+    /* Allow component-level border-radius to apply */
   }
 }
 

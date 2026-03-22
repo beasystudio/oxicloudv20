@@ -87,12 +87,12 @@ export default {
     			none: 'none'
     		},
     		borderRadius: {
-    			lg: '0px',
-    			md: '0px',
-    			sm: '0px',
-    			'2xl': '0px',
-    			'3xl': '0px',
-    			'4xl': '0px',
+    			lg: '0.75rem',
+    			md: '0.5rem',
+    			sm: '0.375rem',
+    			'2xl': '1rem',
+    			'3xl': '1.5rem',
+    			'4xl': '2rem',
     			full: '9999px'
     		},
     		keyframes: {
