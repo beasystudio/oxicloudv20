@@ -10,7 +10,7 @@ Sharp 0px radii. Four-color palette. Tonal layering. Space Grotesk + Inter.
 
 | Token | Value | Usage |
 |---|---|---|
-| `--primary` | `#aad622` (Lime) | Actions, success, active selection |
+| `--primary` | `#ADFF3B` (Lime) | Actions, success, active selection |
 | `--background` | `#f9f9f9` (Off-white) | Canvas |
 | `--foreground` | `#1a1c1c` (Charcoal) | Text, errors (bold) |
 | `--muted-foreground` | `#5f5e5e` (Gray) | Tertiary info |
