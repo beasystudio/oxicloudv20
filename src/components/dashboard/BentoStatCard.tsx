@@ -30,7 +30,7 @@ export function BentoStatCard({ label, value, sub, icon, accent, variant = 'defa
       <div>
         <p className={cn(
           'text-3xl font-bold tracking-tight leading-none',
-          accent && variant === 'default' && 'text-primary'
+          accent && variant === 'default' && 'accent-value'
         )}>
           {value}
         </p>

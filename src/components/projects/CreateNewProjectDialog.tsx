@@ -596,7 +596,7 @@ export const CreateNewProjectDialog = ({
                         <Search className="h-4 w-4 mr-2" />
                         {t('createProject.lookupViaVat')}
                       </Button>
-                      <Button variant="ghost" onClick={handleStep2SkipToManual} className="w-full text-primary">
+                      <Button variant="ghost" onClick={handleStep2SkipToManual} className="w-full accent-value">
                         {t('createProject.createManually')}
                       </Button>
                     </div> :
