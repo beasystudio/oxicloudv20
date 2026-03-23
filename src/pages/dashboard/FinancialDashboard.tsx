@@ -265,8 +265,8 @@ const FinancialDashboard = () => {
             accent
             footer={totals.growth !== 0 ? (
               <div className="flex items-center gap-1">
-                {totals.growth >= 0 ? <ArrowUpRight className="h-3 w-3 text-primary" /> : <ArrowDownRight className="h-3 w-3 text-destructive" />}
-                <span className={cn("text-xs font-medium", totals.growth >= 0 ? "text-primary" : "text-destructive")}>
+                {totals.growth >= 0 ? <ArrowUpRight className="h-3 w-3 accent-value" /> : <ArrowDownRight className="h-3 w-3 text-destructive" />}
+                <span className={cn("text-xs font-medium", totals.growth >= 0 ? "accent-value" : "text-destructive")}>
                   {totals.growth >= 0 ? '+' : ''}{totals.growth}%
                 </span>
                 <span className="text-xs text-muted-foreground">{t('dashboard.financial.vsLastYear')}</span>
@@ -305,7 +305,7 @@ const FinancialDashboard = () => {
                       <span className="text-sm text-muted-foreground">{paymentStats.paidProjects.length} {paymentStats.paidProjects.length !== 1 ? t('dashboard.financial.projects') : t('dashboard.financial.project')}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-lg font-semibold text-primary">{formatCurrency(paymentStats.totalCommissionEarned)}</span>
+                      <span className="text-lg font-semibold accent-value">{formatCurrency(paymentStats.totalCommissionEarned)}</span>
                       <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", commissionsOpen && "rotate-180")} />
                     </div>
                   </div>
@@ -327,7 +327,7 @@ const FinancialDashboard = () => {
                               </div>
                               <div className="flex items-center gap-4">
                                 <OxiCloudStatusBadge status={project.noxData?.status || 'paid'} />
-                                <span className="font-semibold text-primary tabular-nums min-w-[80px] text-right">{formatCurrency(commission)}</span>
+                                <span className="font-semibold accent-value tabular-nums min-w-[80px] text-right">{formatCurrency(commission)}</span>
                               </div>
                             </div>
                           );
@@ -372,7 +372,7 @@ const FinancialDashboard = () => {
               <div className="grid grid-cols-4 gap-px rounded-xl border overflow-hidden">
                 <MiniStat label={t('dashboard.financial.pendingPayments')} value={pendingCount} color="text-chart-4" />
                 <MiniStat label={t('dashboard.financial.overdue')} value={overdueCount} color="text-destructive" />
-                <MiniStat label={t('dashboard.financial.received')} value={formatCurrency2(receivedTotal)} color="text-primary" />
+                <MiniStat label={t('dashboard.financial.received')} value={formatCurrency2(receivedTotal)} color="accent-value" />
                 <MiniStat label={t('dashboard.financial.outstanding')} value={formatCurrency2(outstandingTotal)} />
               </div>
 
@@ -631,8 +631,8 @@ const FinancialDashboard = () => {
                         <div className="text-right">
                           <p className="font-semibold">{formatCurrency(currentFY?.totalRevenue || 0)}</p>
                           <div className="flex items-center justify-end gap-1">
-                            {growth >= 0 ? <TrendingUp className="h-3 w-3 text-primary" /> : <TrendingDown className="h-3 w-3 text-destructive" />}
-                            <span className={cn("text-xs", growth >= 0 ? "text-primary" : "text-destructive")}>{growth >= 0 ? '+' : ''}{growth}%</span>
+                            {growth >= 0 ? <TrendingUp className="h-3 w-3 accent-value" /> : <TrendingDown className="h-3 w-3 text-destructive" />}
+                            <span className={cn("text-xs", growth >= 0 ? "accent-value" : "text-destructive")}>{growth >= 0 ? '+' : ''}{growth}%</span>
                           </div>
                         </div>
                       </div>

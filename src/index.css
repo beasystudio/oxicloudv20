@@ -412,6 +412,27 @@ html {
     color: white;
     mix-blend-mode: difference;
   }
+
+  /* Accent text readable on light backgrounds:
+     Light mode → foreground color (dark text)
+     Dark mode  → primary lime (high contrast on dark bg) */
+  .accent-value {
+    @apply text-foreground;
+  }
+  .dark .accent-value {
+    color: hsl(var(--primary));
+  }
+
+  /* Accent text inside a dark pill for light mode readability */
+  .accent-pill {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+    background: hsl(var(--secondary));
+    color: hsl(var(--primary));
+  }
+  .dark .accent-pill {
+    background: transparent;
+    color: hsl(var(--primary));
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
