@@ -372,7 +372,7 @@ const FinancialDashboard = () => {
               <div className="grid grid-cols-4 gap-px rounded-xl border overflow-hidden">
                 <MiniStat label={t('dashboard.financial.pendingPayments')} value={pendingCount} color="text-chart-4" />
                 <MiniStat label={t('dashboard.financial.overdue')} value={overdueCount} color="text-destructive" />
-                <MiniStat label={t('dashboard.financial.received')} value={formatCurrency2(receivedTotal)} color="text-primary" />
+                <MiniStat label={t('dashboard.financial.received')} value={formatCurrency2(receivedTotal)} color="accent-value" />
                 <MiniStat label={t('dashboard.financial.outstanding')} value={formatCurrency2(outstandingTotal)} />
               </div>
 
