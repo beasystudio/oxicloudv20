@@ -43,8 +43,8 @@ html {
     --muted-foreground: 0 1% 37%;
 
     /* Accent — same as primary for consistency */
-    --accent: 73 73% 49%;
-    --accent-foreground: 80 100% 5%;
+    --accent: 85 100% 62%;
+    --accent-foreground: 85 100% 5%;
 
     /* Destructive — communicated via bold charcoal, not red */
     --destructive: 160 4% 11%;
