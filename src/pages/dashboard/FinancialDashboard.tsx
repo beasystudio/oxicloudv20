@@ -631,8 +631,8 @@ const FinancialDashboard = () => {
                         <div className="text-right">
                           <p className="font-semibold">{formatCurrency(currentFY?.totalRevenue || 0)}</p>
                           <div className="flex items-center justify-end gap-1">
-                            {growth >= 0 ? <TrendingUp className="h-3 w-3 text-primary" /> : <TrendingDown className="h-3 w-3 text-destructive" />}
-                            <span className={cn("text-xs", growth >= 0 ? "text-primary" : "text-destructive")}>{growth >= 0 ? '+' : ''}{growth}%</span>
+                            {growth >= 0 ? <TrendingUp className="h-3 w-3 accent-value" /> : <TrendingDown className="h-3 w-3 text-destructive" />}
+                            <span className={cn("text-xs", growth >= 0 ? "accent-value" : "text-destructive")}>{growth >= 0 ? '+' : ''}{growth}%</span>
                           </div>
                         </div>
                       </div>
