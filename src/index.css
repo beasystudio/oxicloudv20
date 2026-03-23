@@ -107,8 +107,8 @@ html {
     --card-foreground: 0 0% 95%;
 
     /* Primary — Lime stays consistent */
-    --primary: 73 73% 49%;
-    --primary-foreground: 80 100% 5%;
+    --primary: 85 100% 62%;
+    --primary-foreground: 85 100% 5%;
 
     /* Secondary */
     --secondary: 0 0% 13%;
@@ -118,8 +118,8 @@ html {
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 55%;
 
-    --accent: 73 73% 49%;
-    --accent-foreground: 80 100% 5%;
+    --accent: 85 100% 62%;
+    --accent-foreground: 85 100% 5%;
 
     --destructive: 0 0% 95%;
     --destructive-foreground: 160 4% 7%;
