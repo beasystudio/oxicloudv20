@@ -305,7 +305,7 @@ const FinancialDashboard = () => {
                       <span className="text-sm text-muted-foreground">{paymentStats.paidProjects.length} {paymentStats.paidProjects.length !== 1 ? t('dashboard.financial.projects') : t('dashboard.financial.project')}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-lg font-semibold text-primary">{formatCurrency(paymentStats.totalCommissionEarned)}</span>
+                      <span className="text-lg font-semibold accent-value">{formatCurrency(paymentStats.totalCommissionEarned)}</span>
                       <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", commissionsOpen && "rotate-180")} />
                     </div>
                   </div>
