@@ -542,7 +542,7 @@ export const TopNavigation = () => {
           {/* Left: Branding + Demo badge */}
           <div className="flex items-center gap-6">
             {renderBranding()}
-            <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded-full border border-primary/30 text-primary">
+            <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded-full border border-muted-foreground/30 text-muted-foreground dark:border-primary/30 dark:text-primary">
               Demo
             </span>
             
