@@ -265,8 +265,8 @@ const FinancialDashboard = () => {
             accent
             footer={totals.growth !== 0 ? (
               <div className="flex items-center gap-1">
-                {totals.growth >= 0 ? <ArrowUpRight className="h-3 w-3 text-primary" /> : <ArrowDownRight className="h-3 w-3 text-destructive" />}
-                <span className={cn("text-xs font-medium", totals.growth >= 0 ? "text-primary" : "text-destructive")}>
+                {totals.growth >= 0 ? <ArrowUpRight className="h-3 w-3 accent-value" /> : <ArrowDownRight className="h-3 w-3 text-destructive" />}
+                <span className={cn("text-xs font-medium", totals.growth >= 0 ? "accent-value" : "text-destructive")}>
                   {totals.growth >= 0 ? '+' : ''}{totals.growth}%
                 </span>
                 <span className="text-xs text-muted-foreground">{t('dashboard.financial.vsLastYear')}</span>
