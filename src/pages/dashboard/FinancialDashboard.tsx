@@ -327,7 +327,7 @@ const FinancialDashboard = () => {
                               </div>
                               <div className="flex items-center gap-4">
                                 <OxiCloudStatusBadge status={project.noxData?.status || 'paid'} />
-                                <span className="font-semibold text-primary tabular-nums min-w-[80px] text-right">{formatCurrency(commission)}</span>
+                                <span className="font-semibold accent-value tabular-nums min-w-[80px] text-right">{formatCurrency(commission)}</span>
                               </div>
                             </div>
                           );
