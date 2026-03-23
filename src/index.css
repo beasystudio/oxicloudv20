@@ -53,10 +53,10 @@ html {
     /* No-Line Rule: borders are near-invisible or use bg shifts */
     --border: 0 0% 92%;
     --input: 240 3% 95.5%;
-    --ring: 73 73% 49%;
+    --ring: 85 100% 62%;
 
     --radius: 0px;
-    --neon-lime: 73 73% 49%;
+    --neon-lime: 85 100% 62%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 160 4% 11%;
