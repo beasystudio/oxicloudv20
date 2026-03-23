@@ -471,7 +471,7 @@ html {
   left: 0;
   right: 0;
   height: 0%;
-  background: hsl(73 73% 49%);
+  background: hsl(85 100% 62%);
   transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: -1;
 }
