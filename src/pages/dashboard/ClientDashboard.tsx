@@ -263,13 +263,13 @@ export default function ClientDashboard() {
             </div>
 
             {/* Partner Card */}
-            <div className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
+            <div className="rounded-xl border border-border bg-card dark:bg-secondary overflow-hidden flex flex-col">
               {/* Header band */}
-              <div className="bg-foreground px-5 py-3">
+              <div className="bg-foreground dark:bg-secondary px-5 py-3">
                 <p className="text-[10px] uppercase tracking-[0.15em] font-semibold text-primary">
                   {language === 'nl' ? 'Partnerprogramma' : 'Partner Program'}
                 </p>
-                <p className="text-sm font-semibold text-background mt-0.5">
+                <p className="text-sm font-semibold text-background dark:text-secondary-foreground mt-0.5">
                   {language === 'nl' ? 'Verdien 40% commissie' : 'Earn 40% commission'}
                 </p>
               </div>
