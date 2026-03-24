@@ -11,14 +11,6 @@ interface ProjectMarkersProps {
 }
 
 export const ProjectMarkers = ({ projects, isVisible, onHover, svgRef, selectedId, onSelect }: ProjectMarkersProps) => {
-  const getSize = (significance: Project['significance']) => {
-    switch (significance) {
-      case 'large': return 8;
-      case 'medium': return 6;
-      case 'small': return 4;
-    }
-  };
-
   const handleMouseEnter = (project: Project) => {
     if (!svgRef.current) return;
     const rect = svgRef.current.getBoundingClientRect();
@@ -44,16 +36,16 @@ export const ProjectMarkers = ({ projects, isVisible, onHover, svgRef, selectedI
     >
       {projects.map((project, index) => {
         const pos = geoToSvg(project.lat, project.lng);
-        const size = getSize(project.significance);
         const isActive = project.status === 'active';
         const isSelected = selectedId === project.id;
+        const size = 5;
 
         return (
           <motion.g
             key={project.id}
             initial={{ opacity: 0, scale: 0 }}
             animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-            transition={{ delay: 0.6 + index * 0.03, duration: 0.4, type: "spring" }}
+            transition={{ delay: 0.6 + index * 0.02, duration: 0.4, type: "spring" }}
             onMouseEnter={() => handleMouseEnter(project)}
             onMouseLeave={() => onHover(null)}
             onClick={(e: any) => handleClick(e, project)}

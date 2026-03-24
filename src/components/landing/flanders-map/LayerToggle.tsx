@@ -10,7 +10,6 @@ interface LayerToggleProps {
 const layers: { id: MapLayer; label: string }[] = [
   { id: 'natura2000', label: 'Natura 2000' },
   { id: 'projects', label: 'Projects' },
-  { id: 'municipalities', label: 'Municipalities' },
 ];
 
 export const LayerToggle = ({ activeLayer, onLayerChange }: LayerToggleProps) => {
