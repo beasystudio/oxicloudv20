@@ -1,14 +1,12 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useLanguage } from '@/i18n/LanguageContext';
-import { MapLayer, TooltipData, SVG_WIDTH, SVG_HEIGHT, Municipality, Project, Natura2000Site, geoToSvg } from './types';
-import { projects, municipalities } from './mockData';
+import { MapLayer, TooltipData, SVG_WIDTH, SVG_HEIGHT, Project, geoToSvg } from './types';
+import { projects } from './mockData';
 import { FlandersRealMap } from './FlandersRealMap';
 import { LayerToggle } from './LayerToggle';
 import { MapTooltip } from './MapTooltip';
 import { Natura2000Layer, Natura2000SiteWithCentroid } from './Natura2000Layer';
 import { ProjectMarkers } from './ProjectMarkers';
-import { MunicipalityLayer } from './MunicipalityLayer';
 import { MapLegend } from './MapLegend';
 
 interface SelectedItem {
@@ -19,7 +17,6 @@ interface SelectedItem {
 }
 
 export const FlandersInteractiveMap = () => {
-  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
@@ -29,8 +26,6 @@ export const FlandersInteractiveMap = () => {
   const [provincesData, setProvincesData] = useState<any>(null);
   const [selected, setSelected] = useState<SelectedItem | null>(null);
 
-  // Track IDs for highlighting
-  const [selectedMuniId, setSelectedMuniId] = useState<string | null>(null);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedNaturaId, setSelectedNaturaId] = useState<string | null>(null);
 
@@ -41,29 +36,11 @@ export const FlandersInteractiveMap = () => {
       .catch((err) => console.error('Failed to load provinces:', err));
   }, []);
 
-  // Clear selection when switching layers
   useEffect(() => {
     setSelected(null);
-    setSelectedMuniId(null);
     setSelectedProjectId(null);
     setSelectedNaturaId(null);
   }, [activeLayer]);
-
-  const handleSelectMuni = useCallback((muni: Municipality | null) => {
-    if (!muni) {
-      setSelected(null);
-      setSelectedMuniId(null);
-      return;
-    }
-    const pos = geoToSvg(muni.lat, muni.lng);
-    setSelectedMuniId(muni.id);
-    setSelected({
-      label: muni.name,
-      sublabel: `${muni.projectCount} projects · since ${muni.since}`,
-      svgX: pos.x,
-      svgY: pos.y,
-    });
-  }, []);
 
   const handleSelectProject = useCallback((project: Project | null) => {
     if (!project) {
@@ -74,8 +51,8 @@ export const FlandersInteractiveMap = () => {
     const pos = geoToSvg(project.lat, project.lng);
     setSelectedProjectId(project.id);
     setSelected({
-      label: project.name,
-      sublabel: `${project.firmName} · ${project.status}`,
+      label: project.address,
+      sublabel: '',
       svgX: pos.x,
       svgY: pos.y,
     });
@@ -96,7 +73,6 @@ export const FlandersInteractiveMap = () => {
     });
   }, []);
 
-  // Calculate HTML overlay position
   const getOverlayStyle = useCallback(() => {
     if (!selected || !svgRef.current || !containerRef.current) return null;
     const svgRect = svgRef.current.getBoundingClientRect();
@@ -123,20 +99,17 @@ export const FlandersInteractiveMap = () => {
           className="text-center mb-8"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-secondary-foreground mb-4 text-balance">
-            {t('homepage.mapTitle')}
+            OxiCloud across Flanders
           </h2>
           <p className="text-secondary-foreground/60 max-w-xl mx-auto mb-8 text-balance">
-            {t('homepage.mapSubtitle')}
+            {projects.length} projects processed across the region
           </p>
           <div className="flex justify-center">
             <LayerToggle activeLayer={activeLayer} onLayerChange={setActiveLayer} />
           </div>
         </motion.div>
 
-        <div
-          ref={containerRef}
-          className="relative w-full max-w-5xl mx-auto"
-        >
+        <div ref={containerRef} className="relative w-full max-w-5xl mx-auto">
           <motion.svg
             ref={svgRef}
             viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
@@ -147,7 +120,6 @@ export const FlandersInteractiveMap = () => {
             transition={{ duration: 1, delay: 0.2 }}
             onClick={() => {
               setSelected(null);
-              setSelectedMuniId(null);
               setSelectedProjectId(null);
               setSelectedNaturaId(null);
             }}
@@ -170,18 +142,8 @@ export const FlandersInteractiveMap = () => {
               selectedId={selectedProjectId}
               onSelect={handleSelectProject}
             />
-
-            <MunicipalityLayer
-              municipalities={municipalities}
-              isVisible={activeLayer === 'municipalities'}
-              onHover={setTooltipData}
-              svgRef={svgRef}
-              selectedId={selectedMuniId}
-              onSelect={handleSelectMuni}
-            />
           </motion.svg>
 
-          {/* HTML overlay label — crisp, level, close to dot */}
           <AnimatePresence>
             {selected && overlayStyle && (
               <motion.div
@@ -193,16 +155,17 @@ export const FlandersInteractiveMap = () => {
                 className="absolute z-30 pointer-events-none"
                 style={overlayStyle}
               >
-                <div className="bg-foreground/90 backdrop-blur-sm text-background rounded-lg px-3 py-1.5 text-center shadow-lg">
-                  <p className="text-sm font-semibold whitespace-nowrap">{selected.label}</p>
-                  <p className="text-xs text-background/60 whitespace-nowrap">{selected.sublabel}</p>
+                <div className="bg-foreground/90 backdrop-blur-sm text-background rounded-lg px-3 py-1.5 text-center shadow-lg max-w-[240px]">
+                  <p className="text-sm font-semibold whitespace-nowrap truncate">{selected.label}</p>
+                  {selected.sublabel && (
+                    <p className="text-xs text-background/60 whitespace-nowrap">{selected.sublabel}</p>
+                  )}
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-        {/* Legend + stats */}
         <div className="flex items-center justify-between mt-4 px-1 max-w-5xl mx-auto">
           <MapLegend activeLayer={activeLayer} />
 
@@ -213,20 +176,17 @@ export const FlandersInteractiveMap = () => {
             className="flex gap-4 text-xs text-secondary-foreground/50"
           >
             {activeLayer === 'natura2000' && (
-              <span>{t('homepage.mapNaturaCount')}</span>
+              <span>Natura 2000 zones in Flanders</span>
             )}
             {activeLayer === 'projects' && (
               <>
                 <span className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                  {projects.filter((p) => p.status === 'active').length} {t('homepage.mapActive')}
+                  {projects.filter((p) => p.status === 'active').length} active
                 </span>
                 <span className="text-muted-foreground/40">•</span>
-                <span>{projects.filter((p) => p.status === 'completed').length} {t('homepage.mapCompleted')}</span>
+                <span>{projects.filter((p) => p.status === 'completed').length} completed</span>
               </>
-            )}
-            {activeLayer === 'municipalities' && (
-              <span>{municipalities.length} {t('homepage.mapMuniCollaborating')}</span>
             )}
           </motion.div>
         </div>

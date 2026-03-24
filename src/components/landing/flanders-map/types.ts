@@ -1,5 +1,3 @@
-// Types for the Flanders interactive map
-
 export interface Natura2000Site {
   sitecode: string;
   sitename: string;
@@ -10,31 +8,19 @@ export interface Natura2000Site {
 
 export interface Project {
   id: string;
-  name: string;
-  firmId: string;
-  firmName: string;
+  address: string;
   lat: number;
   lng: number;
   status: 'active' | 'completed';
-  significance: 'small' | 'medium' | 'large';
 }
 
-export interface Municipality {
-  id: string;
-  name: string;
-  lat: number;
-  lng: number;
-  projectCount: number;
-  since: string;
-}
-
-export type MapLayer = 'natura2000' | 'projects' | 'municipalities';
+export type MapLayer = 'natura2000' | 'projects';
 
 export interface TooltipData {
   type: MapLayer;
   x: number;
   y: number;
-  data: Natura2000Site | Project | Municipality;
+  data: Natura2000Site | Project;
 }
 
 // Flanders-only bounds with cos(lat) corrected aspect

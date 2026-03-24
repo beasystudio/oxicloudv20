@@ -3,10 +3,21 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const steps = [
-  { number: '01', title: 'Project Upload', badge: 'Day 1', description: 'Architects submit project data and location details through OxiCloud' },
-  { number: '02', title: 'Automated Analysis', badge: 'Day 1–2', description: 'AI calculates NOₓ, sustainability metrics and compliance data against municipal standards' },
-  { number: '03', title: 'Approved Report', badge: 'Day 3–5', description: 'Receive municipality-ready, standardized and defensible documentation' },
-  { number: '04', title: 'Partner Settlement', badge: 'Ongoing', description: 'Earn 40% partner payment on every validated project' }
+  {
+    number: '01',
+    title: 'Jump into the demo',
+    description: 'Sign up. Get inside. Explore the product and ask anything. If it clicks, launch your company workspace instantly.',
+  },
+  {
+    number: '02',
+    title: 'Activate your team',
+    description: 'Set up your workspace, add your organization, and invite your team. Done in under 3 minutes. You\'re live.',
+  },
+  {
+    number: '03',
+    title: 'Start producing',
+    description: 'Generate a quote, align with your project owner, and deliver your first reports in OxiCloud — powered by our NOx engine.',
+  },
 ];
 
 export const HowItWorksSection = () => {
@@ -16,7 +27,6 @@ export const HowItWorksSection = () => {
   return (
     <section id="how-it-works" className="py-24 md:py-32 px-6 bg-background">
       <div className="container mx-auto max-w-6xl" ref={ref}>
-        {/* Split layout: left intro + right timeline */}
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20">
           {/* Left column — intro */}
           <motion.div
@@ -29,17 +39,13 @@ export const HowItWorksSection = () => {
               How it works
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-semibold text-foreground leading-[1.15] mb-5 text-balance">
-              From submission to settlement,{' '}
-              <span className="text-muted-foreground">without the complexity.</span>
+              Up and running in minutes.{' '}
+              <span className="text-muted-foreground">No friction.</span>
             </h2>
-            <p className="text-muted-foreground max-w-md text-balance">
-              Our four-step process takes you from uploading project data to earning partner settlement, with automated compliance at every stage.
-            </p>
           </motion.div>
 
           {/* Right column — vertical timeline */}
           <div className="relative">
-            {/* Vertical line */}
             <motion.div
               initial={{ scaleY: 0 }}
               animate={isInView ? { scaleY: 1 } : {}}
@@ -56,21 +62,13 @@ export const HowItWorksSection = () => {
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.12 }}
                   className="relative flex items-start gap-6 group"
                 >
-                  {/* Number circle on the timeline */}
                   <div className="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-muted border border-border flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary/30 transition-colors duration-300">
                     <span className="text-sm font-semibold text-muted-foreground group-hover:text-primary transition-colors duration-300">
                       {step.number}
                     </span>
                   </div>
-
-                  {/* Content */}
                   <div className="pt-1.5">
-                    <div className="flex items-center gap-3 mb-1.5">
-                      <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
-                      <span className="text-[11px] font-medium text-muted-foreground bg-muted rounded-full px-2.5 py-0.5 border border-border">
-                        {step.badge}
-                      </span>
-                    </div>
+                    <h3 className="text-lg font-semibold text-foreground mb-1.5">{step.title}</h3>
                     <p className="text-muted-foreground text-sm max-w-sm">{step.description}</p>
                   </div>
                 </motion.div>

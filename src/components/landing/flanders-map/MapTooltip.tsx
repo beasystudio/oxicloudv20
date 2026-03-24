@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { TooltipData, Natura2000Site, Project, Municipality } from './types';
+import { TooltipData, Natura2000Site, Project } from './types';
 
 interface MapTooltipProps {
   data: TooltipData | null;
@@ -34,35 +34,9 @@ export const MapTooltip = ({ data }: MapTooltipProps) => {
       case 'projects': {
         const project = data.data as Project;
         return (
-          <>
-            <div className="mb-2">
-              <p className="text-sm font-medium text-foreground">{project.name}</p>
-              <p className="text-xs text-muted-foreground">{project.firmName}</p>
-            </div>
-            <div className="flex items-center gap-3 pt-2 border-t border-border/50">
-              <div className="flex items-center gap-1.5">
-                <span className={`w-2 h-2 rounded-full ${project.status === 'active' ? 'bg-primary animate-pulse' : 'bg-muted-foreground/50'}`} />
-                <span className="text-xs capitalize text-muted-foreground">{project.status}</span>
-              </div>
-              <span className="text-xs text-muted-foreground/50">•</span>
-              <span className="text-xs text-muted-foreground capitalize">{project.significance} scale</span>
-            </div>
-          </>
-        );
-      }
-      case 'municipalities': {
-        const muni = data.data as Municipality;
-        return (
-          <>
-            <div className="mb-2">
-              <p className="text-sm font-medium text-foreground">{muni.name}</p>
-            </div>
-            <div className="flex items-center gap-3 pt-2 border-t border-border/50">
-              <span className="text-xs text-muted-foreground">{muni.projectCount} projects</span>
-              <span className="text-xs text-muted-foreground/50">•</span>
-              <span className="text-xs text-muted-foreground">since {muni.since}</span>
-            </div>
-          </>
+          <div>
+            <p className="text-sm font-medium text-foreground">{project.address}</p>
+          </div>
         );
       }
     }

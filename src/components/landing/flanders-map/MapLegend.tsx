@@ -15,9 +15,6 @@ export const MapLegend = ({ activeLayer }: MapLegendProps) => {
       { color: 'hsl(var(--primary))', label: 'Active Project' },
       { color: 'hsl(var(--muted-foreground) / 0.4)', label: 'Completed' },
     ],
-    municipalities: [
-      { color: 'hsl(var(--primary))', label: 'Partner Municipality' },
-    ],
   };
 
   return (
@@ -41,10 +38,7 @@ export const MapLegend = ({ activeLayer }: MapLegendProps) => {
               <span className="absolute inset-0" style={{ background: `repeating-linear-gradient(${item.dashed ? '-30deg' : '45deg'}, transparent, transparent 1.5px, ${item.color}18 1.5px, ${item.color}18 3px)` }} />
             </span>
           ) : (
-            <span
-              className="w-2 h-2 rounded-full"
-              style={{ background: item.color }}
-            />
+            <span className="w-2 h-2 rounded-full" style={{ background: item.color }} />
           )}
           <span className="text-[10px] tracking-wide text-muted-foreground font-medium">{item.label}</span>
         </motion.div>

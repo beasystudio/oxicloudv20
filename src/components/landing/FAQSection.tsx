@@ -1,48 +1,55 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { useLanguage } from '@/i18n/LanguageContext';
+
+const faqs = [
+  {
+    question: 'Does the government accept OxiCloud reports?',
+    answer: 'Yes. OxiCloud is built on the official Nitrogen Decree, applicable PAS regulations, and VITO\'s methodological guidelines. The generated reports follow the exact format and required calculation structure for submission via the Omgevingsloket. To date, no OxiCloud reports have been rejected on grounds of conformity or methodology.',
+  },
+  {
+    question: 'Can I use OxiCloud without an environmental background?',
+    answer: 'Yes. OxiCloud is specifically designed for architects and project managers without specialised environmental training. You enter basic project data — address, built surface area, building category, and location relative to Natura 2000 areas. OxiCloud processes this automatically, performs the required nitrogen calculations, and generates a complete, ready-to-submit report.',
+  },
+  {
+    question: 'Does OxiCloud stay up to date with regulatory changes?',
+    answer: 'Yes. The OxiCloud team continuously monitors all changes to the Nitrogen Decree, PAS regulations, and VITO guidelines. When legislation changes, the platform is updated automatically — without you having to do anything. Every report you generate complies with the currently applicable regulations.',
+  },
+  {
+    question: 'How is our project data secured and stored?',
+    answer: 'All project data is stored and transmitted encrypted. OxiCloud is fully compliant with European GDPR. A-Spine BV (Belgium) acts as data controller. Your data is stored exclusively on Belgian servers and is never shared with or sold to third parties. You remain the owner of your project data.',
+  },
+];
 
 export const FAQSection = () => {
-  const { t } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqs = [
-    { question: t('faq.q1'), answer: t('faq.a1') },
-    { question: t('faq.q2'), answer: t('faq.a2') },
-    { question: t('faq.q3'), answer: t('faq.a3') },
-    { question: t('faq.q4'), answer: t('faq.a4') },
-    { question: t('faq.q5'), answer: t('faq.a5') },
-    { question: t('faq.q6'), answer: t('faq.a6') },
-    { question: t('faq.q7'), answer: t('faq.a7') },
-  ];
-
   return (
-    <section className="section-padding bg-background">
-      <div className="container mx-auto px-6 lg:px-8" ref={ref}>
+    <section className="py-24 md:py-32 px-6 bg-muted/30">
+      <div className="container mx-auto max-w-3xl" ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="heading-md text-foreground mb-4">{t('faq.title')}</h2>
+          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-4">FAQ</h2>
         </motion.div>
 
-        <div className="max-w-3xl mx-auto space-y-3">
+        <div className="space-y-3">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="border border-border rounded-lg overflow-hidden"
+              className="bg-background rounded-2xl overflow-hidden border border-border/30"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full text-left p-5 flex items-center justify-between hover:bg-muted/50 transition-colors"
+                className="w-full text-left p-5 flex items-center justify-between hover:bg-muted/30 transition-colors"
               >
                 <span className="font-semibold text-foreground pr-4">{faq.question}</span>
                 <motion.span
@@ -62,15 +69,9 @@ export const FAQSection = () => {
                     transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                     className="overflow-hidden"
                   >
-                    <motion.p
-                      initial={{ y: 16, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: 8, opacity: 0 }}
-                      transition={{ duration: 0.3, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                      className="px-5 pb-5 text-muted-foreground leading-relaxed"
-                    >
+                    <p className="px-5 pb-5 text-muted-foreground leading-relaxed">
                       {faq.answer}
-                    </motion.p>
+                    </p>
                   </motion.div>
                 )}
               </AnimatePresence>
