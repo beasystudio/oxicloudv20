@@ -318,7 +318,7 @@ const FinancialDashboard = () => {
                           const totalPrice = project.noxData?.priceData?.totalPrice || 0;
                           const commission = totalPrice * COMMISSION_RATE;
                           return (
-                            <div key={project.id} className="flex items-center justify-between py-3 px-4 -mx-4 hover:bg-muted/50 rounded-lg transition-colors">
+                            <div key={project.id} className="flex items-center justify-between py-3 px-4 -mx-4 rounded-lg transition-all duration-200 hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10 cursor-pointer">
                               <div>
                                 <p className="font-medium text-sm">{project.name}</p>
                                 <p className="text-xs text-muted-foreground">
@@ -625,7 +625,7 @@ const FinancialDashboard = () => {
                   const previousFY = company.fiscalYears.find((f) => f.year === selectedYear - 1);
                   const growth = previousFY ? calculateGrowth(currentFY?.totalRevenue || 0, previousFY.totalRevenue) : 0;
                   return (
-                    <div key={company.companyId} className="p-4 rounded-xl border hover:bg-muted/30 transition-colors">
+                    <div key={company.companyId} className="p-4 rounded-xl border transition-all duration-200 hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10 cursor-pointer">
                       <div className="flex items-start justify-between">
                         <h3 className="font-medium text-sm">{company.companyName}</h3>
                         <div className="text-right">

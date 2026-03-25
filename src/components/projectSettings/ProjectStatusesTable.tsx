@@ -147,7 +147,7 @@ export function ProjectStatusesTable() {
               </TableHeader>
               <TableBody>
                 {statuses.map(status => (
-                  <TableRow key={status.id} className="cursor-pointer" onDoubleClick={() => handleEdit(status)}>
+                  <TableRow key={status.id} className="cursor-pointer transition-all duration-200 hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10" onDoubleClick={() => handleEdit(status)}>
                     <TableCell>
                       <div 
                         className="w-6 h-6 rounded-full border" 
