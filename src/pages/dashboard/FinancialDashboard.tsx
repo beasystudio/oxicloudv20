@@ -318,7 +318,7 @@ const FinancialDashboard = () => {
                           const totalPrice = project.noxData?.priceData?.totalPrice || 0;
                           const commission = totalPrice * COMMISSION_RATE;
                           return (
-                            <div key={project.id} className="flex items-center justify-between py-3 px-4 -mx-4 hover:bg-muted/50 rounded-lg transition-colors">
+                            <div key={project.id} className="flex items-center justify-between py-3 px-4 -mx-4 rounded-lg transition-all duration-200 hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10 cursor-pointer">
                               <div>
                                 <p className="font-medium text-sm">{project.name}</p>
                                 <p className="text-xs text-muted-foreground">
