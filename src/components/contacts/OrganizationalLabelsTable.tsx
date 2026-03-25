@@ -152,7 +152,7 @@ export function OrganizationalLabelsTable() {
                     onDragStart={() => handleDragStart(actualIndex)} 
                     onDragOver={e => handleDragOver(e, actualIndex)} 
                     onDrop={() => handleDrop(actualIndex)} 
-                    className={`hover:bg-muted/50 cursor-pointer transition-colors ${draggedIndex === actualIndex ? "opacity-50" : ""}`}
+                    className={`cursor-pointer transition-all duration-200 hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10 ${draggedIndex === actualIndex ? "opacity-50" : ""}`}
                     onDoubleClick={() => handleEdit(label)}
                     title="Double-click to edit, drag to reorder"
                   >
