@@ -171,7 +171,7 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
                         {filteredContacts.map((contact) => (
                           <TableRow
                             key={contact.id}
-                            className="cursor-pointer h-10 group transition-colors hover:bg-muted/60"
+                            className="cursor-pointer h-10 group transition-colors hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10"
                             onClick={() => handleContactClick(contact as Contact)}
                           >
                             <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.firm_name}</TableCell>

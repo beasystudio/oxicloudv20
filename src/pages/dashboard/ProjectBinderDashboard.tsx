@@ -618,7 +618,7 @@ const ProjectBinderDashboard = () => {
                                 className={`flex items-center gap-4 px-4 py-3 pl-10 cursor-pointer transition-all duration-200 border-b border-border/50 last:border-b-0 rounded-lg group relative ${
                                   selectedContact?.id === contact.id 
                                     ? 'bg-[hsl(var(--neon-lime))]/50 border-l-2 border-l-primary' 
-                                    : 'hover:bg-muted/50'
+                                    : 'hover:backdrop-blur-md hover:scale-[1.01] hover:z-10'
                                 }`}
                               >
                                 {/* Person Avatar */}
