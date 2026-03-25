@@ -69,7 +69,7 @@ export function UserList({ users, onEdit }: UserListProps) {
               const keyModules = getKeyModules(user);
               return <Tooltip key={user.id}>
                     <TooltipTrigger asChild>
-                      <TableRow className="cursor-pointer transition-all duration-200 group" onDoubleClick={() => onEdit(user)}>
+                      <TableRow className="cursor-pointer transition-all duration-200 group hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10" onDoubleClick={() => onEdit(user)}>
                          <TableCell className="py-3">
                           <div className="flex items-center gap-2.5">
                             <Avatar className="h-8 w-8">
