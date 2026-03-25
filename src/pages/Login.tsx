@@ -137,9 +137,6 @@ const Login = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
           <div className="relative z-10 flex flex-col justify-between pt-14 pb-12 pl-12 pr-12 w-full">
             <Link to="/" className="font-semibold text-lg tracking-tight text-white">OxiCloud</Link>
-            <div className="max-w-md">
-              <p className="text-white/50 text-xs uppercase tracking-[0.14em] mb-3">{t('login.envCompliance')}</p>
-            </div>
           </div>
         </div>
 
