@@ -1108,7 +1108,7 @@ const ContactsDashboard = () => {
                       <User className="h-12 w-12 mx-auto mb-4 opacity-40" />
                        <p className="text-base font-medium mb-2">{t('dashboard.contactsDashboard.noContactsFound')}</p>
                        <p className="text-xs">{t('dashboard.contactsDashboard.noPersonsAvailable')}</p>
-                    </div> : filteredPersons.map((person, index) => <div key={person.id} className={cn("grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg", "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 relative hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")} onDoubleClick={() => {
+                    </div> : filteredPersons.map((person, index) => <div key={person.id} className={cn("grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg", "hover:bg-muted/60 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 relative hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")} onDoubleClick={() => {
                       const contact: UnifiedContact = {
                         id: person.id,
                         name: person.name,
@@ -1124,9 +1124,9 @@ const ContactsDashboard = () => {
                       setIsEditDialogOpen(true);
                     }}>
                       <div className="text-sm font-medium text-foreground group-hover:text-black transition-colors">{person.name}</div>
-                      <div className="text-muted-foreground text-xs group-hover:text-black/80 transition-colors">{person.company}</div>
-                      <div className="text-muted-foreground text-xs truncate group-hover:text-black/80 transition-colors">{person.email}</div>
-                      <div className="text-muted-foreground text-xs group-hover:text-black/80 transition-colors">{person.telephone}</div>
+                      <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors">{person.company}</div>
+                      <div className="text-muted-foreground text-xs truncate group-hover:text-foreground/80 transition-colors">{person.email}</div>
+                      <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors">{person.telephone}</div>
                     </div>);
                   })()} </div>) : (/* Company View */
                 companies.length === 0 ? <div className="text-center py-16 text-muted-foreground">
@@ -1144,16 +1144,16 @@ const ContactsDashboard = () => {
                     {/* Company Rows */}
                     {filteredCompanies.map((company, index) => <div key={company.id} className={cn("group/company", expandedCompanies.includes(company.id) && "bg-muted/20 rounded-xl my-1 shadow-sm")}>
                         {/* Main Company Row - Shell */}
-                        <div className={cn("grid grid-cols-[minmax(220px,1.3fr)_minmax(200px,1fr)_130px_minmax(220px,1.2fr)] gap-6 px-6 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative", expandedCompanies.includes(company.id) ? "bg-[hsl(var(--neon-lime))]/90 backdrop-blur-md shadow-lg shadow-[hsl(var(--neon-lime))]/20 ring-2 ring-[hsl(var(--neon-lime))]/50 rounded-b-none" : "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")} onClick={() => toggleCompanyExpand(company.id)} onDoubleClick={() => handleContactDoubleClick(company)}>
+                        <div className={cn("grid grid-cols-[minmax(220px,1.3fr)_minmax(200px,1fr)_130px_minmax(220px,1.2fr)] gap-6 px-6 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative", expandedCompanies.includes(company.id) ? "bg-[hsl(var(--neon-lime))]/90 backdrop-blur-md shadow-lg shadow-[hsl(var(--neon-lime))]/20 ring-2 ring-[hsl(var(--neon-lime))]/50 rounded-b-none" : "hover:bg-muted/60")} onClick={() => toggleCompanyExpand(company.id)} onDoubleClick={() => handleContactDoubleClick(company)}>
                           <div className="flex items-center gap-3">
                             
                             <div className="flex items-center gap-2">
-                              <span className={cn("text-sm font-medium transition-colors", expandedCompanies.includes(company.id) ? "text-black" : "text-foreground group-hover:text-black")}>{company.name}</span>
+                              <span className={cn("text-sm font-medium transition-colors", expandedCompanies.includes(company.id) ? "text-black" : "text-foreground group-hover:text-foreground")}>{company.name}</span>
                             </div>
                           </div>
-                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(company.id) ? "text-black/80" : "text-muted-foreground group-hover:text-black/80")}>{company.email || '—'}</div>
-                          <div className={cn("text-xs transition-colors", expandedCompanies.includes(company.id) ? "text-black/80" : "text-muted-foreground group-hover:text-black/80")}>{company.telephone || '—'}</div>
-                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(company.id) ? "text-black/80" : "text-muted-foreground group-hover:text-black/80")}>
+                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(company.id) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{company.email || '—'}</div>
+                          <div className={cn("text-xs transition-colors", expandedCompanies.includes(company.id) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{company.telephone || '—'}</div>
+                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(company.id) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>
                             {company.address ? `${company.address}, ${company.city}` : company.city || '—'}
                           </div>
                         </div>
@@ -1174,10 +1174,10 @@ const ContactsDashboard = () => {
                                    <div>{t('dashboard.contactsDashboard.phone')}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                  {company.employees.map((emp) => <div key={emp.id} className="grid grid-cols-[minmax(160px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-sm hover:shadow-md hover:shadow-[hsl(var(--neon-lime))]/10 hover:scale-[1.01] cursor-pointer transition-all group/emp relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40" onDoubleClick={() => handleEmployeeDoubleClick(emp, company)}>
-                                      <div className="font-medium text-foreground group-hover/emp:text-black">{emp.name}</div>
-                                      <div className="text-muted-foreground truncate group-hover/emp:text-black/70">{emp.email}</div>
-                                      <div className="text-muted-foreground group-hover/emp:text-black/70">{emp.telephone}</div>
+                                  {company.employees.map((emp) => <div key={emp.id} className="grid grid-cols-[minmax(160px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-muted/50 cursor-pointer transition-all group/emp relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40" onDoubleClick={() => handleEmployeeDoubleClick(emp, company)}>
+                                      <div className="font-medium text-foreground group-hover/emp:text-foreground">{emp.name}</div>
+                                      <div className="text-muted-foreground truncate group-hover/emp:text-foreground/70">{emp.email}</div>
+                                      <div className="text-muted-foreground group-hover/emp:text-foreground/70">{emp.telephone}</div>
                                     </div>)}
                                 </div>
                               </div>}
@@ -1198,12 +1198,12 @@ const ContactsDashboard = () => {
                                    <div>{t('dashboard.contactsDashboard.municipality')}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                  {company.addresses.map((addr) => <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-sm hover:shadow-md hover:shadow-[hsl(var(--neon-lime))]/10 hover:scale-[1.01] cursor-pointer transition-all group/addr relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40">
-                                      <div className="font-medium text-foreground group-hover/addr:text-black">{addr.name}</div>
-                                      <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.street}</div>
-                                      <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.number}</div>
-                                      <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.postcode}</div>
-                                      <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.gemeente}</div>
+                                  {company.addresses.map((addr) => <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-muted/50 cursor-pointer transition-all group/addr relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40">
+                                      <div className="font-medium text-foreground group-hover/addr:text-foreground">{addr.name}</div>
+                                      <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.street}</div>
+                                      <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.number}</div>
+                                      <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.postcode}</div>
+                                      <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.gemeente}</div>
                                     </div>)}
                                 </div>
                               </div>}

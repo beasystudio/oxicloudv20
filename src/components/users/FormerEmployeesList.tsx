@@ -74,7 +74,7 @@ export function FormerEmployeesList({ users }: FormerEmployeesListProps) {
             {filteredUsers.map((user) => (
               <TableRow 
                 key={user.id}
-                className="group transition-all duration-200 relative rounded-lg hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1"
+                className="group transition-all duration-200 relative rounded-lg hover:bg-muted/60"
               >
                 <TableCell className="py-2.5">
                   <div className="flex items-center gap-3">
@@ -85,10 +85,10 @@ export function FormerEmployeesList({ users }: FormerEmployeesListProps) {
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="font-medium text-sm group-hover:text-black">
+                      <div className="font-medium text-sm group-hover:text-foreground">
                         {user.general.firstName} {user.general.lastName}
                       </div>
-                      <div className="text-xs text-muted-foreground group-hover:text-black/70">
+                      <div className="text-xs text-muted-foreground group-hover:text-foreground/70">
                         {user.general.jobTitle || 'No title'}
                       </div>
                     </div>
@@ -100,7 +100,7 @@ export function FormerEmployeesList({ users }: FormerEmployeesListProps) {
                   </Badge>
                 </TableCell>
                 <TableCell className="py-2.5">
-                  <span className="text-sm text-muted-foreground group-hover:text-black">
+                  <span className="text-sm text-muted-foreground group-hover:text-foreground">
                     {user.terminationDate ? format(new Date(user.terminationDate), 'dd - MM - yyyy') : 'N/A'}
                   </span>
                 </TableCell>

@@ -585,7 +585,7 @@ const ProjectBinderDashboard = () => {
                               className={`flex items-center gap-4 px-4 py-3 pl-10 cursor-pointer transition-all duration-200 border-b border-border/50 rounded-lg group relative ${
                                 selectedContact?.id === companyContact.id 
                                   ? 'bg-[hsl(var(--neon-lime))]/50 border-l-2 border-l-primary' 
-                                  : 'hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1'
+                                  : 'hover:bg-muted/60'
                               }`}
                             >
                               {/* Company Avatar */}
@@ -596,7 +596,7 @@ const ProjectBinderDashboard = () => {
                               {/* Company Name */}
                               <div className="flex flex-col min-w-[180px]">
                                 <span className="text-sm font-medium truncate group-hover:text-black transition-colors">{company}</span>
-                                <span className="text-xs text-muted-foreground group-hover:text-black/70 transition-colors">Company</span>
+                                <span className="text-xs text-muted-foreground group-hover:text-foreground/70 transition-colors">Company</span>
                               </div>
                               
                               {/* Work Phone */}
@@ -618,7 +618,7 @@ const ProjectBinderDashboard = () => {
                                 className={`flex items-center gap-4 px-4 py-3 pl-10 cursor-pointer transition-all duration-200 border-b border-border/50 last:border-b-0 rounded-lg group relative ${
                                   selectedContact?.id === contact.id 
                                     ? 'bg-[hsl(var(--neon-lime))]/50 border-l-2 border-l-primary' 
-                                    : 'hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-md hover:scale-[1.01] hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40'
+                                    : 'hover:bg-muted/50'
                                 }`}
                               >
                                 {/* Person Avatar */}
@@ -630,7 +630,7 @@ const ProjectBinderDashboard = () => {
                                 <div className="flex flex-col min-w-[180px]">
                                   <span className="text-sm font-medium truncate group-hover:text-black transition-colors">{contact.fullName}</span>
                                   {contact.function && (
-                                    <span className="text-xs text-muted-foreground group-hover:text-black/70 truncate transition-colors">{contact.function}</span>
+                                    <span className="text-xs text-muted-foreground group-hover:text-foreground/70 truncate transition-colors">{contact.function}</span>
                                   )}
                                 </div>
                                 
