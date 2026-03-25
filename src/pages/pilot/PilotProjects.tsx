@@ -702,7 +702,7 @@ export default function PilotProjects() {
                                  <div>Code</div>
                                  <div>Gemeente</div>
                               </div>
-                              <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 cursor-pointer transition-all group/address">
+                              <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg hover:bg-muted/50 cursor-pointer transition-all group/address">
                                 <div className="font-medium text-foreground truncate group-hover/address:text-foreground">{companyName.split(' ')[0]}</div>
                                 <div className="text-muted-foreground truncate group-hover/address:text-foreground/70">—</div>
                                 <div className="text-muted-foreground group-hover/address:text-foreground/70">—</div>
