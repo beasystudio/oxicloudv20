@@ -171,14 +171,14 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
                         {filteredContacts.map((contact) => (
                           <TableRow
                             key={contact.id}
-                            className="cursor-pointer h-10 group transition-colors hover:bg-[hsl(var(--neon-lime))]/90"
+                            className="cursor-pointer h-10 group transition-colors hover:bg-muted/60"
                             onClick={() => handleContactClick(contact as Contact)}
                           >
-                            <TableCell className="text-sm py-2 group-hover:text-black">{contact.firm_name}</TableCell>
-                            <TableCell className="text-sm py-2 group-hover:text-black">{contact.contact_person}</TableCell>
-                            <TableCell className="text-sm py-2 group-hover:text-black">{contact.phone || '-'}</TableCell>
-                            <TableCell className="text-sm py-2 group-hover:text-black">{contact.mobile || '-'}</TableCell>
-                            <TableCell className="text-sm py-2 group-hover:text-black">{contact.email || '-'}</TableCell>
+                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.firm_name}</TableCell>
+                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.contact_person}</TableCell>
+                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.phone || '-'}</TableCell>
+                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.mobile || '-'}</TableCell>
+                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.email || '-'}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>

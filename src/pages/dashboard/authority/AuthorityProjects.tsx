@@ -330,7 +330,7 @@ const AuthorityProjects = () => {
           </CardHeader>
           <CardContent className="flex-1 flex flex-col min-h-0 overflow-hidden p-0">
             <div className="flex-1 overflow-auto min-h-0">
-              {defaultFilteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-5 px-5 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group", "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")}>
+              {defaultFilteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-5 px-5 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group", "hover:bg-muted/60")}>
                   {/* Center - Project Info */}
                   <div className="flex-1 min-w-0 space-y-0.5">
                     <div className="flex items-center gap-3">
@@ -338,10 +338,10 @@ const AuthorityProjects = () => {
                         {project.projectName}
                       </h3>
                     </div>
-                    <p className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors">
+                    <p className="text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors">
                       {project.company}
                     </p>
-                    <p className="text-xs text-muted-foreground/80 truncate group-hover:text-black/70 transition-colors">
+                    <p className="text-xs text-muted-foreground/80 truncate group-hover:text-foreground/70 transition-colors">
                       {project.address}
                     </p>
                   </div>
@@ -351,7 +351,7 @@ const AuthorityProjects = () => {
                     <div className="flex items-center justify-end gap-2">
                       <span className="text-xs font-medium text-foreground group-hover:text-black transition-colors">{project.natura2000Site}</span>
                     </div>
-                    <div className="flex items-center justify-end gap-4 text-xs text-muted-foreground group-hover:text-black/80 transition-colors">
+                    <div className="flex items-center justify-end gap-4 text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors">
                       <span>
                         <span className="group-hover:text-black/60">{t('authority.projects.impact')}: </span>
                         <span className={cn("font-semibold group-hover:text-black transition-colors", project.constructionProgress * 0.006 < 0.5 ? "text-primary" : "text-destructive")}>
@@ -412,7 +412,7 @@ const AuthorityProjects = () => {
 
           {/* Project List - Names only */}
           <div className="space-y-0">
-            {filteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group", "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")}>
+            {filteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group", "hover:bg-muted/60")}>
                 <span className="text-sm text-foreground group-hover:text-black transition-colors">
                   {project.projectName}
                 </span>

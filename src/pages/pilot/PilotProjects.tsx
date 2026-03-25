@@ -653,17 +653,17 @@ export default function PilotProjects() {
                   <div className="p-1.5 flex-1 overflow-auto">
                     {Object.entries(groupedContacts).map(([companyName, persons]) => <div key={companyName} className={cn(expandedCompanies.has(companyName) && "bg-muted/20 rounded-xl my-0.5 shadow-sm")}>
                         {/* Company Row */}
-                        <div className={cn("grid grid-cols-[minmax(160px,1.2fr)_minmax(140px,1fr)_100px_minmax(160px,1fr)] gap-3 px-4 py-2 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group", expandedCompanies.has(companyName) ? "bg-[hsl(var(--neon-lime))]/90 rounded-b-none" : "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")} onClick={() => {
+                        <div className={cn("grid grid-cols-[minmax(160px,1.2fr)_minmax(140px,1fr)_100px_minmax(160px,1fr)] gap-3 px-4 py-2 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group", expandedCompanies.has(companyName) ? "bg-[hsl(var(--neon-lime))]/90 rounded-b-none" : "hover:bg-muted/60")} onClick={() => {
                       setExpandedCompanies(prev => {
                         const next = new Set(prev);
                         next.has(companyName) ? next.delete(companyName) : next.add(companyName);
                         return next;
                       });
                     }}>
-                          <div className={cn("font-medium text-xs truncate transition-colors", expandedCompanies.has(companyName) ? "text-black" : "text-foreground group-hover:text-black")}>{companyName}</div>
-                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-black/80")}>{persons[0]?.email || '—'}</div>
-                          <div className={cn("text-xs transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-black/80")}>{persons[0]?.phone || '—'}</div>
-                          <div className={cn("text-xs transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-black/80")}>—</div>
+                          <div className={cn("font-medium text-xs truncate transition-colors", expandedCompanies.has(companyName) ? "text-black" : "text-foreground group-hover:text-foreground")}>{companyName}</div>
+                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{persons[0]?.email || '—'}</div>
+                          <div className={cn("text-xs transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{persons[0]?.phone || '—'}</div>
+                          <div className={cn("text-xs transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>—</div>
                         </div>
 
                         {/* Expanded Content */}
@@ -680,11 +680,11 @@ export default function PilotProjects() {
                                  <div>Telefoon</div>
                               </div>
                               <div className="space-y-0">
-                                {persons.map(p => <div key={p.id} className="grid grid-cols-[minmax(100px,1fr)_minmax(120px,1fr)_minmax(140px,1.2fr)_90px] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/person hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-md hover:scale-[1.01] hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40">
-                                    <div className="font-medium text-foreground truncate group-hover/person:text-black">{p.name}</div>
-                                    <div className="text-muted-foreground truncate group-hover/person:text-black/70">{p.function || '-'}</div>
-                                    <div className="text-muted-foreground truncate group-hover/person:text-black/70">{p.email || '-'}</div>
-                                    <div className="text-muted-foreground group-hover/person:text-black/70">{p.phone || '-'}</div>
+                                {persons.map(p => <div key={p.id} className="grid grid-cols-[minmax(100px,1fr)_minmax(120px,1fr)_minmax(140px,1.2fr)_90px] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/person hover:bg-muted/50">
+                                    <div className="font-medium text-foreground truncate group-hover/person:text-foreground">{p.name}</div>
+                                    <div className="text-muted-foreground truncate group-hover/person:text-foreground/70">{p.function || '-'}</div>
+                                    <div className="text-muted-foreground truncate group-hover/person:text-foreground/70">{p.email || '-'}</div>
+                                    <div className="text-muted-foreground group-hover/person:text-foreground/70">{p.phone || '-'}</div>
                                   </div>)}
                               </div>
                             </div>
@@ -702,12 +702,12 @@ export default function PilotProjects() {
                                  <div>Code</div>
                                  <div>Gemeente</div>
                               </div>
-                              <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 cursor-pointer transition-all group/address">
-                                <div className="font-medium text-foreground truncate group-hover/address:text-black">{companyName.split(' ')[0]}</div>
-                                <div className="text-muted-foreground truncate group-hover/address:text-black/70">—</div>
-                                <div className="text-muted-foreground group-hover/address:text-black/70">—</div>
-                                <div className="text-muted-foreground group-hover/address:text-black/70">—</div>
-                                <div className="text-muted-foreground truncate group-hover/address:text-black/70">—</div>
+                              <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg hover:bg-muted/50 cursor-pointer transition-all group/address">
+                                <div className="font-medium text-foreground truncate group-hover/address:text-foreground">{companyName.split(' ')[0]}</div>
+                                <div className="text-muted-foreground truncate group-hover/address:text-foreground/70">—</div>
+                                <div className="text-muted-foreground group-hover/address:text-foreground/70">—</div>
+                                <div className="text-muted-foreground group-hover/address:text-foreground/70">—</div>
+                                <div className="text-muted-foreground truncate group-hover/address:text-foreground/70">—</div>
                               </div>
                             </div>
                           </div>}
@@ -765,7 +765,7 @@ export default function PilotProjects() {
             <div className="space-y-0.5 p-2">
               {listFilteredProjects.map(project => {
               const noxInfo = getNoxStatus(project);
-              return <div key={project.id} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group items-start relative", "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")} onClick={() => handleSelectProject(project.id)}>
+              return <div key={project.id} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group items-start relative", "hover:bg-muted/60")} onClick={() => handleSelectProject(project.id)}>
                     <span className="font-mono text-sm font-medium w-24 flex items-center gap-2 text-foreground group-hover:text-black transition-colors pt-0.5">
                       <span className={cn("inline-block w-2.5 h-2.5 rounded-full shrink-0", noxInfo.status ? STATUS_CONFIG[noxInfo.status].color : 'border-2 border-muted-foreground/40')} />
                       {project.projectNumber}
@@ -890,14 +890,14 @@ export default function PilotProjects() {
               <div>
                 {paginatedProjects.map(project => {
                 const noxInfo = getNoxStatus(project);
-                return <div key={project.id} className={cn("grid grid-cols-[140px_1fr_180px_1fr] gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative", "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1")} onClick={() => handleSelectProject(project.id)}>
+                return <div key={project.id} className={cn("grid grid-cols-[140px_1fr_180px_1fr] gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative", "hover:bg-muted/60")} onClick={() => handleSelectProject(project.id)}>
                       <div className="flex items-center gap-2.5 pt-0.5">
                         <span className={cn("inline-block w-2.5 h-2.5 rounded-full shrink-0", noxInfo.status ? STATUS_CONFIG[noxInfo.status].color : 'border-2 border-muted-foreground/40')} />
                         <span className="text-sm font-medium text-foreground group-hover:text-black transition-colors">{project.projectNumber}</span>
                       </div>
                       <div className="text-sm font-medium text-foreground group-hover:text-black transition-colors pt-0.5">{project.name}</div>
-                      <div className="text-muted-foreground text-xs group-hover:text-black/80 transition-colors pt-0.5">{user.firstName} {user.lastName}</div>
-                      <div className="text-muted-foreground text-xs group-hover:text-black/80 transition-colors leading-relaxed">
+                      <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors pt-0.5">{user.firstName} {user.lastName}</div>
+                      <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors leading-relaxed">
                         {project.siteAddress ? `${project.siteAddress.street} ${project.siteAddress.number}, ${project.siteAddress.postalCode} ${project.siteAddress.city}` : '—'}
                       </div>
                     </div>;

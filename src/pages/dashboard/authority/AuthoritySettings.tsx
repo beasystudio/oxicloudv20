@@ -137,7 +137,7 @@ const AuthoritySettings = () => {
                     key={member.id}
                     className={cn(
                       "flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 group",
-                      "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1"
+                      "hover:bg-muted/60"
                     )}
                   >
                     <div className="flex items-center gap-3">
@@ -148,7 +148,7 @@ const AuthoritySettings = () => {
                       </div>
                       <div>
                         <p className="font-medium text-sm text-foreground group-hover:text-black transition-colors">{member.name}</p>
-                        <p className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors">{member.email}</p>
+                        <p className="text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors">{member.email}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -187,17 +187,17 @@ const AuthoritySettings = () => {
                     key={log.id}
                     className={cn(
                       "flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 group",
-                      "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1"
+                      "hover:bg-muted/60"
                     )}
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 rounded-full bg-primary" />
                       <div>
                         <p className="font-medium text-sm text-foreground group-hover:text-black transition-colors">{log.action}</p>
-                        <p className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors">{t('authority.settings.by')} {log.user}</p>
+                        <p className="text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors">{t('authority.settings.by')} {log.user}</p>
                       </div>
                     </div>
-                    <span className="text-xs text-muted-foreground group-hover:text-black/70 transition-colors">{log.timestamp}</span>
+                    <span className="text-xs text-muted-foreground group-hover:text-foreground/70 transition-colors">{log.timestamp}</span>
                   </div>
                 ))}
               </div>

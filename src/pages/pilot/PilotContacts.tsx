@@ -433,13 +433,13 @@ export default function PilotContacts() {
                         filteredPersons.map(p => (
                           <div
                             key={p.id}
-                            className="grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 relative hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1"
+                            className="grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg hover:bg-muted/60 relative"
                             onDoubleClick={() => handlePersonDoubleClick({ ...p, company: p.company })}
                           >
                             <div className="text-sm font-medium group-hover:text-black transition-colors">{p.name}</div>
-                            <div className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors">{p.company}</div>
-                            <div className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors truncate">{p.email}</div>
-                            <div className="text-xs text-muted-foreground group-hover:text-black/80 transition-colors">{p.telephone}</div>
+                            <div className="text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors">{p.company}</div>
+                            <div className="text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors truncate">{p.email}</div>
+                            <div className="text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors">{p.telephone}</div>
                           </div>
                         ))
                       )}
@@ -473,19 +473,19 @@ export default function PilotContacts() {
                                 "grid grid-cols-[minmax(220px,1.3fr)_minmax(200px,1fr)_130px_minmax(220px,1.2fr)] gap-6 px-6 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative",
                                 expandedCompanies.includes(grp.id)
                                   ? "bg-[hsl(var(--neon-lime))]/90 backdrop-blur-md shadow-lg shadow-[hsl(var(--neon-lime))]/20 ring-2 ring-[hsl(var(--neon-lime))]/50 rounded-b-none"
-                                  : "hover:bg-[hsl(var(--neon-lime))]/90 hover:backdrop-blur-md hover:shadow-lg hover:shadow-[hsl(var(--neon-lime))]/20 hover:scale-[1.02] hover:z-10 hover:ring-2 hover:ring-[hsl(var(--neon-lime))]/50 hover:ring-offset-1"
+                                  : "hover:bg-muted/60"
                               )}
                               onClick={() => toggleCompany(grp.id)}
                               onDoubleClick={(e) => { e.stopPropagation(); handleCompanyDoubleClick(grp); }}
                             >
-                              <div className={cn("text-sm font-medium truncate transition-colors", expandedCompanies.includes(grp.id) ? "text-black" : "group-hover:text-black")}>{grp.name}</div>
-                              <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(grp.id) ? "text-black/80" : "text-muted-foreground group-hover:text-black/80")}>
+                              <div className={cn("text-sm font-medium truncate transition-colors", expandedCompanies.includes(grp.id) ? "text-black" : "group-hover:text-foreground")}>{grp.name}</div>
+                              <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(grp.id) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>
                                 {grp.email || '—'}
                               </div>
-                              <div className={cn("text-xs transition-colors", expandedCompanies.includes(grp.id) ? "text-black/80" : "text-muted-foreground group-hover:text-black/80")}>
+                              <div className={cn("text-xs transition-colors", expandedCompanies.includes(grp.id) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>
                                 {grp.telephone || '—'}
                               </div>
-                              <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(grp.id) ? "text-black/80" : "text-muted-foreground group-hover:text-black/80")}>
+                              <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(grp.id) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>
                                 {grp.address || '—'}
                               </div>
                             </div>
@@ -510,13 +510,13 @@ export default function PilotContacts() {
                                       {grp.persons.map(p => (
                                         <div
                                           key={p.id}
-                                          className="grid grid-cols-[minmax(160px,1fr)_minmax(180px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-sm hover:shadow-md hover:shadow-[hsl(var(--neon-lime))]/10 hover:scale-[1.01] cursor-pointer transition-all group/emp relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40"
+                                          className="grid grid-cols-[minmax(160px,1fr)_minmax(180px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-muted/50 cursor-pointer transition-all group/emp relative"
                                           onDoubleClick={(e) => { e.stopPropagation(); handlePersonDoubleClick({ ...p, company: grp.name }); }}
                                         >
-                                          <div className="font-medium text-foreground group-hover/emp:text-black">{p.name}</div>
-                                          <div className="text-muted-foreground group-hover/emp:text-black/70">{p.function}</div>
-                                          <div className="text-muted-foreground truncate group-hover/emp:text-black/70">{p.email}</div>
-                                          <div className="text-muted-foreground group-hover/emp:text-black/70">{p.telephone}</div>
+                                          <div className="font-medium text-foreground group-hover/emp:text-foreground">{p.name}</div>
+                                          <div className="text-muted-foreground group-hover/emp:text-foreground/70">{p.function}</div>
+                                          <div className="text-muted-foreground truncate group-hover/emp:text-foreground/70">{p.email}</div>
+                                          <div className="text-muted-foreground group-hover/emp:text-foreground/70">{p.telephone}</div>
                                         </div>
                                       ))}
                                     </div>
@@ -539,12 +539,12 @@ export default function PilotContacts() {
                                     </div>
                                     <div className="space-y-0.5">
                                       {grp.addresses.map(addr => (
-                                        <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-[hsl(var(--neon-lime))]/70 hover:backdrop-blur-sm hover:shadow-md hover:shadow-[hsl(var(--neon-lime))]/10 hover:scale-[1.01] cursor-pointer transition-all group/addr relative hover:z-10 hover:ring-1 hover:ring-[hsl(var(--neon-lime))]/40">
-                                          <div className="font-medium text-foreground group-hover/addr:text-black">{addr.name}</div>
-                                          <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.street}</div>
-                                          <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.number}</div>
-                                          <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.postcode}</div>
-                                          <div className="text-muted-foreground group-hover/addr:text-black/70">{addr.gemeente}</div>
+                                        <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:bg-muted/50 cursor-pointer transition-all group/addr relative">
+                                          <div className="font-medium text-foreground group-hover/addr:text-foreground">{addr.name}</div>
+                                          <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.street}</div>
+                                          <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.number}</div>
+                                          <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.postcode}</div>
+                                          <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.gemeente}</div>
                                         </div>
                                       ))}
                                     </div>
