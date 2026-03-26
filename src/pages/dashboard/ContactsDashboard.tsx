@@ -1144,7 +1144,7 @@ const ContactsDashboard = () => {
                     {/* Company Rows */}
                     {filteredCompanies.map((company, index) => <div key={company.id} className={cn("group/company", expandedCompanies.includes(company.id) && "bg-muted/20 rounded-xl my-1 shadow-sm")}>
                         {/* Main Company Row - Shell */}
-                        <div className={cn("grid grid-cols-[minmax(220px,1.3fr)_minmax(200px,1fr)_130px_minmax(220px,1.2fr)] gap-6 px-6 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative", expandedCompanies.includes(company.id) ? "bg-[hsl(var(--neon-lime))]/90 rounded-b-none" : "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")} onClick={() => toggleCompanyExpand(company.id)} onDoubleClick={() => handleContactDoubleClick(company)}>
+                        <div className={cn("grid grid-cols-[minmax(220px,1.3fr)_minmax(200px,1fr)_130px_minmax(220px,1.2fr)] gap-6 px-6 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative", expandedCompanies.includes(company.id) ? "bg-[hsl(var(--neon-lime))]/90 rounded-b-none" : "hover:scale-[1.02] hover:z-10")} onClick={() => toggleCompanyExpand(company.id)} onDoubleClick={() => handleContactDoubleClick(company)}>
                           <div className="flex items-center gap-3">
                             
                             <div className="flex items-center gap-2">

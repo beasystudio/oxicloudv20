@@ -1420,7 +1420,7 @@ const ProjectsDashboard = () => {
                                    <div>{t('dashboard.projectsDashboard.phone')}</div>
                                 </div>
                                 <div className="space-y-0">
-                                  {persons.map((contact) => <div key={contact.id} className={cn("grid grid-cols-[minmax(100px,1fr)_minmax(120px,1fr)_minmax(140px,1.2fr)_90px] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/person relative", "hover:shadow-sm hover:shadow-foreground/20 hover:scale-[1.01] hover:z-10", selectedContact?.id === contact.id && "bg-[hsl(var(--neon-lime))]/50")} onClick={() => handleContactClick(contact)} onDoubleClick={() => handleContactDoubleClick(contact)}>
+                                  {persons.map((contact) => <div key={contact.id} className={cn("grid grid-cols-[minmax(100px,1fr)_minmax(120px,1fr)_minmax(140px,1.2fr)_90px] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/person relative", "hover:scale-[1.01] hover:z-10", selectedContact?.id === contact.id && "bg-[hsl(var(--neon-lime))]/50")} onClick={() => handleContactClick(contact)} onDoubleClick={() => handleContactDoubleClick(contact)}>
                                       <div className="font-medium text-foreground truncate group-hover/person:text-foreground">{contact.fullName}</div>
                                       <div className="text-muted-foreground truncate group-hover/person:text-foreground/70">{contact.function || '-'}</div>
                                       <div className="text-muted-foreground truncate group-hover/person:text-foreground/70">{contact.email || '-'}</div>
