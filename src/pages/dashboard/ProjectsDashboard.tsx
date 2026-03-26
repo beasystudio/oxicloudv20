@@ -933,7 +933,7 @@ const ProjectsDashboard = () => {
           {/* Search Results List */}
           <ScrollArea className="h-[400px]">
             <div className="space-y-0.5 p-2">
-              {filteredProjects.map((project) => <div key={project.id} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group items-start relative", "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
+              {filteredProjects.map((project) => <div key={project.id} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group items-start relative", "hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
                   <span className="font-mono text-sm font-medium w-24 flex items-center gap-2 text-foreground group-hover:text-black transition-colors pt-0.5">
                     <NoxStatusDot projectId={project.id} />
                     {project.projectNumber}
