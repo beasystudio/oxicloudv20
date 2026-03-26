@@ -1391,7 +1391,7 @@ const ProjectsDashboard = () => {
                     persons
                   }]) => <div key={company} className={cn("group/company", expandedCompanies.has(company) && "bg-muted/20 rounded-xl my-0.5 shadow-sm")}>
                           {/* Main Company Row - Lime green hover with black text */}
-                          <div className={cn("grid grid-cols-[minmax(160px,1.2fr)_minmax(140px,1fr)_100px_minmax(160px,1fr)] gap-3 px-4 py-2 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative", expandedCompanies.has(company) ? "bg-[hsl(var(--neon-lime))]/90 rounded-b-none" : "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")} onClick={() => toggleCompanyExpanded(company)} onDoubleClick={() => handleContactDoubleClick(persons[0] || companyContact as any)}>
+                          <div className={cn("grid grid-cols-[minmax(160px,1.2fr)_minmax(140px,1fr)_100px_minmax(160px,1fr)] gap-3 px-4 py-2 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative", expandedCompanies.has(company) ? "bg-[hsl(var(--neon-lime))]/90 rounded-b-none" : "hover:scale-[1.02] hover:z-10")} onClick={() => toggleCompanyExpanded(company)} onDoubleClick={() => handleContactDoubleClick(persons[0] || companyContact as any)}>
                             <div className="flex items-center gap-2">
                               
                               <span className={cn("font-medium text-xs truncate transition-colors", expandedCompanies.has(company) ? "text-black" : "text-foreground group-hover:text-foreground")}>{company}</span>
