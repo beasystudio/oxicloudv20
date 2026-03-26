@@ -680,7 +680,7 @@ export default function PilotProjects() {
                                  <div>Telefoon</div>
                               </div>
                               <div className="space-y-0">
-                                {persons.map(p => <div key={p.id} className="grid grid-cols-[minmax(100px,1fr)_minmax(120px,1fr)_minmax(140px,1.2fr)_90px] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/person hover:shadow-sm hover:shadow-foreground/20 hover:scale-[1.01] hover:z-10">
+                                {persons.map(p => <div key={p.id} className="grid grid-cols-[minmax(100px,1fr)_minmax(120px,1fr)_minmax(140px,1.2fr)_90px] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/person hover:scale-[1.01] hover:z-10">
                                     <div className="font-medium text-foreground truncate group-hover/person:text-foreground">{p.name}</div>
                                     <div className="text-muted-foreground truncate group-hover/person:text-foreground/70">{p.function || '-'}</div>
                                     <div className="text-muted-foreground truncate group-hover/person:text-foreground/70">{p.email || '-'}</div>
@@ -702,7 +702,7 @@ export default function PilotProjects() {
                                  <div>Code</div>
                                  <div>Gemeente</div>
                               </div>
-                              <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg hover:shadow-sm hover:shadow-foreground/20 hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/address">
+                              <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/address">
                                 <div className="font-medium text-foreground truncate group-hover/address:text-foreground">{companyName.split(' ')[0]}</div>
                                 <div className="text-muted-foreground truncate group-hover/address:text-foreground/70">—</div>
                                 <div className="text-muted-foreground group-hover/address:text-foreground/70">—</div>

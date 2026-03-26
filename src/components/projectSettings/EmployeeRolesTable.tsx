@@ -158,7 +158,7 @@ export function EmployeeRolesTable() {
             <TableBody>
               {Object.entries(groupedRoles).map(([companyName, companyRoles]) => (
                 companyRoles.map((role, index) => (
-                  <TableRow key={role.id} className="cursor-pointer transition-all duration-200 hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10" onDoubleClick={() => handleEdit(role)}>
+                  <TableRow key={role.id} className="cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:z-10" onDoubleClick={() => handleEdit(role)}>
                     <TableCell className={index > 0 ? 'text-muted-foreground' : 'font-medium'}>
                       {index === 0 ? companyName : ''}
                     </TableCell>

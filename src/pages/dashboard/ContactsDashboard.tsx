@@ -1174,7 +1174,7 @@ const ContactsDashboard = () => {
                                    <div>{t('dashboard.contactsDashboard.phone')}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                  {company.employees.map((emp) => <div key={emp.id} className="grid grid-cols-[minmax(160px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:shadow-sm hover:shadow-foreground/20 hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/emp relative" onDoubleClick={() => handleEmployeeDoubleClick(emp, company)}>
+                                  {company.employees.map((emp) => <div key={emp.id} className="grid grid-cols-[minmax(160px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/emp relative" onDoubleClick={() => handleEmployeeDoubleClick(emp, company)}>
                                       <div className="font-medium text-foreground group-hover/emp:text-foreground">{emp.name}</div>
                                       <div className="text-muted-foreground truncate group-hover/emp:text-foreground/70">{emp.email}</div>
                                       <div className="text-muted-foreground group-hover/emp:text-foreground/70">{emp.telephone}</div>
@@ -1198,7 +1198,7 @@ const ContactsDashboard = () => {
                                    <div>{t('dashboard.contactsDashboard.municipality')}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                  {company.addresses.map((addr) => <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:shadow-sm hover:shadow-foreground/20 hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/addr relative">
+                                  {company.addresses.map((addr) => <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/addr relative">
                                       <div className="font-medium text-foreground group-hover/addr:text-foreground">{addr.name}</div>
                                       <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.street}</div>
                                       <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.number}</div>
