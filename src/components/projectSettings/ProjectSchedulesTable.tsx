@@ -129,7 +129,7 @@ export function ProjectSchedulesTable() {
             >
               <div className="border rounded-lg">
                 <CollapsibleTrigger asChild>
-                  <div className="flex items-center justify-between p-4 cursor-pointer transition-all duration-200 hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10">
+                  <div className="flex items-center justify-between p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10">
                     <div className="flex items-center gap-3">
                       {expandedSchedule === schedule.id ? (
                         <ChevronDown className="h-4 w-4" />

@@ -74,7 +74,7 @@ export function FormerEmployeesList({ users }: FormerEmployeesListProps) {
             {filteredUsers.map((user) => (
               <TableRow 
                 key={user.id}
-                className="group transition-all duration-200 relative rounded-lg hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10"
+                className="group transition-all duration-200 relative rounded-lg hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10"
               >
                 <TableCell className="py-2.5">
                   <div className="flex items-center gap-3">

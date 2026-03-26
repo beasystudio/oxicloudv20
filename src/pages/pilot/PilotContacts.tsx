@@ -433,7 +433,7 @@ export default function PilotContacts() {
                         filteredPersons.map(p => (
                           <div
                             key={p.id}
-                            className="grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10 relative"
+                            className="grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10 relative"
                             onDoubleClick={() => handlePersonDoubleClick({ ...p, company: p.company })}
                           >
                             <div className="text-sm font-medium group-hover:text-black transition-colors">{p.name}</div>
@@ -473,7 +473,7 @@ export default function PilotContacts() {
                                 "grid grid-cols-[minmax(220px,1.3fr)_minmax(200px,1fr)_130px_minmax(220px,1.2fr)] gap-6 px-6 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative",
                                 expandedCompanies.includes(grp.id)
                                   ? "bg-[hsl(var(--neon-lime))]/90 backdrop-blur-md shadow-lg shadow-[hsl(var(--neon-lime))]/20 ring-2 ring-[hsl(var(--neon-lime))]/50 rounded-b-none"
-                                  : "hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10"
+                                  : "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10"
                               )}
                               onClick={() => toggleCompany(grp.id)}
                               onDoubleClick={(e) => { e.stopPropagation(); handleCompanyDoubleClick(grp); }}
@@ -510,7 +510,7 @@ export default function PilotContacts() {
                                       {grp.persons.map(p => (
                                         <div
                                           key={p.id}
-                                          className="grid grid-cols-[minmax(160px,1fr)_minmax(180px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:backdrop-blur-md hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/emp relative"
+                                          className="grid grid-cols-[minmax(160px,1fr)_minmax(180px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:shadow-sm hover:shadow-foreground/20 hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/emp relative"
                                           onDoubleClick={(e) => { e.stopPropagation(); handlePersonDoubleClick({ ...p, company: grp.name }); }}
                                         >
                                           <div className="font-medium text-foreground group-hover/emp:text-foreground">{p.name}</div>
@@ -539,7 +539,7 @@ export default function PilotContacts() {
                                     </div>
                                     <div className="space-y-0.5">
                                       {grp.addresses.map(addr => (
-                                        <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:backdrop-blur-md hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/addr relative">
+                                        <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:shadow-sm hover:shadow-foreground/20 hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/addr relative">
                                           <div className="font-medium text-foreground group-hover/addr:text-foreground">{addr.name}</div>
                                           <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.street}</div>
                                           <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.number}</div>

@@ -330,7 +330,7 @@ const AuthorityProjects = () => {
           </CardHeader>
           <CardContent className="flex-1 flex flex-col min-h-0 overflow-hidden p-0">
             <div className="flex-1 overflow-auto min-h-0">
-              {defaultFilteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-5 px-5 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group", "hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10")}>
+              {defaultFilteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-5 px-5 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group", "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")}>
                   {/* Center - Project Info */}
                   <div className="flex-1 min-w-0 space-y-0.5">
                     <div className="flex items-center gap-3">
@@ -412,7 +412,7 @@ const AuthorityProjects = () => {
 
           {/* Project List - Names only */}
           <div className="space-y-0">
-            {filteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group", "hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10")}>
+            {filteredProjects.map(project => <div key={project.id} onClick={() => handleSelectProject(project.id)} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group", "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")}>
                 <span className="text-sm text-foreground group-hover:text-black transition-colors">
                   {project.projectName}
                 </span>
