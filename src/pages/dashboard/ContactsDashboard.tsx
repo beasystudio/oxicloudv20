@@ -1108,7 +1108,7 @@ const ContactsDashboard = () => {
                       <User className="h-12 w-12 mx-auto mb-4 opacity-40" />
                        <p className="text-base font-medium mb-2">{t('dashboard.contactsDashboard.noContactsFound')}</p>
                        <p className="text-xs">{t('dashboard.contactsDashboard.noPersonsAvailable')}</p>
-                    </div> : filteredPersons.map((person, index) => <div key={person.id} className={cn("grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg", "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10 relative")} onDoubleClick={() => {
+                    </div> : filteredPersons.map((person, index) => <div key={person.id} className={cn("grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg", "hover:scale-[1.02] hover:z-10 relative")} onDoubleClick={() => {
                       const contact: UnifiedContact = {
                         id: person.id,
                         name: person.name,
