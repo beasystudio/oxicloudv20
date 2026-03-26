@@ -19,8 +19,8 @@ export default {
     	},
     	extend: {
     		fontFamily: {
-    			sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-    			display: ['Space Grotesk', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    			sans: ['"Google Sans"', '"Noto Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    			display: ['"Google Sans"', '"Noto Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
     			mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
     		},
     		colors: {
