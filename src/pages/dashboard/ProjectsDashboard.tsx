@@ -822,7 +822,7 @@ const ProjectsDashboard = () => {
               <div>
                 {paginatedProjects.map((project) => <ContextMenu key={project.id}>
                     <ContextMenuTrigger asChild>
-                      <div className={cn("gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]", "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
+                      <div className={cn("gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]", "hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
                         <div className="flex items-center gap-2.5 pt-0.5">
                           <NoxStatusDot projectId={project.id} />
                           <span className="text-sm font-medium text-foreground group-hover:text-black transition-colors">{project.projectNumber}</span>
