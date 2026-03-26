@@ -589,6 +589,12 @@ html {
   }
 }
 
+/* Safe-triangle hover stabilizer for dense lists */
+.hover-stable > * {
+  transition-delay: 30ms;
+  will-change: transform;
+}
+
 @media (max-width: 400px) {
   .dashboard-bento {
     grid-template-columns: 1fr !important;

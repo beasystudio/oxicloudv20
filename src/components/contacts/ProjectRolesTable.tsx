@@ -96,7 +96,7 @@ export function ProjectRolesTable() {
             <TableBody>
               {roles.map(role => <TableRow 
                   key={role.id} 
-                  className="cursor-pointer transition-all duration-200 hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10"
+                  className="cursor-pointer transition-all duration-200 hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10"
                   onDoubleClick={() => handleEdit(role)}
                   title="Double-click to edit"
                 >

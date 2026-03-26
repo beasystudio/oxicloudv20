@@ -822,7 +822,7 @@ const ProjectsDashboard = () => {
               <div>
                 {paginatedProjects.map((project) => <ContextMenu key={project.id}>
                     <ContextMenuTrigger asChild>
-                      <div className={cn("gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]", "hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
+                      <div className={cn("gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]", "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
                         <div className="flex items-center gap-2.5 pt-0.5">
                           <NoxStatusDot projectId={project.id} />
                           <span className="text-sm font-medium text-foreground group-hover:text-black transition-colors">{project.projectNumber}</span>
@@ -933,7 +933,7 @@ const ProjectsDashboard = () => {
           {/* Search Results List */}
           <ScrollArea className="h-[400px]">
             <div className="space-y-0.5 p-2">
-              {filteredProjects.map((project) => <div key={project.id} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group items-start relative", "hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
+              {filteredProjects.map((project) => <div key={project.id} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group items-start relative", "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
                   <span className="font-mono text-sm font-medium w-24 flex items-center gap-2 text-foreground group-hover:text-black transition-colors pt-0.5">
                     <NoxStatusDot projectId={project.id} />
                     {project.projectNumber}
@@ -1391,7 +1391,7 @@ const ProjectsDashboard = () => {
                     persons
                   }]) => <div key={company} className={cn("group/company", expandedCompanies.has(company) && "bg-muted/20 rounded-xl my-0.5 shadow-sm")}>
                           {/* Main Company Row - Lime green hover with black text */}
-                          <div className={cn("grid grid-cols-[minmax(160px,1.2fr)_minmax(140px,1fr)_100px_minmax(160px,1fr)] gap-3 px-4 py-2 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative", expandedCompanies.has(company) ? "bg-[hsl(var(--neon-lime))]/90 rounded-b-none" : "hover:backdrop-blur-md hover:shadow-lg hover:shadow-foreground/5 hover:scale-[1.02] hover:z-10")} onClick={() => toggleCompanyExpanded(company)} onDoubleClick={() => handleContactDoubleClick(persons[0] || companyContact as any)}>
+                          <div className={cn("grid grid-cols-[minmax(160px,1.2fr)_minmax(140px,1fr)_100px_minmax(160px,1fr)] gap-3 px-4 py-2 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative", expandedCompanies.has(company) ? "bg-[hsl(var(--neon-lime))]/90 rounded-b-none" : "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")} onClick={() => toggleCompanyExpanded(company)} onDoubleClick={() => handleContactDoubleClick(persons[0] || companyContact as any)}>
                             <div className="flex items-center gap-2">
                               
                               <span className={cn("font-medium text-xs truncate transition-colors", expandedCompanies.has(company) ? "text-black" : "text-foreground group-hover:text-foreground")}>{company}</span>
@@ -1420,7 +1420,7 @@ const ProjectsDashboard = () => {
                                    <div>{t('dashboard.projectsDashboard.phone')}</div>
                                 </div>
                                 <div className="space-y-0">
-                                  {persons.map((contact) => <div key={contact.id} className={cn("grid grid-cols-[minmax(100px,1fr)_minmax(120px,1fr)_minmax(140px,1.2fr)_90px] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/person relative", "hover:backdrop-blur-md hover:scale-[1.01] hover:z-10", selectedContact?.id === contact.id && "bg-[hsl(var(--neon-lime))]/50")} onClick={() => handleContactClick(contact)} onDoubleClick={() => handleContactDoubleClick(contact)}>
+                                  {persons.map((contact) => <div key={contact.id} className={cn("grid grid-cols-[minmax(100px,1fr)_minmax(120px,1fr)_minmax(140px,1.2fr)_90px] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/person relative", "hover:shadow-sm hover:shadow-foreground/20 hover:scale-[1.01] hover:z-10", selectedContact?.id === contact.id && "bg-[hsl(var(--neon-lime))]/50")} onClick={() => handleContactClick(contact)} onDoubleClick={() => handleContactDoubleClick(contact)}>
                                       <div className="font-medium text-foreground truncate group-hover/person:text-foreground">{contact.fullName}</div>
                                       <div className="text-muted-foreground truncate group-hover/person:text-foreground/70">{contact.function || '-'}</div>
                                       <div className="text-muted-foreground truncate group-hover/person:text-foreground/70">{contact.email || '-'}</div>
@@ -1444,7 +1444,7 @@ const ProjectsDashboard = () => {
                                    <div>Code</div>
                                    <div>Gemeente</div>
                                 </div>
-                                <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/address hover:backdrop-blur-md hover:scale-[1.01] hover:z-10">
+                                <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg cursor-pointer transition-all group/address hover:shadow-sm hover:shadow-foreground/20 hover:scale-[1.01] hover:z-10">
                                   <div className="font-medium text-foreground truncate group-hover/address:text-foreground">{company.split(' ')[0]}</div>
                                   <div className="text-muted-foreground truncate group-hover/address:text-foreground/70">Herkenrodestraat</div>
                                   <div className="text-muted-foreground group-hover/address:text-foreground/70">25</div>
