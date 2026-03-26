@@ -137,7 +137,7 @@ const AuthoritySettings = () => {
                     key={member.id}
                     className={cn(
                       "flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 group",
-                      "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10"
+                      "hover:scale-[1.02] hover:z-10"
                     )}
                   >
                     <div className="flex items-center gap-3">
@@ -187,7 +187,7 @@ const AuthoritySettings = () => {
                     key={log.id}
                     className={cn(
                       "flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 group",
-                      "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10"
+                      "hover:scale-[1.02] hover:z-10"
                     )}
                   >
                     <div className="flex items-center gap-3">
