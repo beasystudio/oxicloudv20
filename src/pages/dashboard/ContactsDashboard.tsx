@@ -1171,7 +1171,7 @@ const ContactsDashboard = () => {
                                 <div className="rounded-xl bg-card/80 overflow-hidden">
                                   <div className="grid grid-cols-[minmax(180px,1.2fr)_minmax(140px,1fr)_minmax(220px,1.5fr)_minmax(140px,1fr)] gap-4 px-5 py-2.5 text-[10px] font-medium text-muted-foreground border-b border-border/30">
                                     <div>{t('dashboard.contactsDashboard.name')}</div>
-                                    <div>{t('dashboard.contactsDashboard.function') || 'Function'}</div>
+                                    <div>{t('dashboard.contactsDashboard.function')}</div>
                                     <div>{t('dashboard.contactsDashboard.email')}</div>
                                     <div>{t('dashboard.contactsDashboard.phone')}</div>
                                   </div>
