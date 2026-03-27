@@ -664,6 +664,7 @@ export const nl = {
       nr: 'Nummer',
       postalCode: 'Postcode',
       municipality: 'Gemeente',
+      function: 'Functie',
     },
     // Financieel Dashboard
     financial: {
