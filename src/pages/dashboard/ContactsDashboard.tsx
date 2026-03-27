@@ -1159,52 +1159,58 @@ const ContactsDashboard = () => {
                         </div>
 
                         {/* Expanded Content */}
-                        {expandedCompanies.includes(company.id) && (company.employees.length > 0 || company.addresses.length > 0) && <div className="bg-background/60 rounded-b-xl mx-1">
+                        {expandedCompanies.includes(company.id) && (company.employees.length > 0 || company.addresses.length > 0) && <div className="rounded-b-xl overflow-hidden">
                             {/* CONTACTPERSONEN Section */}
-                            {company.employees.length > 0 && <div className="px-6 py-4 ml-8 border-l-2 border-primary/30">
+                            {company.employees.length > 0 && <div className="px-6 py-4 bg-muted/30">
                                 <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider mb-3">
                                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-primary dark:bg-transparent dark:text-primary">
                                     {t('dashboard.contactsDashboard.contactPersons')}
                                     <span className="px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.employees.length}</span>
                                   </span>
                                 </div>
-                                 <div className="grid grid-cols-[minmax(160px,1fr)_minmax(220px,1.2fr)_130px] gap-4 text-[10px] font-medium text-muted-foreground mb-2 pb-2 border-b border-border/40">
-                                   <div>{t('dashboard.contactsDashboard.name')}</div>
-                                   <div>{t('dashboard.contactsDashboard.email')}</div>
-                                   <div>{t('dashboard.contactsDashboard.phone')}</div>
-                                </div>
-                                <div className="space-y-0.5">
-                                  {company.employees.map((emp) => <div key={emp.id} className="grid grid-cols-[minmax(160px,1fr)_minmax(220px,1.2fr)_130px] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/emp relative" onDoubleClick={() => handleEmployeeDoubleClick(emp, company)}>
-                                      <div className="font-medium text-foreground group-hover/emp:text-foreground">{emp.name}</div>
-                                      <div className="text-muted-foreground truncate group-hover/emp:text-foreground/70">{emp.email}</div>
-                                      <div className="text-muted-foreground group-hover/emp:text-foreground/70">{emp.telephone}</div>
+                                <div className="rounded-xl bg-card/80 overflow-hidden">
+                                  <div className="grid grid-cols-[minmax(180px,1.2fr)_minmax(140px,1fr)_minmax(220px,1.5fr)_minmax(140px,1fr)] gap-4 px-5 py-2.5 text-[10px] font-medium text-muted-foreground border-b border-border/30">
+                                    <div>{t('dashboard.contactsDashboard.name')}</div>
+                                    <div>{t('dashboard.contactsDashboard.function') || 'Function'}</div>
+                                    <div>{t('dashboard.contactsDashboard.email')}</div>
+                                    <div>{t('dashboard.contactsDashboard.phone')}</div>
+                                  </div>
+                                  <div>
+                                    {company.employees.map((emp, empIdx) => <div key={emp.id} className={cn("grid grid-cols-[minmax(180px,1.2fr)_minmax(140px,1fr)_minmax(220px,1.5fr)_minmax(140px,1fr)] gap-4 px-5 py-2.5 text-xs cursor-pointer transition-all duration-200 group/emp", "hover:scale-[1.01] hover:z-10 relative", empIdx < company.employees.length - 1 && "border-b border-border/20")} onDoubleClick={() => handleEmployeeDoubleClick(emp, company)}>
+                                      <div className="font-medium text-foreground">{emp.name}</div>
+                                      <div className="text-muted-foreground">{emp.function || '—'}</div>
+                                      <div className="text-muted-foreground truncate">{emp.email}</div>
+                                      <div className="text-muted-foreground">{emp.telephone}</div>
                                     </div>)}
+                                  </div>
                                 </div>
                               </div>}
 
                             {/* VESTIGINGEN / ADRESSEN Section */}
-                            {company.addresses.length > 0 && <div className={cn("px-6 py-4 ml-8 border-l-2 border-primary/30", company.employees.length > 0 && "border-t border-border/30")}>
+                            {company.addresses.length > 0 && <div className={cn("px-6 py-4", company.employees.length > 0 ? "bg-muted/20" : "bg-muted/30")}>
                                 <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider mb-3">
                                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-primary dark:bg-transparent dark:text-primary">
                                     {t('dashboard.contactsDashboard.branchesAddresses')}
                                     <span className="px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.addresses.length}</span>
                                   </span>
                                 </div>
-                                 <div className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 text-[10px] font-medium text-muted-foreground mb-2 pb-2 border-b border-border/40">
-                                   <div>{t('dashboard.contactsDashboard.name')}</div>
-                                   <div>{t('dashboard.contactsDashboard.street')}</div>
-                                   <div>{t('dashboard.contactsDashboard.nr')}</div>
-                                   <div>{t('dashboard.contactsDashboard.postalCode')}</div>
-                                   <div>{t('dashboard.contactsDashboard.municipality')}</div>
-                                </div>
-                                <div className="space-y-0.5">
-                                  {company.addresses.map((addr) => <div key={addr.id} className="grid grid-cols-[minmax(130px,1fr)_minmax(160px,1.2fr)_80px_90px_minmax(140px,1fr)] gap-4 py-2 px-3 -mx-3 text-xs rounded-lg hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/addr relative">
-                                      <div className="font-medium text-foreground group-hover/addr:text-foreground">{addr.name}</div>
-                                      <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.street}</div>
-                                      <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.number}</div>
-                                      <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.postcode}</div>
-                                      <div className="text-muted-foreground group-hover/addr:text-foreground/70">{addr.gemeente}</div>
+                                <div className="rounded-xl bg-card/80 overflow-hidden">
+                                  <div className="grid grid-cols-[minmax(140px,1fr)_minmax(180px,1.5fr)_70px_90px_minmax(160px,1.2fr)] gap-4 px-5 py-2.5 text-[10px] font-medium text-muted-foreground border-b border-border/30">
+                                    <div>{t('dashboard.contactsDashboard.name')}</div>
+                                    <div>{t('dashboard.contactsDashboard.street')}</div>
+                                    <div>{t('dashboard.contactsDashboard.nr')}</div>
+                                    <div>{t('dashboard.contactsDashboard.postalCode')}</div>
+                                    <div>{t('dashboard.contactsDashboard.municipality')}</div>
+                                  </div>
+                                  <div>
+                                    {company.addresses.map((addr, addrIdx) => <div key={addr.id} className={cn("grid grid-cols-[minmax(140px,1fr)_minmax(180px,1.5fr)_70px_90px_minmax(160px,1.2fr)] gap-4 px-5 py-2.5 text-xs cursor-pointer transition-all duration-200 group/addr", "hover:scale-[1.01] hover:z-10 relative", addrIdx < company.addresses.length - 1 && "border-b border-border/20")}>
+                                      <div className="font-medium text-foreground">{addr.name}</div>
+                                      <div className="text-muted-foreground">{addr.street}</div>
+                                      <div className="text-muted-foreground">{addr.number}</div>
+                                      <div className="text-muted-foreground">{addr.postcode}</div>
+                                      <div className="text-muted-foreground">{addr.gemeente}</div>
                                     </div>)}
+                                  </div>
                                 </div>
                               </div>}
                           </div>}
