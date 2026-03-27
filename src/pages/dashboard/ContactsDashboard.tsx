@@ -1171,7 +1171,7 @@ const ContactsDashboard = () => {
                                 <div className="rounded-xl bg-card/80 overflow-hidden">
                                   <div className="grid grid-cols-[minmax(180px,1.2fr)_minmax(140px,1fr)_minmax(220px,1.5fr)_minmax(140px,1fr)] gap-4 px-5 py-2.5 text-[10px] font-medium text-muted-foreground border-b border-border/30">
                                     <div>{t('dashboard.contactsDashboard.name')}</div>
-                                    <div>{t('dashboard.contactsDashboard.function') || 'Function'}</div>
+                                    <div>{t('dashboard.contactsDashboard.function')}</div>
                                     <div>{t('dashboard.contactsDashboard.email')}</div>
                                     <div>{t('dashboard.contactsDashboard.phone')}</div>
                                   </div>
@@ -1203,7 +1203,7 @@ const ContactsDashboard = () => {
                                     <div>{t('dashboard.contactsDashboard.municipality')}</div>
                                   </div>
                                   <div>
-                                    {company.addresses.map((addr, addrIdx) => <div key={addr.id} className={cn("grid grid-cols-[minmax(140px,1fr)_minmax(180px,1.5fr)_70px_90px_minmax(160px,1.2fr)] gap-4 px-5 py-2.5 text-xs cursor-pointer transition-all duration-200 group/addr", "hover:scale-[1.01] hover:z-10 relative", addrIdx < company.addresses.length - 1 && "border-b border-border/20")}>
+                                    {company.addresses.map((addr, addrIdx) => <div key={addr.id} className={cn("grid grid-cols-[minmax(140px,1fr)_minmax(180px,1.5fr)_70px_90px_minmax(160px,1.2fr)] gap-4 px-5 py-2.5 text-xs", addrIdx < company.addresses.length - 1 && "border-b border-border/20")}>
                                       <div className="font-medium text-foreground">{addr.name}</div>
                                       <div className="text-muted-foreground">{addr.street}</div>
                                       <div className="text-muted-foreground">{addr.number}</div>
