@@ -1055,170 +1055,253 @@ const ContactsDashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Main Content - Full Width */}
-        <div className="h-[calc(100vh-230px)]">
-          <Card className="h-full flex flex-col min-h-0">
-            <CardHeader className="pb-3 shrink-0">
-              <div className="flex items-center justify-between">
-                
-                <div className="flex items-center gap-2">
-                  <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger className="w-44 h-8 text-xs bg-background">
-                      <SelectValue placeholder="Sort by" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background z-50">
-                       <SelectItem value="lastname-asc">{t('dashboard.contactsDashboard.sortNameAZ')}</SelectItem>
-                       <SelectItem value="lastname-desc">{t('dashboard.contactsDashboard.sortNameZA')}</SelectItem>
-                       <SelectItem value="company-asc">{t('dashboard.contactsDashboard.sortCompanyAZ')}</SelectItem>
-                       <SelectItem value="company-desc">{t('dashboard.contactsDashboard.sortCompanyZA')}</SelectItem>
-                    </SelectContent>
-                  </Select>
+        {/* Main Content - Master-Detail Layout */}
+        <div className="h-[calc(100vh-230px)] flex gap-0 overflow-hidden">
+          {/* LEFT: Master List */}
+          <div className={cn(
+            "flex flex-col min-h-0 transition-all duration-300 border border-border/40 rounded-2xl bg-card/80 backdrop-blur-xl overflow-hidden",
+            viewMode === 'company' && expandedCompanies.length > 0 ? "w-[380px] shrink-0" : "flex-1"
+          )}>
+            {/* List Header */}
+            <div className="px-4 py-3 border-b border-border/30 shrink-0">
+              <div className="flex items-center gap-2">
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-44 h-8 text-xs">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    <SelectItem value="lastname-asc">{t('dashboard.contactsDashboard.sortNameAZ')}</SelectItem>
+                    <SelectItem value="lastname-desc">{t('dashboard.contactsDashboard.sortNameZA')}</SelectItem>
+                    <SelectItem value="company-asc">{t('dashboard.contactsDashboard.sortCompanyAZ')}</SelectItem>
+                    <SelectItem value="company-desc">{t('dashboard.contactsDashboard.sortCompanyZA')}</SelectItem>
+                  </SelectContent>
+                </Select>
+                <div className="flex-1" />
+                <span className="text-[10px] text-muted-foreground tabular-nums">
+                  {viewMode === 'company' ? filteredCompanies.length : (() => { const names = getCompanyScopedCompanies().map(c => c.name); return isPilot ? 0 : DEMO_PERSONS.filter(p => names.includes(p.company)).length; })()} {t('common.results') || 'results'}
+                </span>
+              </div>
+            </div>
 
-                  {/* Expand All / Collapse All Buttons */}
-                  {viewMode === 'company' && <>
-                      <Button variant="outline" size="sm" onClick={() => setExpandedCompanies(filteredCompanies.map((c) => c.id))} disabled={expandedCompanies.length === filteredCompanies.length} className="h-8 gap-1.5 text-xs">
-                        <ArrowDown className="h-3 w-3" />
-                        {t('common.showAll')}
-                      </Button>
-                      <Button variant="outline" size="sm" onClick={() => setExpandedCompanies([])} disabled={expandedCompanies.length === 0} className="h-8 gap-1.5 text-xs">
-                        <ArrowUp className="h-3 w-3" />
-                        ​
-                      </Button>
-                    </>}
+            {/* List Body */}
+            <div className="flex-1 overflow-auto min-h-0">
+              {viewMode === 'person' ? (
+                /* Person View */
+                <div>
+                  {(() => {
+                    const scopedCompanyNames = getCompanyScopedCompanies().map(c => c.name);
+                    const filteredPersons = isPilot ? [] : DEMO_PERSONS.filter(p => scopedCompanyNames.includes(p.company));
+                    return filteredPersons.length === 0 ? (
+                      <div className="text-center py-16 text-muted-foreground">
+                        <User className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                        <p className="text-sm font-medium mb-1">{t('dashboard.contactsDashboard.noContactsFound')}</p>
+                        <p className="text-xs">{t('dashboard.contactsDashboard.noPersonsAvailable')}</p>
+                      </div>
+                    ) : filteredPersons.map(person => (
+                      <div
+                        key={person.id}
+                        className="px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:z-10 relative group"
+                        onDoubleClick={() => {
+                          const contact: UnifiedContact = {
+                            id: person.id, name: person.name, company: person.company,
+                            email: person.email, mobilePhone: '', workPhone: person.telephone,
+                            homePhone: '', contactCategory: 'algemeen', isCompany: false
+                          };
+                          setSelectedContact(contact);
+                          setIsEditDialogOpen(true);
+                        }}
+                      >
+                        <div className="text-sm font-medium text-foreground">{person.name}</div>
+                        <div className="flex items-center gap-3 mt-0.5">
+                          <span className="text-[11px] text-muted-foreground">{person.company}</span>
+                          <span className="text-[11px] text-muted-foreground/60">·</span>
+                          <span className="text-[11px] text-muted-foreground truncate">{person.email}</span>
+                        </div>
+                      </div>
+                    ));
+                  })()}
+                </div>
+              ) : (
+                /* Company View */
+                companies.length === 0 ? (
+                  <div className="text-center py-16 text-muted-foreground">
+                    <Building2 className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                    <p className="text-sm font-medium mb-1">{t('dashboard.contactsDashboard.noContactsFound')}</p>
+                    <p className="text-xs">{t('dashboard.contactsDashboard.noCompaniesAvailable')}</p>
+                  </div>
+                ) : (
+                  <div>
+                    {filteredCompanies.map(company => {
+                      const isSelected = expandedCompanies.includes(company.id);
+                      return (
+                        <div
+                          key={company.id}
+                          className={cn(
+                            "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
+                            isSelected
+                              ? "bg-[hsl(var(--neon-lime))]/90"
+                              : "hover:scale-[1.02] hover:z-10"
+                          )}
+                          onClick={() => {
+                            // Single select: only one company detail at a time
+                            setExpandedCompanies(isSelected ? [] : [company.id]);
+                          }}
+                          onDoubleClick={() => handleContactDoubleClick(company)}
+                        >
+                          <div className={cn("text-sm font-semibold transition-colors", isSelected ? "text-black" : "text-foreground")}>
+                            {company.name}
+                          </div>
+                          <div className={cn("flex items-center gap-2 mt-1 text-[11px] transition-colors", isSelected ? "text-black/70" : "text-muted-foreground")}>
+                            <span className="truncate max-w-[160px]">{company.email}</span>
+                            <span className="opacity-40">·</span>
+                            <span className="whitespace-nowrap">{company.telephone}</span>
+                          </div>
+                          {company.address && (
+                            <div className={cn("text-[10px] mt-0.5 truncate transition-colors", isSelected ? "text-black/50" : "text-muted-foreground/60")}>
+                              {company.address}, {company.city}
+                            </div>
+                          )}
+                          {/* Employee count indicator */}
+                          {company.employees.length > 0 && (
+                            <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-black/50" : "text-muted-foreground/40")}>
+                              {company.employees.length} <User className="inline h-3 w-3 -mt-0.5" />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+
+          {/* RIGHT: Detail Panel */}
+          {viewMode === 'company' && expandedCompanies.length > 0 && (() => {
+            const selectedCompanyData = filteredCompanies.find(c => expandedCompanies.includes(c.id));
+            if (!selectedCompanyData) return null;
+            return (
+              <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-2xl bg-card/80 backdrop-blur-xl ml-3">
+                {/* Detail Header */}
+                <div className="px-6 py-5 border-b border-border/30">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-lg font-semibold text-foreground">{selectedCompanyData.name}</h2>
+                      <div className="flex items-center gap-4 mt-1.5 text-xs text-muted-foreground">
+                        {selectedCompanyData.email && (
+                          <span>{selectedCompanyData.email}</span>
+                        )}
+                        {selectedCompanyData.telephone && (
+                          <span>{selectedCompanyData.telephone}</span>
+                        )}
+                      </div>
+                      {selectedCompanyData.address && (
+                        <div className="text-xs text-muted-foreground/70 mt-1">
+                          {selectedCompanyData.address}, {selectedCompanyData.city}
+                        </div>
+                      )}
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 text-[10px]"
+                      onClick={() => handleContactDoubleClick(selectedCompanyData)}
+                    >
+                      {t('common.edit') || 'Edit'}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Detail Content */}
+                <div className="p-6 space-y-6">
+                  {/* Contact Persons Section */}
+                  {selectedCompanyData.employees.length > 0 && (
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                          {t('dashboard.contactsDashboard.contactPersons')}
+                        </h3>
+                        <span className="text-[10px] text-muted-foreground tabular-nums">
+                          ({selectedCompanyData.employees.length})
+                        </span>
+                      </div>
+                      <div className="rounded-xl border border-border/30 overflow-hidden">
+                        {/* Sub-table header */}
+                        <div className="grid grid-cols-4 gap-4 px-4 py-2 bg-muted/30 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-b border-border/20">
+                          <div>{t('dashboard.contactsDashboard.name')}</div>
+                          <div>{t('dashboard.contactsDashboard.function')}</div>
+                          <div>{t('dashboard.contactsDashboard.email')}</div>
+                          <div>{t('dashboard.contactsDashboard.phone')}</div>
+                        </div>
+                        {/* Sub-table rows */}
+                        {selectedCompanyData.employees.map((emp, empIdx) => (
+                          <div
+                            key={emp.id}
+                            className={cn(
+                              "grid grid-cols-4 gap-4 px-4 py-2.5 text-xs cursor-pointer transition-all duration-200 hover:scale-[1.01] hover:z-10 relative",
+                              empIdx < selectedCompanyData.employees.length - 1 && "border-b border-border/10"
+                            )}
+                            onDoubleClick={() => handleEmployeeDoubleClick(emp, selectedCompanyData)}
+                          >
+                            <div className="font-medium text-foreground">{emp.name}</div>
+                            <div className="text-muted-foreground">{emp.function || '—'}</div>
+                            <div className="text-muted-foreground truncate">{emp.email}</div>
+                            <div className="text-muted-foreground">{emp.telephone}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Branches / Addresses Section */}
+                  {selectedCompanyData.addresses.length > 0 && (
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                          {t('dashboard.contactsDashboard.branchesAddresses')}
+                        </h3>
+                        <span className="text-[10px] text-muted-foreground tabular-nums">
+                          ({selectedCompanyData.addresses.length})
+                        </span>
+                      </div>
+                      <div className="rounded-xl border border-border/30 overflow-hidden">
+                        {/* Sub-table header */}
+                        <div className="grid grid-cols-5 gap-4 px-4 py-2 bg-muted/30 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-b border-border/20">
+                          <div>{t('dashboard.contactsDashboard.name')}</div>
+                          <div>{t('dashboard.contactsDashboard.street')}</div>
+                          <div>{t('dashboard.contactsDashboard.nr')}</div>
+                          <div>{t('dashboard.contactsDashboard.postalCode')}</div>
+                          <div>{t('dashboard.contactsDashboard.municipality')}</div>
+                        </div>
+                        {/* Sub-table rows - no hover (not editable) */}
+                        {selectedCompanyData.addresses.map((addr, addrIdx) => (
+                          <div
+                            key={addr.id}
+                            className={cn(
+                              "grid grid-cols-5 gap-4 px-4 py-2.5 text-xs",
+                              addrIdx < selectedCompanyData.addresses.length - 1 && "border-b border-border/10"
+                            )}
+                          >
+                            <div className="font-medium text-foreground">{addr.name}</div>
+                            <div className="text-muted-foreground">{addr.street}</div>
+                            <div className="text-muted-foreground">{addr.number}</div>
+                            <div className="text-muted-foreground">{addr.postcode}</div>
+                            <div className="text-muted-foreground">{addr.gemeente}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedCompanyData.employees.length === 0 && selectedCompanyData.addresses.length === 0 && (
+                    <div className="text-center py-12 text-muted-foreground">
+                      <p className="text-sm">{t('dashboard.contactsDashboard.noContactsFound')}</p>
+                    </div>
+                  )}
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="p-0 flex-1 flex flex-col min-h-0 overflow-hidden">
-              <div className="flex-1 overflow-auto min-h-0">
-              {viewMode === 'person' ? (/* Person View */
-                <div>
-                  {/* Table Header */}
-                   <div className="grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 border-b border-border bg-background text-[11px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20">
-                     <div>{t('dashboard.contactsDashboard.name')}</div>
-                     <div>{t('dashboard.contactsDashboard.company')}</div>
-                     <div>{t('dashboard.contactsDashboard.email')}</div>
-                     <div>{t('dashboard.contactsDashboard.phone')}</div>
-                  </div>
-
-                  {/* Person Rows - filter by company scope */}
-                  {(() => {
-                    const scopedCompanyNames = getCompanyScopedCompanies().map((c) => c.name);
-                    const filteredPersons = isPilot ? [] : DEMO_PERSONS.filter((p) => scopedCompanyNames.includes(p.company));
-                    return filteredPersons.length === 0 ? <div className="text-center py-16 text-muted-foreground">
-                      <User className="h-12 w-12 mx-auto mb-4 opacity-40" />
-                       <p className="text-base font-medium mb-2">{t('dashboard.contactsDashboard.noContactsFound')}</p>
-                       <p className="text-xs">{t('dashboard.contactsDashboard.noPersonsAvailable')}</p>
-                    </div> : filteredPersons.map((person, index) => <div key={person.id} className={cn("grid grid-cols-[minmax(180px,1.5fr)_minmax(160px,1.2fr)_minmax(200px,1.5fr)_minmax(140px,1fr)] gap-4 px-6 py-3 cursor-pointer transition-all duration-200 group rounded-lg", "hover:scale-[1.02] hover:z-10 relative")} onDoubleClick={() => {
-                      const contact: UnifiedContact = {
-                        id: person.id,
-                        name: person.name,
-                        company: person.company,
-                        email: person.email,
-                        mobilePhone: '',
-                        workPhone: person.telephone,
-                        homePhone: '',
-                        contactCategory: 'algemeen',
-                        isCompany: false
-                      };
-                      setSelectedContact(contact);
-                      setIsEditDialogOpen(true);
-                    }}>
-                      <div className="text-sm font-medium text-foreground group-hover:text-black transition-colors">{person.name}</div>
-                      <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors">{person.company}</div>
-                      <div className="text-muted-foreground text-xs truncate group-hover:text-foreground/80 transition-colors">{person.email}</div>
-                      <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors">{person.telephone}</div>
-                    </div>);
-                  })()} </div>) : (/* Company View */
-                companies.length === 0 ? <div className="text-center py-16 text-muted-foreground">
-                     <p className="text-base font-medium mb-2">{t('dashboard.contactsDashboard.noContactsFound')}</p>
-                     <p className="text-xs">{t('dashboard.contactsDashboard.noCompaniesAvailable')}</p>
-                  </div> : <div className="py-2">
-                    {/* Table Header */}
-                     <div className="grid grid-cols-[minmax(220px,1.3fr)_minmax(200px,1fr)_130px_minmax(220px,1.2fr)] gap-6 px-6 py-3 bg-background border-b border-border text-[11px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20">
-                       <div>{t('dashboard.contactsDashboard.company')}</div>
-                       <div>{t('dashboard.contactsDashboard.email')}</div>
-                       <div>{t('dashboard.contactsDashboard.phone')}</div>
-                       <div>{t('dashboard.contactsDashboard.address')}</div>
-                    </div>
-
-                    {/* Company Rows */}
-                    {filteredCompanies.map((company, index) => <div key={company.id} className={cn("group/company", expandedCompanies.includes(company.id) && "bg-muted/20 rounded-xl my-1 shadow-sm")}>
-                        {/* Main Company Row - Shell */}
-                        <div className={cn("grid grid-cols-[minmax(220px,1.3fr)_minmax(200px,1fr)_130px_minmax(220px,1.2fr)] gap-6 px-6 py-3 my-0.5 cursor-pointer transition-all duration-200 rounded-lg group relative", expandedCompanies.includes(company.id) ? "bg-[hsl(var(--neon-lime))]/90 rounded-b-none" : "hover:scale-[1.02] hover:z-10")} onClick={() => toggleCompanyExpand(company.id)} onDoubleClick={() => handleContactDoubleClick(company)}>
-                          <div className="flex items-center gap-3">
-                            
-                            <div className="flex items-center gap-2">
-                              <span className={cn("text-sm font-medium transition-colors", expandedCompanies.includes(company.id) ? "text-black" : "text-foreground group-hover:text-foreground")}>{company.name}</span>
-                            </div>
-                          </div>
-                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(company.id) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{company.email || '—'}</div>
-                          <div className={cn("text-xs transition-colors", expandedCompanies.includes(company.id) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{company.telephone || '—'}</div>
-                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.includes(company.id) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>
-                            {company.address ? `${company.address}, ${company.city}` : company.city || '—'}
-                          </div>
-                        </div>
-
-                        {/* Expanded Content */}
-                        {expandedCompanies.includes(company.id) && (company.employees.length > 0 || company.addresses.length > 0) && <div className="rounded-b-xl overflow-hidden">
-                            {/* CONTACTPERSONEN Section */}
-                            {company.employees.length > 0 && <div className="px-6 py-4 bg-muted/30">
-                                <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider mb-3">
-                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-primary dark:bg-transparent dark:text-primary">
-                                    {t('dashboard.contactsDashboard.contactPersons')}
-                                    <span className="px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.employees.length}</span>
-                                  </span>
-                                </div>
-                                <div className="rounded-xl bg-card/80 overflow-hidden">
-                                  <div className="grid grid-cols-[minmax(180px,1.2fr)_minmax(140px,1fr)_minmax(220px,1.5fr)_minmax(140px,1fr)] gap-4 px-5 py-2.5 text-[10px] font-medium text-muted-foreground border-b border-border/30">
-                                    <div>{t('dashboard.contactsDashboard.name')}</div>
-                                    <div>{t('dashboard.contactsDashboard.function')}</div>
-                                    <div>{t('dashboard.contactsDashboard.email')}</div>
-                                    <div>{t('dashboard.contactsDashboard.phone')}</div>
-                                  </div>
-                                  <div>
-                                    {company.employees.map((emp, empIdx) => <div key={emp.id} className={cn("grid grid-cols-[minmax(180px,1.2fr)_minmax(140px,1fr)_minmax(220px,1.5fr)_minmax(140px,1fr)] gap-4 px-5 py-2.5 text-xs cursor-pointer transition-all duration-200 group/emp", "hover:scale-[1.01] hover:z-10 relative", empIdx < company.employees.length - 1 && "border-b border-border/20")} onDoubleClick={() => handleEmployeeDoubleClick(emp, company)}>
-                                      <div className="font-medium text-foreground">{emp.name}</div>
-                                      <div className="text-muted-foreground">{emp.function || '—'}</div>
-                                      <div className="text-muted-foreground truncate">{emp.email}</div>
-                                      <div className="text-muted-foreground">{emp.telephone}</div>
-                                    </div>)}
-                                  </div>
-                                </div>
-                              </div>}
-
-                            {/* VESTIGINGEN / ADRESSEN Section */}
-                            {company.addresses.length > 0 && <div className={cn("px-6 py-4", company.employees.length > 0 ? "bg-muted/20" : "bg-muted/30")}>
-                                <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider mb-3">
-                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-primary dark:bg-transparent dark:text-primary">
-                                    {t('dashboard.contactsDashboard.branchesAddresses')}
-                                    <span className="px-1.5 py-0.5 bg-primary/15 rounded-full text-[9px] font-bold">{company.addresses.length}</span>
-                                  </span>
-                                </div>
-                                <div className="rounded-xl bg-card/80 overflow-hidden">
-                                  <div className="grid grid-cols-[minmax(140px,1fr)_minmax(180px,1.5fr)_70px_90px_minmax(160px,1.2fr)] gap-4 px-5 py-2.5 text-[10px] font-medium text-muted-foreground border-b border-border/30">
-                                    <div>{t('dashboard.contactsDashboard.name')}</div>
-                                    <div>{t('dashboard.contactsDashboard.street')}</div>
-                                    <div>{t('dashboard.contactsDashboard.nr')}</div>
-                                    <div>{t('dashboard.contactsDashboard.postalCode')}</div>
-                                    <div>{t('dashboard.contactsDashboard.municipality')}</div>
-                                  </div>
-                                  <div>
-                                    {company.addresses.map((addr, addrIdx) => <div key={addr.id} className={cn("grid grid-cols-[minmax(140px,1fr)_minmax(180px,1.5fr)_70px_90px_minmax(160px,1.2fr)] gap-4 px-5 py-2.5 text-xs", addrIdx < company.addresses.length - 1 && "border-b border-border/20")}>
-                                      <div className="font-medium text-foreground">{addr.name}</div>
-                                      <div className="text-muted-foreground">{addr.street}</div>
-                                      <div className="text-muted-foreground">{addr.number}</div>
-                                      <div className="text-muted-foreground">{addr.postcode}</div>
-                                      <div className="text-muted-foreground">{addr.gemeente}</div>
-                                    </div>)}
-                                  </div>
-                                </div>
-                              </div>}
-                          </div>}
-                      </div>)}
-                  </div>)}
-              </div>
-            </CardContent>
-          </Card>
+            );
+          })()}
         </div>
         </>}
       </div>
