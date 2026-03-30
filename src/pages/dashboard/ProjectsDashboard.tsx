@@ -1324,7 +1324,7 @@ const ProjectsDashboard = () => {
           }
 
             {/* Contacts Card - Master-Detail Layout */}
-            <ProjectContacts projectId={selectedProjectId} onContactsChanged={() => setRefreshKey(k => k + 1)} />
+            <ProjectContacts projectId={selectedProjectId} />
           </div>
         </div>
       </>;
