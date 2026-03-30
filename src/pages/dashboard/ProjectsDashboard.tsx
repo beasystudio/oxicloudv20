@@ -43,6 +43,7 @@ import { ProjectImagePreview } from '@/components/projects/ProjectImagePreview';
 import { PaymentSuccessDialog } from '@/components/oxicloud/PaymentSuccessDialog';
 import { ProjectLocationMap } from '@/components/projects/ProjectLocationMap';
 import { NoxVersionHistory } from '@/components/projects/NoxVersionHistory';
+import { ProjectContacts } from '@/components/projects/ProjectContacts';
 
 import { getMonitorProjects, type MonitorProject } from '@/lib/monitorProjectStore';
 import { MonitorValidationFlow } from '@/components/authority/MonitorValidationFlow';
