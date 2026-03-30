@@ -1077,9 +1077,6 @@ const ContactsDashboard = () => {
                   </SelectContent>
                 </Select>
                 <div className="flex-1" />
-                <span className="text-[10px] text-muted-foreground tabular-nums">
-                  {viewMode === 'company' ? filteredCompanies.length : (() => { const names = getCompanyScopedCompanies().map(c => c.name); return isPilot ? 0 : DEMO_PERSONS.filter(p => names.includes(p.company)).length; })()} {t('common.results') || 'results'}
-                </span>
               </div>
             </div>
 
