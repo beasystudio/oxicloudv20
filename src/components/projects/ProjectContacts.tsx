@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Plus, UserPlus, Users } from 'lucide-react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Plus, UserPlus, Users, User, Building2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ContactDetailsDialog } from './ContactDetailsDialog';
@@ -11,6 +9,7 @@ import { AddExistingContactDialog } from './AddExistingContactDialog';
 import { CreateProjectContactDialog } from './CreateProjectContactDialog';
 import { getProjectContacts as getLocalProjectContacts } from '@/lib/mockLocalProjects';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { cn } from '@/lib/utils';
 import type { Contact } from '@/types/project';
 
 interface ProjectContactsProps {
@@ -18,12 +17,16 @@ interface ProjectContactsProps {
   onContactsChanged?: () => void;
 }
 
-const TEAM_COMPANY_IDS = ['gdesign', '4takt'];
-
 const isSupabaseProjectId = (projectId: string): boolean => {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   return uuidRegex.test(projectId);
 };
+
+// Group contacts by firm_name to create company-like structure
+interface CompanyGroup {
+  firmName: string;
+  contacts: Contact[];
+}
 
 export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContactsProps) => {
   const { t } = useLanguage();
@@ -32,7 +35,7 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isAddExistingOpen, setIsAddExistingOpen] = useState(false);
   const [isCreateNewOpen, setIsCreateNewOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('client');
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -83,20 +86,21 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
     setIsDetailsOpen(true);
   };
 
-  const getFilteredContacts = () => {
-    return contacts.filter(c => c.contact_type === activeTab);
-  };
+  // Group contacts by firm_name
+  const companyGroups: CompanyGroup[] = (() => {
+    const groupMap = new Map<string, Contact[]>();
+    contacts.forEach(c => {
+      const key = c.firm_name || 'Unknown';
+      if (!groupMap.has(key)) groupMap.set(key, []);
+      groupMap.get(key)!.push(c);
+    });
+    return Array.from(groupMap.entries())
+      .map(([firmName, contacts]) => ({ firmName, contacts }))
+      .sort((a, b) => a.firmName.localeCompare(b.firmName));
+  })();
 
-  const filteredContacts = getFilteredContacts();
+  const selectedCompanyData = companyGroups.find(g => g.firmName === selectedCompany);
   const hasAnyContacts = contacts.length > 0;
-
-  const TAB_LABELS: Record<string, string> = {
-    client: t('projectContacts.client'),
-    team: t('projectContacts.team'),
-    external_team: t('projectContacts.external'),
-    contractor: t('projectContacts.contractor'),
-    others: t('projectContacts.others'),
-  };
 
   const EmptyState = () => (
     <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
@@ -142,51 +146,124 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
           {!hasAnyContacts ? (
             <EmptyState />
           ) : (
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="w-full justify-start h-9">
-                <TabsTrigger value="client" className="text-xs">{t('projectContacts.client')}</TabsTrigger>
-                <TabsTrigger value="team" className="text-xs">{t('projectContacts.team')}</TabsTrigger>
-                <TabsTrigger value="external_team" className="text-xs">{t('projectContacts.external')}</TabsTrigger>
-                <TabsTrigger value="contractor" className="text-xs">{t('projectContacts.contractor')}</TabsTrigger>
-                <TabsTrigger value="others" className="text-xs">{t('projectContacts.others')}</TabsTrigger>
-              </TabsList>
-              <TabsContent value={activeTab} className="mt-3">
-                {filteredContacts.length === 0 ? (
-                  <div className="text-center py-6 text-muted-foreground text-sm">
-                    {t('projectContacts.noContacts').replace('{type}', TAB_LABELS[activeTab] || activeTab)}
+            <div className="h-[340px] flex gap-0 overflow-hidden">
+              {/* LEFT: Company List */}
+              <div className={cn(
+                "flex flex-col min-h-0 transition-all duration-300 border border-border/40 rounded-2xl bg-card/80 overflow-hidden",
+                selectedCompany ? "w-[260px] shrink-0" : "flex-1"
+              )}>
+                <div className="flex-1 overflow-auto min-h-0">
+                  {companyGroups.map(group => {
+                    const isSelected = selectedCompany === group.firmName;
+                    return (
+                      <div
+                        key={group.firmName}
+                        className={cn(
+                          "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
+                          isSelected
+                            ? "bg-[hsl(var(--neon-lime))]/90"
+                            : "hover:scale-[1.02] hover:z-10"
+                        )}
+                        onClick={() => setSelectedCompany(isSelected ? null : group.firmName)}
+                      >
+                        <div className={cn("text-sm font-semibold transition-colors", isSelected ? "text-black" : "text-foreground")}>
+                          {group.firmName}
+                        </div>
+                        <div className={cn("text-[11px] mt-0.5 transition-colors", isSelected ? "text-black/60" : "text-muted-foreground")}>
+                          {group.contacts[0]?.contact_type || ''}
+                        </div>
+                        {group.contacts.length > 0 && (
+                          <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-black/50" : "text-muted-foreground/40")}>
+                            {group.contacts.length} <User className="inline h-3 w-3 -mt-0.5" />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* RIGHT: Detail Panel */}
+              {selectedCompany && selectedCompanyData && (
+                <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-2xl bg-card/80 ml-3">
+                  {/* Detail Header */}
+                  <div className="px-5 py-4 border-b border-border/30">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-base font-semibold text-foreground">{selectedCompanyData.firmName}</h3>
+                        <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground">
+                          {selectedCompanyData.contacts[0]?.email && (
+                            <span>{selectedCompanyData.contacts[0].email}</span>
+                          )}
+                          {selectedCompanyData.contacts[0]?.phone && (
+                            <>
+                              <span className="opacity-40">·</span>
+                              <span>{selectedCompanyData.contacts[0].phone}</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  <div className="border rounded-md">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="h-9">
-                          <TableHead className="text-xs">{activeTab === 'team' ? t('projectContacts.firm') : t('projectContacts.firm')}</TableHead>
-                          <TableHead className="text-xs">{activeTab === 'team' ? t('contactList.name') : t('projectContacts.contactPerson')}</TableHead>
-                          <TableHead className="text-xs">{t('projectContacts.phone')}</TableHead>
-                          <TableHead className="text-xs">{t('projectContacts.mobile')}</TableHead>
-                          <TableHead className="text-xs">{t('projectContacts.email')}</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {filteredContacts.map((contact) => (
-                          <TableRow
+
+                  {/* Detail Content */}
+                  <div className="p-5 space-y-5">
+                    {/* Contact Persons Section */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                          {t('projectContacts.contactPerson')}
+                        </h4>
+                        <span className="text-[10px] text-muted-foreground tabular-nums">
+                          ({selectedCompanyData.contacts.length})
+                        </span>
+                      </div>
+                      <div className="rounded-xl border border-border/30 overflow-hidden">
+                        {/* Sub-table header */}
+                        <div className="grid grid-cols-4 gap-4 px-4 py-2 bg-muted/30 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-b border-border/20">
+                          <div>{t('projectContacts.contactPerson')}</div>
+                          <div>{t('projectContacts.email')}</div>
+                          <div>{t('projectContacts.phone')}</div>
+                          <div>{t('projectContacts.mobile')}</div>
+                        </div>
+                        {/* Sub-table rows */}
+                        {selectedCompanyData.contacts.map((contact, idx) => (
+                          <div
                             key={contact.id}
-                            className="cursor-pointer h-10 group transition-colors hover:scale-[1.02] hover:z-10"
-                            onClick={() => handleContactClick(contact as Contact)}
+                            className={cn(
+                              "grid grid-cols-4 gap-4 px-4 py-2.5 text-xs cursor-pointer transition-all duration-200 hover:scale-[1.01] hover:z-10 relative",
+                              idx < selectedCompanyData.contacts.length - 1 && "border-b border-border/10"
+                            )}
+                            onDoubleClick={() => handleContactClick(contact)}
                           >
-                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.firm_name}</TableCell>
-                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.contact_person}</TableCell>
-                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.phone || '-'}</TableCell>
-                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.mobile || '-'}</TableCell>
-                            <TableCell className="text-sm py-2 group-hover:text-foreground">{contact.email || '-'}</TableCell>
-                          </TableRow>
+                            <div className="font-medium text-foreground">{contact.contact_person}</div>
+                            <div className="text-muted-foreground truncate">{contact.email || '—'}</div>
+                            <div className="text-muted-foreground">{contact.phone || '—'}</div>
+                            <div className="text-muted-foreground">{contact.mobile || '—'}</div>
+                          </div>
                         ))}
-                      </TableBody>
-                    </Table>
+                      </div>
+                    </div>
+
+                    {/* Address Section (non-editable, no hover) */}
+                    {selectedCompanyData.contacts[0]?.address && (
+                      <div>
+                        <div className="flex items-center gap-2 mb-3">
+                          <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                            {t('projectContacts.address') || 'Address'}
+                          </h4>
+                        </div>
+                        <div className="rounded-xl border border-border/30 overflow-hidden">
+                          <div className="px-4 py-2.5 text-xs text-muted-foreground">
+                            {selectedCompanyData.contacts[0].address}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </TabsContent>
-            </Tabs>
+                </div>
+              )}
+            </div>
           )}
         </CardContent>
       </Card>
