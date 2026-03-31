@@ -231,7 +231,7 @@ export function ProjectNoxStatusCard({
       <CardHeader className="p-4 pb-2">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <CardTitle className="text-base">NOₓ Status</CardTitle>
+            <CardTitle className="text-sm font-semibold">NOₓ Status</CardTitle>
             <Badge className={statusConfig.color}>
               {statusConfig.label}
             </Badge>
