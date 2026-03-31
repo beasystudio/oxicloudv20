@@ -190,10 +190,10 @@ export function ProjectNoxStatusCard({
   if (isFrozen) {
     return (
       <Card className="bg-muted/40 border-2 border-dashed border-muted-foreground/30">
-        <CardHeader className="pb-3">
+        <CardHeader className="p-4 pb-2">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <CardTitle className="text-base text-muted-foreground">NOₓ Status</CardTitle>
+              <CardTitle className="text-sm font-semibold text-muted-foreground">NOₓ Status</CardTitle>
               <Badge variant="outline" className="text-muted-foreground border-muted-foreground/30">
                 Pending Setup
               </Badge>
@@ -228,10 +228,10 @@ export function ProjectNoxStatusCard({
 
   return (
     <Card className={`${isWarningSubStatus ? 'bg-red-50 dark:bg-red-950/30 border-2 border-red-300 dark:border-red-800' : details.bgColor + ' border-2 ' + details.borderColor}`}>
-      <CardHeader className="pb-3">
+      <CardHeader className="p-4 pb-2">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <CardTitle className="text-base">NOₓ Status</CardTitle>
+            <CardTitle className="text-sm font-semibold">NOₓ Status</CardTitle>
             <Badge className={statusConfig.color}>
               {statusConfig.label}
             </Badge>
