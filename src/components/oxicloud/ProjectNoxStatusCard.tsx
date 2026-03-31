@@ -193,7 +193,7 @@ export function ProjectNoxStatusCard({
         <CardHeader className="p-4 pb-2">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <CardTitle className="text-base text-muted-foreground">NOₓ Status</CardTitle>
+              <CardTitle className="text-sm font-semibold text-muted-foreground">NOₓ Status</CardTitle>
               <Badge variant="outline" className="text-muted-foreground border-muted-foreground/30">
                 Pending Setup
               </Badge>
