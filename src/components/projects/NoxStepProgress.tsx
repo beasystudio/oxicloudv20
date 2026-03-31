@@ -31,14 +31,14 @@ export function NoxStepProgress({ currentStatus }: NoxStepProgressProps) {
           const isCurrent = i === currentIndex;
           
           return (
-            <div key={step.key} className="flex flex-col items-center relative z-10">
+            <div key={step.key} className="flex flex-col items-center relative z-10 min-w-[40px]">
               <div
                 className={cn(
                   'w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-semibold border-2 transition-colors',
                   isCompleted
                     ? 'bg-foreground/80 border-foreground/80 text-background'
                     : isCurrent
-                    ? 'bg-primary border-primary text-primary-foreground'
+                    ? 'border-foreground bg-foreground text-background'
                     : 'bg-background border-border text-muted-foreground'
                 )}
               >
@@ -48,7 +48,7 @@ export function NoxStepProgress({ currentStatus }: NoxStepProgressProps) {
                 className={cn(
                   'text-[9px] mt-1.5 font-medium whitespace-nowrap',
                   isCurrent ? 'text-foreground font-semibold' : 
-                  isCompleted ? 'text-foreground/70' : 'text-muted-foreground'
+                  isCompleted ? 'text-foreground/70' : 'text-muted-foreground/60'
                 )}
               >
                 {step.label}
