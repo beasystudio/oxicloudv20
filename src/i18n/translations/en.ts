@@ -475,6 +475,7 @@ export const en = {
       financial: 'Financial',
       nox: 'NOx',
       mail: 'Mail',
+      settings: 'Settings',
     },
     // Greetings
     greeting: {
