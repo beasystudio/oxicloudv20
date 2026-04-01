@@ -238,7 +238,7 @@ export default function ClientDashboard() {
             </div>
           </div>
 
-          {/* Two-column: Actions + Next Step */}
+          {/* Two-column: Actions + Partner Card */}
           <div className="grid grid-cols-3 gap-3 mb-3">
             {/* Action Required */}
             <div className="col-span-2 rounded-xl border border-border p-5">
@@ -262,66 +262,67 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* Partner Card */}
-            <div className="rounded-xl border border-border bg-card dark:bg-secondary overflow-hidden flex flex-col">
-              {/* Header band */}
+            {/* Partner Card - updated copy, no CTAs */}
+            <button
+              onClick={() => navigate('/dashboard/partnership-program')}
+              className="rounded-xl border border-border bg-card dark:bg-secondary overflow-hidden flex flex-col text-left hover:border-foreground/20 transition-colors">
               <div className="bg-foreground dark:bg-secondary px-5 py-3">
                 <p className="text-[10px] uppercase tracking-[0.15em] font-semibold text-primary">
                   {language === 'nl' ? 'Partnerprogramma' : 'Partner Program'}
                 </p>
-                <p className="text-sm font-semibold text-background dark:text-secondary-foreground mt-0.5">
-                  {language === 'nl' ? 'Verdien 40% commissie' : 'Earn 40% commission'}
-                </p>
               </div>
-              {/* Body */}
               <div className="p-5 flex flex-col flex-1 justify-between">
-                <p className="text-[13px] text-muted-foreground leading-relaxed mb-5">
-                  {language === 'nl' ?
-                  'Op elk NOx-rapport dat via jouw workspace loopt. Geen voorschot, geen admin.' :
-                  'On every NOx report through your workspace. No upfront cost, no admin.'}
+                <p className="text-sm font-semibold text-foreground mb-2">
+                  {language === 'nl' ? 'Uw vergoeding als partner' : 'Your compensation as a partner'}
                 </p>
-                <div className="flex flex-col gap-2 w-full">
-                  <button
-                    onClick={() => navigate('/register/workspace')}
-                    className="w-full rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors bg-primary text-primary-foreground hover:bg-primary/90">
-                    {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
-                  </button>
-                  <button
-                    onClick={() => setShowInviteManager(true)}
-                    className="w-full rounded-lg px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                    {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
-                  </button>
-                  <button
-                    onClick={() => navigate('/dashboard/partnership-program')}
-                    className="text-xs text-muted-foreground hover:text-foreground transition-colors mt-1 underline underline-offset-2">
-                    {language === 'nl' ? 'Meer info →' : 'Learn more →'}
-                  </button>
-                </div>
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                  {language === 'nl'
+                    ? 'U levert de expertise, wij regelen de rest. Ontdek hoe de uitbetaling werkt.'
+                    : 'You provide the expertise, we handle the rest. Discover how compensation works.'}
+                </p>
+                <span className="text-xs text-muted-foreground mt-3 underline underline-offset-2">
+                  {language === 'nl' ? 'Meer info' : 'Learn more'} &rarr;
+                </span>
+              </div>
+            </button>
+          </div>
+
+          {/* Insights + CTAs row */}
+          <div className="grid grid-cols-3 gap-3 mb-3">
+            <div className="col-span-2 rounded-xl border border-border p-5">
+              <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">
+                {t('dashboard.client.smartInsights')}
+              </p>
+              <div className="space-y-2">
+                {(smartInsights.length > 0 ? smartInsights : [
+                { text: language === 'nl' ? 'NOx rapport ontbreekt bij 1 actief project' : 'NOx report missing for 1 active project', type: 'warning' as const },
+                { text: language === 'nl' ? 'Uw team telt 6 actieve leden' : 'Your team has 6 active members', type: 'neutral' as const }]).
+                map((insight, i) =>
+                <div key={i} className="flex items-start gap-2.5">
+                    <span className={cn('w-1.5 h-1.5 rounded-full mt-[7px] shrink-0',
+                  insight.type === 'warning' ? 'bg-foreground/50' : 'bg-foreground/20'
+                  )} />
+                    <p className="text-sm leading-relaxed text-muted-foreground">{insight.text}</p>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
 
-          {/* Insights */}
-          <div className="rounded-xl border border-border p-5 mb-3">
-            <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground mb-3">
-              {t('dashboard.client.smartInsights')}
-            </p>
-            <div className="space-y-2">
-              {(smartInsights.length > 0 ? smartInsights : [
-              { text: language === 'nl' ? 'NOx rapport ontbreekt bij 1 actief project' : 'NOx report missing for 1 active project', type: 'warning' as const },
-              { text: language === 'nl' ? 'Uw team telt 6 actieve leden' : 'Your team has 6 active members', type: 'neutral' as const }]).
-              map((insight, i) =>
-              <div key={i} className="flex items-start gap-2.5">
-                  <span className={cn('w-1.5 h-1.5 rounded-full mt-[7px] shrink-0',
-                insight.type === 'warning' ? 'bg-foreground/50' : 'bg-foreground/20'
-                )} />
-                  <p className="text-sm leading-relaxed text-muted-foreground">{insight.text}</p>
-                </div>
-              )}
+            {/* CTAs moved here from partner card */}
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => navigate('/register/workspace')}
+                className="flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition-colors bg-foreground text-background hover:bg-foreground/90">
+                {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
+              </button>
+              <button
+                onClick={() => setShowInviteManager(true)}
+                className="flex-1 rounded-xl px-4 py-3 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite my manager'}
+              </button>
             </div>
           </div>
 
-          {/* Partner Program */}
           
 
 
