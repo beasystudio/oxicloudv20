@@ -1158,26 +1158,11 @@ const ProjectsDashboard = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 pt-3">
-                  {noxData ?
+                   {noxData ?
               <>
-                      {/* Progress bar (read-only) */}
+                      {/* Step progress (read-only) */}
                       <div className="mb-3">
-                        <div className="flex items-center gap-0.5">
-                          {['input_incomplete', 'input_completed', 'price_generated', 'awaiting_payment', 'paid', 'report_in_progress', 'report_delivered'].map((step, index) => {
-                      const stepIndex = ['input_incomplete', 'input_completed', 'price_generated', 'awaiting_payment', 'paid', 'report_in_progress', 'report_delivered'].indexOf(noxData.status);
-                      const isCompleted = index < stepIndex || index === stepIndex && step === 'report_delivered';
-                      const isCurrent = index === stepIndex;
-                      return (
-                        <div key={step} className="flex items-center flex-1">
-                                <div className={cn("h-1 flex-1 rounded-full transition-all", isCompleted ? "bg-primary" : isCurrent ? "bg-primary/60" : "bg-muted")} />
-                              </div>);
-
-                    })}
-                        </div>
-                        <div className="flex justify-between mt-1.5">
-                          <span className="text-[9px] text-muted-foreground">{t('dashboard.projectsDashboard.input')}</span>
-                          <span className="text-[9px] text-muted-foreground">{t('dashboard.projectsDashboard.delivered')}</span>
-                        </div>
+                        <NoxStepProgress currentStatus={noxData.status} />
                       </div>
                       {/* Sub-status if any */}
                       {noxData.subStatus &&
