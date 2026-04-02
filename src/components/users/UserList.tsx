@@ -64,7 +64,7 @@ export function UserList({ users, onEdit }: UserListProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TooltipProvider>
+            
               {filteredUsers.map(user => {
               const keyModules = getKeyModules(user);
               return <TableRow key={user.id} className="transition-all duration-200 group hover:scale-[1.01] hover:z-10">
