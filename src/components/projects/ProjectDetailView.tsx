@@ -223,11 +223,11 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                   
                   {/* CTA */}
                   {noxData.status !== 'report_delivered' ? (
-                    <Button className="w-full gap-2" size="lg">
-                      <RefreshCw className="h-4 w-4" />
-                      Continue your NOx assessment
-                      <ArrowRight className="h-4 w-4 ml-auto" />
-                    </Button>
+                     <Button className="w-full gap-2" size="lg" variant="outline">
+                       <RefreshCw className="h-4 w-4" />
+                       {t('dashboard.projects.continueNox')}
+                       <ArrowRight className="h-4 w-4 ml-auto" />
+                     </Button>
                   ) : (
                     <div className="pt-2 border-t border-border/30">
                       <p className="text-xs text-muted-foreground mb-3">
