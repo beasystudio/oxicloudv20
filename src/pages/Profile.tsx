@@ -62,10 +62,10 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background">
       <TopNavigation />
-      <div className="container mx-auto py-8 px-4 max-w-4xl">
-        <div className="mb-8">
-          <h1 className="font-bold text-foreground text-2xl">{t('dashboard.profilePage.title')}</h1>
-          <p className="text-muted-foreground mt-2">
+      <div className="container mx-auto py-6 px-4 max-w-3xl">
+        <div className="mb-6">
+          <h1 className="font-semibold text-foreground text-base">{t('dashboard.profilePage.title')}</h1>
+          <p className="text-xs text-muted-foreground mt-1">
             {t('dashboard.profilePage.personalInfo')}
           </p>
         </div>
