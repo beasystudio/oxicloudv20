@@ -186,25 +186,19 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
             </CardContent>
           </Card>
 
-          {/* Site / Photo card */}
-          <Card>
-            <CardContent className="p-5 space-y-3">
-              {project.photo_url && (
-                <div className="rounded-lg overflow-hidden">
-                  <img src={project.photo_url} alt="Project" className="w-full h-40 object-cover" />
-                </div>
-              )}
-              {project.address && (
+          {project.address && (
+            <Card>
+              <CardContent className="p-5 space-y-3">
                 <div className="flex items-start gap-2 text-sm">
                   <MapPin className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-xs text-muted-foreground block">Site location</span>
+                    <span className="text-xs text-muted-foreground block">{t('dashboard.projects.siteLocation')}</span>
                     <span>{project.address}</span>
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         {/* RIGHT COLUMN: NOx + Contacts */}
