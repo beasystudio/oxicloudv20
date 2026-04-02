@@ -208,7 +208,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
           <Card>
             <CardContent className="p-5 space-y-5">
               <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-foreground">NOx Assessment</h3>
+                <h3 className="text-base font-semibold text-foreground">{t('dashboard.projects.noxAssessment')}</h3>
                 {noxData && statusLabel && (
                   <Badge variant="secondary" className="text-[11px] font-medium">
                     {statusLabel}
