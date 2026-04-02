@@ -70,25 +70,25 @@ const Profile = () => {
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           <Card>
-            <CardHeader>
+            <CardHeader className="py-4 px-5">
               <div className="flex items-center gap-2">
-                <User className="h-5 w-5 text-primary" />
-                <CardTitle>{t('dashboard.profilePage.personalInfo')}</CardTitle>
+                <User className="h-4 w-4 text-primary" />
+                <CardTitle className="text-sm">{t('dashboard.profilePage.personalInfo')}</CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleUpdateProfile} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">{t('dashboard.profilePage.email')}</Label>
-                  <Input id="email" type="email" value={currentUser?.email || ''} disabled className="bg-muted" />
+            <CardContent className="px-5 pb-5 pt-0">
+              <form onSubmit={handleUpdateProfile} className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="email" className="text-xs">{t('dashboard.profilePage.email')}</Label>
+                  <Input id="email" type="email" value={currentUser?.email || ''} disabled className="bg-muted h-8 text-sm" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="name">{t('dashboard.profilePage.name')}</Label>
-                  <Input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                <div className="space-y-1.5">
+                  <Label htmlFor="name" className="text-xs">{t('dashboard.profilePage.name')}</Label>
+                  <Input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="h-8 text-sm" />
                 </div>
-                <Button type="submit" disabled={isUpdatingProfile}>
+                <Button type="submit" size="sm" className="text-xs h-8" disabled={isUpdatingProfile}>
                   {isUpdatingProfile ? t('dashboard.profilePage.updating') : t('dashboard.profilePage.updateProfile')}
                 </Button>
               </form>
