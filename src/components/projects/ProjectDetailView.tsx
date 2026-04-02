@@ -266,10 +266,10 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                   ) : (
                     <>
                       <Lock className="h-8 w-8 mx-auto text-muted-foreground/40 mb-3" />
-                      <p className="text-sm text-muted-foreground mb-1 font-medium">Setup required</p>
-                      <p className="text-xs text-muted-foreground">
-                        Add contacts to this project before starting the NOx workflow.
-                      </p>
+                       <p className="text-sm text-muted-foreground mb-1 font-medium">{t('dashboard.projects.setupRequired')}</p>
+                       <p className="text-xs text-muted-foreground">
+                         {t('projectDetail.addContactsFirst')}
+                       </p>
                     </>
                   )}
                 </div>
