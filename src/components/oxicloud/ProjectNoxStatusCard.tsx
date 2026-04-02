@@ -215,7 +215,7 @@ export function ProjectNoxStatusCard({
         <div className="flex items-center gap-3">
           <div className="flex-1">
             {details.showStartBtn && onStartCalculation && (
-              <Button onClick={onStartCalculation} className="w-full" size="sm">
+              <Button onClick={onStartCalculation} className="w-full" size="sm" variant="outline">
                 <PlayCircle className="h-3.5 w-3.5 mr-2" />
                 {details.ctaLabel}
               </Button>
