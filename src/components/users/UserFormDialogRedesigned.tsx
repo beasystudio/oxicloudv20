@@ -83,7 +83,7 @@ const createEmptyUser = (): FullUser => ({
   terminationDate: null
 });
 
-type TabType = "profile" | "private" | "access";
+type TabType = "profile" | "access";
 
 export function UserFormDialogRedesigned({
   open,
