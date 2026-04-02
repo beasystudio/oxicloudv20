@@ -137,7 +137,7 @@ const Login = () => {
           <img src={loginBackground} alt="Architecture" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
           <div className="relative z-10 flex flex-col justify-between pt-14 pb-12 pl-12 pr-12 w-full">
-            <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-8 w-auto" /></Link>
+            <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-11 w-auto" /></Link>
           </div>
         </div>
 
@@ -145,7 +145,7 @@ const Login = () => {
         <div className="w-full lg:w-1/2 flex items-center justify-center px-8 lg:px-12 xl:px-16 overflow-y-auto">
           <motion.div variants={container} initial="hidden" animate="show" className="max-w-[400px] w-full py-12">
             <motion.div variants={item} className="mb-16 flex items-center justify-between">
-              <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-7 w-auto dark:invert-0 invert" /></Link>
+              <span className="text-foreground font-semibold text-lg tracking-tight">OxiCloud</span>
               <div className="flex items-center gap-2">
                 <ThemeToggle />
                 <LanguageToggle variant="light" />

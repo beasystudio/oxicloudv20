@@ -77,7 +77,7 @@ export default function Register() {
       <div className="min-h-screen bg-background flex flex-col">
         {/* Top bar */}
         <div className="flex items-center justify-between px-6 lg:px-12 py-5">
-          <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-7 w-auto dark:invert-0 invert" /></Link>
+          <Link to="/" className="text-foreground font-semibold text-lg tracking-tight">OxiCloud</Link>
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <LanguageToggle variant="light" />

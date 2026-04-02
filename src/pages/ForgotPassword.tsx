@@ -42,7 +42,7 @@ export default function ForgotPassword() {
           <img src={loginBackground} alt="Architecture" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
           <div className="relative z-10 flex flex-col justify-between p-12 w-full">
-            <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-8 w-auto" /></Link>
+            <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-11 w-auto" /></Link>
             <div className="max-w-md">
               <p className="text-white/50 text-xs uppercase tracking-[0.14em] mb-3">{t('forgotPassword.sidebarTag')}</p>
               <p className="text-white text-2xl font-semibold leading-snug tracking-tight">
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
         <div className="w-full lg:w-[45%] flex flex-col justify-center px-8 lg:px-16 xl:px-20">
           <motion.div variants={container} initial="hidden" animate="show" className="max-w-sm mx-auto w-full">
             <motion.div variants={item} className="lg:hidden mb-12">
-              <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-7 w-auto dark:invert-0 invert" /></Link>
+              <Link to="/" className="text-foreground font-semibold text-lg tracking-tight">OxiCloud</Link>
             </motion.div>
 
             <motion.div variants={item} className="mb-10">
