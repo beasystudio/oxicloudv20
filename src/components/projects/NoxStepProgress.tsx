@@ -36,7 +36,7 @@ export function NoxStepProgress({ currentStatus }: NoxStepProgressProps) {
                 className={cn(
                   'w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-semibold border-2 transition-colors',
                   isCompleted
-                    ? 'bg-foreground/80 border-foreground/80 text-background'
+                    ? 'bg-muted-foreground/40 border-muted-foreground/40 text-background'
                     : isCurrent
                     ? 'border-foreground bg-foreground text-background'
                     : 'bg-background border-border text-muted-foreground'
