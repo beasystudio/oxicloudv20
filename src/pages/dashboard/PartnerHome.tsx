@@ -451,9 +451,6 @@ const PartnerHome = () => {
         <AnimatePresence>
           {showOnboarding && <ModuleOnboardingTour module="home" onComplete={handleOnboardingComplete} onSkip={handleOnboardingSkip} />}
         </AnimatePresence>
-        <AnimatePresence>
-          {showWelcomeModal && <ProductionWelcomeModal userName={currentUser?.name?.split(' ')[0] || 'there'} onClose={() => setShowWelcomeModal(false)} />}
-        </AnimatePresence>
       </div>
     </>;
 };
