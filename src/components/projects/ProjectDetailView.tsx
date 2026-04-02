@@ -255,12 +255,12 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                 <div className="text-center py-6">
                   {hasContacts ? (
                     <>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        No NOx assessment started for this project.
-                      </p>
-                      <Button onClick={handleStartNoxWorkflow} disabled={noxLoading} className="gap-2">
-                        {noxLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-                        Start NOx Workflow
+                       <p className="text-sm text-muted-foreground mb-4">
+                         {t('projectDetail.noNoxAssessment')}
+                       </p>
+                       <Button onClick={handleStartNoxWorkflow} disabled={noxLoading} className="gap-2">
+                         {noxLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+                         {t('projectDetail.startNoxWorkflow')}
                       </Button>
                     </>
                   ) : (
