@@ -42,6 +42,7 @@ const PartnerHome = () => {
   const {
     currentUser
   } = useMockAuth();
+  const { t } = useLanguage();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
