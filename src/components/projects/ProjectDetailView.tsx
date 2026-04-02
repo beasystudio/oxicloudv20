@@ -247,7 +247,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                       className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {showVersions ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
-                      {(noxData.version_history?.length ?? 0) + 1} versions
+                      {(noxData.version_history?.length ?? 0) + 1} {t('noxVersionHistory.versions')}
                     </button>
                   )}
                 </>
