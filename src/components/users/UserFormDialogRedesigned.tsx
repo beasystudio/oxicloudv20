@@ -150,7 +150,6 @@ export function UserFormDialogRedesigned({
 
   const tabs: {id: TabType; label: string;}[] = [
     { id: "profile", label: t('userForm.profile') },
-    { id: "private", label: t('userForm.privateInfo') },
     { id: "access", label: t('userForm.accessSubscription') },
   ];
 
