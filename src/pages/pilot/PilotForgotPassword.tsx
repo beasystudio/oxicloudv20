@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { getPilotUser } from '@/lib/pilotSessionStore';
-import loginBackground from '@/assets/login-monochrome.jpg';
+import loginBackground from '@/assets/login-background.jpg';
 
 export default function PilotForgotPassword() {
   const [email, setEmail] = useState('');

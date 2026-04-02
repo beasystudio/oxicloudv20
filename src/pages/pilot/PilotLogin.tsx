@@ -10,7 +10,7 @@ import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { getPilotUser, getPilotSession } from '@/lib/pilotSessionStore';
 import { logAuditEvent } from '@/lib/securityAuditStore';
 import { toast } from 'sonner';
-import loginBackground from '@/assets/login-monochrome.jpg';
+import loginBackground from '@/assets/login-background.jpg';
 
 export default function PilotLogin() {
   const [email, setEmail] = useState('');
