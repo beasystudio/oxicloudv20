@@ -62,33 +62,33 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background">
       <TopNavigation />
-      <div className="container mx-auto py-8 px-4 max-w-4xl">
-        <div className="mb-8">
-          <h1 className="font-bold text-foreground text-2xl">{t('dashboard.profilePage.title')}</h1>
-          <p className="text-muted-foreground mt-2">
+      <div className="container mx-auto py-6 px-4 max-w-3xl">
+        <div className="mb-6">
+          <h1 className="font-semibold text-foreground text-base">{t('dashboard.profilePage.title')}</h1>
+          <p className="text-xs text-muted-foreground mt-1">
             {t('dashboard.profilePage.personalInfo')}
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           <Card>
-            <CardHeader>
+            <CardHeader className="py-4 px-5">
               <div className="flex items-center gap-2">
-                <User className="h-5 w-5 text-primary" />
-                <CardTitle>{t('dashboard.profilePage.personalInfo')}</CardTitle>
+                <User className="h-4 w-4 text-primary" />
+                <CardTitle className="text-sm">{t('dashboard.profilePage.personalInfo')}</CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleUpdateProfile} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">{t('dashboard.profilePage.email')}</Label>
-                  <Input id="email" type="email" value={currentUser?.email || ''} disabled className="bg-muted" />
+            <CardContent className="px-5 pb-5 pt-0">
+              <form onSubmit={handleUpdateProfile} className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="email" className="text-xs">{t('dashboard.profilePage.email')}</Label>
+                  <Input id="email" type="email" value={currentUser?.email || ''} disabled className="bg-muted h-8 text-sm" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="name">{t('dashboard.profilePage.name')}</Label>
-                  <Input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                <div className="space-y-1.5">
+                  <Label htmlFor="name" className="text-xs">{t('dashboard.profilePage.name')}</Label>
+                  <Input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="h-8 text-sm" />
                 </div>
-                <Button type="submit" disabled={isUpdatingProfile}>
+                <Button type="submit" size="sm" className="text-xs h-8" disabled={isUpdatingProfile}>
                   {isUpdatingProfile ? t('dashboard.profilePage.updating') : t('dashboard.profilePage.updateProfile')}
                 </Button>
               </form>
@@ -96,27 +96,27 @@ const Profile = () => {
           </Card>
 
           <Card>
-            <CardHeader>
+            <CardHeader className="py-4 px-5">
               <div className="flex items-center gap-2">
-                <Lock className="h-5 w-5 text-primary" />
-                <CardTitle>{t('dashboard.profilePage.changePassword')}</CardTitle>
+                <Lock className="h-4 w-4 text-primary" />
+                <CardTitle className="text-sm">{t('dashboard.profilePage.changePassword')}</CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleChangePassword} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="currentPassword">{t('dashboard.profilePage.currentPassword')}</Label>
-                  <Input id="currentPassword" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+            <CardContent className="px-5 pb-5 pt-0">
+              <form onSubmit={handleChangePassword} className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="currentPassword" className="text-xs">{t('dashboard.profilePage.currentPassword')}</Label>
+                  <Input id="currentPassword" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className="h-8 text-sm" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="newPassword">{t('dashboard.profilePage.newPassword')}</Label>
-                  <Input id="newPassword" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                <div className="space-y-1.5">
+                  <Label htmlFor="newPassword" className="text-xs">{t('dashboard.profilePage.newPassword')}</Label>
+                  <Input id="newPassword" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="h-8 text-sm" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">{t('dashboard.profilePage.confirmPassword')}</Label>
-                  <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                <div className="space-y-1.5">
+                  <Label htmlFor="confirmPassword" className="text-xs">{t('dashboard.profilePage.confirmPassword')}</Label>
+                  <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="h-8 text-sm" />
                 </div>
-                <Button type="submit" disabled={isChangingPassword}>
+                <Button type="submit" size="sm" className="text-xs h-8" disabled={isChangingPassword}>
                   {isChangingPassword ? t('dashboard.profilePage.changingPassword') : t('dashboard.profilePage.changePasswordBtn')}
                 </Button>
               </form>
@@ -124,37 +124,37 @@ const Profile = () => {
           </Card>
 
           <Card>
-            <CardHeader>
+            <CardHeader className="py-4 px-5">
               <div className="flex items-center gap-2">
-                <Bell className="h-5 w-5 text-primary" />
-                <CardTitle>{t('dashboard.profilePage.preferences')}</CardTitle>
+                <Bell className="h-4 w-4 text-primary" />
+                <CardTitle className="text-sm">{t('dashboard.profilePage.preferences')}</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="px-5 pb-5 pt-0 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label htmlFor="email-notifications">{t('dashboard.profilePage.emailNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.profilePage.emailNotificationsDesc')}</p>
+                  <Label htmlFor="email-notifications" className="text-xs">{t('dashboard.profilePage.emailNotifications')}</Label>
+                  <p className="text-[11px] text-muted-foreground">{t('dashboard.profilePage.emailNotificationsDesc')}</p>
                 </div>
                 <Switch id="email-notifications" checked={emailNotifications} onCheckedChange={setEmailNotifications} />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label htmlFor="push-notifications">{t('dashboard.profilePage.pushNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.profilePage.pushNotificationsDesc')}</p>
+                  <Label htmlFor="push-notifications" className="text-xs">{t('dashboard.profilePage.pushNotifications')}</Label>
+                  <p className="text-[11px] text-muted-foreground">{t('dashboard.profilePage.pushNotificationsDesc')}</p>
                 </div>
                 <Switch id="push-notifications" checked={pushNotifications} onCheckedChange={setPushNotifications} />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label htmlFor="weekly-report">{t('dashboard.profilePage.weeklyReport')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.profilePage.weeklyReportDesc')}</p>
+                  <Label htmlFor="weekly-report" className="text-xs">{t('dashboard.profilePage.weeklyReport')}</Label>
+                  <p className="text-[11px] text-muted-foreground">{t('dashboard.profilePage.weeklyReportDesc')}</p>
                 </div>
                 <Switch id="weekly-report" checked={weeklyReport} onCheckedChange={setWeeklyReport} />
               </div>
-              <Button onClick={handleSavePreferences} className="mt-4">
+              <Button onClick={handleSavePreferences} size="sm" className="text-xs h-8 mt-2">
                 {t('dashboard.profilePage.updateProfile')}
               </Button>
             </CardContent>
