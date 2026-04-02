@@ -88,7 +88,7 @@ const AnimatedRoutes = () => {
         <Route path="/register/workspace" element={<Navigate to="/pilot-demo/create-account" replace />} />
         
         {/* Dashboard — theme-aware */}
-        <Route path="/dashboard/demo" element={<ThemeWrapper><PageTransition><ClientDashboard /></PageTransition></ThemeWrapper>} />
+        <Route path="/dashboard/demo" element={<ThemeWrapper><PageTransition><DemoDashboard /></PageTransition></ThemeWrapper>} />
         <Route path="/dashboard/partner" element={<ThemeWrapper><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnerHome /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/admin" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><AdminDashboard /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/licenses" element={<ThemeWrapper><ProtectedRoute allowedRoles={['owner', 'admin']}><PageTransition><CompanyLicenseManager /></PageTransition></ProtectedRoute></ThemeWrapper>} />
