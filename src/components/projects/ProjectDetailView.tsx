@@ -157,7 +157,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                   <span className="font-medium">{project.project_number}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Name</span>
+                  <span className="text-muted-foreground">{t('dashboard.projects.projectName')}</span>
                   <span className="font-medium">{project.name}</span>
                 </div>
                 {project.client_contact && (
