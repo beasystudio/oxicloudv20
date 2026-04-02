@@ -15,6 +15,7 @@ import { getAvatarByEmail } from '@/lib/avatarMap';
 import { supabase } from '@/integrations/supabase/client';
 import { LanguageToggle } from '@/components/LanguageToggle';
 import loginBackground from '@/assets/login-background.jpg';
+import oxicloudLogo from '@/assets/oxicloud-logo-white.png';
 
 interface DemoAccount {
   label: string;
