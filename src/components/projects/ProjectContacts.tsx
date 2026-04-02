@@ -46,6 +46,11 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
   const [activeFilter, setActiveFilter] = useState('all');
   const { toast } = useToast();
 
+  const contactFilters = useMemo(() => 
+    CONTACT_FILTER_KEYS.map(f => ({ id: f.id, label: t(f.labelKey) })),
+    [t]
+  );
+
   useEffect(() => {
     fetchContacts();
   }, [projectId]);
