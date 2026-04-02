@@ -230,13 +230,13 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                      </Button>
                   ) : (
                     <div className="pt-2 border-t border-border/30">
-                      <p className="text-xs text-muted-foreground mb-3">
-                        Report delivered. You can create a new version with updated calculations.
-                      </p>
-                      <Button onClick={handleCloneVersion} variant="outline" className="w-full gap-2" size="sm">
-                        <Copy className="h-4 w-4" />
-                        Create new version
-                      </Button>
+                       <p className="text-xs text-muted-foreground mb-3">
+                         {t('noxStatus.reportDeliveredDesc')}
+                       </p>
+                       <Button onClick={handleCloneVersion} variant="outline" className="w-full gap-2" size="sm">
+                         <Copy className="h-4 w-4" />
+                         {t('projectDetail.createNewVersion')}
+                       </Button>
                     </div>
                   )}
 
