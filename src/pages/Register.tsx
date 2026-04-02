@@ -10,6 +10,7 @@ import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { LanguageToggle } from '@/components/LanguageToggle';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { supabase } from '@/integrations/supabase/client';
+import oxicloudLogo from '@/assets/oxicloud-logo-white.png';
 
 type UserCategory = null | 'professional' | 'government';
 
