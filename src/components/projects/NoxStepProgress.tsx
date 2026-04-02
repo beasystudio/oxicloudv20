@@ -1,23 +1,25 @@
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
 
-const NOX_STEPS = [
-  { key: 'input_incomplete', label: 'Data' },
-  { key: 'input_completed', label: 'Input' },
-  { key: 'price_generated', label: 'Price' },
-  { key: 'awaiting_payment', label: 'Payment' },
-  { key: 'paid', label: 'Paid' },
-  { key: 'report_in_progress', label: 'Report' },
-  { key: 'report_delivered', label: 'Delivered' },
+const NOX_STEP_KEYS = [
+  { key: 'input_incomplete', labelKey: 'noxStatus.stepData' },
+  { key: 'input_completed', labelKey: 'noxStatus.stepInput' },
+  { key: 'price_generated', labelKey: 'noxStatus.stepPrice' },
+  { key: 'awaiting_payment', labelKey: 'noxStatus.stepPayment' },
+  { key: 'paid', labelKey: 'noxStatus.stepPaid' },
+  { key: 'report_in_progress', labelKey: 'noxStatus.stepReport' },
+  { key: 'report_delivered', labelKey: 'noxStatus.stepDelivered' },
 ];
 
-const STATUS_ORDER = NOX_STEPS.map(s => s.key);
+const STATUS_ORDER = NOX_STEP_KEYS.map(s => s.key);
 
 interface NoxStepProgressProps {
   currentStatus: string;
 }
 
 export function NoxStepProgress({ currentStatus }: NoxStepProgressProps) {
+  const { t } = useLanguage();
   const currentIndex = STATUS_ORDER.indexOf(currentStatus);
 
   return (
@@ -26,7 +28,7 @@ export function NoxStepProgress({ currentStatus }: NoxStepProgressProps) {
         {/* Connector line */}
         <div className="absolute top-3 left-4 right-4 h-px bg-border" />
         
-        {NOX_STEPS.map((step, i) => {
+        {NOX_STEP_KEYS.map((step, i) => {
           const isCompleted = i < currentIndex;
           const isCurrent = i === currentIndex;
           
@@ -51,7 +53,7 @@ export function NoxStepProgress({ currentStatus }: NoxStepProgressProps) {
                   isCompleted ? 'text-foreground/70' : 'text-muted-foreground/60'
                 )}
               >
-                {step.label}
+                {t(step.labelKey)}
               </span>
             </div>
           );
