@@ -34,12 +34,12 @@ export function NoxStepProgress({ currentStatus }: NoxStepProgressProps) {
             <div key={step.key} className="flex flex-col items-center relative z-10 min-w-[40px]">
               <div
                 className={cn(
-                  'w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-semibold border-2 transition-colors',
+                  'w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-semibold transition-colors',
                   isCompleted
-                    ? 'bg-muted-foreground/40 border-muted-foreground/40 text-background'
+                    ? 'bg-muted-foreground/40 text-background'
                     : isCurrent
-                    ? 'border-foreground bg-foreground text-background'
-                    : 'bg-background border-border text-muted-foreground'
+                    ? 'bg-foreground text-background'
+                    : 'bg-muted text-muted-foreground'
                 )}
               >
                 {isCompleted ? <Check className="h-3 w-3" /> : i + 1}
