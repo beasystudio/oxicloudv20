@@ -25,14 +25,14 @@ interface ProjectDetailViewProps {
   onProjectDeleted: (projectId: string) => void;
 }
 
-const NOX_STATUS_LABEL: Record<string, string> = {
-  input_incomplete: 'Input Incompleet',
-  input_completed: 'Input Voltooid',
-  price_generated: 'Prijs Berekend',
-  awaiting_payment: 'Wacht op Betaling',
-  paid: 'Betaald',
-  report_in_progress: 'Rapport in Progress',
-  report_delivered: 'Rapport Geleverd',
+const NOX_STATUS_KEY: Record<string, string> = {
+  input_incomplete: 'noxStatus.inputIncomplete',
+  input_completed: 'noxStatus.inputCompleted',
+  price_generated: 'noxStatus.priceGenerated',
+  awaiting_payment: 'noxStatus.awaitingPayment',
+  paid: 'noxStatus.paid',
+  report_in_progress: 'noxStatus.reportInProgress',
+  report_delivered: 'noxStatus.reportDelivered',
 };
 
 export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted }: ProjectDetailViewProps) => {
