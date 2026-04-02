@@ -262,17 +262,17 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* Partner Card - updated copy, no CTAs */}
+            {/* Partner Card */}
             <button
               onClick={() => navigate('/dashboard/partnership-program')}
-              className="rounded-xl border border-border bg-card dark:bg-secondary overflow-hidden flex flex-col text-left hover:border-foreground/20 transition-colors">
-              <div className="bg-foreground dark:bg-secondary px-5 py-3">
+              className="rounded-xl border border-border bg-muted/30 dark:bg-secondary overflow-hidden flex flex-col text-left hover:border-foreground/20 transition-colors group">
+              <div className="bg-foreground dark:bg-foreground/90 px-5 py-2.5">
                 <p className="text-[10px] uppercase tracking-[0.15em] font-semibold text-primary">
                   {language === 'nl' ? 'Partnerprogramma' : 'Partner Program'}
                 </p>
               </div>
-              <div className="p-5 flex flex-col flex-1 justify-between">
-                <p className="text-sm font-semibold text-foreground mb-2">
+              <div className="px-5 py-4 flex flex-col flex-1 justify-between">
+                <p className="text-sm font-semibold text-foreground mb-1.5">
                   {language === 'nl' ? 'Uw vergoeding als partner' : 'Your compensation as a partner'}
                 </p>
                 <p className="text-[13px] text-muted-foreground leading-relaxed">
@@ -280,7 +280,7 @@ export default function ClientDashboard() {
                     ? 'U levert de expertise, wij regelen de rest. Ontdek hoe de uitbetaling werkt.'
                     : 'You provide the expertise, we handle the rest. Discover how compensation works.'}
                 </p>
-                <span className="text-xs text-muted-foreground mt-3 underline underline-offset-2">
+                <span className="text-xs text-muted-foreground mt-2.5 underline underline-offset-2 group-hover:text-foreground transition-colors">
                   {language === 'nl' ? 'Meer info' : 'Learn more'} &rarr;
                 </span>
               </div>
@@ -312,7 +312,7 @@ export default function ClientDashboard() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => navigate('/register/workspace')}
-                className="flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition-colors bg-foreground text-background hover:bg-foreground/90">
+                className="flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition-colors bg-primary text-primary-foreground hover:brightness-110">
                 {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
               </button>
               <button
