@@ -312,7 +312,7 @@ export default function ClientDashboard() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => navigate('/register/workspace')}
-                className="flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition-colors bg-foreground text-background hover:bg-foreground/90">
+                className="flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition-colors bg-primary text-primary-foreground hover:brightness-110">
                 {language === 'nl' ? 'Maak mijn Workspace' : 'Create my Workspace'}
               </button>
               <button
