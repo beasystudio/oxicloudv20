@@ -154,7 +154,7 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
             <CardTitle className="text-sm font-semibold">{t('projectContacts.title')}</CardTitle>
             {hasAnyContacts && (
               <PillToggle
-                items={CONTACT_FILTERS}
+                items={contactFilters}
                 activeId={activeFilter}
                 onSelect={setActiveFilter}
                 layoutId="projectContactFilter"
