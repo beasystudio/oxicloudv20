@@ -124,37 +124,37 @@ const Profile = () => {
           </Card>
 
           <Card>
-            <CardHeader>
+            <CardHeader className="py-4 px-5">
               <div className="flex items-center gap-2">
-                <Bell className="h-5 w-5 text-primary" />
-                <CardTitle>{t('dashboard.profilePage.preferences')}</CardTitle>
+                <Bell className="h-4 w-4 text-primary" />
+                <CardTitle className="text-sm">{t('dashboard.profilePage.preferences')}</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="px-5 pb-5 pt-0 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label htmlFor="email-notifications">{t('dashboard.profilePage.emailNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.profilePage.emailNotificationsDesc')}</p>
+                  <Label htmlFor="email-notifications" className="text-xs">{t('dashboard.profilePage.emailNotifications')}</Label>
+                  <p className="text-[11px] text-muted-foreground">{t('dashboard.profilePage.emailNotificationsDesc')}</p>
                 </div>
                 <Switch id="email-notifications" checked={emailNotifications} onCheckedChange={setEmailNotifications} />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label htmlFor="push-notifications">{t('dashboard.profilePage.pushNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.profilePage.pushNotificationsDesc')}</p>
+                  <Label htmlFor="push-notifications" className="text-xs">{t('dashboard.profilePage.pushNotifications')}</Label>
+                  <p className="text-[11px] text-muted-foreground">{t('dashboard.profilePage.pushNotificationsDesc')}</p>
                 </div>
                 <Switch id="push-notifications" checked={pushNotifications} onCheckedChange={setPushNotifications} />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label htmlFor="weekly-report">{t('dashboard.profilePage.weeklyReport')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.profilePage.weeklyReportDesc')}</p>
+                  <Label htmlFor="weekly-report" className="text-xs">{t('dashboard.profilePage.weeklyReport')}</Label>
+                  <p className="text-[11px] text-muted-foreground">{t('dashboard.profilePage.weeklyReportDesc')}</p>
                 </div>
                 <Switch id="weekly-report" checked={weeklyReport} onCheckedChange={setWeeklyReport} />
               </div>
-              <Button onClick={handleSavePreferences} className="mt-4">
+              <Button onClick={handleSavePreferences} size="sm" className="text-xs h-8 mt-2">
                 {t('dashboard.profilePage.updateProfile')}
               </Button>
             </CardContent>
