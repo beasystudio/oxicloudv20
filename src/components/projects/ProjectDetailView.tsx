@@ -134,7 +134,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => setIsEditDialogOpen(true)}>
             <Edit className="h-4 w-4 mr-2" />
-            Edit
+            {t('common.edit')}
           </Button>
           <Button variant="outline" size="sm" onClick={handleDelete} className="text-destructive hover:text-destructive">
             <Trash2 className="h-4 w-4" />
