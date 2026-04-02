@@ -42,6 +42,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
   const [projectContacts, setProjectContacts] = useState<Contact[]>([]);
   const [showVersions, setShowVersions] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchNoxData();
