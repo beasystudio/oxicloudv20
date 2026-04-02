@@ -168,7 +168,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                 )}
                 {project.project_type && (
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Type</span>
+                    <span className="text-muted-foreground">{t('dashboard.projects.type')}</span>
                     <span className="font-medium capitalize">{project.project_type}</span>
                   </div>
                 )}
