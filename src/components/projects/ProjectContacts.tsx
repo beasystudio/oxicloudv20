@@ -28,11 +28,11 @@ interface CompanyGroup {
   contacts: Contact[];
 }
 
-const CONTACT_FILTERS = [
-  { id: 'all', label: 'All' },
-  { id: 'client', label: 'Client' },
-  { id: 'team', label: 'Team' },
-  { id: 'others', label: 'Others' },
+const CONTACT_FILTER_KEYS = [
+  { id: 'all', labelKey: 'projectContacts.filterAll' },
+  { id: 'client', labelKey: 'projectContacts.client' },
+  { id: 'team', labelKey: 'projectContacts.team' },
+  { id: 'others', labelKey: 'projectContacts.others' },
 ] as const;
 
 export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContactsProps) => {
