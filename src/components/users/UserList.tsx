@@ -6,7 +6,7 @@ import { Check, X, Search, User, Pencil } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getAvatarUrl } from "@/lib/avatarMap";
 import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useLanguage } from "@/i18n/LanguageContext";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 interface UserListProps {
