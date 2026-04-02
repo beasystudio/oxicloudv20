@@ -9,7 +9,7 @@ import { AlertCircle, CheckCircle2 } from 'lucide-react';
 import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/i18n/LanguageContext';
-import loginBackground from '@/assets/login-monochrome.jpg';
+import loginBackground from '@/assets/login-background.jpg';
 
 export default function ResetPassword() {
   const { t } = useLanguage();

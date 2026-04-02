@@ -14,7 +14,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { getAvatarByEmail } from '@/lib/avatarMap';
 import { supabase } from '@/integrations/supabase/client';
 import { LanguageToggle } from '@/components/LanguageToggle';
-import loginBackground from '@/assets/login-monochrome.jpg';
+import loginBackground from '@/assets/login-background.jpg';
 
 interface DemoAccount {
   label: string;
