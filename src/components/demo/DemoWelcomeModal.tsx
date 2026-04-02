@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { X, ArrowRight, Sparkles, Handshake } from 'lucide-react';
+import { X, ArrowRight, FolderOpen, Users, Settings, Handshake } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface DemoWelcomeModalProps {
   onClose: () => void;
@@ -9,67 +10,74 @@ interface DemoWelcomeModalProps {
 
 export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
+
+  const features = [
+    { icon: FolderOpen, text: t('demoWelcome.projects') },
+    { icon: Users, text: t('demoWelcome.contacts') },
+    { icon: Settings, text: t('demoWelcome.settings') },
+    { icon: Handshake, text: t('demoWelcome.partner') },
+  ];
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-white/60 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/60 backdrop-blur-sm"
       onClick={(e) => e.target === e.currentTarget && onClose()}>
-      
+
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        initial={{ opacity: 0, scale: 0.96, y: 16 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        exit={{ opacity: 0, scale: 0.96, y: 16 }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-md bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
-        
-        {/* Header */}
-        <div className="relative bg-secondary text-secondary-foreground p-6 pb-5">
+        className="w-full max-w-lg bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
+
+        {/* Close button */}
+        <div className="flex justify-end p-4 pb-0">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
-            <X className="w-3.5 h-3.5" />
+            className="w-7 h-7 rounded-full bg-muted hover:bg-muted-foreground/10 flex items-center justify-center transition-colors">
+            <X className="w-3.5 h-3.5 text-muted-foreground" />
           </button>
-          <h2 className="text-lg font-semibold">Welcome to OxiCloud!</h2>
-          <p className="text-sm text-secondary-foreground/60 mt-0.5">Choose how you'd like to get started</p>
         </div>
 
         {/* Content */}
-        <div className="p-5 space-y-3">
-          {/* Option 1: Setup Guide */}
-          <button
-            onClick={() => { onClose(); navigate('/dashboard/client/home?showGuide=true'); }}
-            className="w-full flex items-start gap-4 p-4 rounded-xl border border-border hover:border-foreground/20 transition-colors text-left group">
-            <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
-              <Sparkles className="w-5 h-5 text-primary" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">Start the Setup Guide</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Follow a step-by-step guide to configure your workspace.</p>
-            </div>
-            <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors mt-1 shrink-0" />
-          </button>
+        <div className="px-6 pb-6 pt-1 space-y-4">
+          <div>
+            <h2 className="text-base font-semibold text-foreground">{t('demoWelcome.title')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t('demoWelcome.body')}</p>
+          </div>
 
-          {/* Option 2: Partner Program */}
-          <button
-            onClick={() => { onClose(); navigate('/dashboard/partnership-program'); }}
-            className="w-full flex items-start gap-4 p-4 rounded-xl border border-border hover:border-foreground/20 transition-colors text-left group">
-            <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
-              <Handshake className="w-5 h-5 text-primary" />
+          {/* Feature list */}
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-2">{t('demoWelcome.explore')}</p>
+            <div className="space-y-1.5">
+              {features.map(({ icon: Icon, text }, i) => (
+                <div key={i} className="flex items-center gap-2.5">
+                  <Icon className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                  <span className="text-[13px] text-foreground">{text}</span>
+                </div>
+              ))}
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">Explore the Partner Program</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Discover how to collaborate and grow with OxiCloud.</p>
-            </div>
-            <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors mt-1 shrink-0" />
-          </button>
+          </div>
 
-          {/* Dismiss */}
-          <div className="pt-1">
+          <p className="text-xs text-muted-foreground italic">{t('demoWelcome.disclaimer')}</p>
+
+          <p className="text-sm text-muted-foreground">{t('demoWelcome.readyCta')}</p>
+
+          {/* Buttons */}
+          <div className="flex flex-col gap-2 pt-1">
+            <Button
+              onClick={() => { onClose(); navigate('/pilot-demo/create-account'); }}
+              className="h-11 rounded-xl font-semibold text-sm w-full gap-2">
+              {t('demoWelcome.createWorkspace')}
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+            <p className="text-[11px] text-muted-foreground text-center -mt-1">{t('demoWelcome.createWorkspaceDesc')}</p>
             <Button variant="ghost" size="sm" onClick={onClose} className="w-full text-muted-foreground">
-              Explore Demo first
+              {t('demoWelcome.exploreDemo')}
             </Button>
           </div>
         </div>

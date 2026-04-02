@@ -3699,4 +3699,19 @@ export const nl = {
       energyConnection: 'Energieaansluiting',
     },
   },
+
+  demoWelcome: {
+    title: 'Welkom in de OxiCloud Demo',
+    body: 'Je bevindt je nu in de demo-omgeving, waar je kunt ontdekken hoe OxiCloud werkt.',
+    explore: 'Verken de platformen:',
+    projects: 'Projecten – bekijk hoe NOₓ-rapporten worden opgesteld',
+    contacts: 'Contacten – beheer klanten en stakeholders',
+    settings: 'Instellingen – configureer je werkruimte',
+    partner: 'Partnerprogramma – ontdek hoe je kantoor commissie kan verdienen',
+    disclaimer: 'Alles hier is uitsluitend ter demonstratie.',
+    readyCta: 'Wanneer je klaar bent om echte rapporten te maken, maak je Workspace aan om je kantooraccount te activeren.',
+    createWorkspace: 'Maak mijn Workspace aan',
+    createWorkspaceDesc: 'Begin met het genereren van echte NOₓ-rapporten',
+    exploreDemo: 'Verken de Demo',
+  },
 };
