@@ -13,11 +13,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Plus, ArrowRight, Check, Clock, Settings, FolderKanban, Users, Info, HelpCircle } from 'lucide-react';
+import { Plus, ArrowRight, Check, Clock, Settings, FolderKanban, Users, Info, HelpCircle, X } from 'lucide-react';
 import { ModuleOnboardingTour, OnboardingTooltip } from '@/components/onboarding/ModuleOnboardingTour';
-import { ProductionWelcomeModal } from '@/components/demo/ProductionWelcomeModal';
 import { useMockAuth } from '@/contexts/MockAuthContext';
-import { isPilotAccount as checkPilotAccount, getEmptyDashboardData, resetPilotOnboarding, isOnboardingComplete, completeOnboarding, getOnboardingProgress } from '@/lib/pilotAccountUtils';
+import { isPilotAccount as checkPilotAccount, getEmptyDashboardData, resetPilotOnboarding, completeOnboarding } from '@/lib/pilotAccountUtils';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { cn } from '@/lib/utils';
 
 // Dashboard data based on account type
@@ -42,6 +42,7 @@ const PartnerHome = () => {
   const {
     currentUser
   } = useMockAuth();
+  const { t } = useLanguage();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
@@ -149,8 +150,8 @@ const PartnerHome = () => {
             </div>
           </motion.header>
 
-          {/* Welcome Message for New Users */}
-          {(isPilot || !onboardingCompleted) && <motion.div initial={{
+          {/* Demo onboarding banner */}
+          {isPilot && showWelcomeModal && <motion.div initial={{
           opacity: 0,
           y: 10
         }} animate={{
@@ -159,35 +160,54 @@ const PartnerHome = () => {
         }} transition={{
           delay: 0.1
         }} className="mb-6">
-              <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
+              <Card className="border-border bg-card">
                 <CardContent className="py-5">
-                  <div className="flex items-start gap-4">
-                    
-                    <div className="flex-1">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
                       <h2 className="font-semibold text-foreground mb-1">
-                        Welkom bij het Partnerprogramma
+                        {t('demoWelcome.title')}
                       </h2>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Dien projecten in voor compliance review en profiteer van automatische 
-                        partnervergoedingen op elk goedgekeurd rapport.
+                        {t('demoWelcome.body')}
                       </p>
-                      <div className="flex gap-3">
-                        <Button size="sm" onClick={() => {
-                      updateChecklist('firstProjectCreated');
-                      navigate('/dashboard/projects');
-                    }} data-onboarding="create-project-btn">
-                          <Plus className="w-4 h-4 mr-2" />
-                          Create Your First Project
+
+                      <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-muted-foreground mb-2">
+                        {t('demoWelcome.explore')}
+                      </p>
+                      <div className="grid gap-2 sm:grid-cols-2 mb-4">
+                        {[t('demoWelcome.projects'), t('demoWelcome.contacts'), t('demoWelcome.settings'), t('demoWelcome.partner')].map((item) => <div key={item} className="flex items-start gap-2">
+                            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-muted-foreground/60 shrink-0" />
+                            <span className="text-sm text-foreground leading-snug">{item}</span>
+                          </div>)}
+                      </div>
+
+                      <p className="text-xs text-muted-foreground mb-2">
+                        {t('demoWelcome.disclaimer')}
+                      </p>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {t('demoWelcome.readyCta')}
+                      </p>
+
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <Button size="sm" onClick={() => navigate('/pilot-demo/create-account')} className="rounded-full">
+                          {t('demoWelcome.createWorkspace')}
+                          <ArrowRight className="w-4 h-4" />
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => {
-                      updateChecklist('partnerTermsRead');
-                      setShowHelp(true);
-                    }}>
-                          View Partner Settlement Terms
-                          <ArrowRight className="w-4 h-4 ml-2" />
+                        <Button variant="outline" size="sm" onClick={() => setShowWelcomeModal(false)} className="rounded-full">
+                          {t('demoWelcome.exploreDemo')}
                         </Button>
                       </div>
                     </div>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setShowWelcomeModal(false)}
+                      className="shrink-0 rounded-full text-muted-foreground"
+                      aria-label="Close demo onboarding banner"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -430,9 +450,6 @@ const PartnerHome = () => {
         {/* Onboarding Tour */}
         <AnimatePresence>
           {showOnboarding && <ModuleOnboardingTour module="home" onComplete={handleOnboardingComplete} onSkip={handleOnboardingSkip} />}
-        </AnimatePresence>
-        <AnimatePresence>
-          {showWelcomeModal && <ProductionWelcomeModal userName={currentUser?.name?.split(' ')[0] || 'there'} onClose={() => setShowWelcomeModal(false)} />}
         </AnimatePresence>
       </div>
     </>;
