@@ -219,7 +219,7 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
                           {group.firmName}
                         </div>
                         <div className={cn("text-[10px] mt-0.5 transition-colors", isSelected ? "text-black/60" : "text-muted-foreground")}>
-                          {group.contacts[0]?.contact_type || ''}
+                          {translateContactType(group.contacts[0]?.contact_type || '')}
                         </div>
                         {group.contacts.length > 0 && (
                           <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-black/50" : "text-muted-foreground/40")}>
