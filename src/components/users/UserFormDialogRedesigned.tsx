@@ -83,7 +83,7 @@ const createEmptyUser = (): FullUser => ({
   terminationDate: null
 });
 
-type TabType = "profile" | "private" | "access";
+type TabType = "profile" | "access";
 
 export function UserFormDialogRedesigned({
   open,
@@ -150,7 +150,6 @@ export function UserFormDialogRedesigned({
 
   const tabs: {id: TabType; label: string;}[] = [
     { id: "profile", label: t('userForm.profile') },
-    { id: "private", label: t('userForm.privateInfo') },
     { id: "access", label: t('userForm.accessSubscription') },
   ];
 
@@ -264,53 +263,7 @@ export function UserFormDialogRedesigned({
               </>
             }
 
-            {/* TAB 2: PRIVATE INFO */}
-            {activeTab === "private" &&
-            <>
-                <section className="space-y-3">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('userForm.homeAddress')}</h4>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-1.5"><Label className="text-xs">{t('userForm.street')}</Label><Input value={formData.confidential.street} onChange={(e) => handleConfidentialChange("street", e.target.value)} /></div>
-                    <div className="space-y-1.5"><Label className="text-xs">{t('userForm.nr')}</Label><Input value={formData.confidential.number} onChange={(e) => handleConfidentialChange("number", e.target.value)} /></div>
-                    <div className="space-y-1.5"><Label className="text-xs">{t('userForm.bus')}</Label><Input value={formData.confidential.bus} onChange={(e) => handleConfidentialChange("bus", e.target.value)} /></div>
-                    <div className="space-y-1.5"><Label className="text-xs">{t('userForm.postalCode')}</Label><Input value={formData.confidential.postalCode} onChange={(e) => handleConfidentialChange("postalCode", e.target.value)} /></div>
-                    <div className="space-y-1.5"><Label className="text-xs">{t('userForm.city')}</Label><Input value={formData.confidential.city} onChange={(e) => handleConfidentialChange("city", e.target.value)} /></div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('userForm.country')}</Label>
-                      <Select value={formData.confidential.country} onValueChange={(value) => handleConfidentialChange("country", value)}>
-                        <SelectTrigger><SelectValue placeholder={`(${t('userForm.select')})`} /></SelectTrigger>
-                        <SelectContent>
-                          {COUNTRIES.map((country) => <SelectItem key={country} value={country}>{country}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </section>
 
-                <section className="space-y-3">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('userForm.privateContact')}</h4>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-1.5"><Label className="text-xs">{t('userForm.privateEmail')}</Label><Input type="email" value={formData.confidential.personalEmail} onChange={(e) => handleConfidentialChange("personalEmail", e.target.value)} /></div>
-                    <div className="space-y-1.5"><Label className="text-xs">{t('userForm.privatePhone')}</Label><Input value={formData.confidential.personalPhone} onChange={(e) => handleConfidentialChange("personalPhone", e.target.value)} /></div>
-                    <div className="space-y-1.5"><Label className="text-xs">{t('userForm.nationalNumber')}</Label><Input value={formData.confidential.nationalNumber} onChange={(e) => handleConfidentialChange("nationalNumber", e.target.value)} /></div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('userForm.birthdate')}</Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.confidential.birthdate && "text-muted-foreground")}>
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {formData.confidential.birthdate ? format(new Date(formData.confidential.birthdate), "dd/MM/yyyy") : <span>{t('userForm.selectDate')}</span>}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar mode="single" selected={formData.confidential.birthdate ? new Date(formData.confidential.birthdate) : undefined} onSelect={(date) => handleConfidentialChange("birthdate", date)} initialFocus className="pointer-events-auto" />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                  </div>
-                </section>
-              </>
-            }
 
             {/* TAB 3: ACCESS & SUBSCRIPTION */}
             {activeTab === "access" &&
