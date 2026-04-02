@@ -96,27 +96,27 @@ const Profile = () => {
           </Card>
 
           <Card>
-            <CardHeader>
+            <CardHeader className="py-4 px-5">
               <div className="flex items-center gap-2">
-                <Lock className="h-5 w-5 text-primary" />
-                <CardTitle>{t('dashboard.profilePage.changePassword')}</CardTitle>
+                <Lock className="h-4 w-4 text-primary" />
+                <CardTitle className="text-sm">{t('dashboard.profilePage.changePassword')}</CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleChangePassword} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="currentPassword">{t('dashboard.profilePage.currentPassword')}</Label>
-                  <Input id="currentPassword" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+            <CardContent className="px-5 pb-5 pt-0">
+              <form onSubmit={handleChangePassword} className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="currentPassword" className="text-xs">{t('dashboard.profilePage.currentPassword')}</Label>
+                  <Input id="currentPassword" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className="h-8 text-sm" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="newPassword">{t('dashboard.profilePage.newPassword')}</Label>
-                  <Input id="newPassword" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                <div className="space-y-1.5">
+                  <Label htmlFor="newPassword" className="text-xs">{t('dashboard.profilePage.newPassword')}</Label>
+                  <Input id="newPassword" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="h-8 text-sm" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">{t('dashboard.profilePage.confirmPassword')}</Label>
-                  <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                <div className="space-y-1.5">
+                  <Label htmlFor="confirmPassword" className="text-xs">{t('dashboard.profilePage.confirmPassword')}</Label>
+                  <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="h-8 text-sm" />
                 </div>
-                <Button type="submit" disabled={isChangingPassword}>
+                <Button type="submit" size="sm" className="text-xs h-8" disabled={isChangingPassword}>
                   {isChangingPassword ? t('dashboard.profilePage.changingPassword') : t('dashboard.profilePage.changePasswordBtn')}
                 </Button>
               </form>
