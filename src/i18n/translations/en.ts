@@ -3791,4 +3791,19 @@ export const en = {
       energyConnection: 'Energy Connection',
     },
   },
+
+  demoWelcome: {
+    title: 'Welcome to the OxiCloud Demo',
+    body: 'You are now in the demo environment, where you can explore how OxiCloud works.',
+    explore: 'Feel free to browse the platform:',
+    projects: 'Projects – see how NOₓ reports are created',
+    contacts: 'Contacts – manage clients and stakeholders',
+    settings: 'Settings – configure your workspace',
+    partner: 'Partner Program – learn how your firm can earn commission',
+    disclaimer: 'Everything here is for demonstration purposes only.',
+    readyCta: 'When you\'re ready to start creating real reports, create your Workspace to activate your firm account.',
+    createWorkspace: 'Create my Workspace',
+    createWorkspaceDesc: 'Start generating real NOₓ reports',
+    exploreDemo: 'Explore the Demo',
+  },
 };
