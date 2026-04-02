@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FullUser } from "@/types/user";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Check, X, Search, User } from "lucide-react";
+import { Check, X, Search, User, Pencil } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getAvatarUrl } from "@/lib/avatarMap";
 import { Input } from "@/components/ui/input";
