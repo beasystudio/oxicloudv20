@@ -9,6 +9,7 @@ import { AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { getPilotUser } from '@/lib/pilotSessionStore';
 import loginBackground from '@/assets/login-background.jpg';
+import oxicloudLogo from '@/assets/oxicloud-logo-white.png';
 
 export default function PilotForgotPassword() {
   const [email, setEmail] = useState('');
