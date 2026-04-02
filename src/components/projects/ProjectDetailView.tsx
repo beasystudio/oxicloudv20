@@ -112,7 +112,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
     }
   };
 
-  const statusLabel = noxData ? NOX_STATUS_LABEL[noxData.status] || noxData.status : null;
+  const statusLabel = noxData ? t(NOX_STATUS_KEY[noxData.status] || noxData.status) : null;
 
   return (
     <div className="space-y-6">
