@@ -134,7 +134,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => setIsEditDialogOpen(true)}>
             <Edit className="h-4 w-4 mr-2" />
-            Edit
+            {t('common.edit')}
           </Button>
           <Button variant="outline" size="sm" onClick={handleDelete} className="text-destructive hover:text-destructive">
             <Trash2 className="h-4 w-4" />
@@ -247,7 +247,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                       className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {showVersions ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
-                      {(noxData.version_history?.length ?? 0) + 1} versions
+                      {(noxData.version_history?.length ?? 0) + 1} {t('noxVersionHistory.versions')}
                     </button>
                   )}
                 </>

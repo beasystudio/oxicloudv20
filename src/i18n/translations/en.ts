@@ -2483,6 +2483,7 @@ export const en = {
   // Project Contacts
   projectContacts: {
     title: 'Project Contacts',
+    filterAll: 'All',
     addExisting: 'Add existing',
     createNew: 'Create new',
     noContactsTitle: 'No contacts linked to this project yet',

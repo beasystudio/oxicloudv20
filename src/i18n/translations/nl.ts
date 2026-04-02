@@ -2422,6 +2422,7 @@ export const nl = {
 
   projectContacts: {
     title: 'Projectcontacten',
+    filterAll: 'Alle',
     addExisting: 'Bestaand toevoegen',
     createNew: 'Nieuw aanmaken',
     noContactsTitle: 'Nog geen contacten gekoppeld aan dit project',

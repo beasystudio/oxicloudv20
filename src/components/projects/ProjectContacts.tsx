@@ -28,11 +28,11 @@ interface CompanyGroup {
   contacts: Contact[];
 }
 
-const CONTACT_FILTERS = [
-  { id: 'all', label: 'All' },
-  { id: 'client', label: 'Client' },
-  { id: 'team', label: 'Team' },
-  { id: 'others', label: 'Others' },
+const CONTACT_FILTER_KEYS = [
+  { id: 'all', labelKey: 'projectContacts.filterAll' },
+  { id: 'client', labelKey: 'projectContacts.client' },
+  { id: 'team', labelKey: 'projectContacts.team' },
+  { id: 'others', labelKey: 'projectContacts.others' },
 ] as const;
 
 export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContactsProps) => {
@@ -45,6 +45,11 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
   const { toast } = useToast();
+
+  const contactFilters = useMemo(() => 
+    CONTACT_FILTER_KEYS.map(f => ({ id: f.id, label: t(f.labelKey) })),
+    [t]
+  );
 
   useEffect(() => {
     fetchContacts();
@@ -149,7 +154,7 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
             <CardTitle className="text-sm font-semibold">{t('projectContacts.title')}</CardTitle>
             {hasAnyContacts && (
               <PillToggle
-                items={CONTACT_FILTERS}
+                items={contactFilters}
                 activeId={activeFilter}
                 onSelect={setActiveFilter}
                 layoutId="projectContactFilter"
