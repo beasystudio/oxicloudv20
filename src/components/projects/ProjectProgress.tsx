@@ -48,11 +48,6 @@ export const ProjectProgress = ({ project }: ProjectProgressProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {project.photo_url && (
-          <div className="rounded-lg overflow-hidden">
-            <img src={project.photo_url} alt="Project" className="w-full h-48 object-cover" />
-          </div>
-        )}
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
