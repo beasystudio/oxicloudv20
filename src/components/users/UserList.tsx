@@ -61,6 +61,7 @@ export function UserList({ users, onEdit }: UserListProps) {
               <TableHead className="text-xs font-medium text-muted-foreground h-9">{t('settingsUsers.licenseType')}</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground h-9">{t('settingsUsers.myProjects')}</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground h-9">{t('settingsUsers.accessModules')}</TableHead>
+              <TableHead className="text-xs font-medium text-muted-foreground h-9 w-12"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
