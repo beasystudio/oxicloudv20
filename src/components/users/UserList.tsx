@@ -68,9 +68,7 @@ export function UserList({ users, onEdit }: UserListProps) {
             <TooltipProvider>
               {filteredUsers.map(user => {
               const keyModules = getKeyModules(user);
-              return <Tooltip key={user.id}>
-                    <TooltipTrigger asChild>
-                      <TableRow className="cursor-pointer transition-all duration-200 group hover:scale-[1.02] hover:z-10" onDoubleClick={() => onEdit(user)}>
+              return <TableRow key={user.id} className="transition-all duration-200 group hover:scale-[1.01] hover:z-10">
                          <TableCell className="py-3">
                           <div className="flex items-center gap-2.5">
                             <Avatar className="h-8 w-8">
@@ -105,12 +103,16 @@ export function UserList({ users, onEdit }: UserListProps) {
                             {keyModules.length === 0 && <span className="text-xs text-muted-foreground">{t('settingsUsers.standard')}</span>}
                           </div>
                         </TableCell>
-                      </TableRow>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">
-                      <p className="text-xs">{t('settingsUsers.doubleClickEdit')}</p>
-                    </TooltipContent>
-                  </Tooltip>;
+                        <TableCell className="py-3">
+                          <button
+                            onClick={() => onEdit(user)}
+                            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                            title={t('settingsUsers.editEmployee') || 'Edit'}
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </button>
+                        </TableCell>
+                      </TableRow>;
             })}
               {filteredUsers.length === 0 && <TableRow>
                   <TableCell colSpan={4} className="text-center py-8 text-muted-foreground text-sm">
