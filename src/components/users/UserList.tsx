@@ -2,11 +2,10 @@ import { useState } from "react";
 import { FullUser } from "@/types/user";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Check, X, Search, User } from "lucide-react";
+import { Check, X, Search, User, Pencil } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getAvatarUrl } from "@/lib/avatarMap";
 import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 interface UserListProps {
@@ -61,15 +60,14 @@ export function UserList({ users, onEdit }: UserListProps) {
               <TableHead className="text-xs font-medium text-muted-foreground h-9">{t('settingsUsers.licenseType')}</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground h-9">{t('settingsUsers.myProjects')}</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground h-9">{t('settingsUsers.accessModules')}</TableHead>
+              <TableHead className="text-xs font-medium text-muted-foreground h-9 w-12"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TooltipProvider>
+            
               {filteredUsers.map(user => {
               const keyModules = getKeyModules(user);
-              return <Tooltip key={user.id}>
-                    <TooltipTrigger asChild>
-                      <TableRow className="cursor-pointer transition-all duration-200 group hover:scale-[1.02] hover:z-10" onDoubleClick={() => onEdit(user)}>
+              return <TableRow key={user.id} className="transition-all duration-200 group hover:scale-[1.01] hover:z-10">
                          <TableCell className="py-3">
                           <div className="flex items-center gap-2.5">
                             <Avatar className="h-8 w-8">
@@ -104,19 +102,22 @@ export function UserList({ users, onEdit }: UserListProps) {
                             {keyModules.length === 0 && <span className="text-xs text-muted-foreground">{t('settingsUsers.standard')}</span>}
                           </div>
                         </TableCell>
-                      </TableRow>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">
-                      <p className="text-xs">{t('settingsUsers.doubleClickEdit')}</p>
-                    </TooltipContent>
-                  </Tooltip>;
+                        <TableCell className="py-3">
+                          <button
+                            onClick={() => onEdit(user)}
+                            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                            title={t('settingsUsers.editEmployee') || 'Edit'}
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </button>
+                        </TableCell>
+                      </TableRow>;
             })}
               {filteredUsers.length === 0 && <TableRow>
-                  <TableCell colSpan={4} className="text-center py-8 text-muted-foreground text-sm">
+                  <TableCell colSpan={5} className="text-center py-8 text-muted-foreground text-sm">
                     {t('settingsUsers.noUsersMatch')}
                   </TableCell>
                 </TableRow>}
-            </TooltipProvider>
           </TableBody>
         </Table>
       </div>
