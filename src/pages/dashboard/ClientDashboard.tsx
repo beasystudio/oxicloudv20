@@ -265,7 +265,7 @@ export default function ClientDashboard() {
             {/* Partner Card */}
             <button
               onClick={() => navigate('/dashboard/partnership-program')}
-              className="rounded-xl border border-border bg-muted/30 dark:bg-secondary overflow-hidden flex flex-col text-left hover:border-foreground/20 transition-colors group">
+              className="rounded-xl border border-border bg-muted/30 dark:bg-card overflow-hidden flex flex-col text-left hover:border-foreground/20 transition-colors group">
               <div className="w-full bg-foreground dark:bg-foreground/90 px-5 py-2.5">
                 <p className="text-[10px] uppercase tracking-[0.15em] font-semibold text-primary">
                   {language === 'nl' ? 'Partnerprogramma' : 'Partner Program'}
