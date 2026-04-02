@@ -11,6 +11,7 @@ import { getPilotUser, getPilotSession } from '@/lib/pilotSessionStore';
 import { logAuditEvent } from '@/lib/securityAuditStore';
 import { toast } from 'sonner';
 import loginBackground from '@/assets/login-background.jpg';
+import oxicloudLogo from '@/assets/oxicloud-logo-white.png';
 
 export default function PilotLogin() {
   const [email, setEmail] = useState('');
