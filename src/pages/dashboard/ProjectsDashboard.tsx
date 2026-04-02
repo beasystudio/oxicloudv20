@@ -1267,7 +1267,7 @@ const ProjectsDashboard = () => {
                       {/* Left: Main CTA Section */}
                       <div className="flex-1 space-y-2">
                         {/* CTA Button */}
-                        {noxData ? <Button onClick={handleCTAClick} className="w-full h-9 text-xs font-medium" variant={noxData.status === 'paid' || noxData.status === 'report_in_progress' ? 'default' : 'secondary'}>
+                        {noxData ? <Button onClick={handleCTAClick} className="w-full h-9 text-xs font-medium" variant="outline">
                             {noxData.status === 'input_incomplete' && <><Play className="h-3.5 w-3.5 mr-1.5" />{noxData.preEstimation ? t('dashboard.projectsDashboard.continueNox') : t('dashboard.nox.startInput')}</>}
                             {noxData.status === 'input_completed' && <><FileText className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.generateQuote')}</>}
                             {noxData.status === 'price_generated' && <><CreditCard className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.sendQuoteToClient')}</>}
@@ -1275,7 +1275,7 @@ const ProjectsDashboard = () => {
                             {noxData.status === 'paid' && <><FileCheck className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.continueNox')}</>}
                             {noxData.status === 'report_in_progress' && <><RefreshCw className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.continueNox')}</>}
                             {noxData.status === 'report_delivered' && <><Download className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.viewReport')}</>}
-                          </Button> : <Button className="w-full h-9 text-xs font-medium" onClick={() => handleStartNoxFlow('start')}>
+                          </Button> : <Button className="w-full h-9 text-xs font-medium" variant="outline" onClick={() => handleStartNoxFlow('start')}>
                             <Play className="h-3.5 w-3.5 mr-1.5" />
                             {t('dashboard.projectsDashboard.startNox')}
                           </Button>}
