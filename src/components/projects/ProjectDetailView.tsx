@@ -150,7 +150,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
           {/* Details card */}
           <Card>
             <CardContent className="p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-foreground">Details</h3>
+              <h3 className="text-sm font-semibold text-foreground">{t('dashboard.projects.details')}</h3>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Number</span>
