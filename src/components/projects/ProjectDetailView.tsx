@@ -178,7 +178,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                 <>
                   <div className="border-t border-border/40" />
                   <div>
-                    <span className="text-xs text-muted-foreground">Description</span>
+                    <span className="text-xs text-muted-foreground">{t('dashboard.projects.description')}</span>
                     <p className="text-sm mt-1">{project.overview}</p>
                   </div>
                 </>
