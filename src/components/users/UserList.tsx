@@ -7,7 +7,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { getAvatarUrl } from "@/lib/avatarMap";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { useLanguage } from "@/i18n/LanguageContext";
 
 interface UserListProps {
   users: FullUser[];
