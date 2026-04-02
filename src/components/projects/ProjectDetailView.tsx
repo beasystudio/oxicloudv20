@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,14 +25,14 @@ interface ProjectDetailViewProps {
   onProjectDeleted: (projectId: string) => void;
 }
 
-const NOX_STATUS_LABEL: Record<string, string> = {
-  input_incomplete: 'Input Incompleet',
-  input_completed: 'Input Voltooid',
-  price_generated: 'Prijs Berekend',
-  awaiting_payment: 'Wacht op Betaling',
-  paid: 'Betaald',
-  report_in_progress: 'Rapport in Progress',
-  report_delivered: 'Rapport Geleverd',
+const NOX_STATUS_KEY: Record<string, string> = {
+  input_incomplete: 'noxStatus.inputIncomplete',
+  input_completed: 'noxStatus.inputCompleted',
+  price_generated: 'noxStatus.priceGenerated',
+  awaiting_payment: 'noxStatus.awaitingPayment',
+  paid: 'noxStatus.paid',
+  report_in_progress: 'noxStatus.reportInProgress',
+  report_delivered: 'noxStatus.reportDelivered',
 };
 
 export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted }: ProjectDetailViewProps) => {
@@ -41,6 +42,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
   const [projectContacts, setProjectContacts] = useState<Contact[]>([]);
   const [showVersions, setShowVersions] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchNoxData();
@@ -110,7 +112,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
     }
   };
 
-  const statusLabel = noxData ? NOX_STATUS_LABEL[noxData.status] || noxData.status : null;
+  const statusLabel = noxData ? t(NOX_STATUS_KEY[noxData.status] || noxData.status) : null;
 
   return (
     <div className="space-y-6">
@@ -148,25 +150,25 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
           {/* Details card */}
           <Card>
             <CardContent className="p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-foreground">Details</h3>
+              <h3 className="text-sm font-semibold text-foreground">{t('dashboard.projects.details')}</h3>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Number</span>
+                  <span className="text-muted-foreground">{t('dashboard.projects.projectNumber')}</span>
                   <span className="font-medium">{project.project_number}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Name</span>
+                  <span className="text-muted-foreground">{t('dashboard.projects.projectName')}</span>
                   <span className="font-medium">{project.name}</span>
                 </div>
                 {project.client_contact && (
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Company</span>
+                    <span className="text-muted-foreground">{t('dashboard.projects.company')}</span>
                     <span className="font-medium">{project.client_contact}</span>
                   </div>
                 )}
                 {project.project_type && (
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Type</span>
+                    <span className="text-muted-foreground">{t('dashboard.projects.type')}</span>
                     <span className="font-medium capitalize">{project.project_type}</span>
                   </div>
                 )}
@@ -176,7 +178,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                 <>
                   <div className="border-t border-border/40" />
                   <div>
-                    <span className="text-xs text-muted-foreground">Description</span>
+                    <span className="text-xs text-muted-foreground">{t('dashboard.projects.description')}</span>
                     <p className="text-sm mt-1">{project.overview}</p>
                   </div>
                 </>
@@ -184,25 +186,19 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
             </CardContent>
           </Card>
 
-          {/* Site / Photo card */}
-          <Card>
-            <CardContent className="p-5 space-y-3">
-              {project.photo_url && (
-                <div className="rounded-lg overflow-hidden">
-                  <img src={project.photo_url} alt="Project" className="w-full h-40 object-cover" />
-                </div>
-              )}
-              {project.address && (
+          {project.address && (
+            <Card>
+              <CardContent className="p-5 space-y-3">
                 <div className="flex items-start gap-2 text-sm">
                   <MapPin className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-xs text-muted-foreground block">Site location</span>
+                    <span className="text-xs text-muted-foreground block">{t('dashboard.projects.siteLocation')}</span>
                     <span>{project.address}</span>
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         {/* RIGHT COLUMN: NOx + Contacts */}
@@ -212,7 +208,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
           <Card>
             <CardContent className="p-5 space-y-5">
               <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-foreground">NOx Assessment</h3>
+                <h3 className="text-base font-semibold text-foreground">{t('dashboard.projects.noxAssessment')}</h3>
                 {noxData && statusLabel && (
                   <Badge variant="secondary" className="text-[11px] font-medium">
                     {statusLabel}
@@ -227,20 +223,20 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                   
                   {/* CTA */}
                   {noxData.status !== 'report_delivered' ? (
-                    <Button className="w-full gap-2" size="lg">
-                      <RefreshCw className="h-4 w-4" />
-                      Continue your NOx assessment
-                      <ArrowRight className="h-4 w-4 ml-auto" />
-                    </Button>
+                     <Button className="w-full gap-2" size="lg" variant="outline">
+                       <RefreshCw className="h-4 w-4" />
+                       {t('dashboard.projects.continueNox')}
+                       <ArrowRight className="h-4 w-4 ml-auto" />
+                     </Button>
                   ) : (
                     <div className="pt-2 border-t border-border/30">
-                      <p className="text-xs text-muted-foreground mb-3">
-                        Report delivered. You can create a new version with updated calculations.
-                      </p>
-                      <Button onClick={handleCloneVersion} variant="outline" className="w-full gap-2" size="sm">
-                        <Copy className="h-4 w-4" />
-                        Create new version
-                      </Button>
+                       <p className="text-xs text-muted-foreground mb-3">
+                         {t('noxStatus.reportDeliveredDesc')}
+                       </p>
+                       <Button onClick={handleCloneVersion} variant="outline" className="w-full gap-2" size="sm">
+                         <Copy className="h-4 w-4" />
+                         {t('projectDetail.createNewVersion')}
+                       </Button>
                     </div>
                   )}
 
@@ -259,21 +255,21 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
                 <div className="text-center py-6">
                   {hasContacts ? (
                     <>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        No NOx assessment started for this project.
-                      </p>
-                      <Button onClick={handleStartNoxWorkflow} disabled={noxLoading} className="gap-2">
-                        {noxLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-                        Start NOx Workflow
+                       <p className="text-sm text-muted-foreground mb-4">
+                         {t('projectDetail.noNoxAssessment')}
+                       </p>
+                       <Button onClick={handleStartNoxWorkflow} disabled={noxLoading} className="gap-2">
+                         {noxLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+                         {t('projectDetail.startNoxWorkflow')}
                       </Button>
                     </>
                   ) : (
                     <>
                       <Lock className="h-8 w-8 mx-auto text-muted-foreground/40 mb-3" />
-                      <p className="text-sm text-muted-foreground mb-1 font-medium">Setup required</p>
-                      <p className="text-xs text-muted-foreground">
-                        Add contacts to this project before starting the NOx workflow.
-                      </p>
+                       <p className="text-sm text-muted-foreground mb-1 font-medium">{t('dashboard.projects.setupRequired')}</p>
+                       <p className="text-xs text-muted-foreground">
+                         {t('projectDetail.addContactsFirst')}
+                       </p>
                     </>
                   )}
                 </div>
