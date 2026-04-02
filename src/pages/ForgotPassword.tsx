@@ -10,6 +10,7 @@ import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/i18n/LanguageContext';
 import loginBackground from '@/assets/login-background.jpg';
+import oxicloudLogo from '@/assets/oxicloud-logo-white.png';
 
 export default function ForgotPassword() {
   const { t } = useLanguage();
