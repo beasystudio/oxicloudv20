@@ -55,7 +55,7 @@ export default function PilotLogin() {
           <img src={loginBackground} alt="Architecture" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
           <div className="relative z-10 flex flex-col justify-between p-12 w-full">
-            <Link to="/" className="text-white font-semibold text-lg tracking-tight">OxiCloud</Link>
+            <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-8 w-auto" /></Link>
             <div className="max-w-md">
               <p className="text-white/50 text-xs uppercase tracking-[0.14em] mb-3">Environmental Compliance</p>
             </div>
