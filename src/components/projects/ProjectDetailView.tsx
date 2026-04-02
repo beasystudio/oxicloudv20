@@ -153,7 +153,7 @@ export const ProjectDetailView = ({ project, onProjectUpdated, onProjectDeleted 
               <h3 className="text-sm font-semibold text-foreground">{t('dashboard.projects.details')}</h3>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Number</span>
+                  <span className="text-muted-foreground">{t('dashboard.projects.projectNumber')}</span>
                   <span className="font-medium">{project.project_number}</span>
                 </div>
                 <div className="flex justify-between">
