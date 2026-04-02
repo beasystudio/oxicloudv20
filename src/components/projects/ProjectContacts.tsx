@@ -51,6 +51,23 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
     [t]
   );
 
+  const translateContactType = (type: string): string => {
+    const key = type.toLowerCase();
+    const map: Record<string, string> = {
+      client: t('projectContacts.contactTypeClient'),
+      opdrachtgever: t('projectContacts.contactTypeClient'),
+      bouwheer: t('projectContacts.contactTypeClient'),
+      team: t('projectContacts.contactTypeTeam'),
+      architect: t('projectContacts.contactTypeTeam'),
+      opdrachtnemer: t('projectContacts.contactTypeTeam'),
+      studiebureau: t('projectContacts.contactTypeTeam'),
+      external_team: t('projectContacts.contactTypeExternal'),
+      contractor: t('projectContacts.contactTypeContractor'),
+      others: t('projectContacts.contactTypeOthers'),
+    };
+    return map[key] || type.charAt(0).toUpperCase() + type.slice(1);
+  };
+
   useEffect(() => {
     fetchContacts();
   }, [projectId]);
@@ -202,7 +219,7 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
                           {group.firmName}
                         </div>
                         <div className={cn("text-[10px] mt-0.5 transition-colors", isSelected ? "text-black/60" : "text-muted-foreground")}>
-                          {group.contacts[0]?.contact_type || ''}
+                          {translateContactType(group.contacts[0]?.contact_type || '')}
                         </div>
                         {group.contacts.length > 0 && (
                           <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-black/50" : "text-muted-foreground/40")}>
