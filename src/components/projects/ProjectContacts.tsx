@@ -54,16 +54,16 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
   const translateContactType = (type: string): string => {
     const key = type.toLowerCase();
     const map: Record<string, string> = {
-      client: t('projectContacts.contactTypeClient'),
-      opdrachtgever: t('projectContacts.contactTypeClient'),
-      bouwheer: t('projectContacts.contactTypeClient'),
-      team: t('projectContacts.contactTypeTeam'),
-      architect: t('projectContacts.contactTypeTeam'),
-      opdrachtnemer: t('projectContacts.contactTypeTeam'),
-      studiebureau: t('projectContacts.contactTypeTeam'),
-      external_team: t('projectContacts.contactTypeExternal'),
-      contractor: t('projectContacts.contactTypeContractor'),
-      others: t('projectContacts.contactTypeOthers'),
+      client: t('contactDetailsDialog.contactTypeClient'),
+      opdrachtgever: t('contactDetailsDialog.contactTypeClient'),
+      bouwheer: t('contactDetailsDialog.contactTypeClient'),
+      team: t('contactDetailsDialog.contactTypeTeam'),
+      architect: t('contactDetailsDialog.contactTypeTeam'),
+      opdrachtnemer: t('contactDetailsDialog.contactTypeTeam'),
+      studiebureau: t('contactDetailsDialog.contactTypeTeam'),
+      external_team: t('contactDetailsDialog.contactTypeExternal'),
+      contractor: t('contactDetailsDialog.contactTypeContractor'),
+      others: t('contactDetailsDialog.contactTypeOthers'),
     };
     return map[key] || type.charAt(0).toUpperCase() + type.slice(1);
   };
