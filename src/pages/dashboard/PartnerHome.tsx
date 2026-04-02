@@ -13,11 +13,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Plus, ArrowRight, Check, Clock, Settings, FolderKanban, Users, Info, HelpCircle } from 'lucide-react';
+import { Plus, ArrowRight, Check, Clock, Settings, FolderKanban, Users, Info, HelpCircle, X } from 'lucide-react';
 import { ModuleOnboardingTour, OnboardingTooltip } from '@/components/onboarding/ModuleOnboardingTour';
-import { ProductionWelcomeModal } from '@/components/demo/ProductionWelcomeModal';
 import { useMockAuth } from '@/contexts/MockAuthContext';
-import { isPilotAccount as checkPilotAccount, getEmptyDashboardData, resetPilotOnboarding, isOnboardingComplete, completeOnboarding, getOnboardingProgress } from '@/lib/pilotAccountUtils';
+import { isPilotAccount as checkPilotAccount, getEmptyDashboardData, resetPilotOnboarding, completeOnboarding } from '@/lib/pilotAccountUtils';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { cn } from '@/lib/utils';
 
 // Dashboard data based on account type
