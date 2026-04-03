@@ -6,12 +6,13 @@ import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowRight, CheckCircle2, X } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 import { getEmployeesByCompany, getCompanyStats, isCompanyDataSeeded, type CompanyEmployee } from '@/lib/mockCompanyDB';
 import { getSettingsStatus, type SettingsStatus } from '@/lib/settingsValidator';
 import { getNoxProjects, type NoxProject } from '@/lib/noxProjectStore';
 import { cn } from '@/lib/utils';
 import { isDemoEnvironmentUser, isPilotAccount, isPilotCompany, getEmptyStats } from '@/lib/pilotAccountUtils';
+import { DemoWelcomeModal } from '@/components/demo/DemoWelcomeModal';
 import { PaymentSuccessDialog } from '@/components/oxicloud/PaymentSuccessDialog';
 import { CreateNewProjectDialog } from '@/components/projects/CreateNewProjectDialog';
 import { InviteManagerDialog } from '@/components/demo/InviteManagerDialog';
@@ -72,25 +73,21 @@ export default function ClientDashboard() {
   const [showCreateProjectDialog, setShowCreateProjectDialog] = useState(false);
   const [paymentProjectName, setPaymentProjectName] = useState('');
   const [showInviteManager, setShowInviteManager] = useState(false);
-  const [showDemoWelcomeBanner, setShowDemoWelcomeBanner] = useState(false);
+  const [showDemoWelcomeModal, setShowDemoWelcomeModal] = useState(false);
 
   const selectedCompany = getSelectedCompany();
   const isClientOwnerOrAdmin = currentUser?.role === 'client_owner' || currentUser?.role === 'client_admin';
   const isPilot = isPilotAccount(currentUser?.email) || isPilotCompany(selectedCompanyId);
-  const isDemoEnvironment = isDemoEnvironmentUser(currentUser?.email);
 
   useEffect(() => {
-    if (!currentUser) {
-      setShowDemoWelcomeBanner(false);
-      return;
+    if (currentUser && isDemoEnvironmentUser(currentUser.email) && sessionStorage.getItem('oxicloud_demo_welcome_dismissed') !== 'true') {
+      setShowDemoWelcomeModal(true);
     }
+  }, [currentUser]);
 
-    setShowDemoWelcomeBanner(isDemoEnvironment && sessionStorage.getItem('oxicloud_demo_welcome_dismissed') !== 'true');
-  }, [currentUser, isDemoEnvironment]);
-
-  const dismissDemoWelcomeBanner = () => {
+  const dismissDemoWelcomeModal = () => {
     sessionStorage.setItem('oxicloud_demo_welcome_dismissed', 'true');
-    setShowDemoWelcomeBanner(false);
+    setShowDemoWelcomeModal(false);
   };
 
   useEffect(() => {
@@ -203,57 +200,6 @@ export default function ClientDashboard() {
         <TopNavigation />
 
         <main className="flex-1 min-h-0 overflow-y-auto container mx-auto px-5 py-6 max-w-[1120px]">
-
-          {showDemoWelcomeBanner && (
-            <div className="rounded-xl border border-border bg-card p-4 sm:p-5 mb-5">
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0 flex-1">
-                  <h2 className="text-base font-semibold text-foreground mb-1">{t('demoWelcome.title')}</h2>
-                  <p className="text-sm text-muted-foreground mb-4">{t('demoWelcome.body')}</p>
-
-                  <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-muted-foreground mb-2">
-                    {t('demoWelcome.explore')}
-                  </p>
-                  <div className="grid gap-2 sm:grid-cols-2 mb-4">
-                    {[t('demoWelcome.projects'), t('demoWelcome.contacts'), t('demoWelcome.settings'), t('demoWelcome.partner')].map((item) => (
-                      <div key={item} className="flex items-start gap-2">
-                        <span className="mt-1 h-1.5 w-1.5 rounded-full bg-muted-foreground/60 shrink-0" />
-                        <span className="text-sm text-foreground leading-snug">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <p className="text-xs text-muted-foreground mb-2">{t('demoWelcome.disclaimer')}</p>
-                  <p className="text-sm text-muted-foreground mb-4">{t('demoWelcome.readyCta')}</p>
-
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
-                      onClick={() => navigate('/register/workspace')}
-                      className="rounded-xl px-4 py-3 text-sm font-semibold transition-colors bg-primary text-primary-foreground hover:brightness-110 inline-flex items-center justify-center gap-2"
-                    >
-                      {t('demoWelcome.createWorkspace')}
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={dismissDemoWelcomeBanner}
-                      className="rounded-xl px-4 py-3 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors"
-                    >
-                      {t('demoWelcome.exploreDemo')}
-                    </button>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={dismissDemoWelcomeBanner}
-                  className="shrink-0 rounded-full p-2 text-muted-foreground hover:bg-muted/60 transition-colors"
-                  aria-label="Close demo onboarding banner"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          )}
 
           {/* Demo Marquee Banner */}
           <div className="relative rounded-xl bg-primary/5 py-2.5 mb-5 overflow-hidden">
@@ -433,6 +379,7 @@ export default function ClientDashboard() {
         companyId={selectedCompanyId || ''}
         onProjectCreated={() => {setShowCreateProjectDialog(false);navigate('/dashboard/projects');}} />
       <InviteManagerDialog open={showInviteManager} onOpenChange={setShowInviteManager} />
+      {showDemoWelcomeModal && <DemoWelcomeModal onClose={dismissDemoWelcomeModal} />}
     </>);
 
 }
