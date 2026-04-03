@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { X, ArrowRight, FolderOpen, Users, Settings, Handshake, Sparkles } from 'lucide-react';
+import { X, ArrowRight, FolderOpen, Users, Settings, Handshake } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/i18n/LanguageContext';
 
@@ -40,10 +40,9 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 dark:bg-primary/20 px-3 py-1"
+            className="inline-flex items-center rounded-full bg-primary px-3 py-1"
           >
-            <Sparkles className="w-3 h-3 text-primary" />
-            <span className="text-[11px] font-semibold tracking-wide text-primary uppercase">Demo</span>
+            <span className="text-[11px] font-semibold tracking-wide text-primary-foreground uppercase">Demo</span>
           </motion.div>
           <button
             onClick={onClose}
