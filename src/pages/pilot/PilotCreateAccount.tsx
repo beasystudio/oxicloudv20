@@ -329,7 +329,7 @@ export default function PilotCreateAccount() {
             {isSubmitting ? <><Loader2 className="h-3.5 w-3.5 animate-spin" />{t.submitting}</> : <>{t.submit}<ArrowRight className="h-3.5 w-3.5" /></>}
           </button>
           <p className="text-[11px] text-muted-foreground/50 mt-4 text-center">
-            {t.hasAccount}{' '}<Link to="/pilot-demo/login" className="text-primary underline underline-offset-2">{t.login}</Link>
+            {t.hasAccount}{' '}<Link to="/pilot-demo/login" className="text-foreground underline underline-offset-2 font-medium">{t.login}</Link>
           </p>
         </div>
       </motion.div>
