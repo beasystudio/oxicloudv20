@@ -7,6 +7,8 @@ import { Bell, ChevronDown, LogOut, Plus, BarChart, Settings2, Moon, Sun, Ellips
 import { useTheme } from '@/contexts/ThemeContext';
 import { getPilotSession, getPilotUser, getPilotCompany, getPilotOnboarding, clearAllPilotData, getPilotCompanyLogo } from '@/lib/pilotSessionStore';
 import { useLanguage } from '@/i18n/LanguageContext';
+import oxiLogoLight from '@/assets/oxicloud-logo-light.png';
+import oxiLogoDark from '@/assets/oxicloud-logo-dark.png';
 
 interface PilotNavigationProps {
   onStartOnboarding?: (flow: 1 | 2 | 3) => void;
@@ -51,17 +53,11 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
     <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
-          {/* Left: Company branding + Nav */}
+          {/* Left: OxiCloud logo + Nav */}
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                {companyLogo ? (
-                  <img src={companyLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-muted border border-border" />
-                ) : (
-                  <span className="font-semibold text-sm text-foreground">{company.name}</span>
-                )}
-              </div>
-            </div>
+            <Link to="/pilot-demo/dashboard" className="shrink-0">
+              <img src={theme === 'dark' ? oxiLogoLight : oxiLogoDark} alt="OxiCloud" className="h-7 w-7" />
+            </Link>
 
             {/* Nav items - matching production client nav */}
             <div className="hidden md:flex items-center gap-2">
@@ -140,6 +136,7 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
                   <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs font-medium">
                     {getInitials(`${user.firstName} ${user.lastName}`)}
                   </div>
+                  <span className="text-xs font-medium text-foreground hidden sm:block max-w-[120px] truncate">{company.name}</span>
                   <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
                 </button>
               </DropdownMenuTrigger>

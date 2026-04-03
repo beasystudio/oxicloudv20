@@ -14,6 +14,8 @@ import { ScrollArea } from "./ui/scroll-area";
 import { useLanguage, type Language } from "@/i18n/LanguageContext";
 import { supabase } from '@/integrations/supabase/client';
 import { useTheme } from '@/contexts/ThemeContext';
+import oxiLogoLight from '@/assets/oxicloud-logo-light.png';
+import oxiLogoDark from '@/assets/oxicloud-logo-dark.png';
 
 export const TopNavigation = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -398,6 +400,7 @@ export const TopNavigation = () => {
                   </div>
                 )}
               </div>
+              <span className="text-xs font-medium text-foreground hidden sm:block max-w-[120px] truncate">{displayName}</span>
               <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
             </button>
           </DropdownMenuTrigger>
@@ -480,9 +483,11 @@ export const TopNavigation = () => {
     <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
-          {/* Left: Branding + Demo badge */}
+          {/* Left: OxiCloud logo + Demo badge + Nav */}
           <div className="flex items-center gap-6">
-            {renderBranding()}
+            <Link to={isOwnerOrAdmin ? '/dashboard/admin' : isAuthority ? '/dashboard/authority' : '/dashboard/client/home'} className="shrink-0">
+              <img src={theme === 'dark' ? oxiLogoLight : oxiLogoDark} alt="OxiCloud" className="h-7 w-7" />
+            </Link>
             <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded-full border border-muted-foreground/30 text-muted-foreground dark:border-primary/30 dark:text-primary">
               Demo
             </span>
