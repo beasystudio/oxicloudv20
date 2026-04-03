@@ -61,7 +61,7 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
 
             {/* Nav items - matching production client nav */}
             <div className="hidden md:flex items-center gap-2">
-              <NavItem to="/pilot-demo/dashboard" label={t('pilot.nav.home')} />
+              <NavItem to="/pilot-demo/projects" label={t('pilot.nav.projects')} />
               <NavItem to="/pilot-demo/projects" label={t('pilot.nav.projects')} />
               <NavItem to="/pilot-demo/contacts" label={t('pilot.nav.contacts')} />
             </div>
@@ -136,7 +136,6 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
                   <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs font-medium">
                     {getInitials(`${user.firstName} ${user.lastName}`)}
                   </div>
-                  <span className="text-xs font-medium text-foreground hidden sm:block max-w-[120px] truncate">{company.name}</span>
                   <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
                 </button>
               </DropdownMenuTrigger>
@@ -164,6 +163,15 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
                 ) : null}
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Company name/logo - separate from avatar */}
+            <div className="hidden sm:flex items-center">
+              {companyLogo ? (
+                <img src={companyLogo} alt="Company logo" className="h-6 w-6 rounded object-contain" />
+              ) : (
+                <span className="text-xs font-medium text-muted-foreground max-w-[140px] truncate">{company.name}</span>
+              )}
+            </div>
           </div>
         </div>
       </div>

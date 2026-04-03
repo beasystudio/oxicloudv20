@@ -230,7 +230,6 @@ export const TopNavigation = () => {
     if (isOwnerOrAdmin) {
       return (
         <div className="flex items-center gap-2">
-          <NavItem to="/dashboard/admin" icon={Home} label={t('dashboard.nav.home')} isActiveRoute={isActive('/dashboard/admin')} />
           <NavItem to="/dashboard/licenses" icon={Building2} label={t('dashboard.nav.licenses')} isActiveRoute={isActive('/dashboard/licenses') || isActive('/dashboard/lm')} />
           <NavItem to="/dashboard/projects" icon={FolderKanban} label={t('dashboard.nav.projects')} isActiveRoute={isActive('/dashboard/projects')} />
           <NavItem to="/dashboard/contacts" icon={Users} label={t('dashboard.nav.contacts')} isActiveRoute={isActive('/dashboard/contacts')} />
@@ -240,7 +239,6 @@ export const TopNavigation = () => {
     if (isClientRole) {
       return (
         <div className="flex items-center gap-2">
-          <NavItem to="/dashboard/client/home" icon={Home} label={t('dashboard.nav.home')} isActiveRoute={isActive('/dashboard/client/home')} />
           <NavItem to="/dashboard/projects" icon={FolderKanban} label={t('dashboard.nav.projects')} isActiveRoute={isActive('/dashboard/projects')} />
           <NavItem to="/dashboard/contacts" icon={Users} label={t('dashboard.nav.contacts')} isActiveRoute={isActive('/dashboard/contacts')} />
         </div>
@@ -249,7 +247,6 @@ export const TopNavigation = () => {
     if (isAuthority) {
       return (
         <div className="flex items-center gap-2">
-          <NavItem to="/dashboard/authority" icon={Home} label={t('dashboard.nav.home')} isActiveRoute={isActive('/dashboard/authority')} />
           <NavItem to="/dashboard/authority/projects" icon={FolderKanban} label={t('dashboard.nav.projects')} isActiveRoute={isActive('/dashboard/authority/projects')} />
         </div>
       );
@@ -400,7 +397,6 @@ export const TopNavigation = () => {
                   </div>
                 )}
               </div>
-              <span className="text-xs font-medium text-foreground hidden sm:block max-w-[120px] truncate">{displayName}</span>
               <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
             </button>
           </DropdownMenuTrigger>
@@ -475,6 +471,17 @@ export const TopNavigation = () => {
             )}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* Company name/logo - separate from avatar */}
+        {!isOwnerOrAdmin && (
+          <div className="hidden sm:flex items-center">
+            {effectiveLogo ? (
+              <img src={effectiveLogo} alt="Company logo" className="h-6 w-6 rounded object-contain" />
+            ) : (
+              <span className="text-xs font-medium text-muted-foreground max-w-[140px] truncate">{displayName}</span>
+            )}
+          </div>
+        )}
       </div>
     );
   };
@@ -483,14 +490,11 @@ export const TopNavigation = () => {
     <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
-          {/* Left: OxiCloud logo + Demo badge + Nav */}
+          {/* Left: OxiCloud logo + Nav */}
           <div className="flex items-center gap-6">
             <Link to={isOwnerOrAdmin ? '/dashboard/admin' : isAuthority ? '/dashboard/authority' : '/dashboard/client/home'} className="shrink-0">
               <img src={theme === 'dark' ? oxiLogoLight : oxiLogoDark} alt="OxiCloud" className="h-7 w-7" />
             </Link>
-            <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded-full border border-muted-foreground/30 text-muted-foreground dark:border-primary/30 dark:text-primary">
-              Demo
-            </span>
             <div className="hidden md:flex">
               {renderNavigation()}
             </div>
