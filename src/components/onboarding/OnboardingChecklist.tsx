@@ -68,10 +68,39 @@ interface OnboardingChecklistProps {
    ═══════════════════════════════════════════════ */
 
 /* Final Screen: Workspace Configured */
+/* Auto-mark step 2 as completed on first render */
+function CompleteStepWrapper({
+  completedSet,
+  markStepComplete,
+  children,
+}: {
+  completedSet: Set<number>;
+  markStepComplete: (i: number) => void;
+  children: React.ReactNode;
+}) {
+  useEffect(() => {
+    if (!completedSet.has(2)) {
+      markStepComplete(2);
+    }
+  }, []); // only on first mount
+
+  return (
+    <motion.div
+      key="complete"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.15 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 function WorkspaceCompletePanel({ nl, onNavigate }: { nl: boolean; onNavigate: (path: string) => void }) {
   return (
-    <div className="flex flex-col items-center text-center py-10 px-6">
-      <h3 className="text-xl font-semibold text-foreground mb-1.5">
+    <div className="flex flex-col items-center text-center py-10 px-8">
+      <h3 className="text-lg font-semibold text-foreground mb-1">
         {nl ? 'Uw workspace is volledig geconfigureerd!' : 'Your workspace is successfully fully configured!'}
       </h3>
       <p className="text-sm text-muted-foreground mb-8 max-w-sm leading-relaxed">
@@ -80,28 +109,25 @@ function WorkspaceCompletePanel({ nl, onNavigate }: { nl: boolean; onNavigate: (
           : 'Choose where you\'d like to start next.'}
       </p>
 
-      <div className="w-full space-y-2.5 max-w-xs">
-        <Button
+      <div className="w-full space-y-3 max-w-sm">
+        <button
           onClick={() => onNavigate('/pilot-demo/projects')}
-          className="w-full justify-between group"
-          size="lg"
+          className="w-full flex items-center justify-between px-5 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:brightness-110 transition-all"
         >
           <span>{nl ? 'Maak uw eerste project' : 'Create your first project'}</span>
-          <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity" />
-        </Button>
+          <ArrowRight className="w-4 h-4" />
+        </button>
 
-        <Button
-          variant="outline"
+        <button
           onClick={() => onNavigate('/pilot-demo/contacts')}
-          className="w-full justify-between group"
-          size="lg"
+          className="w-full flex items-center justify-between px-5 py-3.5 rounded-full border border-border text-foreground font-medium text-sm hover:bg-muted/40 transition-all"
         >
           <span>{nl ? 'Ga naar Contacten' : 'Go to Contacts'}</span>
-          <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity" />
-        </Button>
+          <ArrowRight className="w-4 h-4 text-muted-foreground" />
+        </button>
       </div>
 
-      <p className="text-xs text-muted-foreground mt-8 max-w-xs leading-relaxed">
+      <p className="text-[11px] text-muted-foreground/60 mt-8 max-w-xs leading-relaxed">
         {nl
           ? 'U kunt altijd meer gedetailleerde instellingen (bv. privacy-machtigingen voor teams) later aanpassen in Instellingen.'
           : 'You can always adjust more detailed settings (e.g., privacy permissions for teams) later in Settings.'}
@@ -358,17 +384,14 @@ export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: Onboar
                     </motion.div>
                   )}
 
-                  {/* Step 2: Complete */}
+                  {/* Step 2: Complete — auto-mark as done on first visit */}
                   {state.currentStep === 2 && (
-                    <motion.div
-                      key="complete"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.15 }}
+                    <CompleteStepWrapper
+                      completedSet={completedSet}
+                      markStepComplete={markStepComplete}
                     >
                       <WorkspaceCompletePanel nl={nl} onNavigate={handleNavigate} />
-                    </motion.div>
+                    </CompleteStepWrapper>
                   )}
                 </AnimatePresence>
               </div>
