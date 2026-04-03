@@ -210,19 +210,19 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
                         className={cn(
                           "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
                           isSelected
-                            ? "bg-[hsl(var(--neon-lime))]/90"
+                            ? "bg-muted/60 ring-1 ring-foreground/20 rounded-lg mx-1 border-transparent"
                             : "hover:scale-[1.02] hover:z-10"
                         )}
                         onClick={() => setSelectedCompany(isSelected ? null : group.firmName)}
                       >
-                        <div className={cn("text-xs font-semibold transition-colors", isSelected ? "text-black" : "text-foreground")}>
+                        <div className={cn("text-xs font-semibold transition-colors", isSelected ? "text-foreground" : "text-foreground")}>
                           {group.firmName}
                         </div>
-                        <div className={cn("text-[10px] mt-0.5 transition-colors", isSelected ? "text-black/60" : "text-muted-foreground")}>
+                        <div className={cn("text-[10px] mt-0.5 transition-colors", isSelected ? "text-muted-foreground" : "text-muted-foreground")}>
                           {translateContactType(group.contacts[0]?.contact_type || '')}
                         </div>
                         {group.contacts.length > 0 && (
-                          <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-black/50" : "text-muted-foreground/40")}>
+                          <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-muted-foreground/60" : "text-muted-foreground/40")}>
                             {group.contacts.length} <User className="inline h-3 w-3 -mt-0.5" />
                           </div>
                         )}

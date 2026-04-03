@@ -1136,31 +1136,29 @@ const ContactsDashboard = () => {
                           className={cn(
                             "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
                             isSelected
-                              ? "bg-[hsl(var(--neon-lime))]/90"
+                              ? "bg-muted/60 ring-1 ring-foreground/20 rounded-lg mx-1 border-transparent"
                               : "hover:scale-[1.02] hover:z-10"
                           )}
                           onClick={() => {
-                            // Single select: only one company detail at a time
                             setExpandedCompanies(isSelected ? [] : [company.id]);
                           }}
                           onDoubleClick={() => handleContactDoubleClick(company)}
                         >
-                          <div className={cn("text-sm font-semibold transition-colors", isSelected ? "text-black" : "text-foreground")}>
+                          <div className={cn("text-sm font-semibold transition-colors", isSelected ? "text-foreground" : "text-foreground")}>
                             {company.name}
                           </div>
-                          <div className={cn("flex items-center gap-2 mt-1 text-[11px] transition-colors", isSelected ? "text-black/70" : "text-muted-foreground")}>
+                          <div className={cn("flex items-center gap-2 mt-1 text-[11px] transition-colors", isSelected ? "text-muted-foreground" : "text-muted-foreground")}>
                             <span className="truncate max-w-[160px]">{company.email}</span>
                             <span className="opacity-40">·</span>
                             <span className="whitespace-nowrap">{company.telephone}</span>
                           </div>
                           {company.address && (
-                            <div className={cn("text-[10px] mt-0.5 truncate transition-colors", isSelected ? "text-black/50" : "text-muted-foreground/60")}>
+                            <div className={cn("text-[10px] mt-0.5 truncate transition-colors", isSelected ? "text-muted-foreground/60" : "text-muted-foreground/60")}>
                               {company.address}, {company.city}
                             </div>
                           )}
-                          {/* Employee count indicator */}
                           {company.employees.length > 0 && (
-                            <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-black/50" : "text-muted-foreground/40")}>
+                            <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-muted-foreground/60" : "text-muted-foreground/40")}>
                               {company.employees.length} <User className="inline h-3 w-3 -mt-0.5" />
                             </div>
                           )}
