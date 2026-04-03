@@ -314,7 +314,7 @@ export default function PilotCreateAccount() {
               {errors.terms && <p className="text-[11px] text-destructive pl-5">{errors.terms}</p>}
               <label className="flex items-center gap-2 cursor-pointer">
                 <Checkbox checked={form.privacyAccepted} onCheckedChange={v => setForm(p => ({ ...p, privacyAccepted: !!v }))} className="h-3.5 w-3.5" />
-                <span className="text-[13px] text-foreground">{t.agreePrivacy} <Link to="/contact" className="text-primary underline underline-offset-2">{t.privacyLink}</Link></span>
+                <span className="text-[13px] text-foreground">{t.agreePrivacy} <Link to="/contact" className="text-foreground underline underline-offset-2 font-medium">{t.privacyLink}</Link></span>
               </label>
               {errors.privacy && <p className="text-[11px] text-destructive pl-5">{errors.privacy}</p>}
             </div>
