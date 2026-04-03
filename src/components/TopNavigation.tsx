@@ -230,7 +230,6 @@ export const TopNavigation = () => {
     if (isOwnerOrAdmin) {
       return (
         <div className="flex items-center gap-2">
-          <NavItem to="/dashboard/admin" icon={Home} label={t('dashboard.nav.home')} isActiveRoute={isActive('/dashboard/admin')} />
           <NavItem to="/dashboard/licenses" icon={Building2} label={t('dashboard.nav.licenses')} isActiveRoute={isActive('/dashboard/licenses') || isActive('/dashboard/lm')} />
           <NavItem to="/dashboard/projects" icon={FolderKanban} label={t('dashboard.nav.projects')} isActiveRoute={isActive('/dashboard/projects')} />
           <NavItem to="/dashboard/contacts" icon={Users} label={t('dashboard.nav.contacts')} isActiveRoute={isActive('/dashboard/contacts')} />
