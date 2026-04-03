@@ -391,7 +391,7 @@ export default function PilotSettings() {
                                   </TableCell>
                                   <TableCell className="py-3 text-xs text-muted-foreground">{comp.vatNumber || '—'}</TableCell>
                                   <TableCell className="py-3 text-xs text-muted-foreground">{comp.email || '—'}</TableCell>
-                                    {comp.street || comp.city ? (
+                                  <TableCell className="py-3">
                                       <div>
                                         <div className="text-xs">{comp.street && `${comp.street} ${comp.number}`}</div>
                                         {comp.city && <div className="text-xs text-muted-foreground">{comp.postalCode} {comp.city}</div>}
