@@ -3714,7 +3714,7 @@ export const nl = {
     contacts_desc: '– een mini-CRM om je klanten en stakeholders te beheren',
     disclaimer: 'Alles hier is uitsluitend ter demonstratie.',
     readyCta: 'Wanneer je klaar bent om echte rapporten te maken, maak je Workspace aan om je gratis kantooraccount te activeren.',
-    createWorkspace: 'Maak mijn Workspace aan',
+    createWorkspace: 'Maak Workspace aan',
     createWorkspaceDesc: 'Begin met het genereren van echte NOₓ-rapporten',
     exploreDemo: 'Verken de Demo',
   },
