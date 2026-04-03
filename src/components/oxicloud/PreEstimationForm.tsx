@@ -504,7 +504,7 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                                           className={cn(
                                             "px-3 py-2 rounded-lg text-sm transition-all border inline-flex items-center gap-1.5",
                                             isActive ?
-                                            "bg-primary text-primary-foreground border-primary shadow-sm" :
+                                            "bg-foreground text-background border-foreground shadow-sm" :
                                             "bg-card text-foreground border-border/50 hover:bg-muted/30"
                                           )}>
                                             {sub.label.replace(/^\d+\.\d+\s*/, '')}
