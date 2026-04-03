@@ -400,6 +400,7 @@ export const TopNavigation = () => {
                   </div>
                 )}
               </div>
+              <span className="text-xs font-medium text-foreground hidden sm:block max-w-[120px] truncate">{displayName}</span>
               <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
             </button>
           </DropdownMenuTrigger>
