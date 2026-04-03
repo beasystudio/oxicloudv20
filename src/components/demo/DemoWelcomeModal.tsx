@@ -53,10 +53,14 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
 
         {/* Content */}
         <div className="px-6 pb-6 pt-4 space-y-5">
-          <div className="space-y-1.5">
+          <div className="space-y-3">
             <h2 className="text-lg font-semibold text-foreground tracking-tight">{t('demoWelcome.title')}</h2>
             {t('demoWelcome.body').split('\n\n').map((paragraph, i) => (
-              <p key={i} className="text-[13px] text-muted-foreground leading-relaxed">{paragraph}</p>
+              <p key={i} className="text-[13px] text-muted-foreground leading-relaxed">
+                {paragraph.split('\n').map((line, j, arr) => (
+                  <span key={j}>{line}{j < arr.length - 1 && <br />}</span>
+                ))}
+              </p>
             ))}
           </div>
 
