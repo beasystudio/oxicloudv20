@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, ChevronDown, ChevronRight, Download, Building2, User, ArrowUp, ArrowDown, Plus } from 'lucide-react';
+import { Search, Download, Building2, User, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   getPilotSession, getPilotUser, getPilotCompany, getPilotContacts, getPilotEmployees,
