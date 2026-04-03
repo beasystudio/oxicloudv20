@@ -163,6 +163,15 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
                 ) : null}
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Company name/logo - separate from avatar */}
+            <div className="hidden sm:flex items-center">
+              {companyLogo ? (
+                <img src={companyLogo} alt="Company logo" className="h-6 w-6 rounded object-contain" />
+              ) : (
+                <span className="text-xs font-medium text-muted-foreground max-w-[140px] truncate">{company.name}</span>
+              )}
+            </div>
           </div>
         </div>
       </div>
