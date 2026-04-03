@@ -135,7 +135,7 @@ const Login = () => {
         {/* Left — Photo panel (stays dark) */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
           <img src={loginBackground} alt="Architecture" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          
           <div className="relative z-10 flex flex-col justify-between pt-14 pb-12 pl-12 pr-12 w-full">
             <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-11 w-auto" /></Link>
           </div>
