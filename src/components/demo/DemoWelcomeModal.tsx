@@ -32,7 +32,7 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 16 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-md bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
+        className="w-full max-w-lg bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
 
         {/* Close button + badge */}
         <div className="flex items-center justify-between px-6 pt-5 pb-0">
@@ -53,10 +53,14 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
 
         {/* Content */}
         <div className="px-6 pb-6 pt-4 space-y-5">
-          <div className="space-y-1.5">
+          <div className="space-y-3">
             <h2 className="text-lg font-semibold text-foreground tracking-tight">{t('demoWelcome.title')}</h2>
             {t('demoWelcome.body').split('\n\n').map((paragraph, i) => (
-              <p key={i} className="text-[13px] text-muted-foreground leading-relaxed">{paragraph}</p>
+              <p key={i} className="text-[13px] text-muted-foreground leading-relaxed">
+                {paragraph.split('\n').map((line, j, arr) => (
+                  <span key={j}>{line}{j < arr.length - 1 && <br />}</span>
+                ))}
+              </p>
             ))}
           </div>
 

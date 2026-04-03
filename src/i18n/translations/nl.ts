@@ -3702,7 +3702,7 @@ export const nl = {
 
   demoWelcome: {
     title: 'Welkom in de OxiCloud Demo',
-    body: 'Ontdek hoe OxiCloud NOx-emissies berekent tijdens de bouw- en exploitatiefase van een project.\n\nJe bekijkt momenteel een voorbeeldwerkruimte met illustratieve gegevens. Zo kun je het platform en zijn functies veilig verkennen.',
+    body: 'Ontdek hoe OxiCloud NOx-emissies berekent tijdens de bouw- en exploitatiefase van een project.\n\nJe bekijkt momenteel een voorbeeldwerkruimte met illustratieve gegevens.\nZo kun je het platform en zijn functies veilig verkennen.',
     explore: 'Verken de platformen:',
     partner_name: 'Partnerprogramma',
     partner_desc: '– ontdek hoe je kantoor beloond wordt als goede partner',
