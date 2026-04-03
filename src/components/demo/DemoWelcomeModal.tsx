@@ -13,10 +13,10 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
   const { t } = useLanguage();
 
   const features = [
-    { icon: Handshake, text: t('demoWelcome.partner') },
-    { icon: Settings, text: t('demoWelcome.settings') },
-    { icon: FolderOpen, text: t('demoWelcome.projects') },
-    { icon: Users, text: t('demoWelcome.contacts') },
+    { icon: Handshake, name: t('demoWelcome.partner_name'), desc: t('demoWelcome.partner_desc') },
+    { icon: Settings, name: t('demoWelcome.settings_name'), desc: t('demoWelcome.settings_desc') },
+    { icon: FolderOpen, name: t('demoWelcome.projects_name'), desc: t('demoWelcome.projects_desc') },
+    { icon: Users, name: t('demoWelcome.contacts_name'), desc: t('demoWelcome.contacts_desc') },
   ];
 
   return (
@@ -62,7 +62,7 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
           <div className="rounded-xl bg-muted/40 dark:bg-muted/20 border border-border/50 p-4">
             <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.08em] mb-3">{t('demoWelcome.explore')}</p>
             <div className="space-y-2.5">
-              {features.map(({ icon: Icon, text }, i) => {
+              {features.map(({ icon: Icon, name, desc }, i) => {
                 return (
                   <motion.div
                     key={i}
@@ -74,7 +74,9 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
                     <div className="mt-0.5 w-6 h-6 rounded-lg bg-card dark:bg-secondary flex items-center justify-center shrink-0 border border-border/60">
                       <Icon className="w-3 h-3 text-foreground/70" />
                     </div>
-                    <span className="text-[13px] text-foreground leading-snug">{text}</span>
+                    <span className="text-[13px] text-foreground leading-snug">
+                      <span className="font-semibold">{name}</span> {desc}
+                    </span>
                   </motion.div>
                 );
               })}

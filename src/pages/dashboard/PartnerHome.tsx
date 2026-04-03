@@ -175,9 +175,14 @@ const PartnerHome = () => {
                         {t('demoWelcome.explore')}
                       </p>
                       <div className="grid gap-2 sm:grid-cols-2 mb-4">
-                        {[t('demoWelcome.projects'), t('demoWelcome.contacts'), t('demoWelcome.settings'), t('demoWelcome.partner')].map((item) => <div key={item} className="flex items-start gap-2">
+                        {[
+                          { name: t('demoWelcome.partner_name'), desc: t('demoWelcome.partner_desc') },
+                          { name: t('demoWelcome.settings_name'), desc: t('demoWelcome.settings_desc') },
+                          { name: t('demoWelcome.projects_name'), desc: t('demoWelcome.projects_desc') },
+                          { name: t('demoWelcome.contacts_name'), desc: t('demoWelcome.contacts_desc') },
+                        ].map((item) => <div key={item.name} className="flex items-start gap-2">
                             <span className="mt-1 h-1.5 w-1.5 rounded-full bg-muted-foreground/60 shrink-0" />
-                            <span className="text-sm text-foreground leading-snug">{item}</span>
+                            <span className="text-sm text-foreground leading-snug"><span className="font-semibold">{item.name}</span> {item.desc}</span>
                           </div>)}
                       </div>
 
