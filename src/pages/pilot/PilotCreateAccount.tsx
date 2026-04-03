@@ -270,10 +270,10 @@ export default function PilotCreateAccount() {
               <div className="grid grid-cols-[1fr_auto_auto] gap-3">
                 <F label={`${t.street} *`} value={form.street} onChange={set('street')} />
                 <div className="w-24">
-                  <F label={t.nr} value={form.number} onChange={set('number')} />
+                  <F label={`${t.nr} *`} value={form.number} onChange={set('number')} error={errors.number} />
                 </div>
                 <div className="w-20">
-                  <F label={t.bus} value={form.bus} onChange={set('bus')} placeholder="Bus/Unit" />
+                  <F label={t.bus} value={form.bus} onChange={set('bus')} />
                 </div>
               </div>
               {/* Row 4: Postal Code + City */}
