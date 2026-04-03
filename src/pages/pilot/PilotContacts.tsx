@@ -365,7 +365,7 @@ export default function PilotContacts() {
                       
                       <p className="text-sm font-medium mb-1">{t('pilot.contacts.noContactsYet')}</p>
                       <p className="text-xs">{t('pilot.contacts.noContactsDesc')}</p>
-                      <Button size="sm" className="mt-4" onClick={() => setShowAddCompany(true)}>
+                      <Button variant="outline" size="sm" className="mt-4" onClick={() => setShowAddCompany(true)}>
                         <Plus className="h-4 w-4 mr-2" />{t('pilot.contacts.addContact')}
                       </Button>
                     </div>
