@@ -24,29 +24,42 @@ const copy = {
     steps: [
       {
         title: 'Enter the basic project details',
-        body: 'You enter a few simple parameters such as:',
-        list: ['project type', 'location', 'gross floor area (GFA)'],
-        extra: 'This takes only a few minutes.\n\nOxiCloud uses this information to prepare a quotation for the emissions report.',
+        body: 'You enter a few simple parameters - project type, location, gross floor area (GFA), and your client\'s name, company, email, and VAT number. This takes only a few minutes.',
+        extra: 'That\'s all OxiCloud needs to generate the quotation.',
       },
       {
-        title: 'Review the quotation with your client',
-        body: 'The quotation is generated automatically inside OxiCloud.\n\nYou can review it with your client and discuss whether they want to proceed with the report.\n\nIf your client agrees, you send the quotation directly through the OxiCloud platform.',
+        title: 'The quote goes straight to your client automatically',
+        body: 'The moment the quote is generated, OxiCloud sends it directly to your client. No extra steps, no manual trigger from your side.',
+        extra: 'Your client receives a personalised email with a smart URL. When they open it, they see an HTML version of the quote - identical to the PDF - where they fill in any remaining details and, if applicable, a PO number.\n\nYou receive a PDF copy for your own reference. You can view or download it at any time.',
+        badges: ['Sent automatically on quote generation', 'PDF copy available to you instantly'],
+        callout: 'If you spot an error after the quote has been sent, contact us and we\'ll issue a corrected version.',
       },
       {
-        title: 'Your client confirms and pays',
-        body: 'The client receives the quotation and completes the payment through OxiCloud.',
-        extra: 'Once the payment is confirmed:',
-        list: ['the NOx calculation module is automatically unlocked', 'the project can proceed to the calculation stage'],
+        title: 'Your client signs - and the project is yours to complete',
+        body: 'Once your client has reviewed and filled in the quote, they sign it digitally via Penneo Sign. That signature is the binding moment - a legal contract between the end client and A-Spine.',
+        extra: 'As soon as the signature is confirmed, the project is released to you and the NOx calculation module is unlocked. Your client doesn\'t pay anything at this stage.',
+        badges: ['Project unlocked on signature'],
+        badgesVariant: ['default'],
+        badgesRed: ['Signed = legally bound - non-payment is actionable'],
+        callout: 'If a client goes quiet or refuses to pay after signing, A-Spine holds a valid contract and can pursue the outstanding amount. Your commission is protected.',
       },
       {
         title: 'Complete the calculation',
-        body: 'You enter a few additional project parameters.\n\nThis typically takes less than 10 minutes.\n\nOnce you click Calculate, the emissions report is generated immediately.',
+        body: 'You enter a few additional project parameters directly in OxiCloud. This typically takes less than 10 minutes.',
+        extra: 'Click Calculate and the emissions report is generated immediately.',
       },
       {
-        title: 'Payment is handled automatically',
-        body: 'As soon as the module is unlocked after your client\'s payment:',
-        list: ['OxiCloud processes the partner settlement automatically', 'an invoice is issued via self-billing', 'the invoice is delivered to you through Peppol'],
-        extra: 'Your payment is transferred directly to your bank account.\n\nThere is no administration required from your side.',
+        title: 'Report delivered - once your client pays',
+        body: 'The final report is released only after A-Spine has received full payment from your client. Until then, the report is ready but held.',
+        extra: 'Once payment is confirmed, the report is delivered and your settlement is triggered automatically - no invoice to write, no follow-up needed.',
+        badges: ['Report held until full payment'],
+        callout: 'Per the algemene voorwaarden: your commission is paid only after A-Spine has received full payment for the report.',
+      },
+      {
+        title: 'Your payment - fully automatic',
+        body: 'OxiCloud handles the partner settlement without any action from you. An invoice is issued via self-billing and delivered through Peppol. Your fee is transferred directly to your bank account.',
+        extra: 'You close the project. We handle the rest.',
+        badges: ['Self-billing via Peppol - zero admin'],
       },
     ],
     multiTitle: 'Working with more than one firm',
@@ -90,29 +103,42 @@ const copy = {
     steps: [
       {
         title: 'Vul de basisgegevens in',
-        body: 'U voert een paar eenvoudige parameters in, zoals:',
-        list: ['projecttype', 'locatie', 'bruto vloeroppervlakte (BVO)'],
-        extra: 'Dit duurt slechts enkele minuten.\n\nOxiCloud gebruikt deze informatie om een offerte voor te bereiden voor het emissierapport.',
+        body: 'U voert een paar eenvoudige parameters in - projecttype, locatie, bruto vloeroppervlakte (BVO), en de naam, het bedrijf, e-mailadres en btw-nummer van uw klant. Dit duurt slechts enkele minuten.',
+        extra: 'Dat is alles wat OxiCloud nodig heeft om de offerte te genereren.',
       },
       {
-        title: 'Bekijk de offerte met uw klant',
-        body: 'De offerte wordt automatisch aangemaakt in OxiCloud.\n\nU kunt deze met uw klant bespreken en beslissen of ze het rapport willen aanvragen.\n\nAls uw klant akkoord gaat, verstuurt u de offerte rechtstreeks via het OxiCloud-platform.',
+        title: 'De offerte gaat automatisch rechtstreeks naar uw klant',
+        body: 'Zodra de offerte is gegenereerd, stuurt OxiCloud deze rechtstreeks naar uw klant. Geen extra stappen, geen handmatige actie van uw kant.',
+        extra: 'Uw klant ontvangt een gepersonaliseerde e-mail met een slimme URL. Wanneer ze deze openen, zien ze een HTML-versie van de offerte - identiek aan de PDF - waar ze eventuele resterende gegevens invullen en, indien van toepassing, een PO-nummer.\n\nU ontvangt een PDF-kopie ter referentie. U kunt deze op elk moment bekijken of downloaden.',
+        badges: ['Automatisch verstuurd bij offertegeneratie', 'PDF-kopie direct beschikbaar'],
+        callout: 'Als u een fout ontdekt nadat de offerte is verstuurd, neem dan contact met ons op en wij sturen een gecorrigeerde versie.',
       },
       {
-        title: 'Uw klant bevestigt en betaalt',
-        body: 'De klant ontvangt de offerte en voltooit de betaling via OxiCloud.',
-        extra: 'Zodra de betaling is bevestigd:',
-        list: ['wordt de NOx-berekeningsmodule automatisch ontgrendeld', 'kan het project doorgaan naar de berekeningsfase'],
+        title: 'Uw klant tekent - en het project is vrijgegeven',
+        body: 'Zodra uw klant de offerte heeft bekeken en ingevuld, tekenen ze digitaal via Penneo Sign. Die handtekening is het bindende moment - een juridisch contract tussen de eindklant en A-Spine.',
+        extra: 'Zodra de handtekening is bevestigd, wordt het project aan u vrijgegeven en wordt de NOx-berekeningsmodule ontgrendeld. Uw klant betaalt op dit moment niets.',
+        badges: ['Project ontgrendeld bij handtekening'],
+        badgesVariant: ['default'],
+        badgesRed: ['Getekend = juridisch gebonden - wanbetaling is afdwingbaar'],
+        callout: 'Als een klant stilzwijgt of weigert te betalen na ondertekening, beschikt A-Spine over een geldig contract en kan het uitstaande bedrag vorderen. Uw commissie is beschermd.',
       },
       {
         title: 'Voltooi de berekening',
-        body: 'U voert nog enkele aanvullende projectparameters in.\n\nDit duurt doorgaans minder dan 10 minuten.\n\nZodra u op Berekenen klikt, wordt het emissierapport onmiddellijk gegenereerd.',
+        body: 'U voert nog enkele aanvullende projectparameters rechtstreeks in OxiCloud in. Dit duurt doorgaans minder dan 10 minuten.',
+        extra: 'Klik op Berekenen en het emissierapport wordt onmiddellijk gegenereerd.',
       },
       {
-        title: 'Betaling wordt automatisch afgehandeld',
-        body: 'Zodra de module is ontgrendeld na betaling door uw klant:',
-        list: ['OxiCloud verwerkt de partnerafrekening automatisch', 'een factuur wordt opgesteld via self-billing', 'de factuur wordt aan u bezorgd via Peppol'],
-        extra: 'Uw betaling wordt rechtstreeks op uw bankrekening gestort.\n\nEr is geen administratie vereist van uw kant.',
+        title: 'Rapport geleverd - zodra uw klant betaalt',
+        body: 'Het definitieve rapport wordt pas vrijgegeven nadat A-Spine volledige betaling van uw klant heeft ontvangen. Tot dan is het rapport klaar maar wordt het vastgehouden.',
+        extra: 'Zodra de betaling is bevestigd, wordt het rapport geleverd en wordt uw afrekening automatisch gestart - geen factuur te schrijven, geen opvolging nodig.',
+        badges: ['Rapport vastgehouden tot volledige betaling'],
+        callout: 'Conform de algemene voorwaarden: uw commissie wordt pas betaald nadat A-Spine de volledige betaling voor het rapport heeft ontvangen.',
+      },
+      {
+        title: 'Uw betaling - volledig automatisch',
+        body: 'OxiCloud verwerkt de partnerafrekening zonder enige actie van uw kant. Een factuur wordt opgesteld via self-billing en bezorgd via Peppol. Uw vergoeding wordt rechtstreeks op uw bankrekening gestort.',
+        extra: 'U sluit het project af. Wij regelen de rest.',
+        badges: ['Self-billing via Peppol - nul administratie'],
       },
     ],
     multiTitle: 'Werken voor meerdere kantoren',
@@ -289,23 +315,37 @@ export default function PartnershipProgram() {
                         )}
                       </div>
                       <div className={`pt-1.5 ${i === t.steps.length - 1 ? 'pb-0' : 'pb-10'}`}>
+                        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 font-semibold mb-1">Step {i + 1}</p>
                         <p className="text-[15px] font-semibold text-foreground mb-3">{step.title}</p>
                         {step.body.split('\n\n').map((para, j) => (
                           <p key={j} className="text-[14px] text-muted-foreground leading-[1.8] mb-3">{para}</p>
                         ))}
-                        {step.list && (
-                          <ul className="space-y-2 mb-3 ml-1">
-                            {step.list.map((li) => (
-                              <li key={li} className="flex items-start gap-2.5 text-[14px] text-muted-foreground leading-[1.7]">
-                                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40 shrink-0 mt-[9px]" />
-                                {li}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
                         {step.extra && step.extra.split('\n\n').map((para, j) => (
                           <p key={`e${j}`} className="text-[14px] text-muted-foreground leading-[1.8] mb-3">{para}</p>
                         ))}
+                        {'badges' in step && step.badges && (
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {step.badges.map((badge) => (
+                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
+                                {badge}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {'badgesRed' in step && step.badgesRed && (
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {step.badgesRed.map((badge) => (
+                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1 rounded-full bg-destructive/10 text-destructive">
+                                {badge}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {'callout' in step && step.callout && (
+                          <div className="border-l-2 border-border/60 pl-4 mt-2 mb-3">
+                            <p className="text-[13px] text-muted-foreground/70 leading-[1.7]">{step.callout}</p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -371,7 +411,7 @@ export default function PartnershipProgram() {
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-5 relative z-10">
                   <button
                     onClick={() => navigate('/pilot-demo/create-account')}
-                    className="rounded-full px-8 py-3.5 text-sm font-semibold transition-all bg-primary text-primary-foreground hover:brightness-110 shadow-sm">
+                    className="rounded-full px-8 py-3.5 text-sm font-semibold transition-all bg-muted text-foreground hover:bg-muted/70">
                     {t.ctaCreate}
                   </button>
                   <div className="flex items-center gap-2">
