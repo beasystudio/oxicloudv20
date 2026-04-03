@@ -365,13 +365,14 @@ export default function PilotSettings() {
                   <div className="overflow-hidden">
                     <Table>
                       <TableHeader>
-                        <TableRow className="hover:bg-transparent border-b">
+                         <TableRow className="hover:bg-transparent border-b">
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground !pl-5">{t('pilot.settings.companyCol')}</TableHead>
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground">{t('pilot.settings.vatNumber')}</TableHead>
+                           <TableHead className="h-9 text-xs font-medium text-muted-foreground">Email</TableHead>
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground">{t('pilot.settings.headOffice')}</TableHead>
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground">{t('pilot.settings.branches')}</TableHead>
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground !pr-5">{t('pilot.settings.divisions')}</TableHead>
-                        </TableRow>
+                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {filteredCompanies.map(comp => (
