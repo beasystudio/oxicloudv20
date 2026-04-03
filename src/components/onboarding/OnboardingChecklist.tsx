@@ -358,17 +358,14 @@ export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: Onboar
                     </motion.div>
                   )}
 
-                  {/* Step 2: Complete */}
+                  {/* Step 2: Complete — auto-mark as done on first visit */}
                   {state.currentStep === 2 && (
-                    <motion.div
-                      key="complete"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.15 }}
+                    <CompleteStepWrapper
+                      completedSet={completedSet}
+                      markStepComplete={markStepComplete}
                     >
                       <WorkspaceCompletePanel nl={nl} onNavigate={handleNavigate} />
-                    </motion.div>
+                    </CompleteStepWrapper>
                   )}
                 </AnimatePresence>
               </div>
