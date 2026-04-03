@@ -471,7 +471,7 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                                       className={cn(
                                         "px-4 py-3 rounded-lg text-sm font-medium transition-all border text-left",
                                         isSelected ?
-                                        "bg-primary/10 text-primary border-primary/40 shadow-sm" :
+                                        "bg-muted/50 text-foreground border-foreground/20 shadow-sm" :
                                         "bg-muted/20 text-foreground border-border/50 hover:bg-muted/40 hover:border-border"
                                       )}>
                                         {cat.label.replace(/\s*\(.*\)/, '')}
@@ -504,7 +504,7 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                                           className={cn(
                                             "px-3 py-2 rounded-lg text-sm transition-all border inline-flex items-center gap-1.5",
                                             isActive ?
-                                            "bg-primary text-primary-foreground border-primary shadow-sm" :
+                                            "bg-foreground text-background border-foreground shadow-sm" :
                                             "bg-card text-foreground border-border/50 hover:bg-muted/30"
                                           )}>
                                             {sub.label.replace(/^\d+\.\d+\s*/, '')}
