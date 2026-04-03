@@ -309,7 +309,7 @@ export default function PilotCreateAccount() {
             <div className="space-y-2">
               <label className="flex items-center gap-2 cursor-pointer">
                 <Checkbox checked={form.termsAccepted} onCheckedChange={v => setForm(p => ({ ...p, termsAccepted: !!v }))} className="h-3.5 w-3.5" />
-                <span className="text-[13px] text-foreground">{t.agreeTerms} <Link to="/contact" className="text-primary underline underline-offset-2">{t.termsLink}</Link></span>
+                <span className="text-[13px] text-foreground">{t.agreeTerms} <Link to="/contact" className="text-foreground underline underline-offset-2 font-medium">{t.termsLink}</Link></span>
               </label>
               {errors.terms && <p className="text-[11px] text-destructive pl-5">{errors.terms}</p>}
               <label className="flex items-center gap-2 cursor-pointer">
