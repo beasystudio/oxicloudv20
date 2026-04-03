@@ -129,7 +129,7 @@ export default function PilotCreateAccount() {
   const [kboData, setKboData] = useState<KBOCompanyData | null>(null);
 
   const [form, setForm] = useState({
-    companyName: '', legalForm: '', peppolId: '',
+    companyName: '', legalForm: '', peppolId: '', kboNumber: '', bus: '',
     street: '', number: '', postalCode: '', city: '', country: 'Belgium',
     contactName: '', email: '', phone: '',
     password: '', confirmPassword: '',
