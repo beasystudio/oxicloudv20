@@ -103,6 +103,7 @@ export default function PilotSettings() {
         id: company.id,
         name: company.name,
         vatNumber: company.vatNumber || '',
+        email: user?.email || '',
         street: company.legalAddress || '',
         number: '',
         postalCode: company.postalCode || '',
