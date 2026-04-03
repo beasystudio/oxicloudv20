@@ -55,7 +55,9 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
         <div className="px-6 pb-6 pt-4 space-y-5">
           <div className="space-y-1.5">
             <h2 className="text-lg font-semibold text-foreground tracking-tight">{t('demoWelcome.title')}</h2>
-            <p className="text-[13px] text-muted-foreground leading-relaxed">{t('demoWelcome.body')}</p>
+            {t('demoWelcome.body').split('\n\n').map((paragraph, i) => (
+              <p key={i} className="text-[13px] text-muted-foreground leading-relaxed">{paragraph}</p>
+            ))}
           </div>
 
           {/* Feature list */}
