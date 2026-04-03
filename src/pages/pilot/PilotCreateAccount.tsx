@@ -178,6 +178,7 @@ export default function PilotCreateAccount() {
     const e: Record<string, string> = {};
     if (!form.companyName.trim()) e.companyName = t.required;
     if (!form.peppolId.trim()) e.peppolId = t.required;
+    if (!form.number.trim()) e.number = t.required;
     if (!form.contactName.trim()) e.contactName = t.required;
     if (!form.email.trim()) e.email = t.required;
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = t.invalidEmail;
