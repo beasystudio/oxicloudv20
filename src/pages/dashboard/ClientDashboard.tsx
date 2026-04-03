@@ -265,7 +265,7 @@ export default function ClientDashboard() {
                 <button
                   onClick={() => navigate('/dashboard/settings')}
                   className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                  {language === 'nl' ? 'Open Instellingen' : 'Open Settings'}
+                  {language === 'nl' ? 'Bekijk Instellingen' : 'Go to Settings'}
                 </button>
               </div>
             </div>
