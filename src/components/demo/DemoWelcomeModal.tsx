@@ -94,17 +94,19 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
           <p className="text-[13px] text-muted-foreground leading-relaxed">{t('demoWelcome.readyCta')}</p>
 
           {/* Buttons */}
-          <div className="flex flex-col gap-1.5 pt-1">
+          <div className="flex flex-col gap-2 pt-1">
             <Button
-              onClick={() => { onClose(); navigate('/pilot-demo/create-account'); }}
+              onClick={onClose}
               className="h-12 rounded-full font-semibold text-sm w-full gap-2 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
-              {t('demoWelcome.createWorkspace')}
+              {t('demoWelcome.exploreDemo')}
               <ArrowRight className="w-4 h-4" />
             </Button>
-            <p className="text-[11px] text-muted-foreground/70 text-center">{t('demoWelcome.createWorkspaceDesc')}</p>
-            <Button variant="ghost" size="sm" onClick={onClose} className="w-full text-muted-foreground mt-1 rounded-full">
-              {t('demoWelcome.exploreDemo')}
-            </Button>
+            <button
+              onClick={() => { onClose(); navigate('/pilot-demo/create-account'); }}
+              className="w-full text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2">
+              {t('demoWelcome.createWorkspace')}
+            </button>
+            <p className="text-[11px] text-muted-foreground/60 text-center -mt-1">{t('demoWelcome.createWorkspaceDesc')}</p>
           </div>
         </div>
       </motion.div>
