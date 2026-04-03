@@ -7,6 +7,8 @@ import { Bell, ChevronDown, LogOut, Plus, BarChart, Settings2, Moon, Sun, Ellips
 import { useTheme } from '@/contexts/ThemeContext';
 import { getPilotSession, getPilotUser, getPilotCompany, getPilotOnboarding, clearAllPilotData, getPilotCompanyLogo } from '@/lib/pilotSessionStore';
 import { useLanguage } from '@/i18n/LanguageContext';
+import oxiLogoLight from '@/assets/oxicloud-logo-light.png';
+import oxiLogoDark from '@/assets/oxicloud-logo-dark.png';
 
 interface PilotNavigationProps {
   onStartOnboarding?: (flow: 1 | 2 | 3) => void;
