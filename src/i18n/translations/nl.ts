@@ -3709,7 +3709,7 @@ export const nl = {
     projects: 'Projecten – bekijk hoe NOₓ-rapporten worden aangemaakt en beheerd',
     contacts: 'Contacten – een mini-CRM om je klanten en stakeholders te beheren',
     disclaimer: 'Alles hier is uitsluitend ter demonstratie.',
-    readyCta: 'Wanneer je klaar bent om echte rapporten te maken, maak je Workspace aan om je kantooraccount te activeren.',
+    readyCta: 'Wanneer je klaar bent om echte rapporten te maken, maak je Workspace aan om je gratis kantooraccount te activeren.',
     createWorkspace: 'Maak mijn Workspace aan',
     createWorkspaceDesc: 'Begin met het genereren van echte NOₓ-rapporten',
     exploreDemo: 'Verken de Demo',
