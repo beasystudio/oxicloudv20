@@ -386,7 +386,7 @@ export default function ClientDashboard() {
                 </h2>
               </div>
 
-              <p className="text-[13px] text-muted-foreground leading-relaxed mt-3 mb-5 max-w-2xl relative z-10">
+              <p className="text-[13px] text-muted-foreground leading-relaxed mt-3 mb-5 relative z-10">
                 {language === 'nl'
                   ? 'Klaar om echte analyses uit te voeren? Sommige OxiCloud-gebruikers werken zelfstandig én in opdracht van een bureau. We koppelen uw Workspace automatisch aan uw bureau op basis van uw inlog-e-mail - of u kunt uw manager uitnodigen indien nodig.'
                   : 'Ready to run real analyses? Some OxiCloud users work independently and also on behalf of a firm. We automatically link your Workspace to your firm based on your login email - or you can invite your manager if needed.'}
