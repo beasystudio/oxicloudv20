@@ -411,7 +411,7 @@ export default function PartnershipProgram() {
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-5 relative z-10">
                   <button
                     onClick={() => navigate('/pilot-demo/create-account')}
-                    className="rounded-full px-8 py-3.5 text-sm font-semibold transition-all bg-primary text-primary-foreground hover:brightness-110 shadow-sm">
+                    className="rounded-full px-8 py-3.5 text-sm font-semibold transition-all bg-muted text-foreground hover:bg-muted/70">
                     {t.ctaCreate}
                   </button>
                   <div className="flex items-center gap-2">
