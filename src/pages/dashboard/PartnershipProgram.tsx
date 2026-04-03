@@ -316,7 +316,7 @@ export default function PartnershipProgram() {
 
               {/* Multi-firm */}
               <section id="multi" ref={(el) => { sectionRefs.current.multi = el; }} className="mb-16 scroll-mt-24">
-                <div className="rounded-2xl border border-primary/20 bg-primary/[0.04] p-6 sm:p-8">
+                <div className="rounded-2xl border-2 border-primary/40 bg-primary/[0.08] p-6 sm:p-8 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.15)]">
                   <h2 className="text-lg font-bold text-foreground mb-4">{t.multiTitle}</h2>
                   <div className="space-y-3 text-[14px] text-muted-foreground leading-[1.7]">
                     <p>{t.multiBody1}</p>
