@@ -138,54 +138,47 @@ function ProgressStepper({
   nl: boolean;
 }) {
   return (
-    <div className="flex items-center gap-0 w-full px-2">
+    <div className="flex flex-col gap-0.5 w-full">
       {steps.map((step, i) => {
         const done = completedSteps.has(i);
         const active = i === currentStep;
-        const clickable = done || i <= Math.max(...Array.from(completedSteps), 0) + 1;
-        const Icon = step.icon;
+        const clickable = done || i <= Math.max(...Array.from(completedSteps), -1) + 1;
 
         return (
-          <div key={step.id} className="flex items-center flex-1 last:flex-none">
-            <button
-              onClick={() => clickable && onStepClick(i)}
+          <button
+            key={step.id}
+            onClick={() => clickable && onStepClick(i)}
+            className={cn(
+              'flex items-center gap-3 w-full rounded-xl px-3 py-2 text-left transition-all',
+              active && 'bg-muted/60',
+              clickable && !active && 'hover:bg-muted/30 cursor-pointer',
+              !clickable && 'cursor-default opacity-35'
+            )}
+          >
+            <div
               className={cn(
-                'flex items-center gap-2 transition-all rounded-lg px-2 py-1.5',
-                clickable && 'cursor-pointer hover:bg-muted/50',
-                !clickable && 'cursor-default opacity-40'
+                'w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-[11px] font-semibold transition-colors',
+                done
+                  ? 'bg-foreground text-background'
+                  : active
+                  ? 'border-2 border-foreground text-foreground'
+                  : 'border border-border text-muted-foreground'
               )}
             >
-              <div
-                className={cn(
-                  'w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-xs font-semibold transition-colors',
-                  done
-                    ? 'bg-foreground text-background'
-                    : active
-                    ? 'bg-foreground/10 text-foreground border border-foreground/20'
-                    : 'bg-muted text-muted-foreground'
-                )}
-              >
-                {done ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Icon className="w-3.5 h-3.5" />}
-              </div>
-              <span
-                className={cn(
-                  'text-xs font-medium whitespace-nowrap hidden sm:inline',
-                  active ? 'text-foreground' : done ? 'text-muted-foreground' : 'text-muted-foreground/60'
-                )}
-              >
+              {done ? <CheckCircle2 className="w-3.5 h-3.5" /> : i + 1}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className={cn(
+                'text-sm font-medium',
+                done ? 'text-muted-foreground line-through' : active ? 'text-foreground' : 'text-muted-foreground/70'
+              )}>
                 {nl ? step.labelNl : step.label}
-              </span>
-            </button>
-
-            {i < steps.length - 1 && (
-              <div
-                className={cn(
-                  'flex-1 h-px mx-1',
-                  done ? 'bg-foreground/30' : 'bg-border'
-                )}
-              />
+              </p>
+            </div>
+            {active && !done && (
+              <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
             )}
-          </div>
+          </button>
         );
       })}
     </div>
