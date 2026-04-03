@@ -128,6 +128,7 @@ export default function PilotSettings() {
       id: crypto.randomUUID(),
       name: companyData.name,
       vatNumber: companyData.vatNumber,
+      email: '',
       street: companyData.street,
       number: companyData.number,
       postalCode: companyData.postalCode,
