@@ -55,6 +55,7 @@ interface PilotCompanyData {
   branchAddress: string;
   divisions: string[];
   logoUrl: string;
+  source?: 'registered' | 'manual';
 }
 
 export default function PilotSettings() {
@@ -73,7 +74,6 @@ export default function PilotSettings() {
   const logoInputRef = useRef<HTMLInputElement>(null);
   const onboarding = getPilotOnboarding();
 
-  // Company modal state (mirrors production CompanyInfoTab)
   const [companies, setCompanies] = useState<PilotCompanyData[]>([]);
   const [isAddCompanyOpen, setIsAddCompanyOpen] = useState(false);
   const [editModalData, setEditModalData] = useState<CompanyModalData | null>(null);
@@ -81,7 +81,6 @@ export default function PilotSettings() {
   const [selectedCompanyForDelete, setSelectedCompanyForDelete] = useState<PilotCompanyData | null>(null);
   const [companySearchQuery, setCompanySearchQuery] = useState('');
 
-  // User modal state (mirrors production SettingsUsers)
   const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<FullUser | undefined>(undefined);
   const [activeUserTab, setActiveUserTab] = useState<'active' | 'former'>('active');
@@ -92,11 +91,9 @@ export default function PilotSettings() {
 
   const refreshEmployees = () => setEmployees(getPilotEmployees());
 
-  // Load companies from localStorage (mirrors production CompanyInfoTab)
   useEffect(() => {
     if (!company) return;
-    
-    // Parse address: legalAddress may be "Street 35" format
+
     const addrMatch = (company.legalAddress || '').match(/^(.+?)\s+(\d+\w*)$/);
     const streetPart = addrMatch ? addrMatch[1] : (company.legalAddress || '');
     const numberPart = addrMatch ? addrMatch[2] : '';
@@ -115,19 +112,18 @@ export default function PilotSettings() {
       branchAddress: '',
       divisions: [],
       logoUrl: '',
+      source: 'registered',
     };
 
-    // Check if any additional companies were added by the user
     const saved = localStorage.getItem(PILOT_COMPANIES_KEY);
     if (saved) {
       const existing: PilotCompanyData[] = JSON.parse(saved);
-      // Replace the pilot company entry, keep any user-added companies
-      const others = existing.filter(c => c.id !== company.id);
-      saveCompanies([seeded, ...others]);
+      const manualCompanies = existing.filter((c) => c.source === 'manual');
+      saveCompanies([seeded, ...manualCompanies]);
     } else {
       saveCompanies([seeded]);
     }
-  }, [company?.id]);
+  }, [company?.id, user?.email]);
 
   const saveCompanies = (updated: PilotCompanyData[]) => {
     localStorage.setItem(PILOT_COMPANIES_KEY, JSON.stringify(updated));
@@ -149,10 +145,10 @@ export default function PilotSettings() {
       branchAddress: companyData.locations?.length > 0 ? `${companyData.locations[0].street} ${companyData.locations[0].number}, ${companyData.locations[0].postalCode} ${companyData.locations[0].city}` : '',
       divisions: companyData.divisions || [],
       logoUrl: (companyData as any).logoUrl || '',
+      source: 'manual',
     };
     saveCompanies([...companies, newCompany]);
 
-    // Also add to pilot contacts
     addPilotContact({
       type: 'company',
       companyName: companyData.name,
@@ -185,6 +181,7 @@ export default function PilotSettings() {
       branchAddress: companyData.locations?.length > 0 ? `${companyData.locations[0].street} ${companyData.locations[0].number}, ${companyData.locations[0].postalCode} ${companyData.locations[0].city}` : '',
       divisions: companyData.divisions || [],
       logoUrl: (companyData as any).logoUrl || editModalData.logoUrl || '',
+      source: existing?.source || 'manual',
     };
     saveCompanies(companies.map(c => c.id === editModalData.id ? updated : c));
     setEditModalData(null);
