@@ -229,7 +229,7 @@ export default function ClientDashboard() {
             <h1 className="text-3xl tracking-tight leading-[1.15] text-foreground font-semibold">
               {greeting()}, {currentUser?.name?.split(' ')[0]}.
             </h1>
-            <p className="text-sm text-muted-foreground mt-1.5 max-w-xl">
+            <p className="text-sm text-muted-foreground mt-1.5">
               {language === 'nl'
                 ? 'Welkom in de OxiCloud demo-omgeving. Verken de modules hieronder om het platform te leren kennen.'
                 : 'Welcome to the OxiCloud demo environment. Explore the modules below to get to know the platform.'}
@@ -386,7 +386,7 @@ export default function ClientDashboard() {
                 </h2>
               </div>
 
-              <p className="text-[13px] text-muted-foreground leading-relaxed mt-3 mb-5 max-w-2xl relative z-10">
+              <p className="text-[13px] text-muted-foreground leading-relaxed mt-3 mb-5 relative z-10">
                 {language === 'nl'
                   ? 'Klaar om echte analyses uit te voeren? Sommige OxiCloud-gebruikers werken zelfstandig én in opdracht van een bureau. We koppelen uw Workspace automatisch aan uw bureau op basis van uw inlog-e-mail - of u kunt uw manager uitnodigen indien nodig.'
                   : 'Ready to run real analyses? Some OxiCloud users work independently and also on behalf of a firm. We automatically link your Workspace to your firm based on your login email - or you can invite your manager if needed.'}
@@ -417,7 +417,7 @@ export default function ClientDashboard() {
                 </div>
               </div>
 
-              <p className="text-[11px] text-muted-foreground/70 leading-relaxed max-w-2xl relative z-10">
+              <p className="text-[11px] text-muted-foreground/70 leading-relaxed relative z-10">
                 <span className="font-medium text-muted-foreground">Tip:</span>{' '}
                 {language === 'nl'
                   ? 'Als freelancer behoort uw Workspace aan u en worden partnerafrekeningen rechtstreeks aan u toegewezen. Als werknemer worden deze afrekeningen toegewezen aan de Workspace-eigenaar - nodig uw manager uit zodat uw bureau correct gekoppeld is en erkenning krijgt.'
