@@ -251,8 +251,8 @@ export default function PilotCreateAccount() {
             </div>
             {lookupStatus === 'success' && (
               <div className="flex items-center gap-1.5 -mt-1">
-                <CheckCircle2 className="h-3 w-3 text-primary" />
-                <span className="text-[11px] text-primary">{t.lookupSuccess} — {kboData?.naceDescription || 'Architectenactiviteiten'}</span>
+                <CheckCircle2 className="h-3 w-3 text-muted-foreground" />
+                <span className="text-[11px] text-muted-foreground">{t.lookupSuccess} — {kboData?.naceDescription || 'Architectenactiviteiten'}</span>
               </div>
             )}
 
@@ -309,12 +309,12 @@ export default function PilotCreateAccount() {
             <div className="space-y-2">
               <label className="flex items-center gap-2 cursor-pointer">
                 <Checkbox checked={form.termsAccepted} onCheckedChange={v => setForm(p => ({ ...p, termsAccepted: !!v }))} className="h-3.5 w-3.5" />
-                <span className="text-[13px] text-foreground">{t.agreeTerms} <Link to="/contact" className="text-primary underline underline-offset-2">{t.termsLink}</Link></span>
+                <span className="text-[13px] text-foreground">{t.agreeTerms} <Link to="/contact" className="text-foreground underline underline-offset-2 font-medium">{t.termsLink}</Link></span>
               </label>
               {errors.terms && <p className="text-[11px] text-destructive pl-5">{errors.terms}</p>}
               <label className="flex items-center gap-2 cursor-pointer">
                 <Checkbox checked={form.privacyAccepted} onCheckedChange={v => setForm(p => ({ ...p, privacyAccepted: !!v }))} className="h-3.5 w-3.5" />
-                <span className="text-[13px] text-foreground">{t.agreePrivacy} <Link to="/contact" className="text-primary underline underline-offset-2">{t.privacyLink}</Link></span>
+                <span className="text-[13px] text-foreground">{t.agreePrivacy} <Link to="/contact" className="text-foreground underline underline-offset-2 font-medium">{t.privacyLink}</Link></span>
               </label>
               {errors.privacy && <p className="text-[11px] text-destructive pl-5">{errors.privacy}</p>}
             </div>
@@ -329,7 +329,7 @@ export default function PilotCreateAccount() {
             {isSubmitting ? <><Loader2 className="h-3.5 w-3.5 animate-spin" />{t.submitting}</> : <>{t.submit}<ArrowRight className="h-3.5 w-3.5" /></>}
           </button>
           <p className="text-[11px] text-muted-foreground/50 mt-4 text-center">
-            {t.hasAccount}{' '}<Link to="/pilot-demo/login" className="text-primary underline underline-offset-2">{t.login}</Link>
+            {t.hasAccount}{' '}<Link to="/pilot-demo/login" className="text-foreground underline underline-offset-2 font-medium">{t.login}</Link>
           </p>
         </div>
       </motion.div>
