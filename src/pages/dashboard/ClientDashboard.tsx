@@ -408,7 +408,7 @@ export default function ClientDashboard() {
                     <div className="w-7 h-7 rounded-full border border-border flex items-center justify-center cursor-help hover:bg-muted/50 transition-colors shrink-0">
                       <Info className="w-3.5 h-3.5 text-muted-foreground" />
                     </div>
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 rounded-lg bg-foreground text-background text-xs p-2.5 leading-relaxed opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20 shadow-lg">
+                    <div className="absolute bottom-full right-0 mb-2 w-56 rounded-lg bg-foreground text-background text-xs p-2.5 leading-relaxed opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20 shadow-lg">
                       {language === 'nl'
                         ? 'Uw manager ontvangt een e-mail om uw Workspace aan het bureau te koppelen.'
                         : 'Your manager will get an email to link your Workspace to the firm.'}
