@@ -265,7 +265,7 @@ export default function ClientDashboard() {
                 <button
                   onClick={() => navigate('/dashboard/settings')}
                   className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                  {language === 'nl' ? 'Open Instellingen' : 'Open Settings'}
+                  {language === 'nl' ? 'Bekijk Instellingen' : 'Go to Settings'}
                 </button>
               </div>
             </div>
@@ -291,7 +291,7 @@ export default function ClientDashboard() {
                 <button
                   onClick={() => navigate('/dashboard/projects')}
                   className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                  {language === 'nl' ? 'Open Demo Project' : 'Open Demo Project'}
+                  {language === 'nl' ? 'Verken Projecten' : 'Explore Projects'}
                 </button>
               </div>
             </div>
@@ -322,7 +322,7 @@ export default function ClientDashboard() {
                 <button
                   onClick={() => navigate('/dashboard/contacts')}
                   className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                  {language === 'nl' ? 'Open Contacten' : 'Open Contacts'}
+                  {language === 'nl' ? 'Bekijk Contacten' : 'View Contacts'}
                 </button>
               </div>
             </div>
