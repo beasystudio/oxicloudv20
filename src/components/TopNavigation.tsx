@@ -471,6 +471,17 @@ export const TopNavigation = () => {
             )}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* Company name/logo - separate from avatar */}
+        {!isOwnerOrAdmin && (
+          <div className="hidden sm:flex items-center">
+            {effectiveLogo ? (
+              <img src={effectiveLogo} alt="Company logo" className="h-6 w-6 rounded object-contain" />
+            ) : (
+              <span className="text-xs font-medium text-muted-foreground max-w-[140px] truncate">{displayName}</span>
+            )}
+          </div>
+        )}
       </div>
     );
   };
