@@ -94,29 +94,40 @@ export default function PilotSettings() {
 
   // Load companies from localStorage (mirrors production CompanyInfoTab)
   useEffect(() => {
+    if (!company) return;
+    
+    // Parse address: legalAddress may be "Street 35" format
+    const addrMatch = (company.legalAddress || '').match(/^(.+?)\s+(\d+\w*)$/);
+    const streetPart = addrMatch ? addrMatch[1] : (company.legalAddress || '');
+    const numberPart = addrMatch ? addrMatch[2] : '';
+
+    const seeded: PilotCompanyData = {
+      id: company.id,
+      name: company.name,
+      vatNumber: company.vatNumber || '',
+      email: user?.email || '',
+      street: streetPart,
+      number: numberPart,
+      postalCode: company.postalCode || '',
+      city: company.city || '',
+      country: company.country || 'Belgium',
+      legalName: company.name,
+      branchAddress: '',
+      divisions: [],
+      logoUrl: '',
+    };
+
+    // Check if any additional companies were added by the user
     const saved = localStorage.getItem(PILOT_COMPANIES_KEY);
     if (saved) {
-      setCompanies(JSON.parse(saved));
-    } else if (company) {
-      // Seed with pilot company
-      const seeded: PilotCompanyData = {
-        id: company.id,
-        name: company.name,
-        vatNumber: company.vatNumber || '',
-        email: user?.email || '',
-        street: company.legalAddress || '',
-        number: '',
-        postalCode: company.postalCode || '',
-        city: company.city || '',
-        country: company.country || 'Belgium',
-        legalName: company.name,
-        branchAddress: '',
-        divisions: [],
-        logoUrl: '',
-      };
+      const existing: PilotCompanyData[] = JSON.parse(saved);
+      // Replace the pilot company entry, keep any user-added companies
+      const others = existing.filter(c => c.id !== company.id);
+      saveCompanies([seeded, ...others]);
+    } else {
       saveCompanies([seeded]);
     }
-  }, []);
+  }, [company?.id]);
 
   const saveCompanies = (updated: PilotCompanyData[]) => {
     localStorage.setItem(PILOT_COMPANIES_KEY, JSON.stringify(updated));
