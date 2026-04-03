@@ -81,7 +81,7 @@ function WorkspaceCompletePanel({ nl, onNavigate }: { nl: boolean; onNavigate: (
       <p className="text-sm text-muted-foreground mb-8 max-w-sm leading-relaxed">
         {nl
           ? 'Kies hieronder waar u wilt beginnen.'
-          : 'Choose where you'd like to start next.'}
+          : 'Choose where you\'d like to start next.'}
       </p>
 
       <div className="w-full space-y-2.5 max-w-xs">
