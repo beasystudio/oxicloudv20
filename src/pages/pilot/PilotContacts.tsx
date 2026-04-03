@@ -158,39 +158,13 @@ export default function PilotContacts() {
     return Object.values(groups);
   }, [contacts, company, user]);
 
-  // All persons flat list
+  // All persons flat list — external contacts only
   const allPersons = useMemo(() => {
     const persons: { id: string; name: string; company: string; function: string; email: string; telephone: string }[] = [];
 
     if (!user || !company) return persons;
 
-    const ownerEmpRecord = employees.find(e => e.id === 'owner-function');
-    const realEmployees = employees.filter(e => e.id !== 'owner-function');
-
-    const ownerInRealEmployees = realEmployees.some(e => e.email === user.email);
-    if (!ownerInRealEmployees) {
-      persons.push({
-        id: 'owner',
-        name: `${user.lastName} ${user.firstName}`,
-        company: company.name,
-        function: ownerEmpRecord?.contactSubtype || '',
-        email: user.email,
-        telephone: user.phone || '',
-      });
-    }
-
-    realEmployees.forEach(emp => {
-      persons.push({
-        id: emp.id,
-        name: `${emp.lastName} ${emp.firstName}`,
-        company: company.name,
-        function: emp.contactSubtype || '',
-        email: emp.email,
-        telephone: emp.phone || emp.mobile || '',
-      });
-    });
-
-    // External persons
+    // Only external persons
     contacts.filter(c => c.type === 'person').forEach(p => {
       const parentCompany = contacts.find(cc => cc.id === p.companyId);
       persons.push({
@@ -204,7 +178,7 @@ export default function PilotContacts() {
     });
 
     return persons;
-  }, [contacts, employees, company, user]);
+  }, [contacts, company, user]);
 
   // Filtered companies
   const filteredCompanies = useMemo(() => {
