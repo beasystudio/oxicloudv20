@@ -329,7 +329,7 @@ export default function ClientDashboard() {
 
             {/* Card 5 - Start Your Own Workspace (spans 2 cols, emphasized) */}
             <div className="md:col-span-2 rounded-2xl border-2 border-primary/30 bg-card/80 backdrop-blur-xl p-6 flex flex-col relative overflow-hidden">
-              <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+              
 
               <div className="flex items-center gap-3 mb-2 relative z-10">
                 <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
