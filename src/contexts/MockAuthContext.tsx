@@ -10,6 +10,7 @@ import { seedAdminData } from '@/lib/adminStore';
 import { seedDemoLocalProject } from '@/lib/mockLocalProjects';
 import { seedAllDemoData } from '@/lib/seedDemoData';
 import { getUserByEmail as getDbUserByEmail } from '@/lib/mockUserDB';
+import { isDemoEnvironmentUser } from '@/lib/pilotAccountUtils';
 
 export type UserRole = 'owner' | 'admin' | 'client_owner' | 'client_admin' | 'client_user' | 'authority' | 'authority_standard';
 
@@ -311,6 +312,10 @@ export const MockAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // Merge with initialUsers data to get latest company name and other fields
     const initialUser = initialUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
     const mergedUser = initialUser ? { ...user, company: initialUser.company, name: initialUser.name } : user;
+
+    if (isDemoEnvironmentUser(mergedUser.email)) {
+      sessionStorage.removeItem('oxicloud_demo_welcome_dismissed');
+    }
 
     setCurrentUser(mergedUser);
     localStorage.setItem('mockCurrentUser', JSON.stringify(mergedUser));
