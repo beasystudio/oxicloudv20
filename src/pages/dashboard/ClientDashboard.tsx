@@ -322,7 +322,7 @@ export default function ClientDashboard() {
                 <button
                   onClick={() => navigate('/dashboard/contacts')}
                   className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                  {language === 'nl' ? 'Open Contacten' : 'Open Contacts'}
+                  {language === 'nl' ? 'Bekijk Contacten' : 'View Contacts'}
                 </button>
               </div>
             </div>
