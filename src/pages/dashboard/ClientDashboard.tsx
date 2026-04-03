@@ -246,13 +246,13 @@ export default function ClientDashboard() {
                   1
                 </div>
                 <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
-                  {language === 'nl' ? 'Configureer uw Workspace' : 'Configure Your Workspace'}
+                  {language === 'nl' ? 'Ontdek de Workspace-instellingen' : 'See How Settings Work'}
                 </h2>
               </div>
               <p className="text-[13px] text-muted-foreground leading-[1.6] flex-1 mb-6">
                 {language === 'nl'
-                  ? 'Beheer uw organisatie, team en bedrijfsinformatie op één plek.'
-                  : 'Manage your organization, team, and company information in one place.'}
+                  ? 'Bekijk hoe u uw organisatie, team en bedrijfsinformatie beheert.'
+                  : 'Explore how you can manage your organization, team, and company information.'}
               </p>
               <button
                 onClick={() => navigate('/dashboard/settings')}
