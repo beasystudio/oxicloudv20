@@ -75,9 +75,9 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
                     initial={{ opacity: 0, x: -6 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.25 + i * 0.06 }}
-                    className="flex items-start gap-2.5"
+                    className="flex items-center gap-2.5"
                   >
-                    <div className="mt-0.5 w-6 h-6 rounded-lg bg-card dark:bg-secondary flex items-center justify-center shrink-0 border border-border/60">
+                    <div className="w-6 h-6 rounded-lg bg-card dark:bg-secondary flex items-center justify-center shrink-0 border border-border/60">
                       <Icon className="w-3 h-3 text-foreground/70" />
                     </div>
                     <span className="text-[13px] text-foreground leading-snug">
@@ -94,17 +94,19 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
           <p className="text-[13px] text-muted-foreground leading-relaxed">{t('demoWelcome.readyCta')}</p>
 
           {/* Buttons */}
-          <div className="flex flex-col gap-1.5 pt-1">
+          <div className="flex flex-col gap-2 pt-1">
             <Button
-              onClick={() => { onClose(); navigate('/pilot-demo/create-account'); }}
+              onClick={onClose}
               className="h-12 rounded-full font-semibold text-sm w-full gap-2 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
-              {t('demoWelcome.createWorkspace')}
+              {t('demoWelcome.exploreDemo')}
               <ArrowRight className="w-4 h-4" />
             </Button>
-            <p className="text-[11px] text-muted-foreground/70 text-center">{t('demoWelcome.createWorkspaceDesc')}</p>
-            <Button variant="ghost" size="sm" onClick={onClose} className="w-full text-muted-foreground mt-1 rounded-full">
-              {t('demoWelcome.exploreDemo')}
-            </Button>
+            <button
+              onClick={() => { onClose(); navigate('/pilot-demo/create-account'); }}
+              className="w-full text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2">
+              {t('demoWelcome.createWorkspace')}
+            </button>
+            <p className="text-[11px] text-muted-foreground/60 text-center -mt-1">{t('demoWelcome.createWorkspaceDesc')}</p>
           </div>
         </div>
       </motion.div>

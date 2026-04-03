@@ -3806,7 +3806,7 @@ export const en = {
     contacts_desc: '– a mini CRM to manage your clients and stakeholders',
     disclaimer: 'Everything here is for demonstration purposes only.',
     readyCta: 'When you\'re ready to start creating real reports, create your Workspace to activate your free firm account.',
-    createWorkspace: 'Create my Workspace',
+    createWorkspace: 'Create Workspace',
     createWorkspaceDesc: 'Start generating real NOₓ reports',
     exploreDemo: 'Explore the Demo',
   },
