@@ -2,35 +2,33 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   CheckCircle2,
-  ChevronDown,
   Building2,
   Users,
-  Settings,
-  ShieldCheck,
-  Upload,
   Rocket,
-  Lock,
-  Download,
+  Upload,
   X,
   Plus,
-  Trash2 } from
-'lucide-react';
+  Trash2,
+  ChevronLeft,
+  FolderKanban,
+  BookUser,
+  Settings,
+  ArrowRight,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { PilotOnboardingFlow1 } from '@/components/pilot/PilotOnboardingFlow1';
-import { DEFAULT_TAXONOMY } from '@/types/contact';
+import { useNavigate } from 'react-router-dom';
 
 /* ─── Storage ─── */
-const STORAGE_KEY = 'oxicloud_onboarding_v2';
+const STORAGE_KEY = 'oxicloud_onboarding_v3';
 
 interface SavedState {
-  completedSteps: string[];
-  legalSelfBilling: boolean;
-  legalSendConsent: boolean;
+  currentStep: number;
+  completedSteps: number[];
   dismissed: boolean;
 }
 
@@ -39,20 +37,26 @@ const loadState = (): SavedState => {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
   } catch {}
-  return { completedSteps: [], legalSelfBilling: false, legalSendConsent: false, dismissed: false };
+  return { currentStep: 0, completedSteps: [], dismissed: false };
 };
 
 const saveState = (s: SavedState) => localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
 
-/* ─── Types ─── */
-interface OnboardingStep {
+/* ─── Step definitions ─── */
+interface WizardStep {
   id: string;
-  title: string;
-  description: string;
-  icon: React.ComponentType<{className?: string;}>;
-  mandatory: boolean;
+  label: string;
+  labelNl: string;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
+const WIZARD_STEPS: WizardStep[] = [
+  { id: 'company', label: 'Company', labelNl: 'Bedrijf', icon: Building2 },
+  { id: 'team', label: 'Team', labelNl: 'Team', icon: Users },
+  { id: 'complete', label: 'Ready', labelNl: 'Klaar', icon: Rocket },
+];
+
+/* ─── Types ─── */
 interface OnboardingChecklistProps {
   onComplete?: () => void;
   onDismiss?: () => void;
@@ -60,477 +64,202 @@ interface OnboardingChecklistProps {
 }
 
 /* ═══════════════════════════════════════════════
-   STEP PANELS — each step opens as a modal overlay
+   STEP PANELS
    ═══════════════════════════════════════════════ */
 
-function StepModal({ title, children, onClose }: {title: string;children: React.ReactNode;onClose: () => void;}) {
+/* Final Screen: Workspace Configured */
+function WorkspaceCompletePanel({ nl, onNavigate }: { nl: boolean; onNavigate: (path: string) => void }) {
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-6" onClick={onClose}>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 10 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        transition={{ duration: 0.2 }}
-        className="max-w-lg w-full bg-card border border-border rounded-2xl shadow-2xl overflow-hidden max-h-[85vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}>
-        
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-          <h3 className="text-base font-semibold text-foreground">{title}</h3>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-muted transition-colors">
-            <X className="w-4 h-4 text-muted-foreground" />
-          </button>
-        </div>
-        <div className="p-6">{children}</div>
-      </motion.div>
-    </div>);
+    <div className="flex flex-col items-center text-center py-6 px-4">
+      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-5">
+        <CheckCircle2 className="w-7 h-7 text-primary" />
+      </div>
 
-}
+      <h3 className="text-xl font-semibold text-foreground mb-1.5">
+        {nl ? 'Uw workspace is volledig geconfigureerd!' : 'Your workspace is successfully fully configured!'}
+      </h3>
+      <p className="text-sm text-muted-foreground mb-8 max-w-sm leading-relaxed">
+        {nl
+          ? 'Kies hieronder waar u wilt beginnen.'
+          : 'Choose where you'd like to start next.'}
+      </p>
 
-/* Step 1: Company Profile */
-function CompanyProfilePanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
-  const [companyName, setCompanyName] = useState('Architectenbureau Janssen');
-  const [address, setAddress] = useState('Koningin Astridlaan 12, 2800 Mechelen');
-  const [vat, setVat] = useState('BE0123.456.789');
-  const [logoUploaded, setLogoUploaded] = useState(false);
+      <div className="w-full space-y-2.5 max-w-xs">
+        <Button
+          onClick={() => onNavigate('/pilot-demo/projects')}
+          className="w-full justify-between group"
+          size="lg"
+        >
+          <span className="flex items-center gap-2">
+            <FolderKanban className="w-4 h-4" />
+            {nl ? 'Maak uw eerste project' : 'Create your first project'}
+          </span>
+          <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity" />
+        </Button>
 
-  return (
-    <StepModal title={nl ? 'Bedrijfsprofiel instellen' : 'Set up Company Profile'} onClose={onClose}>
-      <div className="space-y-4">
-        {/* Logo */}
-        <div>
-          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{nl ? 'Bedrijfslogo' : 'Company Logo'}</label>
-          <div
-            className={cn(
-              "mt-1.5 border-2 border-dashed rounded-xl h-24 flex items-center justify-center cursor-pointer transition-colors",
-              logoUploaded ? "border-foreground/20 bg-muted/30" : "border-border hover:border-foreground/20"
-            )}
-            onClick={() => setLogoUploaded(true)}>
-            
-            {logoUploaded ?
-            <div className="flex items-center gap-2 text-sm text-foreground">
-                <CheckCircle2 className="w-4 h-4" />
-                <span>logo.png</span>
-              </div> :
-
-            <div className="text-center">
-                <Upload className="w-5 h-5 mx-auto text-muted-foreground mb-1" />
-                <p className="text-xs text-muted-foreground">{nl ? 'Klik om te uploaden' : 'Click to upload'}</p>
-              </div>
-            }
-          </div>
-        </div>
-
-        {/* Fields */}
-        <div>
-          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{nl ? 'Bedrijfsnaam' : 'Company Name'}</label>
-          <Input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className="mt-1.5" />
-        </div>
-        <div>
-          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{nl ? 'Adres' : 'Address'}</label>
-          <Input value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1.5" />
-        </div>
-        <div>
-          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{nl ? 'BTW-nummer' : 'VAT Number'}</label>
-          <Input value={vat} onChange={(e) => setVat(e.target.value)} className="mt-1.5" />
-        </div>
-
-        <Button onClick={onComplete} className="w-full mt-2">
-          {nl ? 'Bevestigen & doorgaan' : 'Confirm & continue'}
+        <Button
+          variant="outline"
+          onClick={() => onNavigate('/pilot-demo/contacts')}
+          className="w-full justify-between group"
+          size="lg"
+        >
+          <span className="flex items-center gap-2">
+            <BookUser className="w-4 h-4" />
+            {nl ? 'Ga naar Contacten' : 'Go to Contacts'}
+          </span>
+          <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity" />
         </Button>
       </div>
-    </StepModal>);
 
-}
-
-/* Step 2: Team Setup */
-function TeamSetupPanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
-  const [emails, setEmails] = useState<string[]>(['']);
-
-  return (
-    <StepModal title={nl ? 'Team configureren' : 'Set up your Team'} onClose={onClose}>
-      <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          {nl ? 'Nodig teamleden uit via e-mail. U kunt dit later ook doen.' : 'Invite team members by email. You can also do this later.'}
-        </p>
-
-        <div className="space-y-2">
-          {emails.map((email, i) =>
-          <div key={i} className="flex gap-2">
-              <Input
-              placeholder={nl ? 'E-mailadres' : 'Email address'}
-              value={email}
-              onChange={(e) => {
-                const next = [...emails];
-                next[i] = e.target.value;
-                setEmails(next);
-              }} />
-            
-              {emails.length > 1 &&
-            <button onClick={() => setEmails(emails.filter((_, j) => j !== i))} className="p-2 text-muted-foreground hover:text-foreground">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-            }
-            </div>
-          )}
-        </div>
-
-        <button
-          onClick={() => setEmails([...emails, ''])}
-          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-          
-          <Plus className="w-3.5 h-3.5" />
-          {nl ? 'Nog iemand toevoegen' : 'Add another'}
-        </button>
-
-        <div className="flex gap-2.5 pt-2">
-          <Button variant="ghost" onClick={onComplete} className="flex-1 text-muted-foreground">
-            {nl ? 'Overslaan' : 'Skip for now'}
-          </Button>
-          <Button onClick={onComplete} className="flex-1">
-            {nl ? 'Uitnodigingen versturen' : 'Send invites'}
-          </Button>
-        </div>
-      </div>
-    </StepModal>);
-
-}
-
-/* Step 3: Contact Configuration */
-function ContactConfigPanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
-  // Build editable state from DEFAULT_TAXONOMY
-  const [taxonomy, setTaxonomy] = useState(() =>
-    DEFAULT_TAXONOMY.map((group) => ({
-      hoofdtype: group.hoofdtype,
-      subtypes: group.subtypes.map((st) => ({ name: st, isDefault: true })),
-      isDefault: true,
-    }))
+      <p className="text-xs text-muted-foreground mt-6 max-w-xs leading-relaxed">
+        <Settings className="w-3 h-3 inline mr-1 -mt-0.5" />
+        {nl
+          ? 'U kunt altijd meer gedetailleerde instellingen (bv. privacy-machtigingen voor teams) later aanpassen in Instellingen.'
+          : 'You can always adjust more detailed settings (e.g., privacy permissions for teams) later in Settings.'}
+      </p>
+    </div>
   );
-  const [editingCell, setEditingCell] = useState<{ groupIdx: number; subIdx: number } | null>(null);
-  const [editValue, setEditValue] = useState('');
-  const [newSubtype, setNewSubtype] = useState<{ [groupIdx: number]: string }>({});
-
-  const startRename = (groupIdx: number, subIdx: number, currentName: string) => {
-    setEditingCell({ groupIdx, subIdx });
-    setEditValue(currentName);
-  };
-
-  const confirmRename = () => {
-    if (!editingCell || !editValue.trim()) { setEditingCell(null); return; }
-    setTaxonomy((prev) => {
-      const next = prev.map((g, gi) => gi === editingCell.groupIdx ? {
-        ...g,
-        subtypes: g.subtypes.map((s, si) => si === editingCell.subIdx ? { ...s, name: editValue.trim() } : s)
-      } : g);
-      return next;
-    });
-    setEditingCell(null);
-  };
-
-  const addSubtype = (groupIdx: number) => {
-    const val = (newSubtype[groupIdx] || '').trim();
-    if (!val) return;
-    setTaxonomy((prev) => prev.map((g, gi) => gi === groupIdx ? {
-      ...g,
-      subtypes: [...g.subtypes, { name: val, isDefault: false }]
-    } : g));
-    setNewSubtype((prev) => ({ ...prev, [groupIdx]: '' }));
-  };
-
-  const removeCustomSubtype = (groupIdx: number, subIdx: number) => {
-    setTaxonomy((prev) => prev.map((g, gi) => gi === groupIdx ? {
-      ...g,
-      subtypes: g.subtypes.filter((_, si) => si !== subIdx)
-    } : g));
-  };
-
-  return (
-    <StepModal title={nl ? 'Contactconfiguratie' : 'Configure Contacts'} onClose={onClose}>
-      <div className="space-y-5">
-        <p className="text-sm text-muted-foreground">
-          {nl
-            ? 'Dit is de standaard contacttaxonomie. U kunt namen aanpassen of subtypes toevoegen.'
-            : 'This is the default contact taxonomy. You can rename or add subtypes.'}
-        </p>
-
-        {taxonomy.map((group, gi) => (
-          <div key={gi} className="space-y-1">
-            {/* Group header */}
-            <div className="flex items-center gap-2 px-3 py-2 rounded-t-lg bg-muted/60 border border-border">
-              <span className="text-sm font-semibold text-foreground">{group.hoofdtype}</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium">
-                {nl ? 'Verplicht' : 'Required'}
-              </span>
-            </div>
-
-            {/* Subtypes */}
-            <div className="border border-t-0 border-border rounded-b-lg divide-y divide-border overflow-hidden">
-              {group.subtypes.map((sub, si) => (
-                <div key={si} className="flex items-center justify-between px-3 py-2 bg-background">
-                  {editingCell?.groupIdx === gi && editingCell?.subIdx === si ? (
-                    <Input
-                      autoFocus
-                      value={editValue}
-                      onChange={(e) => setEditValue(e.target.value)}
-                      onBlur={confirmRename}
-                      onKeyDown={(e) => { if (e.key === 'Enter') confirmRename(); if (e.key === 'Escape') setEditingCell(null); }}
-                      className="h-7 text-sm max-w-[200px]"
-                    />
-                  ) : (
-                    <span
-                      className="text-sm text-foreground cursor-pointer hover:text-primary transition-colors"
-                      onClick={() => startRename(gi, si, sub.name)}
-                      title={nl ? 'Klik om te hernoemen' : 'Click to rename'}
-                    >
-                      {sub.name}
-                    </span>
-                  )}
-                  {!sub.isDefault ? (
-                    <button
-                      onClick={() => removeCustomSubtype(gi, si)}
-                      className="text-muted-foreground hover:text-destructive transition-colors"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  ) : (
-                    <span className="text-[10px] text-muted-foreground/60">{nl ? 'standaard' : 'default'}</span>
-                  )}
-                </div>
-              ))}
-
-              {/* Add new subtype */}
-              <div className="flex items-center gap-2 px-3 py-2 bg-muted/20">
-                <Input
-                  placeholder={nl ? 'Nieuw subtype toevoegen...' : 'Add new subtype...'}
-                  value={newSubtype[gi] || ''}
-                  onChange={(e) => setNewSubtype((prev) => ({ ...prev, [gi]: e.target.value }))}
-                  onKeyDown={(e) => { if (e.key === 'Enter') addSubtype(gi); }}
-                  className="h-7 text-sm flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 px-0"
-                />
-                <button
-                  onClick={() => addSubtype(gi)}
-                  disabled={!(newSubtype[gi] || '').trim()}
-                  className="text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        <Button onClick={onComplete} className="w-full mt-2">
-          {nl ? 'Bevestigen & doorgaan' : 'Confirm & continue'}
-        </Button>
-      </div>
-    </StepModal>
-  );
-}
-
-/* Step 4: Financial Agreement */
-function FinancialAgreementPanel({ onComplete, onClose, nl, isCeo }: {onComplete: () => void;onClose: () => void;nl: boolean;isCeo: boolean;}) {
-  const [selfBilling, setSelfBilling] = useState(false);
-  const [sendConsent, setSendConsent] = useState(false);
-
-  return (
-    <StepModal title={nl ? 'Financiële overeenkomst' : 'Financial Agreement'} onClose={onClose}>
-      <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          {isCeo ?
-          nl ? 'Nog twee kleine handtekeningen en dan kan het feest beginnen!' : 'Just two quick sign-offs and you\'re all set!' :
-          nl ? 'Goed nieuws — uw CEO heeft dit al voor u geregeld. ✅' : 'Good news — your CEO already took care of this one. ✅'
-          }
-        </p>
-
-        <div className="space-y-3">
-          <label className="flex items-start gap-2.5 cursor-pointer">
-            <Checkbox checked={selfBilling} onCheckedChange={(c) => setSelfBilling(c === true)} disabled={!isCeo} className="mt-0.5" />
-            <div className="text-sm leading-relaxed">
-              <span className="font-medium">Self-billing {nl ? 'overeenkomst' : 'agreement'}</span>
-              <span className="text-muted-foreground">
-                {nl ?
-                ' — Wij regelen de factuur voor u wanneer er een commissie binnenkomt. Makkelijk toch?' :
-                ' — We\'ll handle the invoicing for you whenever a commission comes in. Easy peasy.'}
-              </span>
-              <button type="button" className="block text-primary text-xs mt-1 hover:underline">
-                <Download className="inline h-3 w-3 mr-1" />
-                {nl ? 'Bekijk overeenkomst (PDF)' : 'View agreement (PDF)'}
-              </button>
-            </div>
-          </label>
-
-          <label className="flex items-start gap-2.5 cursor-pointer">
-            <Checkbox checked={sendConsent} onCheckedChange={(c) => setSendConsent(c === true)} disabled={!isCeo} className="mt-0.5" />
-            <div className="text-sm leading-relaxed">
-              <span className="font-medium">{nl ? 'Offerte-autorisatie' : 'Quote authorization'}</span>
-              <span className="text-muted-foreground">
-                {nl ?
-                ' — Geef ons een duimpje omhoog om offertes namens uw bedrijf te mogen versturen.' :
-                ' — Give us the thumbs-up to send quotes to your clients on your company\'s behalf.'}
-              </span>
-            </div>
-          </label>
-        </div>
-
-        {isCeo &&
-        <Button disabled={!selfBilling || !sendConsent} onClick={onComplete} className="w-full">
-            <ShieldCheck className="w-4 h-4 mr-2" />
-            {nl ? 'Accepteren & doorgaan' : 'Accept & continue'}
-          </Button>
-        }
-      </div>
-    </StepModal>);
-
-}
-
-/* Step 5: Data Migration */
-function DataMigrationPanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
-  const [fileUploaded, setFileUploaded] = useState(false);
-
-  return (
-    <StepModal title={nl ? 'Datamigratie' : 'Data Migration'} onClose={onClose}>
-      <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          {nl ?
-          'Importeer een bestaand klantenbestand (bijv. uit ArchX) via CSV. U kunt dit ook later doen vanuit het Contacten-module.' :
-          'Import an existing client database (e.g. from ArchX) via CSV. You can also do this later from the Contacts module.'}
-        </p>
-
-        <div
-          className={cn(
-            "border-2 border-dashed rounded-xl h-32 flex items-center justify-center cursor-pointer transition-colors",
-            fileUploaded ? "border-foreground/20 bg-muted/30" : "border-border hover:border-foreground/20"
-          )}
-          onClick={() => setFileUploaded(true)}>
-          
-          {fileUploaded ?
-          <div className="flex items-center gap-2 text-sm text-foreground">
-              <CheckCircle2 className="w-4 h-4" />
-              <span>contacts_export.csv</span>
-            </div> :
-
-          <div className="text-center">
-              <Upload className="w-6 h-6 mx-auto text-muted-foreground mb-1.5" />
-              <p className="text-sm text-muted-foreground">{nl ? 'Sleep een CSV-bestand hierheen' : 'Drop a CSV file here'}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">{nl ? 'of klik om te bladeren' : 'or click to browse'}</p>
-            </div>
-          }
-        </div>
-
-        <div className="flex gap-2.5 pt-1">
-          <Button variant="ghost" onClick={onComplete} className="flex-1 text-muted-foreground">
-            {nl ? 'Overslaan' : 'Skip'}
-          </Button>
-          <Button onClick={onComplete} disabled={!fileUploaded} className="flex-1">
-            {nl ? 'Importeren' : 'Import'}
-          </Button>
-        </div>
-      </div>
-    </StepModal>);
-
-}
-
-/* Step 6: Workspace Ready */
-function WorkspaceReadyPanel({ onComplete, onClose, nl }: {onComplete: () => void;onClose: () => void;nl: boolean;}) {
-  return (
-    <StepModal title={nl ? 'Workspace klaar!' : 'Workspace Ready!'} onClose={onClose}>
-      <div className="space-y-4 text-center">
-        
-
-        
-        <div>
-          <h3 className="text-lg font-semibold text-foreground">
-            {nl ? 'Uw workspace is volledig geconfigureerd' : 'Your workspace is fully configured'}
-          </h3>
-          <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
-            {nl ?
-            'U kunt nu uw eerste projectdossier aanmaken en beginnen met verdienen.' :
-            'You can now create your first project dossier and start earning.'}
-          </p>
-        </div>
-        <Button onClick={onComplete} className="w-full" size="lg">
-          {nl ? 'Ga naar projecten →' : 'Go to projects →'}
-        </Button>
-      </div>
-    </StepModal>);
-
 }
 
 /* ═══════════════════════════════════════════════
-   MAIN CHECKLIST
+   PROGRESS STEPPER
+   ═══════════════════════════════════════════════ */
+function ProgressStepper({
+  steps,
+  currentStep,
+  completedSteps,
+  onStepClick,
+  nl,
+}: {
+  steps: WizardStep[];
+  currentStep: number;
+  completedSteps: Set<number>;
+  onStepClick: (index: number) => void;
+  nl: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-0 w-full px-2">
+      {steps.map((step, i) => {
+        const done = completedSteps.has(i);
+        const active = i === currentStep;
+        const clickable = done || i <= Math.max(...Array.from(completedSteps), 0) + 1;
+        const Icon = step.icon;
+
+        return (
+          <div key={step.id} className="flex items-center flex-1 last:flex-none">
+            <button
+              onClick={() => clickable && onStepClick(i)}
+              className={cn(
+                'flex items-center gap-2 transition-all rounded-lg px-2 py-1.5',
+                clickable && 'cursor-pointer hover:bg-muted/50',
+                !clickable && 'cursor-default opacity-40'
+              )}
+            >
+              <div
+                className={cn(
+                  'w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-xs font-semibold transition-colors',
+                  done
+                    ? 'bg-foreground text-background'
+                    : active
+                    ? 'bg-foreground/10 text-foreground border border-foreground/20'
+                    : 'bg-muted text-muted-foreground'
+                )}
+              >
+                {done ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Icon className="w-3.5 h-3.5" />}
+              </div>
+              <span
+                className={cn(
+                  'text-xs font-medium whitespace-nowrap hidden sm:inline',
+                  active ? 'text-foreground' : done ? 'text-muted-foreground' : 'text-muted-foreground/60'
+                )}
+              >
+                {nl ? step.labelNl : step.label}
+              </span>
+            </button>
+
+            {i < steps.length - 1 && (
+              <div
+                className={cn(
+                  'flex-1 h-px mx-1',
+                  done ? 'bg-foreground/30' : 'bg-border'
+                )}
+              />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   MAIN WIZARD
    ═══════════════════════════════════════════════ */
 export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: OnboardingChecklistProps) => {
   const { currentUser } = useMockAuth();
   const { language } = useLanguage();
-  const isCeo = currentUser?.role === 'client_owner';
+  const navigate = useNavigate();
   const nl = language === 'nl';
 
-  const steps: OnboardingStep[] = [
-  { id: 'company-profile', title: nl ? 'Bedrijfsprofiel instellen' : 'Set up Company Profile', description: nl ? 'Upload logo, bevestig bedrijfsgegevens en BTW' : 'Upload logo, confirm legal name, address & VAT', icon: Building2, mandatory: true },
-  { id: 'team-setup', title: nl ? 'Team configureren' : 'Set up your Team', description: nl ? 'Nodig leden uit en wijs rollen toe' : 'Invite members and assign roles', icon: Users, mandatory: true },
-  { id: 'contact-config', title: nl ? 'Contactconfiguratie' : 'Configure Contacts', description: nl ? 'Stel contacttaxonomie en standaardvelden in' : 'Define contact taxonomy and default fields', icon: Settings, mandatory: true },
-  { id: 'financial-agreement', title: nl ? 'Financiële overeenkomst' : 'Financial Agreement', description: isCeo ? nl ? 'Accepteer self-billing en offerte-autorisatie' : 'Review and sign self-billing & quote approval' : nl ? 'Reeds goedgekeurd door uw CEO' : 'Already approved by your CEO', icon: ShieldCheck, mandatory: true },
-  { id: 'data-migration', title: nl ? 'Datamigratie' : 'Data Migration', description: nl ? 'Importeer een bestaand klantenbestand via CSV' : 'Import existing client database via CSV', icon: Upload, mandatory: false },
-  { id: 'workspace-ready', title: nl ? 'Workspace klaar' : 'Workspace Ready', description: nl ? 'Start met uw eerste projectdossier' : 'Create your first project dossier', icon: Rocket, mandatory: true }];
-
-
   const [state, setState] = useState<SavedState>(loadState);
-  const [activeStep, setActiveStep] = useState<string | null>(null);
+  const [showWizardModal, setShowWizardModal] = useState(false);
 
-  useEffect(() => {saveState(state);}, [state]);
+  useEffect(() => { saveState(state); }, [state]);
 
   const completedSet = new Set(state.completedSteps);
-  const completedCount = steps.filter((s) => completedSet.has(s.id)).length;
-  const allDone = steps.every((s) => completedSet.has(s.id));
+  const allDone = WIZARD_STEPS.every((_, i) => completedSet.has(i));
 
-  const isUnlocked = (index: number): boolean => {
-    if (index === 0) return true;
-    for (let i = 0; i < index; i++) {
-      if (steps[i].mandatory && !completedSet.has(steps[i].id)) return false;
-      // Optional steps don't block, but only if they come before
-      if (!steps[i].mandatory && !completedSet.has(steps[i].id)) {
-        // optional steps don't block next steps
-        continue;
-      }
-    }
-    return true;
-  };
-
-  const markComplete = (stepId: string) => {
+  const markStepComplete = (stepIndex: number) => {
     setState((prev) => {
-      if (prev.completedSteps.includes(stepId)) return prev;
-      const next = { ...prev, completedSteps: [...prev.completedSteps, stepId] };
+      const next = {
+        ...prev,
+        completedSteps: [...new Set([...prev.completedSteps, stepIndex])],
+        currentStep: Math.min(stepIndex + 1, WIZARD_STEPS.length - 1),
+      };
       return next;
     });
-    setActiveStep(null);
-    // Check if everything done after state update
-    const nextCompleted = new Set([...state.completedSteps, stepId]);
-    if (steps.every((s) => nextCompleted.has(s.id))) onComplete?.();
   };
 
-  const handleStepClick = (step: OnboardingStep, index: number) => {
-    if (!isUnlocked(index) || completedSet.has(step.id)) return;
-    setActiveStep(step.id);
+  const goToStep = (stepIndex: number) => {
+    setState((prev) => ({ ...prev, currentStep: stepIndex }));
   };
 
-  if (allDone && !forceShow) return null;
+  const handleNavigate = (path: string) => {
+    setState((prev) => ({ ...prev, dismissed: true }));
+    setShowWizardModal(false);
+    navigate(path);
+    onComplete?.();
+  };
 
-  const progressPct = Math.round(completedCount / steps.length * 100);
+  const handleDismiss = () => {
+    setState((prev) => ({ ...prev, dismissed: true }));
+    setShowWizardModal(false);
+    onDismiss?.();
+  };
+
+  // If all done and not forced, hide the card
+  if (allDone && !forceShow && state.dismissed) return null;
+
+  const progressPct = Math.round((completedSet.size / WIZARD_STEPS.length) * 100);
 
   return (
     <>
+      {/* Summary card on dashboard */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -12 }}>
-        
+        exit={{ opacity: 0, y: -12 }}
+      >
         <div className="rounded-2xl border border-border bg-card px-5 py-4">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3">
             <div>
               <h2 className="text-sm font-semibold text-foreground">
                 {nl ? 'Setup Guide' : 'Setup Guide'}
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
-                {nl ? 'Voltooi elke stap om uw workspace te activeren' : 'Complete each step to activate your workspace'}
+                {allDone
+                  ? nl ? 'Uw workspace is volledig geconfigureerd' : 'Your workspace is fully configured'
+                  : nl ? 'Voltooi elke stap om uw workspace te activeren' : 'Complete each step to activate your workspace'}
               </p>
             </div>
             <div className="relative w-9 h-9">
@@ -539,85 +268,278 @@ export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: Onboar
                 <circle cx="18" cy="18" r="15" fill="none" stroke="hsl(var(--foreground))" strokeWidth="2.5" strokeDasharray={`${progressPct * 0.94} 100`} strokeLinecap="round" />
               </svg>
               <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-foreground">
-                {completedCount}/{steps.length}
+                {completedSet.size}/{WIZARD_STEPS.length}
               </span>
             </div>
           </div>
 
-          <div className="space-y-1">
-            {steps.map((step, index) => {
-              const done = completedSet.has(step.id);
-              const unlocked = isUnlocked(index);
+          {/* Mini stepper preview */}
+          <ProgressStepper
+            steps={WIZARD_STEPS}
+            currentStep={state.currentStep}
+            completedSteps={completedSet}
+            onStepClick={(i) => {
+              goToStep(i);
+              setShowWizardModal(true);
+            }}
+            nl={nl}
+          />
 
-              return (
-                <button
-                  key={step.id}
-                  onClick={() => handleStepClick(step, index)}
-                  disabled={!unlocked || done}
-                  className={cn(
-                    'w-full flex items-center gap-3 p-2.5 rounded-xl text-left transition-all group',
-                    done && 'opacity-40',
-                    !unlocked && !done && 'opacity-30 cursor-not-allowed',
-                    unlocked && !done && 'hover:bg-muted/50 cursor-pointer'
-                  )}>
-                  
-                  <div className={cn(
-                    'w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-[10px] font-semibold',
-                    done ? 'bg-foreground text-background' : unlocked ? 'border border-border text-muted-foreground' : 'border border-border/50 text-muted-foreground/40'
-                  )}>
-                    {done ? <CheckCircle2 className="h-3.5 w-3.5" /> : !unlocked ? <Lock className="h-3 w-3" /> : index + 1}
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className={cn('text-sm font-medium', done && 'line-through text-muted-foreground')}>{step.title}</p>
-                      {!step.mandatory && !done &&
-                      <span className="text-[9px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full font-medium">
-                          {nl ? 'Optioneel' : 'Optional'}
-                        </span>
-                      }
-                    </div>
-                    {!done && unlocked &&
-                    <p className="text-xs text-muted-foreground mt-0.5 truncate">{step.description}</p>
-                    }
-                  </div>
-                </button>);
-
-            })}
-          </div>
+          <Button
+            onClick={() => setShowWizardModal(true)}
+            className="w-full mt-3"
+            size="sm"
+          >
+            {allDone
+              ? nl ? 'Bekijk resultaat' : 'View result'
+              : nl ? 'Doorgaan met instellen' : 'Continue setup'}
+          </Button>
         </div>
       </motion.div>
 
-      {/* Step Modals */}
+      {/* Wizard Modal */}
       <AnimatePresence>
-        {(activeStep === 'company-profile' || activeStep === 'team-setup') &&
-        <PilotOnboardingFlow1
-          initialStep={activeStep === 'team-setup' ? 'team' : 'company-details'}
-          onStepComplete={(stepId) => {
-            if (stepId === 'company') markComplete('company-profile');
-            if (stepId === 'team') markComplete('team-setup');
-          }}
-          onComplete={() => {
-            markComplete('company-profile');
-            markComplete('team-setup');
-            setActiveStep(null);
-          }}
-          onClose={() => setActiveStep(null)}
-        />
-        }
-        {activeStep === 'contact-config' &&
-        <ContactConfigPanel nl={nl} onComplete={() => markComplete('contact-config')} onClose={() => setActiveStep(null)} />
-        }
-        {activeStep === 'financial-agreement' &&
-        <FinancialAgreementPanel nl={nl} isCeo={isCeo} onComplete={() => markComplete('financial-agreement')} onClose={() => setActiveStep(null)} />
-        }
-        {activeStep === 'data-migration' &&
-        <DataMigrationPanel nl={nl} onComplete={() => markComplete('data-migration')} onClose={() => setActiveStep(null)} />
-        }
-        {activeStep === 'workspace-ready' &&
-        <WorkspaceReadyPanel nl={nl} onComplete={() => markComplete('workspace-ready')} onClose={() => setActiveStep(null)} />
-        }
-      </AnimatePresence>
-    </>);
+        {showWizardModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowWizardModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="max-w-lg w-full bg-card border border-border rounded-2xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header with stepper */}
+              <div className="px-5 pt-5 pb-3 border-b border-border shrink-0">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base font-semibold text-foreground">
+                    {nl ? 'Workspace instellen' : 'Set up your Workspace'}
+                  </h3>
+                  <button
+                    onClick={() => setShowWizardModal(false)}
+                    className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+                  >
+                    <X className="w-4 h-4 text-muted-foreground" />
+                  </button>
+                </div>
+                <ProgressStepper
+                  steps={WIZARD_STEPS}
+                  currentStep={state.currentStep}
+                  completedSteps={completedSet}
+                  onStepClick={goToStep}
+                  nl={nl}
+                />
+              </div>
 
+              {/* Step content */}
+              <div className="flex-1 overflow-y-auto">
+                <AnimatePresence mode="wait">
+                  {/* Step 0: Company */}
+                  {state.currentStep === 0 && (
+                    <motion.div
+                      key="company"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <CompanyStepInline
+                        nl={nl}
+                        done={completedSet.has(0)}
+                        onComplete={() => markStepComplete(0)}
+                      />
+                    </motion.div>
+                  )}
+
+                  {/* Step 1: Team */}
+                  {state.currentStep === 1 && (
+                    <motion.div
+                      key="team"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <TeamStepInline
+                        nl={nl}
+                        done={completedSet.has(1)}
+                        onComplete={() => markStepComplete(1)}
+                        onBack={() => goToStep(0)}
+                      />
+                    </motion.div>
+                  )}
+
+                  {/* Step 2: Complete */}
+                  {state.currentStep === 2 && (
+                    <motion.div
+                      key="complete"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <WorkspaceCompletePanel nl={nl} onNavigate={handleNavigate} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Legacy PilotOnboardingFlow1 modal — reused for company/team content */}
+      <AnimatePresence>
+        {/* We embed the steps inline now, no separate flow needed */}
+      </AnimatePresence>
+    </>
+  );
 };
+
+/* ═══════════════════════════════════════════════
+   INLINE STEP PANELS (inside wizard modal)
+   ═══════════════════════════════════════════════ */
+
+function CompanyStepInline({ nl, done, onComplete }: { nl: boolean; done: boolean; onComplete: () => void }) {
+  const [companyName, setCompanyName] = useState('Architectenbureau Janssen');
+  const [address, setAddress] = useState('Koningin Astridlaan 12, 2800 Mechelen');
+  const [vat, setVat] = useState('BE0123.456.789');
+  const [logoUploaded, setLogoUploaded] = useState(false);
+
+  return (
+    <div className="p-6 space-y-4">
+      <div>
+        <h4 className="text-sm font-semibold text-foreground mb-0.5">
+          {nl ? 'Bedrijfsprofiel instellen' : 'Set up Company Profile'}
+        </h4>
+        <p className="text-xs text-muted-foreground">
+          {nl ? 'Upload logo, bevestig bedrijfsgegevens en BTW' : 'Upload logo, confirm legal name, address & VAT'}
+        </p>
+      </div>
+
+      {/* Logo */}
+      <div>
+        <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          {nl ? 'Bedrijfslogo' : 'Company Logo'}
+        </label>
+        <div
+          className={cn(
+            'mt-1.5 border-2 border-dashed rounded-xl h-20 flex items-center justify-center cursor-pointer transition-colors',
+            logoUploaded ? 'border-foreground/20 bg-muted/30' : 'border-border hover:border-foreground/20'
+          )}
+          onClick={() => setLogoUploaded(true)}
+        >
+          {logoUploaded ? (
+            <div className="flex items-center gap-2 text-sm text-foreground">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>logo.png</span>
+            </div>
+          ) : (
+            <div className="text-center">
+              <Upload className="w-5 h-5 mx-auto text-muted-foreground mb-1" />
+              <p className="text-xs text-muted-foreground">{nl ? 'Klik om te uploaden' : 'Click to upload'}</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{nl ? 'Bedrijfsnaam' : 'Company Name'}</label>
+        <Input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className="mt-1.5" />
+      </div>
+      <div>
+        <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{nl ? 'Adres' : 'Address'}</label>
+        <Input value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1.5" />
+      </div>
+      <div>
+        <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{nl ? 'BTW-nummer' : 'VAT Number'}</label>
+        <Input value={vat} onChange={(e) => setVat(e.target.value)} className="mt-1.5" />
+      </div>
+
+      <Button onClick={onComplete} className="w-full mt-2">
+        {done
+          ? nl ? 'Opnieuw opgeslagen' : 'Saved'
+          : nl ? 'Bevestigen & doorgaan' : 'Confirm & continue'}
+      </Button>
+    </div>
+  );
+}
+
+function TeamStepInline({
+  nl,
+  done,
+  onComplete,
+  onBack,
+}: {
+  nl: boolean;
+  done: boolean;
+  onComplete: () => void;
+  onBack: () => void;
+}) {
+  const [emails, setEmails] = useState<string[]>(['']);
+
+  return (
+    <div className="p-6 space-y-4">
+      <div className="flex items-center gap-2">
+        <button onClick={onBack} className="p-1 rounded-lg hover:bg-muted transition-colors text-muted-foreground">
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <div>
+          <h4 className="text-sm font-semibold text-foreground mb-0.5">
+            {nl ? 'Team configureren' : 'Set up your Team'}
+          </h4>
+          <p className="text-xs text-muted-foreground">
+            {nl ? 'Nodig teamleden uit via e-mail. U kunt dit later ook doen.' : 'Invite team members by email. You can also do this later.'}
+          </p>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        {emails.map((email, i) => (
+          <div key={i} className="flex gap-2">
+            <Input
+              placeholder={nl ? 'E-mailadres' : 'Email address'}
+              value={email}
+              onChange={(e) => {
+                const next = [...emails];
+                next[i] = e.target.value;
+                setEmails(next);
+              }}
+            />
+            {emails.length > 1 && (
+              <button
+                onClick={() => setEmails(emails.filter((_, j) => j !== i))}
+                className="p-2 text-muted-foreground hover:text-foreground"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={() => setEmails([...emails, ''])}
+        className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <Plus className="w-3.5 h-3.5" />
+        {nl ? 'Nog iemand toevoegen' : 'Add another'}
+      </button>
+
+      <div className="flex gap-2.5 pt-2">
+        <Button variant="ghost" onClick={onComplete} className="flex-1 text-muted-foreground">
+          {nl ? 'Overslaan' : 'Skip for now'}
+        </Button>
+        <Button onClick={onComplete} className="flex-1">
+          {nl ? 'Uitnodigingen versturen' : 'Send invites'}
+        </Button>
+      </div>
+    </div>
+  );
+}
