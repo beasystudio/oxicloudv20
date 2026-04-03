@@ -229,7 +229,7 @@ export default function ClientDashboard() {
             <h1 className="text-3xl tracking-tight leading-[1.15] text-foreground font-semibold">
               {greeting()}, {currentUser?.name?.split(' ')[0]}.
             </h1>
-            <p className="text-sm text-muted-foreground mt-1.5 max-w-xl">
+            <p className="text-sm text-muted-foreground mt-1.5">
               {language === 'nl'
                 ? 'Welkom in de OxiCloud demo-omgeving. Verken de modules hieronder om het platform te leren kennen.'
                 : 'Welcome to the OxiCloud demo environment. Explore the modules below to get to know the platform.'}
