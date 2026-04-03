@@ -242,8 +242,8 @@ export default function ClientDashboard() {
             {/* Card 1 – Settings */}
             <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                  <Settings className="w-4 h-4 text-foreground" />
+                <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-semibold text-foreground">
+                  1
                 </div>
                 <h2 className="text-sm font-semibold text-foreground">
                   {language === 'nl' ? 'Configureer uw Workspace' : 'Configure Your Workspace'}
@@ -281,8 +281,8 @@ export default function ClientDashboard() {
             {/* Card 2 – Projects */}
             <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                  <FolderKanban className="w-4 h-4 text-foreground" />
+                <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-semibold text-foreground">
+                  2
                 </div>
                 <h2 className="text-sm font-semibold text-foreground">
                   {language === 'nl' ? 'Verken de Projectmap' : 'Explore the Project Binder'}
@@ -310,8 +310,8 @@ export default function ClientDashboard() {
             {/* Card 3 – Contacts */}
             <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                  <Users className="w-4 h-4 text-foreground" />
+                <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-semibold text-foreground">
+                  3
                 </div>
                 <h2 className="text-sm font-semibold text-foreground">
                   {language === 'nl' ? 'Ervaar de Contactmodule' : 'Experience the Contact Module'}
@@ -344,8 +344,8 @@ export default function ClientDashboard() {
             {/* Card 4 – Partner Program */}
             <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center shrink-0">
-                  <Trophy className="w-4 h-4 text-primary" />
+                <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-semibold text-foreground">
+                  4
                 </div>
                 <h2 className="text-sm font-semibold text-foreground">
                   {language === 'nl' ? 'Word Partner' : 'Become a Partner'}
@@ -408,7 +408,7 @@ export default function ClientDashboard() {
                     <div className="w-7 h-7 rounded-full border border-border flex items-center justify-center cursor-help hover:bg-muted/50 transition-colors shrink-0">
                       <Info className="w-3.5 h-3.5 text-muted-foreground" />
                     </div>
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 rounded-lg bg-foreground text-background text-xs p-2.5 leading-relaxed opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20 shadow-lg">
+                    <div className="absolute bottom-full right-0 mb-2 w-56 rounded-lg bg-foreground text-background text-xs p-2.5 leading-relaxed opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20 shadow-lg">
                       {language === 'nl'
                         ? 'Uw manager ontvangt een e-mail om uw Workspace aan het bureau te koppelen.'
                         : 'Your manager will get an email to link your Workspace to the firm.'}
