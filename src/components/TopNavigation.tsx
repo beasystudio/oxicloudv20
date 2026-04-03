@@ -480,14 +480,11 @@ export const TopNavigation = () => {
     <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
-          {/* Left: OxiCloud logo + Demo badge + Nav */}
+          {/* Left: OxiCloud logo + Nav */}
           <div className="flex items-center gap-6">
             <Link to={isOwnerOrAdmin ? '/dashboard/admin' : isAuthority ? '/dashboard/authority' : '/dashboard/client/home'} className="shrink-0">
               <img src={theme === 'dark' ? oxiLogoLight : oxiLogoDark} alt="OxiCloud" className="h-7 w-7" />
             </Link>
-            <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded-full border border-muted-foreground/30 text-muted-foreground dark:border-primary/30 dark:text-primary">
-              Demo
-            </span>
             <div className="hidden md:flex">
               {renderNavigation()}
             </div>
