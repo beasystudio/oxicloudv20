@@ -61,7 +61,7 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
 
             {/* Nav items - matching production client nav */}
             <div className="hidden md:flex items-center gap-2">
-              <NavItem to="/pilot-demo/dashboard" label={t('pilot.nav.home')} />
+              <NavItem to="/pilot-demo/projects" label={t('pilot.nav.projects')} />
               <NavItem to="/pilot-demo/projects" label={t('pilot.nav.projects')} />
               <NavItem to="/pilot-demo/contacts" label={t('pilot.nav.contacts')} />
             </div>
