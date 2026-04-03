@@ -122,19 +122,19 @@ export default function ClientDashboard() {
   const pendingTasks = useMemo(() => {
     const tasks: {id: string;title: string;description: string;action: () => void;}[] = [];
     noxProjects.filter((p) => p.noxData?.status === 'awaiting_payment').forEach((p) => {
-      tasks.push({ id: `ap-${p.id}`, title: `"${p.name}" — ${t('dashboard.client.awaitingPayment')}`, description: t('dashboard.client.followUpPayment'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'pay' } }) });
+      tasks.push({ id: `ap-${p.id}`, title: `"${p.name}" - ${t('dashboard.client.awaitingPayment')}`, description: t('dashboard.client.followUpPayment'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'pay' } }) });
     });
     noxProjects.filter((p) => !p.noxData || p.noxData.status === 'input_completed' && !p.noxData.priceData).forEach((p) => {
-      tasks.push({ id: `ni-${p.id}`, title: `"${p.name}" — ${t('dashboard.client.inputIncomplete')}`, description: t('dashboard.client.fillPreEstimation'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'pre-estimation' } }) });
+      tasks.push({ id: `ni-${p.id}`, title: `"${p.name}" - ${t('dashboard.client.inputIncomplete')}`, description: t('dashboard.client.fillPreEstimation'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'pre-estimation' } }) });
     });
     noxProjects.filter((p) => p.noxData?.status === 'price_generated' || p.noxData?.status === 'input_completed' && p.noxData?.priceData).forEach((p) => {
-      tasks.push({ id: `rq-${p.id}`, title: `"${p.name}" — ${t('dashboard.client.prepareQuote')}`, description: t('dashboard.client.generateAndSend'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'payment' } }) });
+      tasks.push({ id: `rq-${p.id}`, title: `"${p.name}" - ${t('dashboard.client.prepareQuote')}`, description: t('dashboard.client.generateAndSend'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'payment' } }) });
     });
     noxProjects.filter((p) => p.noxData?.status === 'report_in_progress').forEach((p) => {
-      tasks.push({ id: `ip-${p.id}`, title: `"${p.name}" — ${t('dashboard.client.reportInProgress')}`, description: t('dashboard.client.finishCalculation'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'details' } }) });
+      tasks.push({ id: `ip-${p.id}`, title: `"${p.name}" - ${t('dashboard.client.reportInProgress')}`, description: t('dashboard.client.finishCalculation'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'details' } }) });
     });
     noxProjects.filter((p) => p.noxData?.status === 'paid' && !p.noxData?.detailedCalculation).forEach((p) => {
-      tasks.push({ id: `pc-${p.id}`, title: `"${p.name}" — ${t('dashboard.client.startCalculation')}`, description: t('dashboard.client.paymentReceivedStart'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'details' } }) });
+      tasks.push({ id: `pc-${p.id}`, title: `"${p.name}" - ${t('dashboard.client.startCalculation')}`, description: t('dashboard.client.paymentReceivedStart'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'details' } }) });
     });
     return tasks;
   }, [noxProjects, navigate, t]);
@@ -187,7 +187,7 @@ export default function ClientDashboard() {
   const isFirstTimeUser = !settingsStatus.allComplete;
 
   const displayActions = pendingTasks.length > 0 ? pendingTasks : [
-  { id: '1', title: `"Renovatie Villa Mechelen" — ${t('dashboard.client.inputIncomplete')}`, description: t('dashboard.client.fillPreEstimation'), action: () => {} }];
+  { id: '1', title: `"Renovatie Villa Mechelen" - ${t('dashboard.client.inputIncomplete')}`, description: t('dashboard.client.fillPreEstimation'), action: () => {} }];
 
 
   return (
@@ -239,7 +239,7 @@ export default function ClientDashboard() {
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 
-            {/* Card 1 – Settings */}
+            {/* Card 1 - Settings */}
             <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-semibold text-foreground">
@@ -278,7 +278,7 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* Card 2 – Projects */}
+            {/* Card 2 - Projects */}
             <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-semibold text-foreground">
@@ -307,7 +307,7 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* Card 3 – Contacts */}
+            {/* Card 3 - Contacts */}
             <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-semibold text-foreground">
@@ -320,8 +320,8 @@ export default function ClientDashboard() {
               <div className="flex-1 space-y-2.5 mb-5">
                 <p className="text-[13px] text-muted-foreground leading-relaxed">
                   {language === 'nl'
-                    ? 'Bekijk hoe uw adresboek gestructureerd en gesynchroniseerd is over het hele platform — van klantbedrijven tot projecteigenaars.'
-                    : 'See how your address book is structured and synchronized across the platform — from client companies to project owners.'}
+                    ? 'Bekijk hoe uw adresboek gestructureerd en gesynchroniseerd is over het hele platform - van klantbedrijven tot projecteigenaars.'
+                    : 'See how your address book is structured and synchronized across the platform - from client companies to project owners.'}
                 </p>
                 <p className="text-[13px] text-muted-foreground leading-relaxed">
                   {language === 'nl'
@@ -341,7 +341,7 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* Card 4 – Partner Program */}
+            {/* Card 4 - Partner Program */}
             <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-semibold text-foreground">
@@ -372,7 +372,7 @@ export default function ClientDashboard() {
               </div>
             </div>
 
-            {/* Card 5 – Start Your Own Workspace (spans 2 cols, emphasized) */}
+            {/* Card 5 - Start Your Own Workspace (spans 2 cols, emphasized) */}
             <div className="md:col-span-2 rounded-2xl border-2 border-primary/30 bg-card/80 backdrop-blur-xl p-6 flex flex-col relative overflow-hidden">
               {/* Subtle accent glow */}
               <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
@@ -388,8 +388,8 @@ export default function ClientDashboard() {
 
               <p className="text-[13px] text-muted-foreground leading-relaxed mt-3 mb-5 max-w-2xl relative z-10">
                 {language === 'nl'
-                  ? 'Klaar om echte analyses uit te voeren? Sommige OxiCloud-gebruikers werken zelfstandig én in opdracht van een bureau. We koppelen uw Workspace automatisch aan uw bureau op basis van uw inlog-e-mail — of u kunt uw manager uitnodigen indien nodig.'
-                  : 'Ready to run real analyses? Some OxiCloud users work independently and also on behalf of a firm. We automatically link your Workspace to your firm based on your login email — or you can invite your manager if needed.'}
+                  ? 'Klaar om echte analyses uit te voeren? Sommige OxiCloud-gebruikers werken zelfstandig én in opdracht van een bureau. We koppelen uw Workspace automatisch aan uw bureau op basis van uw inlog-e-mail - of u kunt uw manager uitnodigen indien nodig.'
+                  : 'Ready to run real analyses? Some OxiCloud users work independently and also on behalf of a firm. We automatically link your Workspace to your firm based on your login email - or you can invite your manager if needed.'}
               </p>
 
               <div className="grid grid-cols-2 gap-3 mb-4 relative z-10">
@@ -420,8 +420,8 @@ export default function ClientDashboard() {
               <p className="text-[11px] text-muted-foreground/70 leading-relaxed max-w-2xl relative z-10">
                 <span className="font-medium text-muted-foreground">Tip:</span>{' '}
                 {language === 'nl'
-                  ? 'Als freelancer behoort uw Workspace aan u en worden partnerafrekeningen rechtstreeks aan u toegewezen. Als werknemer worden deze afrekeningen toegewezen aan de Workspace-eigenaar — nodig uw manager uit zodat uw bureau correct gekoppeld is en erkenning krijgt.'
-                  : 'As a freelancer, your Workspace belongs to you and partner settlements are assigned directly to you. As an employee, these settlements are assigned to the Workspace owner — invite your manager to ensure your firm is properly linked and receives recognition.'}
+                  ? 'Als freelancer behoort uw Workspace aan u en worden partnerafrekeningen rechtstreeks aan u toegewezen. Als werknemer worden deze afrekeningen toegewezen aan de Workspace-eigenaar - nodig uw manager uit zodat uw bureau correct gekoppeld is en erkenning krijgt.'
+                  : 'As a freelancer, your Workspace belongs to you and partner settlements are assigned directly to you. As an employee, these settlements are assigned to the Workspace owner - invite your manager to ensure your firm is properly linked and receives recognition.'}
               </p>
             </div>
 
