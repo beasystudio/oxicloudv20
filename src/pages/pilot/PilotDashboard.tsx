@@ -85,7 +85,7 @@ export default function PilotDashboard() {
           if (flow === 3) navigate('/pilot-demo/projects');
         }} />
 
-        <div className="max-w-[1120px] mx-auto px-5 py-6 pb-16 w-full">
+        <div className="container mx-auto px-4 py-6 pb-16 w-full">
 
           {/* Greeting */}
           <motion.div {...fade(0.1)} className="mb-5">
