@@ -255,14 +255,34 @@ export default function PilotCreateAccount() {
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-3">
-              <F label={`${t.companyName} *`} value={form.companyName} onChange={set('companyName')} error={errors.companyName} span={2} />
-              <F label={`${t.peppolId} *`} value={form.peppolId} onChange={set('peppolId')} placeholder="0208:BE0123456789" error={errors.peppolId} span={2} />
-              <F label={t.street} value={form.street} onChange={set('street')} />
-              <F label={t.nr} value={form.number} onChange={set('number')} />
-              <F label={t.postal} value={form.postalCode} onChange={set('postalCode')} />
-              <F label={t.city} value={form.city} onChange={set('city')} />
-              <F label={t.country} value={form.country} onChange={set('country')} span={2} />
+            <div className="space-y-3">
+              {/* Row 1: Company Name + VAT Number */}
+              <div className="grid grid-cols-2 gap-3">
+                <F label={`${t.companyName} *`} value={form.companyName} onChange={set('companyName')} error={errors.companyName} />
+                <F label={`${t.vat} *`} value={vatInput} onChange={e => { setVatInput(e.target.value); if (lookupStatus === 'success') setLookupStatus('idle'); }} readOnly={lookupStatus === 'success'} />
+              </div>
+              {/* Row 2: KBO Number + PEPPOL ID */}
+              <div className="grid grid-cols-2 gap-3">
+                <F label={t.kboNumber} value={form.kboNumber} onChange={set('kboNumber')} placeholder="0123.456.789" />
+                <F label={t.peppolId} value={form.peppolId} onChange={set('peppolId')} placeholder="0208:BE0453671077" />
+              </div>
+              {/* Row 3: Street + House Number + Bus */}
+              <div className="grid grid-cols-[1fr_auto_auto] gap-3">
+                <F label={`${t.street} *`} value={form.street} onChange={set('street')} />
+                <div className="w-24">
+                  <F label={t.nr} value={form.number} onChange={set('number')} />
+                </div>
+                <div className="w-20">
+                  <F label={t.bus} value={form.bus} onChange={set('bus')} placeholder="Bus/Unit" />
+                </div>
+              </div>
+              {/* Row 4: Postal Code + City */}
+              <div className="grid grid-cols-2 gap-3">
+                <F label={`${t.postal} *`} value={form.postalCode} onChange={set('postalCode')} />
+                <F label={`${t.city} *`} value={form.city} onChange={set('city')} />
+              </div>
+              {/* Row 5: Country */}
+              <F label={t.country} value={form.country} onChange={set('country')} />
             </div>
           </Section>
 
