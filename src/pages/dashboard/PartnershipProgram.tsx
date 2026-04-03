@@ -326,7 +326,7 @@ export default function PartnershipProgram() {
                         {'badges' in step && step.badges && (
                           <div className="flex flex-wrap gap-2 mb-3">
                             {step.badges.map((badge) => (
-                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
+                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1.5 rounded-full border border-border/60 bg-background text-foreground/80">
                                 {badge}
                               </span>
                             ))}
@@ -335,7 +335,7 @@ export default function PartnershipProgram() {
                         {'badgesRed' in step && step.badgesRed && (
                           <div className="flex flex-wrap gap-2 mb-3">
                             {step.badgesRed.map((badge) => (
-                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1 rounded-full bg-destructive/10 text-destructive">
+                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1.5 rounded-full border border-foreground/20 bg-foreground text-background">
                                 {badge}
                               </span>
                             ))}
