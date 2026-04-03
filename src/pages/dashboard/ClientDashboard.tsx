@@ -417,7 +417,7 @@ export default function ClientDashboard() {
                 </div>
               </div>
 
-              <p className="text-[11px] text-muted-foreground/70 leading-relaxed max-w-2xl relative z-10">
+              <p className="text-[11px] text-muted-foreground/70 leading-relaxed relative z-10">
                 <span className="font-medium text-muted-foreground">Tip:</span>{' '}
                 {language === 'nl'
                   ? 'Als freelancer behoort uw Workspace aan u en worden partnerafrekeningen rechtstreeks aan u toegewezen. Als werknemer worden deze afrekeningen toegewezen aan de Workspace-eigenaar - nodig uw manager uit zodat uw bureau correct gekoppeld is en erkenning krijgt.'
