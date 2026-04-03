@@ -239,7 +239,6 @@ export const TopNavigation = () => {
     if (isClientRole) {
       return (
         <div className="flex items-center gap-2">
-          <NavItem to="/dashboard/client/home" icon={Home} label={t('dashboard.nav.home')} isActiveRoute={isActive('/dashboard/client/home')} />
           <NavItem to="/dashboard/projects" icon={FolderKanban} label={t('dashboard.nav.projects')} isActiveRoute={isActive('/dashboard/projects')} />
           <NavItem to="/dashboard/contacts" icon={Users} label={t('dashboard.nav.contacts')} isActiveRoute={isActive('/dashboard/contacts')} />
         </div>
