@@ -159,10 +159,12 @@ export default function PilotSettings() {
 
   const handleUpdateCompany = (companyData: CompanyModalData) => {
     if (!editModalData?.id) return;
+    const existing = companies.find(c => c.id === editModalData.id);
     const updated: PilotCompanyData = {
       id: editModalData.id,
       name: companyData.name,
       vatNumber: companyData.vatNumber,
+      email: existing?.email || '',
       street: companyData.street,
       number: companyData.number,
       postalCode: companyData.postalCode,
