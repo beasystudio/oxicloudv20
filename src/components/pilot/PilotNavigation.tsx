@@ -136,7 +136,6 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
                   <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs font-medium">
                     {getInitials(`${user.firstName} ${user.lastName}`)}
                   </div>
-                  <span className="text-xs font-medium text-foreground hidden sm:block max-w-[120px] truncate">{company.name}</span>
                   <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
                 </button>
               </DropdownMenuTrigger>
