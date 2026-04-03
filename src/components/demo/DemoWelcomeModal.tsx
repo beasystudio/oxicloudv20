@@ -75,9 +75,9 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
                     initial={{ opacity: 0, x: -6 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.25 + i * 0.06 }}
-                    className="flex items-start gap-2.5"
+                    className="flex items-center gap-2.5"
                   >
-                    <div className="mt-0.5 w-6 h-6 rounded-lg bg-card dark:bg-secondary flex items-center justify-center shrink-0 border border-border/60">
+                    <div className="w-6 h-6 rounded-lg bg-card dark:bg-secondary flex items-center justify-center shrink-0 border border-border/60">
                       <Icon className="w-3 h-3 text-foreground/70" />
                     </div>
                     <span className="text-[13px] text-foreground leading-snug">
