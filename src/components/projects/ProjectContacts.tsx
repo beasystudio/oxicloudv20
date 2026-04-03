@@ -210,7 +210,7 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
                         className={cn(
                           "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
                           isSelected
-                            ? "bg-muted/60 ring-1 ring-foreground/20 rounded-lg mx-1 border-transparent"
+                            ? "bg-card ring-1 ring-border rounded-xl mx-1.5 my-0.5 border-transparent shadow-sm"
                             : "hover:scale-[1.02] hover:z-10"
                         )}
                         onClick={() => setSelectedCompany(isSelected ? null : group.firmName)}
