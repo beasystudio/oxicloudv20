@@ -362,7 +362,7 @@ export default function PilotContacts() {
                   /* Company View */
                   filteredCompanies.length === 0 ? (
                     <div className="text-center py-16 text-muted-foreground">
-                      <Building2 className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                      
                       <p className="text-sm font-medium mb-1">{t('pilot.contacts.noContactsYet')}</p>
                       <p className="text-xs">{t('pilot.contacts.noContactsDesc')}</p>
                       <Button size="sm" className="mt-4" onClick={() => setShowAddCompany(true)}>
