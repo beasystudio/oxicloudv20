@@ -324,7 +324,7 @@ export default function PilotContacts() {
                     </SelectContent>
                   </Select>
                   <div className="flex-1" />
-                  <Button size="sm" onClick={() => setShowAddCompany(true)} className="h-8 text-xs">
+                  <Button variant="outline" size="sm" onClick={() => setShowAddCompany(true)} className="h-8 text-xs">
                     <Plus className="h-3.5 w-3.5 mr-1" />{t('pilot.contacts.addContact')}
                   </Button>
                 </div>
