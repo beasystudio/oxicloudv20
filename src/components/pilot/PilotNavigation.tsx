@@ -53,17 +53,11 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
     <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
-          {/* Left: Company branding + Nav */}
+          {/* Left: OxiCloud logo + Nav */}
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                {companyLogo ? (
-                  <img src={companyLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-muted border border-border" />
-                ) : (
-                  <span className="font-semibold text-sm text-foreground">{company.name}</span>
-                )}
-              </div>
-            </div>
+            <Link to="/pilot-demo/dashboard" className="shrink-0">
+              <img src={theme === 'dark' ? oxiLogoLight : oxiLogoDark} alt="OxiCloud" className="h-7 w-7" />
+            </Link>
 
             {/* Nav items - matching production client nav */}
             <div className="hidden md:flex items-center gap-2">
