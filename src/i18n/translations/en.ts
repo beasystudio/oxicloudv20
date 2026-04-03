@@ -3794,7 +3794,7 @@ export const en = {
 
   demoWelcome: {
     title: 'Welcome to the OxiCloud Demo',
-    body: 'Explore how OxiCloud calculates NOx emissions during the construction and operation phases of a project.\n\nYou are currently viewing a sample workspace with illustrative data. This allows you to safely explore the platform and its features.',
+    body: 'Explore how OxiCloud calculates NOx emissions during the construction and operation phases of a project.\n\nYou are currently viewing a sample workspace with illustrative data.\nThis allows you to safely explore the platform and its features.',
     explore: 'Feel free to browse the platform:',
     partner_name: 'Partner Program',
     partner_desc: '– learn how your firm gets rewarded for being a great partner',

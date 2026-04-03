@@ -32,7 +32,7 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 16 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-md bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
+        className="w-full max-w-lg bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
 
         {/* Close button + badge */}
         <div className="flex items-center justify-between px-6 pt-5 pb-0">
