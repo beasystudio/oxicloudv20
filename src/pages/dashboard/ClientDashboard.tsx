@@ -260,11 +260,6 @@ export default function ClientDashboard() {
                     ? 'Hier configureert u hoe uw team samenwerkt in OxiCloud en organiseert u uw bedrijfsinformatie.'
                     : 'Here you can configure how your team collaborates in OxiCloud and organize your company information.'}
                 </p>
-                <p className="text-[12px] text-muted-foreground/70 leading-relaxed italic">
-                  {language === 'nl'
-                    ? 'U bekijkt momenteel een demo-workspace met voorbeelddata, zodat u de instellingen veilig kunt verkennen.'
-                    : 'You are currently viewing a demo workspace with sample data so you can safely explore the settings.'}
-                </p>
               </div>
               <div className="mt-auto">
                 <button
