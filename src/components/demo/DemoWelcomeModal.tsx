@@ -13,10 +13,10 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
   const { t } = useLanguage();
 
   const features = [
+    { icon: Handshake, text: t('demoWelcome.partner') },
+    { icon: Settings, text: t('demoWelcome.settings') },
     { icon: FolderOpen, text: t('demoWelcome.projects') },
     { icon: Users, text: t('demoWelcome.contacts') },
-    { icon: Settings, text: t('demoWelcome.settings') },
-    { icon: Handshake, text: t('demoWelcome.partner') },
   ];
 
   return (
@@ -33,9 +33,6 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
         exit={{ opacity: 0, scale: 0.96, y: 16 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-md bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
-
-        {/* Top accent bar */}
-        <div className="h-1 w-full bg-gradient-to-r from-primary via-primary/70 to-primary/30" />
 
         {/* Close button + badge */}
         <div className="flex items-center justify-between px-6 pt-5 pb-0">
@@ -65,7 +62,7 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
           {/* Feature list */}
           <div className="rounded-xl bg-muted/40 dark:bg-muted/20 border border-border/50 p-4">
             <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.08em] mb-3">{t('demoWelcome.explore')}</p>
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="space-y-2.5">
               {features.map(({ icon: Icon, text }, i) => {
                 return (
                   <motion.div
