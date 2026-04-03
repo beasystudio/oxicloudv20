@@ -281,8 +281,8 @@ export default function ClientDashboard() {
             {/* Card 2 – Projects */}
             <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                  <FolderKanban className="w-4 h-4 text-foreground" />
+                <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-semibold text-foreground">
+                  2
                 </div>
                 <h2 className="text-sm font-semibold text-foreground">
                   {language === 'nl' ? 'Verken de Projectmap' : 'Explore the Project Binder'}
