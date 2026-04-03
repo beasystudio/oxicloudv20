@@ -45,6 +45,7 @@ interface PilotCompanyData {
   id: string;
   name: string;
   vatNumber: string;
+  email: string;
   street: string;
   number: string;
   postalCode: string;
