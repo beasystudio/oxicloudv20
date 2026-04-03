@@ -14,6 +14,8 @@ import { ScrollArea } from "./ui/scroll-area";
 import { useLanguage, type Language } from "@/i18n/LanguageContext";
 import { supabase } from '@/integrations/supabase/client';
 import { useTheme } from '@/contexts/ThemeContext';
+import oxiLogoLight from '@/assets/oxicloud-logo-light.png';
+import oxiLogoDark from '@/assets/oxicloud-logo-dark.png';
 
 export const TopNavigation = () => {
   const { language, setLanguage, t } = useLanguage();
