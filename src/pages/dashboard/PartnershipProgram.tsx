@@ -315,23 +315,37 @@ export default function PartnershipProgram() {
                         )}
                       </div>
                       <div className={`pt-1.5 ${i === t.steps.length - 1 ? 'pb-0' : 'pb-10'}`}>
+                        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 font-semibold mb-1">Step {i + 1}</p>
                         <p className="text-[15px] font-semibold text-foreground mb-3">{step.title}</p>
                         {step.body.split('\n\n').map((para, j) => (
                           <p key={j} className="text-[14px] text-muted-foreground leading-[1.8] mb-3">{para}</p>
                         ))}
-                        {step.list && (
-                          <ul className="space-y-2 mb-3 ml-1">
-                            {step.list.map((li) => (
-                              <li key={li} className="flex items-start gap-2.5 text-[14px] text-muted-foreground leading-[1.7]">
-                                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40 shrink-0 mt-[9px]" />
-                                {li}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
                         {step.extra && step.extra.split('\n\n').map((para, j) => (
                           <p key={`e${j}`} className="text-[14px] text-muted-foreground leading-[1.8] mb-3">{para}</p>
                         ))}
+                        {'badges' in step && step.badges && (
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {step.badges.map((badge) => (
+                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
+                                {badge}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {'badgesRed' in step && step.badgesRed && (
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {step.badgesRed.map((badge) => (
+                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1 rounded-full bg-destructive/10 text-destructive">
+                                {badge}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {'callout' in step && step.callout && (
+                          <div className="border-l-2 border-border/60 pl-4 mt-2 mb-3">
+                            <p className="text-[13px] text-muted-foreground/70 leading-[1.7]">{step.callout}</p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
