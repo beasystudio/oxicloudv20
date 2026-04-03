@@ -272,9 +272,6 @@ export default function ClientDashboard() {
                   className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
                   {language === 'nl' ? 'Open Instellingen' : 'Open Settings'}
                 </button>
-                <p className="text-[11px] text-muted-foreground mt-2 text-center">
-                  {language === 'nl' ? 'Configureer uw teamleden en organisatie.' : 'Configure your team members and organization.'}
-                </p>
               </div>
             </div>
 
