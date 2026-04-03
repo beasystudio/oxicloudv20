@@ -25,9 +25,11 @@ const T = {
     lookup: 'Opzoeken',
     lookupSuccess: 'Gegevens opgehaald',
     companyName: 'Bedrijfsnaam',
+    kboNumber: 'KBO Nummer',
     peppolId: 'Peppol ID',
     street: 'Straat',
-    nr: 'Nr',
+    nr: 'Huisnummer',
+    bus: 'Bus',
     postal: 'Postcode',
     city: 'Gemeente',
     country: 'Land',
@@ -66,15 +68,17 @@ const T = {
   en: {
     title: 'Create Workspace',
     subtitle: 'Register your company. The VAT number is your unique identifier.',
-    company: 'Company details',
-    vat: 'VAT number',
+    company: 'Business Information',
+    vat: 'VAT Number',
     lookup: 'Lookup',
     lookupSuccess: 'Data retrieved',
-    companyName: 'Company name',
-    peppolId: 'Peppol ID',
+    companyName: 'Company Name',
+    kboNumber: 'KBO Number',
+    peppolId: 'PEPPOL ID',
     street: 'Street',
-    nr: 'Nr',
-    postal: 'Postal code',
+    nr: 'House Number',
+    bus: 'Bus',
+    postal: 'Postal Code',
     city: 'City',
     country: 'Country',
     contact: 'Primary contact',
@@ -125,7 +129,7 @@ export default function PilotCreateAccount() {
   const [kboData, setKboData] = useState<KBOCompanyData | null>(null);
 
   const [form, setForm] = useState({
-    companyName: '', legalForm: '', peppolId: '',
+    companyName: '', legalForm: '', peppolId: '', kboNumber: '', bus: '',
     street: '', number: '', postalCode: '', city: '', country: 'Belgium',
     contactName: '', email: '', phone: '',
     password: '', confirmPassword: '',
@@ -251,14 +255,34 @@ export default function PilotCreateAccount() {
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-3">
-              <F label={`${t.companyName} *`} value={form.companyName} onChange={set('companyName')} error={errors.companyName} span={2} />
-              <F label={`${t.peppolId} *`} value={form.peppolId} onChange={set('peppolId')} placeholder="0208:BE0123456789" error={errors.peppolId} span={2} />
-              <F label={t.street} value={form.street} onChange={set('street')} />
-              <F label={t.nr} value={form.number} onChange={set('number')} />
-              <F label={t.postal} value={form.postalCode} onChange={set('postalCode')} />
-              <F label={t.city} value={form.city} onChange={set('city')} />
-              <F label={t.country} value={form.country} onChange={set('country')} span={2} />
+            <div className="space-y-3">
+              {/* Row 1: Company Name + VAT Number */}
+              <div className="grid grid-cols-2 gap-3">
+                <F label={`${t.companyName} *`} value={form.companyName} onChange={set('companyName')} error={errors.companyName} />
+                <F label={`${t.vat} *`} value={vatInput} onChange={e => { setVatInput(e.target.value); if (lookupStatus === 'success') setLookupStatus('idle'); }} readOnly={lookupStatus === 'success'} />
+              </div>
+              {/* Row 2: KBO Number + PEPPOL ID */}
+              <div className="grid grid-cols-2 gap-3">
+                <F label={t.kboNumber} value={form.kboNumber} onChange={set('kboNumber')} placeholder="0123.456.789" />
+                <F label={t.peppolId} value={form.peppolId} onChange={set('peppolId')} placeholder="0208:BE0453671077" />
+              </div>
+              {/* Row 3: Street + House Number + Bus */}
+              <div className="grid grid-cols-[1fr_auto_auto] gap-3">
+                <F label={`${t.street} *`} value={form.street} onChange={set('street')} />
+                <div className="w-24">
+                  <F label={t.nr} value={form.number} onChange={set('number')} />
+                </div>
+                <div className="w-20">
+                  <F label={t.bus} value={form.bus} onChange={set('bus')} placeholder="Bus/Unit" />
+                </div>
+              </div>
+              {/* Row 4: Postal Code + City */}
+              <div className="grid grid-cols-2 gap-3">
+                <F label={`${t.postal} *`} value={form.postalCode} onChange={set('postalCode')} />
+                <F label={`${t.city} *`} value={form.city} onChange={set('city')} />
+              </div>
+              {/* Row 5: Country */}
+              <F label={t.country} value={form.country} onChange={set('country')} />
             </div>
           </Section>
 
@@ -353,15 +377,15 @@ function Section({ label, children }: { label: string; children: React.ReactNode
 }
 
 /* ── Field ── */
-function F({ label, value, onChange, type = 'text', placeholder, error, span }: {
+function F({ label, value, onChange, type = 'text', placeholder, error, span, readOnly }: {
   label: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: string; placeholder?: string; error?: string; span?: number;
+  type?: string; placeholder?: string; error?: string; span?: number; readOnly?: boolean;
 }) {
   return (
-    <div className={`space-y-1 ${span === 2 ? 'col-span-2' : ''}`}>
-      <label className="text-[11px] font-medium text-muted-foreground">{label}</label>
-      <Input type={type} value={value} onChange={onChange} placeholder={placeholder}
-        className={`h-9 text-[13px] ${error ? 'border-destructive/60 ring-1 ring-destructive/20' : ''}`}
+    <div className={`space-y-1.5 ${span === 2 ? 'col-span-2' : ''}`}>
+      <label className="text-[12px] font-semibold text-foreground">{label}</label>
+      <Input type={type} value={value} onChange={onChange} placeholder={placeholder} readOnly={readOnly}
+        className={`h-10 text-[13px] ${readOnly ? 'bg-muted/50 cursor-default' : ''} ${error ? 'border-destructive/60 ring-1 ring-destructive/20' : ''}`}
       />
       {error && <p className="text-[10px] text-destructive">{error}</p>}
     </div>
