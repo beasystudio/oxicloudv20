@@ -118,58 +118,7 @@ export default function PilotContacts() {
     if (!user || !company) return [];
     const groups: Record<string, CompanyGroup> = {};
 
-    // Add own company with employees
-    const ownAddr = company.legalAddress || '';
-    const ownCity = [company.postalCode, company.city].filter(Boolean).join(' ');
-    groups[company.id] = {
-      id: company.id,
-      name: company.name,
-      email: user.email,
-      telephone: user.phone,
-      vatNumber: company.vatNumber,
-      contactType: 'consultant',
-      address: [ownAddr, ownCity].filter(Boolean).join(', ') || undefined,
-      persons: [],
-      addresses: company.legalAddress ? [{
-        id: `${company.id}-addr`,
-        name: company.name,
-        street: company.legalAddress,
-        number: '',
-        postcode: company.postalCode || '',
-        gemeente: company.city || '',
-      }] : [],
-    };
-
-    // owner-function is metadata only, exclude from person lists
-    const ownerEmpRec = employees.find(e => e.id === 'owner-function');
-    const realEmps = employees.filter(e => e.id !== 'owner-function');
-    const seenEmails = new Set<string>();
-
-    // Add owner as person first
-    groups[company.id].persons.push({
-      id: 'owner',
-      name: `${user.firstName} ${user.lastName}`,
-      function: ownerEmpRec?.contactSubtype || '',
-      email: user.email,
-      telephone: user.phone || '',
-    });
-    seenEmails.add(user.email.toLowerCase());
-
-    // Add real employees (skip duplicates by email)
-    realEmps.forEach(emp => {
-      const key = emp.email.toLowerCase();
-      if (seenEmails.has(key)) return;
-      seenEmails.add(key);
-      groups[company.id].persons.push({
-        id: emp.id,
-        name: `${emp.firstName} ${emp.lastName}`,
-        function: emp.contactSubtype || '',
-        email: emp.email,
-        telephone: emp.phone || emp.mobile || '',
-      });
-    });
-
-    // Add external contacts grouped by company
+    // Only external contacts — own company belongs in Settings
     contacts.filter(c => c.type === 'company').forEach(cc => {
       const addr = [cc.street, cc.number].filter(Boolean).join(' ');
       const cityLine = [cc.postalCode, cc.city].filter(Boolean).join(' ');
@@ -196,7 +145,7 @@ export default function PilotContacts() {
     // Add persons to their company
     contacts.filter(c => c.type === 'person' && c.companyId).forEach(p => {
       if (groups[p.companyId!]) {
-      groups[p.companyId!].persons.push({
+        groups[p.companyId!].persons.push({
           id: p.id,
           name: `${p.firstName || ''} ${p.lastName || ''}`.trim(),
           function: p.contactType || '',
@@ -207,41 +156,15 @@ export default function PilotContacts() {
     });
 
     return Object.values(groups);
-  }, [contacts, employees, company, user]);
+  }, [contacts, company, user]);
 
-  // All persons flat list
+  // All persons flat list — external contacts only
   const allPersons = useMemo(() => {
     const persons: { id: string; name: string; company: string; function: string; email: string; telephone: string }[] = [];
 
     if (!user || !company) return persons;
 
-    const ownerEmpRecord = employees.find(e => e.id === 'owner-function');
-    const realEmployees = employees.filter(e => e.id !== 'owner-function');
-
-    const ownerInRealEmployees = realEmployees.some(e => e.email === user.email);
-    if (!ownerInRealEmployees) {
-      persons.push({
-        id: 'owner',
-        name: `${user.lastName} ${user.firstName}`,
-        company: company.name,
-        function: ownerEmpRecord?.contactSubtype || '',
-        email: user.email,
-        telephone: user.phone || '',
-      });
-    }
-
-    realEmployees.forEach(emp => {
-      persons.push({
-        id: emp.id,
-        name: `${emp.lastName} ${emp.firstName}`,
-        company: company.name,
-        function: emp.contactSubtype || '',
-        email: emp.email,
-        telephone: emp.phone || emp.mobile || '',
-      });
-    });
-
-    // External persons
+    // Only external persons
     contacts.filter(c => c.type === 'person').forEach(p => {
       const parentCompany = contacts.find(cc => cc.id === p.companyId);
       persons.push({
@@ -255,7 +178,7 @@ export default function PilotContacts() {
     });
 
     return persons;
-  }, [contacts, employees, company, user]);
+  }, [contacts, company, user]);
 
   // Filtered companies
   const filteredCompanies = useMemo(() => {
