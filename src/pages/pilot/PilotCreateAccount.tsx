@@ -377,15 +377,15 @@ function Section({ label, children }: { label: string; children: React.ReactNode
 }
 
 /* ── Field ── */
-function F({ label, value, onChange, type = 'text', placeholder, error, span }: {
+function F({ label, value, onChange, type = 'text', placeholder, error, span, readOnly }: {
   label: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: string; placeholder?: string; error?: string; span?: number;
+  type?: string; placeholder?: string; error?: string; span?: number; readOnly?: boolean;
 }) {
   return (
-    <div className={`space-y-1 ${span === 2 ? 'col-span-2' : ''}`}>
-      <label className="text-[11px] font-medium text-muted-foreground">{label}</label>
-      <Input type={type} value={value} onChange={onChange} placeholder={placeholder}
-        className={`h-9 text-[13px] ${error ? 'border-destructive/60 ring-1 ring-destructive/20' : ''}`}
+    <div className={`space-y-1.5 ${span === 2 ? 'col-span-2' : ''}`}>
+      <label className="text-[12px] font-semibold text-foreground">{label}</label>
+      <Input type={type} value={value} onChange={onChange} placeholder={placeholder} readOnly={readOnly}
+        className={`h-10 text-[13px] ${readOnly ? 'bg-muted/50 cursor-default' : ''} ${error ? 'border-destructive/60 ring-1 ring-destructive/20' : ''}`}
       />
       {error && <p className="text-[10px] text-destructive">{error}</p>}
     </div>
