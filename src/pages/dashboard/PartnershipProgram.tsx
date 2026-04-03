@@ -326,7 +326,7 @@ export default function PartnershipProgram() {
                         {'badges' in step && step.badges && (
                           <div className="flex flex-wrap gap-2 mb-3">
                             {step.badges.map((badge) => (
-                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1.5 rounded-full border border-border/60 bg-background text-foreground/80">
+                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1.5 rounded-full bg-muted text-foreground/80">
                                 {badge}
                               </span>
                             ))}
