@@ -279,6 +279,7 @@ export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: Onboar
           />
 
           <Button
+            variant="outline"
             onClick={() => setShowWizardModal(true)}
             className="w-full mt-3"
             size="sm"
