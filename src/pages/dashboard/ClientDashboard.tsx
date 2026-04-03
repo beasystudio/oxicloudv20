@@ -349,7 +349,7 @@ export default function ClientDashboard() {
               <div className="grid grid-cols-2 gap-3 mb-4 relative z-10">
                 <button
                   onClick={() => navigate('/pilot-demo/create-account')}
-                  className="rounded-full px-5 py-3 text-sm font-semibold transition-colors bg-primary text-primary-foreground hover:brightness-110">
+                  className="rounded-full px-5 py-3 text-sm font-semibold transition-colors bg-muted text-foreground hover:bg-muted/70">
                   {language === 'nl' ? 'Maak Workspace' : 'Create Workspace'}
                 </button>
                 <div className="flex items-center gap-1.5">
