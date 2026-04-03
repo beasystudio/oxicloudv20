@@ -326,7 +326,7 @@ export default function PartnershipProgram() {
                         {'badges' in step && step.badges && (
                           <div className="flex flex-wrap gap-2 mb-3">
                             {step.badges.map((badge) => (
-                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1.5 rounded-full border border-border/60 bg-background text-foreground/80">
+                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1.5 rounded-full bg-muted text-foreground/80">
                                 {badge}
                               </span>
                             ))}
@@ -394,8 +394,6 @@ export default function PartnershipProgram() {
 
               {/* CTA */}
               <section id="cta" ref={(el) => { sectionRefs.current.cta = el; }} className="rounded-2xl bg-card/80 backdrop-blur-xl border border-border/30 p-8 relative overflow-hidden mb-10 scroll-mt-24">
-                <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-primary/8 blur-3xl pointer-events-none" />
-                <div className="absolute -bottom-16 -left-16 w-32 h-32 rounded-full bg-primary/5 blur-2xl pointer-events-none" />
 
                 <div className="flex items-center gap-3 mb-2 relative z-10">
                   <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
