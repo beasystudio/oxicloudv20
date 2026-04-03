@@ -316,20 +316,22 @@ export default function PartnershipProgram() {
 
               {/* Multi-firm */}
               <section id="multi" ref={(el) => { sectionRefs.current.multi = el; }} className="mb-16 scroll-mt-24">
-                <h2 className="text-xl font-bold text-foreground mb-5">{t.multiTitle}</h2>
-                <div className="space-y-4 text-[15px] text-muted-foreground leading-[1.8]">
-                  <p>{t.multiBody1}</p>
-                  <p>{t.multiBody2}</p>
-                  <p>{t.multiBody3}</p>
+                <div className="rounded-2xl border border-primary/20 bg-primary/[0.04] p-6 sm:p-8">
+                  <h2 className="text-lg font-bold text-foreground mb-4">{t.multiTitle}</h2>
+                  <div className="space-y-3 text-[14px] text-muted-foreground leading-[1.7]">
+                    <p>{t.multiBody1}</p>
+                    <p>{t.multiBody2}</p>
+                    <p className="font-medium text-foreground">{t.multiBody3}</p>
+                  </div>
+                  <ul className="space-y-2.5 mt-4 ml-1">
+                    {t.multiList.map((item) => (
+                      <li key={item} className="flex items-center gap-3 text-[14px] font-medium text-foreground">
+                        <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="space-y-2.5 mt-5 ml-1">
-                  {t.multiList.map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-[15px] text-foreground">
-                      <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
               </section>
 
               <div className="w-full h-px bg-border/60 mb-16" />
