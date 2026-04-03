@@ -198,7 +198,7 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
             <div className="h-[340px] flex gap-0 overflow-hidden">
               {/* LEFT: Company List */}
               <div className={cn(
-                "flex flex-col min-h-0 transition-all duration-300 border border-border/40 rounded-xl bg-card/80 overflow-hidden",
+                "flex flex-col min-h-0 transition-all duration-300 rounded-xl bg-card/80 overflow-hidden",
                 selectedCompany ? "w-[260px] shrink-0" : "flex-1"
               )}>
                 <div className="flex-1 overflow-auto min-h-0">
