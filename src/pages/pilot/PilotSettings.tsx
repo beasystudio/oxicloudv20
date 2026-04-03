@@ -45,6 +45,7 @@ interface PilotCompanyData {
   id: string;
   name: string;
   vatNumber: string;
+  email: string;
   street: string;
   number: string;
   postalCode: string;
@@ -102,6 +103,7 @@ export default function PilotSettings() {
         id: company.id,
         name: company.name,
         vatNumber: company.vatNumber || '',
+        email: user?.email || '',
         street: company.legalAddress || '',
         number: '',
         postalCode: company.postalCode || '',
@@ -126,6 +128,7 @@ export default function PilotSettings() {
       id: crypto.randomUUID(),
       name: companyData.name,
       vatNumber: companyData.vatNumber,
+      email: '',
       street: companyData.street,
       number: companyData.number,
       postalCode: companyData.postalCode,
@@ -156,10 +159,12 @@ export default function PilotSettings() {
 
   const handleUpdateCompany = (companyData: CompanyModalData) => {
     if (!editModalData?.id) return;
+    const existing = companies.find(c => c.id === editModalData.id);
     const updated: PilotCompanyData = {
       id: editModalData.id,
       name: companyData.name,
       vatNumber: companyData.vatNumber,
+      email: existing?.email || '',
       street: companyData.street,
       number: companyData.number,
       postalCode: companyData.postalCode,
@@ -360,13 +365,14 @@ export default function PilotSettings() {
                   <div className="overflow-hidden">
                     <Table>
                       <TableHeader>
-                        <TableRow className="hover:bg-transparent border-b">
+                         <TableRow className="hover:bg-transparent border-b">
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground !pl-5">{t('pilot.settings.companyCol')}</TableHead>
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground">{t('pilot.settings.vatNumber')}</TableHead>
+                           <TableHead className="h-9 text-xs font-medium text-muted-foreground">Email</TableHead>
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground">{t('pilot.settings.headOffice')}</TableHead>
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground">{t('pilot.settings.branches')}</TableHead>
                            <TableHead className="h-9 text-xs font-medium text-muted-foreground !pr-5">{t('pilot.settings.divisions')}</TableHead>
-                        </TableRow>
+                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {filteredCompanies.map(comp => (
@@ -384,6 +390,7 @@ export default function PilotSettings() {
                                     </div>
                                   </TableCell>
                                   <TableCell className="py-3 text-xs text-muted-foreground">{comp.vatNumber || '—'}</TableCell>
+                                  <TableCell className="py-3 text-xs text-muted-foreground">{comp.email || '—'}</TableCell>
                                   <TableCell className="py-3">
                                     {comp.street || comp.city ? (
                                       <div>
