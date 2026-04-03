@@ -1,59 +1,65 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { Bell, ChevronDown, LogOut, HelpCircle, Plus, BarChart, Loader, ArrowLeft, Moon, Sun } from 'lucide-react';
+import { Bell, ChevronDown, LogOut, Plus, BarChart, Settings2, Moon, Sun, Ellipsis } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { getPilotSession, getPilotUser, getPilotCompany, getPilotOnboarding, clearAllPilotData, getPilotCompanyLogo } from '@/lib/pilotSessionStore';
 import { useLanguage } from '@/i18n/LanguageContext';
+
 interface PilotNavigationProps {
   onStartOnboarding?: (flow: 1 | 2 | 3) => void;
 }
-export function PilotNavigation({
-  onStartOnboarding
-}: PilotNavigationProps) {
+
+export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
   const user = getPilotUser();
   const company = getPilotCompany();
-  const onboarding = getPilotOnboarding();
   const companyLogo = getPilotCompanyLogo();
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [showAccountSwitch, setShowAccountSwitch] = useState(false);
+
   if (!user || !company) return null;
+
   const isActive = (path: string) => location.pathname === path;
   const getInitials = (name: string) => name.split(' ').map((n) => n[0]).join('').toUpperCase();
+
   const handleLogout = () => {
     clearAllPilotData();
     navigate('/');
   };
-  const NavItem = ({
-    to,
-    label
-  }: {to: string;label: string;}) => <Link to={to} className={cn("flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all duration-200", isActive(to) ? "bg-primary text-primary-foreground shadow-sm" : "bg-transparent border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground")}>
+
+  const NavItem = ({ to, label }: { to: string; label: string }) => (
+    <Link
+      to={to}
+      className={cn(
+        "flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all duration-200",
+        isActive(to)
+          ? "bg-primary text-primary-foreground shadow-sm"
+          : "bg-transparent border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
+      )}
+    >
       <span>{label}</span>
-    </Link>;
-  return <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
+    </Link>
+  );
+
+  return (
+    <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Left: Company branding + Nav */}
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                {companyLogo ?
-              <img src={companyLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-muted border border-border" /> :
-
-              <span className="font-semibold text-sm text-foreground">{company.name}</span>
-              }
-                
-
-              
+                {companyLogo ? (
+                  <img src={companyLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-muted border border-border" />
+                ) : (
+                  <span className="font-semibold text-sm text-foreground">{company.name}</span>
+                )}
               </div>
             </div>
 
@@ -65,9 +71,9 @@ export function PilotNavigation({
             </div>
           </div>
 
-          {/* Right: Actions - matching production */}
+          {/* Right: Actions - matching production TopNavigation */}
           <div className="flex items-center gap-1">
-            {/* Global Add Menu (+) - matching production */}
+            {/* Global Add Menu (+) */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-foreground text-[hsl(var(--neon-lime))] hover:bg-muted/60 hover:text-foreground transition-all duration-200">
@@ -87,52 +93,48 @@ export function PilotNavigation({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Setup Guide - navigate to dashboard with showGuide param */}
-            <Button variant="ghost" size="sm" className="h-9 gap-1.5 text-xs" onClick={() => navigate('/pilot-demo/dashboard?showGuide=true')}>
-                <HelpCircle className="h-4 w-4" />
-                <span className="hidden sm:inline">{t('pilot.nav.setupGuide')}</span>
-              </Button>
+            {/* Grouped: Financial + Settings + Theme + Language in "More" dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-9 w-9">
+                  <Ellipsis className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-[180px]">
+                <DropdownMenuItem asChild className="cursor-pointer text-xs gap-2">
+                  <Link to="/pilot-demo/financial">
+                    <BarChart className="h-3.5 w-3.5" />
+                    {t('dashboard.nav.financial') || 'Financial'}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer text-xs gap-2">
+                  <Link to="/pilot-demo/settings">
+                    <Settings2 className="h-3.5 w-3.5" />
+                    {t('dashboard.nav.settings') || 'Settings'}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={toggleTheme} className="cursor-pointer text-xs gap-2">
+                  {theme === 'light' ? <Moon className="h-3.5 w-3.5" /> : <Sun className="h-3.5 w-3.5" />}
+                  {theme === 'light' ? 'Dark mode' : 'Light mode'}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage(language === 'en' ? 'nl' : 'en')} className="cursor-pointer text-xs gap-2">
+                  <span className="h-3.5 w-3.5 flex items-center justify-center text-[10px] font-bold">{language === 'en' ? 'NL' : 'EN'}</span>
+                  {language === 'en' ? 'Switch to Dutch' : 'Switch to English'}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-            {/* Financial Dashboard */}
-            <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", isActive('/pilot-demo/financial') && "bg-primary/10")}>
-              <Link to="/pilot-demo/financial" title="Financial Dashboard">
-                <BarChart className="h-4 w-4" />
-              </Link>
-            </Button>
-
-            {/* Theme Toggle */}
-            <Button variant="ghost" size="icon" className="h-9 w-9" onClick={toggleTheme} title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
-              {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-            </Button>
-
-            {/* Notifications */}
+            {/* Notifications - stays visible */}
             <Button variant="ghost" size="icon" className="h-9 w-9">
               <Bell className="h-4 w-4" />
-            </Button>
-
-
-            {/* Language Toggle */}
-            <Button
-            variant="ghost"
-            size="sm"
-            className="h-9 px-3 text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            onClick={() => setLanguage(language === 'en' ? 'nl' : 'en')}>
-            
-              {language === 'en' ? 'EN' : 'NL'}
-            </Button>
-
-            {/* Settings */}
-            <Button asChild variant="ghost" size="icon" className={cn("h-9 w-9", isActive('/pilot-demo/settings') && "bg-primary/10")}>
-              <Link to="/pilot-demo/settings">
-                <Loader className="h-4 w-4 bg-transparent text-primary" />
-              </Link>
             </Button>
 
             {/* Divider */}
             <div className="w-px h-6 bg-border mx-1" />
 
             {/* User menu */}
-            <DropdownMenu open={profileMenuOpen} onOpenChange={(open) => {setProfileMenuOpen(open);if (!open) setShowAccountSwitch(false);}}>
+            <DropdownMenu open={profileMenuOpen} onOpenChange={(open) => { setProfileMenuOpen(open); if (!open) setShowAccountSwitch(false); }}>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 hover:opacity-80 transition-opacity rounded-lg p-1.5 hover:bg-muted">
                   <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs font-medium">
@@ -142,8 +144,8 @@ export function PilotNavigation({
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-[240px] p-0">
-                {!showAccountSwitch ?
-              <>
+                {!showAccountSwitch ? (
+                  <>
                     <div className="px-4 py-3">
                       <p className="font-medium text-sm">{user.firstName} {user.lastName}</p>
                       <p className="text-xs text-muted-foreground">{user.email}</p>
@@ -161,12 +163,13 @@ export function PilotNavigation({
                         {t('pilot.nav.signOut')}
                       </DropdownMenuItem>
                     </div>
-                  </> :
-              null}
+                  </>
+                ) : null}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
       </div>
-    </nav>;
+    </nav>
+  );
 }
