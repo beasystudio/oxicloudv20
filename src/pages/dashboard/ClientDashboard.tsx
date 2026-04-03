@@ -222,15 +222,210 @@ export default function ClientDashboard() {
           </div>
 
           {/* Header */}
-          <header className="mb-6">
+          <header className="mb-8">
             <p className="text-sm text-muted-foreground mb-0.5">
               {new Date().toLocaleDateString(language === 'nl' ? 'nl-BE' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
             <h1 className="text-3xl tracking-tight leading-[1.15] text-foreground font-semibold">
               {greeting()}, {currentUser?.name?.split(' ')[0]}.
             </h1>
-            {summaryLine && <p className="text-sm text-muted-foreground mt-1">{summaryLine}</p>}
+            <p className="text-sm text-muted-foreground mt-1.5 max-w-xl">
+              {language === 'nl'
+                ? 'Welkom in de OxiCloud demo-omgeving. Verken de modules hieronder om het platform te leren kennen.'
+                : 'Welcome to the OxiCloud demo environment. Explore the modules below to get to know the platform.'}
+            </p>
           </header>
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+
+            {/* Card 1 – Settings */}
+            <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
+                  <Settings className="w-4 h-4 text-foreground" />
+                </div>
+                <h2 className="text-sm font-semibold text-foreground">
+                  {language === 'nl' ? 'Configureer uw Workspace' : 'Configure Your Workspace'}
+                </h2>
+              </div>
+              <div className="flex-1 space-y-2.5 mb-5">
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                  {language === 'nl'
+                    ? 'Beheer uw organisatie-instellingen, teamleden en workspace-voorkeuren.'
+                    : 'Manage your organization settings, team members, and workspace preferences.'}
+                </p>
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                  {language === 'nl'
+                    ? 'Hier configureert u hoe uw team samenwerkt in OxiCloud en organiseert u uw bedrijfsinformatie.'
+                    : 'Here you can configure how your team collaborates in OxiCloud and organize your company information.'}
+                </p>
+                <p className="text-[12px] text-muted-foreground/70 leading-relaxed italic">
+                  {language === 'nl'
+                    ? 'U bekijkt momenteel een demo-workspace met voorbeelddata, zodat u de instellingen veilig kunt verkennen.'
+                    : 'You are currently viewing a demo workspace with sample data so you can safely explore the settings.'}
+                </p>
+              </div>
+              <div className="mt-auto">
+                <button
+                  onClick={() => navigate('/dashboard/settings')}
+                  className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  {language === 'nl' ? 'Open Instellingen' : 'Open Settings'}
+                </button>
+                <p className="text-[11px] text-muted-foreground mt-2 text-center">
+                  {language === 'nl' ? 'Configureer uw teamleden en organisatie.' : 'Configure your team members and organization.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2 – Projects */}
+            <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
+                  <FolderKanban className="w-4 h-4 text-foreground" />
+                </div>
+                <h2 className="text-sm font-semibold text-foreground">
+                  {language === 'nl' ? 'Verken de Projectmap' : 'Explore the Project Binder'}
+                </h2>
+              </div>
+              <div className="flex-1 space-y-2.5 mb-5">
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                  {language === 'nl'
+                    ? 'Ontdek hoe OxiCloud uw projectdossier op één centrale plek organiseert, zodat u alle informatie over uw project eenvoudig terugvindt.'
+                    : 'Discover how OxiCloud organizes your project dossier in one central place, making it easy to find all information related to your project.'}
+                </p>
+              </div>
+              <div className="mt-auto">
+                <button
+                  onClick={() => navigate('/dashboard/projects')}
+                  className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  {language === 'nl' ? 'Open Demo Project' : 'Open Demo Project'}
+                </button>
+                <p className="text-[11px] text-muted-foreground mt-2 text-center">
+                  {language === 'nl' ? 'Ga naar de Projectmodule.' : 'Go to the Project module.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3 – Contacts */}
+            <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
+                  <Users className="w-4 h-4 text-foreground" />
+                </div>
+                <h2 className="text-sm font-semibold text-foreground">
+                  {language === 'nl' ? 'Ervaar de Contactmodule' : 'Experience the Contact Module'}
+                </h2>
+              </div>
+              <div className="flex-1 space-y-2.5 mb-5">
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                  {language === 'nl'
+                    ? 'Bekijk hoe uw adresboek gestructureerd en gesynchroniseerd is over het hele platform — van klantbedrijven tot projecteigenaars.'
+                    : 'See how your address book is structured and synchronized across the platform — from client companies to project owners.'}
+                </p>
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                  {language === 'nl'
+                    ? 'Alle contacten blijven georganiseerd en toegankelijk doorheen OxiCloud.'
+                    : 'All contacts stay organized and accessible throughout OxiCloud.'}
+                </p>
+              </div>
+              <div className="mt-auto">
+                <button
+                  onClick={() => navigate('/dashboard/contacts')}
+                  className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  {language === 'nl' ? 'Open Contacten' : 'Open Contacts'}
+                </button>
+                <p className="text-[11px] text-muted-foreground mt-2 text-center">
+                  {language === 'nl' ? 'Ga naar de Contactmodule.' : 'Go to the Contact module.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Card 4 – Partner Program */}
+            <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col">
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center shrink-0">
+                  <Trophy className="w-4 h-4 text-primary" />
+                </div>
+                <h2 className="text-sm font-semibold text-foreground">
+                  {language === 'nl' ? 'Word Partner' : 'Become a Partner'}
+                </h2>
+              </div>
+              <div className="flex-1 space-y-2.5 mb-5">
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                  {language === 'nl'
+                    ? 'Genereer conforme emissierapportages voor uw projecten en klanten.'
+                    : 'Generate compliant emission reports for your projects and clients.'}
+                </p>
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                  {language === 'nl'
+                    ? 'Ontdek hoe het OxiCloud Partnerprogramma architecten, ingenieurs en consultants helpt om emissieanalyses in hun workflow te integreren en te profiteren van de groeiende vraag naar conforme milieurapportages.'
+                    : 'Learn how the OxiCloud Partner Program helps architects, engineers, and consultants integrate emissions analysis into their workflow and benefit from the increasing demand for compliant environmental reporting.'}
+                </p>
+              </div>
+              <div className="mt-auto">
+                <button
+                  onClick={() => navigate('/dashboard/partnership-program')}
+                  className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  {language === 'nl' ? 'Verken Partnerprogramma' : 'Explore Partner Program'}
+                </button>
+              </div>
+            </div>
+
+            {/* Card 5 – Start Your Own Workspace (spans 2 cols, emphasized) */}
+            <div className="md:col-span-2 rounded-2xl border-2 border-primary/30 bg-card/80 backdrop-blur-xl p-6 flex flex-col relative overflow-hidden">
+              {/* Subtle accent glow */}
+              <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+
+              <div className="flex items-center gap-2.5 mb-1 relative z-10">
+                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+                  <Plus className="w-4 h-4 text-primary-foreground" />
+                </div>
+                <h2 className="text-base font-semibold text-foreground">
+                  {language === 'nl' ? 'Start uw eigen Workspace' : 'Start Your Own Workspace'}
+                </h2>
+              </div>
+
+              <p className="text-[13px] text-muted-foreground leading-relaxed mt-3 mb-5 max-w-2xl relative z-10">
+                {language === 'nl'
+                  ? 'Klaar om echte analyses uit te voeren? Sommige OxiCloud-gebruikers werken zelfstandig én in opdracht van een bureau. We koppelen uw Workspace automatisch aan uw bureau op basis van uw inlog-e-mail — of u kunt uw manager uitnodigen indien nodig.'
+                  : 'Ready to run real analyses? Some OxiCloud users work independently and also on behalf of a firm. We automatically link your Workspace to your firm based on your login email — or you can invite your manager if needed.'}
+              </p>
+
+              <div className="grid grid-cols-2 gap-3 mb-4 relative z-10">
+                <button
+                  onClick={() => navigate('/pilot-demo/create-account')}
+                  className="rounded-full px-5 py-3 text-sm font-semibold transition-colors bg-primary text-primary-foreground hover:brightness-110">
+                  {language === 'nl' ? 'Maak Workspace' : 'Create Workspace'}
+                </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => setShowInviteManager(true)}
+                    className="flex-1 rounded-full px-5 py-3 text-sm font-semibold border-2 border-foreground/20 text-foreground hover:bg-muted/50 transition-colors">
+                    {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite My Manager'}
+                  </button>
+                  <div className="relative group">
+                    <div className="w-7 h-7 rounded-full border border-border flex items-center justify-center cursor-help hover:bg-muted/50 transition-colors shrink-0">
+                      <Info className="w-3.5 h-3.5 text-muted-foreground" />
+                    </div>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 rounded-lg bg-foreground text-background text-xs p-2.5 leading-relaxed opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20 shadow-lg">
+                      {language === 'nl'
+                        ? 'Uw manager ontvangt een e-mail om uw Workspace aan het bureau te koppelen.'
+                        : 'Your manager will get an email to link your Workspace to the firm.'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-[11px] text-muted-foreground/70 leading-relaxed max-w-2xl relative z-10">
+                <span className="font-medium text-muted-foreground">Tip:</span>{' '}
+                {language === 'nl'
+                  ? 'Als freelancer behoort uw Workspace aan u en worden partnerafrekeningen rechtstreeks aan u toegewezen. Als werknemer worden deze afrekeningen toegewezen aan de Workspace-eigenaar — nodig uw manager uit zodat uw bureau correct gekoppeld is en erkenning krijgt.'
+                  : 'As a freelancer, your Workspace belongs to you and partner settlements are assigned directly to you. As an employee, these settlements are assigned to the Workspace owner — invite your manager to ensure your firm is properly linked and receives recognition.'}
+              </p>
+            </div>
+
+          </div>
 
           {/* KPI Row */}
           <div className="grid grid-cols-3 gap-3 mb-3">
