@@ -11,10 +11,15 @@
 export const PILOT_EMAIL = 'demo@oxicloud.be';
 export const PILOT_COMPANY_ID = 'pilot-demo';
 export const PILOT_COMPANY_NAME = 'My Architecture Firm';
+export const DEMO_ENVIRONMENT_EMAILS = ['jan@gdesign.be', 'maria@gdesign.be', 'lisa@gdesign.be'] as const;
 
 // Check if current user is pilot account
 export const isPilotAccount = (email?: string): boolean => {
   return email?.toLowerCase() === PILOT_EMAIL;
+};
+
+export const isDemoEnvironmentUser = (email?: string): boolean => {
+  return email ? DEMO_ENVIRONMENT_EMAILS.includes(email.toLowerCase() as typeof DEMO_ENVIRONMENT_EMAILS[number]) : false;
 };
 
 // Check if company is pilot company
