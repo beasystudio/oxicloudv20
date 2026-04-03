@@ -70,11 +70,7 @@ interface OnboardingChecklistProps {
 /* Final Screen: Workspace Configured */
 function WorkspaceCompletePanel({ nl, onNavigate }: { nl: boolean; onNavigate: (path: string) => void }) {
   return (
-    <div className="flex flex-col items-center text-center py-6 px-4">
-      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-5">
-        <CheckCircle2 className="w-7 h-7 text-primary" />
-      </div>
-
+    <div className="flex flex-col items-center text-center py-10 px-6">
       <h3 className="text-xl font-semibold text-foreground mb-1.5">
         {nl ? 'Uw workspace is volledig geconfigureerd!' : 'Your workspace is successfully fully configured!'}
       </h3>
@@ -90,10 +86,7 @@ function WorkspaceCompletePanel({ nl, onNavigate }: { nl: boolean; onNavigate: (
           className="w-full justify-between group"
           size="lg"
         >
-          <span className="flex items-center gap-2">
-            <FolderKanban className="w-4 h-4" />
-            {nl ? 'Maak uw eerste project' : 'Create your first project'}
-          </span>
+          <span>{nl ? 'Maak uw eerste project' : 'Create your first project'}</span>
           <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity" />
         </Button>
 
@@ -103,16 +96,12 @@ function WorkspaceCompletePanel({ nl, onNavigate }: { nl: boolean; onNavigate: (
           className="w-full justify-between group"
           size="lg"
         >
-          <span className="flex items-center gap-2">
-            <BookUser className="w-4 h-4" />
-            {nl ? 'Ga naar Contacten' : 'Go to Contacts'}
-          </span>
+          <span>{nl ? 'Ga naar Contacten' : 'Go to Contacts'}</span>
           <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity" />
         </Button>
       </div>
 
-      <p className="text-xs text-muted-foreground mt-6 max-w-xs leading-relaxed">
-        <Settings className="w-3 h-3 inline mr-1 -mt-0.5" />
+      <p className="text-xs text-muted-foreground mt-8 max-w-xs leading-relaxed">
         {nl
           ? 'U kunt altijd meer gedetailleerde instellingen (bv. privacy-machtigingen voor teams) later aanpassen in Instellingen.'
           : 'You can always adjust more detailed settings (e.g., privacy permissions for teams) later in Settings.'}
