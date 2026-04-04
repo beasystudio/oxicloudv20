@@ -305,23 +305,23 @@ export function AddCompanyModal({
 
               <section className="space-y-3">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('companyModal.businessInfo')}</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-3">
+                <div className="space-y-3">
+                  {/* Row 1: Company name - VAT number */}
+                  <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-xs">{t('companyModal.companyName')} *</Label>
                       <Input id="name" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))} />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="street" className="text-xs">{t('companyModal.streetLabel')} *</Label>
-                      <Input id="street" value={formData.street} onChange={e => setFormData(prev => ({ ...prev, street: e.target.value }))} />
+                      <Label htmlFor="vat" className="text-xs">{t('companyModal.vatNr')} *</Label>
+                      <Input id="vat" value={formatVatDisplay(formData.vatNumber)} onChange={e => setFormData(prev => ({ ...prev, vatNumber: normalizeVatNumber(e.target.value) }))} placeholder="BE 0123.456.789" />
                     </div>
+                  </div>
+                  {/* Row 2: KBO number - Peppol ID */}
+                  <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
-                      <Label htmlFor="bus" className="text-xs">{t('companyModal.busLabel')}</Label>
-                      <Input id="bus" value={formData.bus} onChange={e => setFormData(prev => ({ ...prev, bus: e.target.value }))} placeholder="Bus/Unit" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="city" className="text-xs">{t('companyModal.cityLabel')} *</Label>
-                      <Input id="city" value={formData.city} onChange={e => setFormData(prev => ({ ...prev, city: e.target.value }))} />
+                      <Label htmlFor="kbo" className="text-xs">KBO {t('userForm.nr')}</Label>
+                      <Input id="kbo" value={formData.kboNumber} onChange={e => setFormData(prev => ({ ...prev, kboNumber: e.target.value }))} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="peppol" className="text-xs">{t('companyModal.peppolId')}</Label>
@@ -331,18 +331,37 @@ export function AddCompanyModal({
                       </div>
                     </div>
                   </div>
-                  <div className="space-y-3">
+                  {/* Row 3: Street - House number - Bus */}
+                  <div className="grid grid-cols-[1fr_auto_auto] gap-3">
                     <div className="space-y-2">
-                      <Label htmlFor="vat" className="text-xs">{t('companyModal.vatNr')} *</Label>
-                      <Input id="vat" value={formatVatDisplay(formData.vatNumber)} onChange={e => setFormData(prev => ({ ...prev, vatNumber: normalizeVatNumber(e.target.value) }))} placeholder="BE 0123.456.789" />
+                      <Label htmlFor="street" className="text-xs">{t('companyModal.streetLabel')} *</Label>
+                      <Input id="street" value={formData.street} onChange={e => setFormData(prev => ({ ...prev, street: e.target.value }))} />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 w-24">
                       <Label htmlFor="number" className="text-xs">{t('companyModal.houseNumber')} *</Label>
                       <Input id="number" value={formData.number} onChange={e => setFormData(prev => ({ ...prev, number: e.target.value }))} />
                     </div>
+                    <div className="space-y-2 w-20">
+                      <Label htmlFor="bus" className="text-xs">{t('companyModal.busLabel')}</Label>
+                      <Input id="bus" value={formData.bus} onChange={e => setFormData(prev => ({ ...prev, bus: e.target.value }))} />
+                    </div>
+                  </div>
+                  {/* Row 4: Postal code - City */}
+                  <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
                       <Label htmlFor="postalCode" className="text-xs">{t('companyModal.postalCodeLabel')} *</Label>
                       <Input id="postalCode" value={formData.postalCode} onChange={e => setFormData(prev => ({ ...prev, postalCode: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="city" className="text-xs">{t('companyModal.cityLabel')} *</Label>
+                      <Input id="city" value={formData.city} onChange={e => setFormData(prev => ({ ...prev, city: e.target.value }))} />
+                    </div>
+                  </div>
+                  {/* Row 5: Company email - Country */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                      <Label htmlFor="companyEmail" className="text-xs">Company email</Label>
+                      <Input id="companyEmail" type="email" value={formData.companyEmail} onChange={e => setFormData(prev => ({ ...prev, companyEmail: e.target.value }))} placeholder="info@company.com" />
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
