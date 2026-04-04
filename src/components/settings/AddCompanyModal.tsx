@@ -37,6 +37,7 @@ interface CompanyFormData {
   peppolId: string;
   kboNumber: string;
   legalName: string;
+  companyEmail: string;
 }
 export interface CompanyModalData extends CompanyFormData {
   id?: string;
