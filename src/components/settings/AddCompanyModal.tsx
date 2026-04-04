@@ -80,7 +80,7 @@ export function AddCompanyModal({
   const [errorMessage, setErrorMessage] = useState("");
   const [vatLookedUp, setVatLookedUp] = useState(false);
   const [formData, setFormData] = useState<CompanyFormData>({
-    name: "", vatNumber: "", street: "", number: "", bus: "", postalCode: "", city: "", country: "Belgium", peppolId: "", kboNumber: "", legalName: ""
+    name: "", vatNumber: "", street: "", number: "", bus: "", postalCode: "", city: "", country: "Belgium", peppolId: "", kboNumber: "", legalName: "", companyEmail: ""
   });
   const [locations, setLocations] = useState<Location[]>([]);
   const [divisions, setDivisions] = useState<string[]>([]);
