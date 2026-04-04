@@ -100,7 +100,7 @@ export function AddCompanyModal({
           name: initialData.name || "", vatNumber: initialData.vatNumber || "", street: initialData.street || "",
           number: initialData.number || "", bus: initialData.bus || "", postalCode: initialData.postalCode || "",
           city: initialData.city || "", country: initialData.country || "Belgium", peppolId: initialData.peppolId || "",
-          kboNumber: initialData.kboNumber || "", legalName: initialData.legalName || ""
+          kboNumber: initialData.kboNumber || "", legalName: initialData.legalName || "", companyEmail: (initialData as any).companyEmail || ""
         });
         setLocations(initialData.locations || []);
         setDivisions(initialData.divisions || []);
