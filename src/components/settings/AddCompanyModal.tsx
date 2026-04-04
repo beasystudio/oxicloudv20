@@ -265,13 +265,6 @@ export function AddCompanyModal({
                   <p className="text-sm text-green-700 dark:text-green-400">{t('companyModal.dataFound')}</p>
                 </div>}
 
-              <section className="space-y-2">
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('companyModal.contactType')}</h4>
-                <div className="flex items-center gap-2 p-2.5 rounded-lg border bg-muted/30">
-                  <span className="text-xs font-medium">Consultant</span>
-                  <span className="text-[11px] text-muted-foreground">{t('companyModal.fixedForInternal')}</span>
-                </div>
-              </section>
 
               <section className="space-y-3">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('companyModal.companyLogo')}</h4>
