@@ -296,7 +296,7 @@ export default function PilotCreateAccount() {
           <Section label={t.contact}>
             <div className="grid grid-cols-1 gap-3">
               <F label={`${t.fullName} *`} value={form.contactName} onChange={set('contactName')} error={errors.contactName} />
-              <F label={`${t.email} *`} value={form.email} onChange={set('email')} type="email" placeholder="info@firma.be" error={errors.email} />
+              <F label={`${t.email} *`} value={form.email} onChange={set('email')} type="email" placeholder="jan@voorbeeld.be" error={errors.email} />
               <F label={`${t.phone} *`} value={form.phone} onChange={set('phone')} type="tel" placeholder="+32 470 00 00 00" error={errors.phone} />
             </div>
           </Section>
