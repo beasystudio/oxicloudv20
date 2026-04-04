@@ -82,6 +82,7 @@ const T = {
     postal: 'Postal Code',
     city: 'City',
     country: 'Country',
+    companyEmail: 'Company email',
     contact: 'Primary contact',
     fullName: 'Full name',
     email: 'Email address',

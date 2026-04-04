@@ -353,8 +353,8 @@ export function AddCompanyModal({
                   {/* Row 5: Company email - Country */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
-                      <Label htmlFor="companyEmail" className="text-xs">Company email</Label>
-                      <Input id="companyEmail" type="email" value={formData.companyEmail} onChange={e => setFormData(prev => ({ ...prev, companyEmail: e.target.value }))} placeholder="info@company.com" />
+                      <Label htmlFor="companyEmail" className="text-xs">Company email *</Label>
+                      <Input id="companyEmail" type="email" value={formData.companyEmail} onChange={e => setFormData(prev => ({ ...prev, companyEmail: e.target.value }))} placeholder="info@company.be" required />
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
