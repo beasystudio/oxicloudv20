@@ -33,6 +33,7 @@ const T = {
     postal: 'Postcode',
     city: 'Gemeente',
     country: 'Land',
+    companyEmail: 'Bedrijfs e-mail',
     contact: 'Primair contact',
     fullName: 'Volledige naam',
     email: 'E-mailadres',
@@ -81,6 +82,7 @@ const T = {
     postal: 'Postal Code',
     city: 'City',
     country: 'Country',
+    companyEmail: 'Company email',
     contact: 'Primary contact',
     fullName: 'Full name',
     email: 'Email address',
@@ -130,7 +132,7 @@ export default function PilotCreateAccount() {
 
   const [form, setForm] = useState({
     companyName: '', legalForm: '', peppolId: '', kboNumber: '', bus: '',
-    street: '', number: '', postalCode: '', city: '', country: 'Belgium',
+    street: '', number: '', postalCode: '', city: '', country: 'Belgium', companyEmail: '',
     contactName: '', email: '', phone: '',
     password: '', confirmPassword: '',
     termsAccepted: false, privacyAccepted: false,
@@ -179,6 +181,8 @@ export default function PilotCreateAccount() {
     if (!form.companyName.trim()) e.companyName = t.required;
     if (!form.peppolId.trim()) e.peppolId = t.required;
     if (!form.number.trim()) e.number = t.required;
+    if (!form.companyEmail.trim()) e.companyEmail = t.required;
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.companyEmail)) e.companyEmail = t.invalidEmail;
     if (!form.contactName.trim()) e.contactName = t.required;
     if (!form.email.trim()) e.email = t.required;
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = t.invalidEmail;
@@ -282,8 +286,11 @@ export default function PilotCreateAccount() {
                 <F label={`${t.postal} *`} value={form.postalCode} onChange={set('postalCode')} />
                 <F label={`${t.city} *`} value={form.city} onChange={set('city')} />
               </div>
-              {/* Row 5: Country */}
-              <F label={t.country} value={form.country} onChange={set('country')} />
+              {/* Row 5: Company Email + Country */}
+              <div className="grid grid-cols-2 gap-3">
+                <F label={`${t.companyEmail} *`} value={form.companyEmail} onChange={set('companyEmail')} type="email" placeholder="info@company.be" error={errors.companyEmail} />
+                <F label={t.country} value={form.country} onChange={set('country')} />
+              </div>
             </div>
           </Section>
 
@@ -291,7 +298,7 @@ export default function PilotCreateAccount() {
           <Section label={t.contact}>
             <div className="grid grid-cols-1 gap-3">
               <F label={`${t.fullName} *`} value={form.contactName} onChange={set('contactName')} error={errors.contactName} />
-              <F label={`${t.email} *`} value={form.email} onChange={set('email')} type="email" placeholder="info@firma.be" error={errors.email} />
+              <F label={`${t.email} *`} value={form.email} onChange={set('email')} type="email" placeholder="jan@voorbeeld.be" error={errors.email} />
               <F label={`${t.phone} *`} value={form.phone} onChange={set('phone')} type="tel" placeholder="+32 470 00 00 00" error={errors.phone} />
             </div>
           </Section>
