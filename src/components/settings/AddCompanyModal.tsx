@@ -37,6 +37,7 @@ interface CompanyFormData {
   peppolId: string;
   kboNumber: string;
   legalName: string;
+  companyEmail: string;
 }
 export interface CompanyModalData extends CompanyFormData {
   id?: string;
@@ -79,7 +80,7 @@ export function AddCompanyModal({
   const [errorMessage, setErrorMessage] = useState("");
   const [vatLookedUp, setVatLookedUp] = useState(false);
   const [formData, setFormData] = useState<CompanyFormData>({
-    name: "", vatNumber: "", street: "", number: "", bus: "", postalCode: "", city: "", country: "Belgium", peppolId: "", kboNumber: "", legalName: ""
+    name: "", vatNumber: "", street: "", number: "", bus: "", postalCode: "", city: "", country: "Belgium", peppolId: "", kboNumber: "", legalName: "", companyEmail: ""
   });
   const [locations, setLocations] = useState<Location[]>([]);
   const [divisions, setDivisions] = useState<string[]>([]);
@@ -99,7 +100,7 @@ export function AddCompanyModal({
           name: initialData.name || "", vatNumber: initialData.vatNumber || "", street: initialData.street || "",
           number: initialData.number || "", bus: initialData.bus || "", postalCode: initialData.postalCode || "",
           city: initialData.city || "", country: initialData.country || "Belgium", peppolId: initialData.peppolId || "",
-          kboNumber: initialData.kboNumber || "", legalName: initialData.legalName || ""
+          kboNumber: initialData.kboNumber || "", legalName: initialData.legalName || "", companyEmail: (initialData as any).companyEmail || ""
         });
         setLocations(initialData.locations || []);
         setDivisions(initialData.divisions || []);
@@ -121,7 +122,7 @@ export function AddCompanyModal({
 
   const resetAll = () => {
     setStep(1); setVatInput(""); setLookupState("idle"); setErrorMessage(""); setVatLookedUp(false);
-    setFormData({ name: "", vatNumber: "", street: "", number: "", bus: "", postalCode: "", city: "", country: "Belgium", peppolId: "", kboNumber: "", legalName: "" });
+    setFormData({ name: "", vatNumber: "", street: "", number: "", bus: "", postalCode: "", city: "", country: "Belgium", peppolId: "", kboNumber: "", legalName: "", companyEmail: "" });
     setLocations([]); setDivisions([]); setLogoUrl(""); setShowAddDivision(false); setNewDivisionName("");
     setShowAddLocation(false); setNewLocation({ name: "", street: "", number: "", postalCode: "", city: "", country: "Belgium" });
   };
@@ -142,7 +143,7 @@ export function AddCompanyModal({
         const mockResult = await lookupVATNumber(normalized, true);
         if (mockResult.success && mockResult.data) {
           const cd = mockResult.data;
-          setFormData({ name: cd.companyName || "", vatNumber: normalized, street: cd.street || "", number: cd.number || "", bus: "", postalCode: cd.postalCode || "", city: cd.city || "", country: cd.country || "Belgium", peppolId: cd.peppolId || "", kboNumber: cd.kboNumber || "", legalName: cd.legalName || cd.companyName || "" });
+          setFormData({ name: cd.companyName || "", vatNumber: normalized, street: cd.street || "", number: cd.number || "", bus: "", postalCode: cd.postalCode || "", city: cd.city || "", country: cd.country || "Belgium", peppolId: cd.peppolId || "", kboNumber: cd.kboNumber || "", legalName: cd.legalName || cd.companyName || "", companyEmail: "" });
           setVatLookedUp(true); setLookupState("success"); setStep(2);
           return;
         }
@@ -150,7 +151,7 @@ export function AddCompanyModal({
         return;
       }
       const cd = data.data;
-      setFormData({ name: cd.companyName || "", vatNumber: normalized, street: cd.street || "", number: cd.number || "", bus: "", postalCode: cd.postalCode || "", city: cd.city || "", country: cd.country || "Belgium", peppolId: cd.peppolId || "", kboNumber: cd.kboNumber || "", legalName: cd.legalName || cd.companyName || "" });
+      setFormData({ name: cd.companyName || "", vatNumber: normalized, street: cd.street || "", number: cd.number || "", bus: "", postalCode: cd.postalCode || "", city: cd.city || "", country: cd.country || "Belgium", peppolId: cd.peppolId || "", kboNumber: cd.kboNumber || "", legalName: cd.legalName || cd.companyName || "", companyEmail: "" });
       setVatLookedUp(true); setLookupState("success"); setStep(2);
     } catch (err) {
       try {
@@ -158,7 +159,7 @@ export function AddCompanyModal({
         const mockResult = await lookupVATNumber(normalized, true);
         if (mockResult.success && mockResult.data) {
           const cd = mockResult.data;
-          setFormData({ name: cd.companyName || "", vatNumber: normalized, street: cd.street || "", number: cd.number || "", bus: "", postalCode: cd.postalCode || "", city: cd.city || "", country: cd.country || "Belgium", peppolId: cd.peppolId || "", kboNumber: cd.kboNumber || "", legalName: cd.legalName || cd.companyName || "" });
+          setFormData({ name: cd.companyName || "", vatNumber: normalized, street: cd.street || "", number: cd.number || "", bus: "", postalCode: cd.postalCode || "", city: cd.city || "", country: cd.country || "Belgium", peppolId: cd.peppolId || "", kboNumber: cd.kboNumber || "", legalName: cd.legalName || cd.companyName || "", companyEmail: "" });
           setVatLookedUp(true); setLookupState("success"); setStep(2);
           return;
         }
@@ -304,23 +305,23 @@ export function AddCompanyModal({
 
               <section className="space-y-3">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('companyModal.businessInfo')}</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-3">
+                <div className="space-y-3">
+                  {/* Row 1: Company name - VAT number */}
+                  <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-xs">{t('companyModal.companyName')} *</Label>
                       <Input id="name" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))} />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="street" className="text-xs">{t('companyModal.streetLabel')} *</Label>
-                      <Input id="street" value={formData.street} onChange={e => setFormData(prev => ({ ...prev, street: e.target.value }))} />
+                      <Label htmlFor="vat" className="text-xs">{t('companyModal.vatNr')} *</Label>
+                      <Input id="vat" value={formatVatDisplay(formData.vatNumber)} onChange={e => setFormData(prev => ({ ...prev, vatNumber: normalizeVatNumber(e.target.value) }))} placeholder="BE 0123.456.789" />
                     </div>
+                  </div>
+                  {/* Row 2: KBO number - Peppol ID */}
+                  <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
-                      <Label htmlFor="bus" className="text-xs">{t('companyModal.busLabel')}</Label>
-                      <Input id="bus" value={formData.bus} onChange={e => setFormData(prev => ({ ...prev, bus: e.target.value }))} placeholder="Bus/Unit" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="city" className="text-xs">{t('companyModal.cityLabel')} *</Label>
-                      <Input id="city" value={formData.city} onChange={e => setFormData(prev => ({ ...prev, city: e.target.value }))} />
+                      <Label htmlFor="kbo" className="text-xs">KBO {t('userForm.nr')}</Label>
+                      <Input id="kbo" value={formData.kboNumber} onChange={e => setFormData(prev => ({ ...prev, kboNumber: e.target.value }))} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="peppol" className="text-xs">{t('companyModal.peppolId')}</Label>
@@ -330,18 +331,37 @@ export function AddCompanyModal({
                       </div>
                     </div>
                   </div>
-                  <div className="space-y-3">
+                  {/* Row 3: Street - House number - Bus */}
+                  <div className="grid grid-cols-[1fr_auto_auto] gap-3">
                     <div className="space-y-2">
-                      <Label htmlFor="vat" className="text-xs">{t('companyModal.vatNr')} *</Label>
-                      <Input id="vat" value={formatVatDisplay(formData.vatNumber)} onChange={e => setFormData(prev => ({ ...prev, vatNumber: normalizeVatNumber(e.target.value) }))} placeholder="BE 0123.456.789" />
+                      <Label htmlFor="street" className="text-xs">{t('companyModal.streetLabel')} *</Label>
+                      <Input id="street" value={formData.street} onChange={e => setFormData(prev => ({ ...prev, street: e.target.value }))} />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 w-24">
                       <Label htmlFor="number" className="text-xs">{t('companyModal.houseNumber')} *</Label>
                       <Input id="number" value={formData.number} onChange={e => setFormData(prev => ({ ...prev, number: e.target.value }))} />
                     </div>
+                    <div className="space-y-2 w-20">
+                      <Label htmlFor="bus" className="text-xs">{t('companyModal.busLabel')}</Label>
+                      <Input id="bus" value={formData.bus} onChange={e => setFormData(prev => ({ ...prev, bus: e.target.value }))} />
+                    </div>
+                  </div>
+                  {/* Row 4: Postal code - City */}
+                  <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
                       <Label htmlFor="postalCode" className="text-xs">{t('companyModal.postalCodeLabel')} *</Label>
                       <Input id="postalCode" value={formData.postalCode} onChange={e => setFormData(prev => ({ ...prev, postalCode: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="city" className="text-xs">{t('companyModal.cityLabel')} *</Label>
+                      <Input id="city" value={formData.city} onChange={e => setFormData(prev => ({ ...prev, city: e.target.value }))} />
+                    </div>
+                  </div>
+                  {/* Row 5: Company email - Country */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                      <Label htmlFor="companyEmail" className="text-xs">Company email</Label>
+                      <Input id="companyEmail" type="email" value={formData.companyEmail} onChange={e => setFormData(prev => ({ ...prev, companyEmail: e.target.value }))} placeholder="info@company.com" />
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
