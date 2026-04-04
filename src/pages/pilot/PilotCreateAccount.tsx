@@ -284,8 +284,11 @@ export default function PilotCreateAccount() {
                 <F label={`${t.postal} *`} value={form.postalCode} onChange={set('postalCode')} />
                 <F label={`${t.city} *`} value={form.city} onChange={set('city')} />
               </div>
-              {/* Row 5: Country */}
-              <F label={t.country} value={form.country} onChange={set('country')} />
+              {/* Row 5: Company Email + Country */}
+              <div className="grid grid-cols-2 gap-3">
+                <F label={`${t.companyEmail} *`} value={form.companyEmail} onChange={set('companyEmail')} type="email" placeholder="info@company.be" error={errors.companyEmail} />
+                <F label={t.country} value={form.country} onChange={set('country')} />
+              </div>
             </div>
           </Section>
 
