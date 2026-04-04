@@ -130,7 +130,7 @@ export default function PilotCreateAccount() {
 
   const [form, setForm] = useState({
     companyName: '', legalForm: '', peppolId: '', kboNumber: '', bus: '',
-    street: '', number: '', postalCode: '', city: '', country: 'Belgium',
+    street: '', number: '', postalCode: '', city: '', country: 'Belgium', companyEmail: '',
     contactName: '', email: '', phone: '',
     password: '', confirmPassword: '',
     termsAccepted: false, privacyAccepted: false,
