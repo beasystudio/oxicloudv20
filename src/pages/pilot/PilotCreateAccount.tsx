@@ -33,6 +33,7 @@ const T = {
     postal: 'Postcode',
     city: 'Gemeente',
     country: 'Land',
+    companyEmail: 'Bedrijfs e-mail',
     contact: 'Primair contact',
     fullName: 'Volledige naam',
     email: 'E-mailadres',
