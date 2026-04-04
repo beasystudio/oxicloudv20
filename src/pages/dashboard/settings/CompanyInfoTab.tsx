@@ -172,9 +172,9 @@ export const CompanyInfoTab = () => {
       peppolId: "",
       kboNumber: "",
       legalName: company.legalName,
+      companyEmail: "",
       divisions: company.divisions || [],
       locations: [],
-      // Could parse branchAddress if needed
       logoUrl: company.logoUrl
     };
     setEditModalData(modalData);

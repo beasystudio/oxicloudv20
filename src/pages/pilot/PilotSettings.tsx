@@ -210,6 +210,7 @@ export default function PilotSettings() {
       peppolId: '',
       kboNumber: '',
       legalName: company.legalName,
+      companyEmail: '',
       divisions: company.divisions || [],
       locations: [],
       logoUrl: company.logoUrl,
