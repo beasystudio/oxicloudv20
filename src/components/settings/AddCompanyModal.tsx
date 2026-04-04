@@ -122,7 +122,7 @@ export function AddCompanyModal({
 
   const resetAll = () => {
     setStep(1); setVatInput(""); setLookupState("idle"); setErrorMessage(""); setVatLookedUp(false);
-    setFormData({ name: "", vatNumber: "", street: "", number: "", bus: "", postalCode: "", city: "", country: "Belgium", peppolId: "", kboNumber: "", legalName: "" });
+    setFormData({ name: "", vatNumber: "", street: "", number: "", bus: "", postalCode: "", city: "", country: "Belgium", peppolId: "", kboNumber: "", legalName: "", companyEmail: "" });
     setLocations([]); setDivisions([]); setLogoUrl(""); setShowAddDivision(false); setNewDivisionName("");
     setShowAddLocation(false); setNewLocation({ name: "", street: "", number: "", postalCode: "", city: "", country: "Belgium" });
   };
