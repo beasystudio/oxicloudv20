@@ -143,7 +143,7 @@ export function AddCompanyModal({
         const mockResult = await lookupVATNumber(normalized, true);
         if (mockResult.success && mockResult.data) {
           const cd = mockResult.data;
-          setFormData({ name: cd.companyName || "", vatNumber: normalized, street: cd.street || "", number: cd.number || "", bus: "", postalCode: cd.postalCode || "", city: cd.city || "", country: cd.country || "Belgium", peppolId: cd.peppolId || "", kboNumber: cd.kboNumber || "", legalName: cd.legalName || cd.companyName || "" });
+          setFormData({ name: cd.companyName || "", vatNumber: normalized, street: cd.street || "", number: cd.number || "", bus: "", postalCode: cd.postalCode || "", city: cd.city || "", country: cd.country || "Belgium", peppolId: cd.peppolId || "", kboNumber: cd.kboNumber || "", legalName: cd.legalName || cd.companyName || "", companyEmail: "" });
           setVatLookedUp(true); setLookupState("success"); setStep(2);
           return;
         }
