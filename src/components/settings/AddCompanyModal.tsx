@@ -192,6 +192,8 @@ export function AddCompanyModal({
   const validateForm = (): boolean => {
     if (!formData.name.trim()) { toast({ title: t('companyModal.error'), description: t('companyModal.companyNameRequired'), variant: "destructive" }); return false; }
     if (!formData.vatNumber.trim()) { toast({ title: t('companyModal.error'), description: t('companyModal.vatRequired'), variant: "destructive" }); return false; }
+    if (!formData.companyEmail.trim()) { toast({ title: t('companyModal.error'), description: "Company email is required", variant: "destructive" }); return false; }
+    if (formData.companyEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.companyEmail)) { toast({ title: t('companyModal.error'), description: "Invalid email address", variant: "destructive" }); return false; }
     return true;
   };
 
