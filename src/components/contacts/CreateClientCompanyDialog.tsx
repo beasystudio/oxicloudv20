@@ -377,72 +377,85 @@ export function CreateClientCompanyDialog({
               <section className="space-y-3">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('createClientCompany.businessInfo')}</h4>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {/* Left column */}
-                  <div className="space-y-3">
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.companyName')}</Label>
-                      <Input value={formData.name} onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))} placeholder={t('createClientCompany.companyNamePlaceholder')} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.street')}</Label>
-                      <Input value={formData.street} onChange={(e) => setFormData((prev) => ({ ...prev, street: e.target.value }))} placeholder={t('createClientCompany.streetPlaceholder')} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.bus')}</Label>
-                      <Input value={formData.bus} onChange={(e) => setFormData((prev) => ({ ...prev, bus: e.target.value }))} placeholder={t('createClientCompany.busPlaceholder')} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.city')}</Label>
-                      <Input value={formData.city} onChange={(e) => setFormData((prev) => ({ ...prev, city: e.target.value }))} placeholder={t('createClientCompany.cityPlaceholder')} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.peppolId')}</Label>
-                      <div className="flex gap-2">
-                        <Input value={formData.peppolId} onChange={(e) => setFormData((prev) => ({ ...prev, peppolId: e.target.value }))} placeholder={t('createClientCompany.peppolPlaceholder')} className="flex-1" />
-                        <Button type="button" variant="outline" size="sm" onClick={generatePeppolId}>
-                          {t('createClientCompany.generate')}
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.poNummer')} <span className="text-muted-foreground">({t('common.optional') || 'optional'})</span></Label>
-                      <Input value={formData.poNummer} onChange={(e) => setFormData((prev) => ({ ...prev, poNummer: e.target.value }))} placeholder="PO-12345" />
+                {/* Row 1: Company Name + VAT */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">{t('createClientCompany.companyName')} *</Label>
+                    <Input value={formData.name} onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))} placeholder={t('createClientCompany.companyNamePlaceholder')} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">{t('createClientCompany.vatLabel')}</Label>
+                    <Input value={formatVatDisplay(formData.vatNumber)} onChange={(e) => setFormData((prev) => ({ ...prev, vatNumber: normalizeVatNumber(e.target.value) }))} placeholder={t('createClientCompany.vatPlaceholder')} />
+                  </div>
+                </div>
+
+                {/* Row 2: KBO + Peppol */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">{t('createClientCompany.kboNumber')}</Label>
+                    <Input value={formData.kboNumber} onChange={(e) => setFormData((prev) => ({ ...prev, kboNumber: e.target.value }))} placeholder={t('createClientCompany.kboPlaceholder')} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">{t('createClientCompany.peppolId')}</Label>
+                    <div className="flex gap-2">
+                      <Input value={formData.peppolId} onChange={(e) => setFormData((prev) => ({ ...prev, peppolId: e.target.value }))} placeholder={t('createClientCompany.peppolPlaceholder')} className="flex-1" />
+                      <Button type="button" variant="outline" size="sm" onClick={generatePeppolId}>
+                        {t('createClientCompany.generate')}
+                      </Button>
                     </div>
                   </div>
+                </div>
 
-                  {/* Right column */}
-                  <div className="space-y-3">
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.vatLabel')}</Label>
-                      <Input value={formatVatDisplay(formData.vatNumber)} onChange={(e) => setFormData((prev) => ({ ...prev, vatNumber: normalizeVatNumber(e.target.value) }))} placeholder={t('createClientCompany.vatPlaceholder')} />
+                {/* Row 3: Street + House Number + Bus */}
+                <div className="grid grid-cols-6 gap-3">
+                  <div className="col-span-3 space-y-1.5">
+                    <Label className="text-xs">{t('createClientCompany.street')}</Label>
+                    <Input value={formData.street} onChange={(e) => setFormData((prev) => ({ ...prev, street: e.target.value }))} placeholder={t('createClientCompany.streetPlaceholder')} />
+                  </div>
+                  <div className="col-span-1 space-y-1.5">
+                    <Label className="text-xs">{t('createClientCompany.houseNumber')}</Label>
+                    <Input value={formData.number} onChange={(e) => setFormData((prev) => ({ ...prev, number: e.target.value }))} placeholder={t('createClientCompany.houseNumberPlaceholder')} />
+                  </div>
+                  <div className="col-span-2 space-y-1.5">
+                    <Label className="text-xs">{t('createClientCompany.bus')}</Label>
+                    <Input value={formData.bus} onChange={(e) => setFormData((prev) => ({ ...prev, bus: e.target.value }))} placeholder={t('createClientCompany.busPlaceholder')} />
+                  </div>
+                </div>
+
+                {/* Row 4: Postal Code + City */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">{t('createClientCompany.postalCode')}</Label>
+                    <Input value={formData.postalCode} onChange={(e) => setFormData((prev) => ({ ...prev, postalCode: e.target.value }))} placeholder={t('createClientCompany.postalCodePlaceholder')} />
+                  </div>
+                  <div className="col-span-2 space-y-1.5">
+                    <Label className="text-xs">{t('createClientCompany.city')}</Label>
+                    <Input value={formData.city} onChange={(e) => setFormData((prev) => ({ ...prev, city: e.target.value }))} placeholder={t('createClientCompany.cityPlaceholder')} />
+                  </div>
+                </div>
+
+                {/* Row 5: Company Email + Country */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Company email *</Label>
+                    <Input type="email" value={formData.companyEmail} onChange={(e) => setFormData((prev) => ({ ...prev, companyEmail: e.target.value }))} placeholder="info@company.com" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-xs">{t('createClientCompany.country')}</Label>
+                      <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-muted text-muted-foreground border-border">
+                        {t('createClientCompany.headquarters')}
+                      </Badge>
                     </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.houseNumber')}</Label>
-                      <Input value={formData.number} onChange={(e) => setFormData((prev) => ({ ...prev, number: e.target.value }))} placeholder={t('createClientCompany.houseNumberPlaceholder')} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.postalCode')}</Label>
-                      <Input value={formData.postalCode} onChange={(e) => setFormData((prev) => ({ ...prev, postalCode: e.target.value }))} placeholder={t('createClientCompany.postalCodePlaceholder')} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <Label className="text-xs">{t('createClientCompany.country')}</Label>
-                        <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-green-500/10 text-green-700 border-green-500/30">
-                          {t('createClientCompany.headquarters')}
-                        </Badge>
-                      </div>
-                      <Select value={formData.country} onValueChange={(v) => setFormData((prev) => ({ ...prev, country: v }))}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">{t('createClientCompany.kboNumber')}</Label>
-                      <Input value={formData.kboNumber} onChange={(e) => setFormData((prev) => ({ ...prev, kboNumber: e.target.value }))} placeholder={t('createClientCompany.kboPlaceholder')} />
-                    </div>
+                    <Select value={formData.country} onValueChange={(v) => setFormData((prev) => ({ ...prev, country: v }))}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </section>
                   </div>
                 </div>
               </section>
