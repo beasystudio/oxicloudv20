@@ -2351,6 +2351,10 @@ export const en = {
     cancel: 'Cancel',
     save: 'Save',
     companyNameRequired: 'Company name is required',
+    companyEmail: 'Company email *',
+    companyEmailPlaceholder: 'info@company.com',
+    companyEmailRequired: 'Company email is required',
+    companyEmailInvalid: 'Please enter a valid company email',
     addedToContacts: '{name} has been added to Contacts',
   },
 

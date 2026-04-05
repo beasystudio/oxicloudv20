@@ -207,11 +207,11 @@ export function CreateClientCompanyDialog({
       return;
     }
     if (!formData.companyEmail.trim()) {
-      toast.error("Company email is required");
+      toast.error(t('createClientCompany.companyEmailRequired'));
       return;
     }
     if (formData.companyEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.companyEmail.trim())) {
-      toast.error("Please enter a valid company email");
+      toast.error(t('createClientCompany.companyEmailInvalid'));
       return;
     }
     if (!formData.vatNumber.trim() && !vatLookedUp) {
@@ -256,11 +256,11 @@ export function CreateClientCompanyDialog({
       return;
     }
     if (!formData.companyEmail.trim()) {
-      toast.error("Company email is required");
+      toast.error(t('createClientCompany.companyEmailRequired'));
       return;
     }
     if (formData.companyEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.companyEmail.trim())) {
-      toast.error("Please enter a valid company email");
+      toast.error(t('createClientCompany.companyEmailInvalid'));
       return;
     }
     const newContact = createContact({
@@ -380,7 +380,7 @@ export function CreateClientCompanyDialog({
                 {/* Row 1: Company Name + VAT */}
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1.5">
-                    <Label className="text-xs">{t('createClientCompany.companyName')} *</Label>
+                    <Label className="text-xs">{t('createClientCompany.companyName')}</Label>
                     <Input value={formData.name} onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))} placeholder={t('createClientCompany.companyNamePlaceholder')} />
                   </div>
                   <div className="space-y-1.5">
@@ -437,8 +437,8 @@ export function CreateClientCompanyDialog({
                 {/* Row 5: Company Email + Country */}
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1.5">
-                    <Label className="text-xs">Company email *</Label>
-                    <Input type="email" value={formData.companyEmail} onChange={(e) => setFormData((prev) => ({ ...prev, companyEmail: e.target.value }))} placeholder="info@company.com" />
+                    <Label className="text-xs">{t('createClientCompany.companyEmail')}</Label>
+                    <Input type="email" value={formData.companyEmail} onChange={(e) => setFormData((prev) => ({ ...prev, companyEmail: e.target.value }))} placeholder={t('createClientCompany.companyEmailPlaceholder')} />
                   </div>
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
