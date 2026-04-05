@@ -456,9 +456,8 @@ export function CreateClientCompanyDialog({
                   </div>
                 </div>
               </section>
-                  </div>
-                </div>
-              </section>
+
+
 
               {/* Section 3: Contact Information */}
               <section className="space-y-3">
