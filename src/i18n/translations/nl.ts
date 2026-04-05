@@ -2296,6 +2296,10 @@ export const nl = {
     cancel: 'Annuleren',
     save: 'Opslaan',
     companyNameRequired: 'Bedrijfsnaam is verplicht',
+    companyEmail: 'Company email *',
+    companyEmailPlaceholder: 'info@company.com',
+    companyEmailRequired: 'Company email is verplicht',
+    companyEmailInvalid: 'Vul een geldig company email in',
     addedToContacts: '{name} is toegevoegd aan Contacten',
   },
 
@@ -3033,6 +3037,11 @@ export const nl = {
     companySaved: 'Bedrijf opgeslagen',
     companySavedDesc: 'is toegevoegd',
     actions: 'Acties',
+    companyEmail: 'Company email',
+    companyEmailPlaceholder: 'info@company.be',
+    companyEmailRequired: 'Company email is verplicht',
+    companyEmailInvalid: 'Ongeldig e-mailadres',
+    kboNumber: 'KBO Nummer',
   },
 
   // Security Panel

@@ -2351,6 +2351,10 @@ export const en = {
     cancel: 'Cancel',
     save: 'Save',
     companyNameRequired: 'Company name is required',
+    companyEmail: 'Company email *',
+    companyEmailPlaceholder: 'info@company.com',
+    companyEmailRequired: 'Company email is required',
+    companyEmailInvalid: 'Please enter a valid company email',
     addedToContacts: '{name} has been added to Contacts',
   },
 
@@ -3114,6 +3118,11 @@ export const en = {
     companySaved: 'Company saved',
     companySavedDesc: 'has been added',
     actions: 'Actions',
+    companyEmail: 'Company email',
+    companyEmailPlaceholder: 'info@company.be',
+    companyEmailRequired: 'Company email is required',
+    companyEmailInvalid: 'Invalid email address',
+    kboNumber: 'KBO Number',
   },
 
   // Security Panel
