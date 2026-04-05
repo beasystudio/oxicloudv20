@@ -3037,6 +3037,11 @@ export const nl = {
     companySaved: 'Bedrijf opgeslagen',
     companySavedDesc: 'is toegevoegd',
     actions: 'Acties',
+    companyEmail: 'Company email',
+    companyEmailPlaceholder: 'info@company.be',
+    companyEmailRequired: 'Company email is verplicht',
+    companyEmailInvalid: 'Ongeldig e-mailadres',
+    kboNumber: 'KBO Nummer',
   },
 
   // Security Panel

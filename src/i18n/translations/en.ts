@@ -3118,6 +3118,11 @@ export const en = {
     companySaved: 'Company saved',
     companySavedDesc: 'has been added',
     actions: 'Actions',
+    companyEmail: 'Company email',
+    companyEmailPlaceholder: 'info@company.be',
+    companyEmailRequired: 'Company email is required',
+    companyEmailInvalid: 'Invalid email address',
+    kboNumber: 'KBO Number',
   },
 
   // Security Panel
