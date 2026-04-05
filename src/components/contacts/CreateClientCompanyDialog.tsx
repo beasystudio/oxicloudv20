@@ -60,6 +60,7 @@ interface FormData {
   peppolId: string;
   poNummer: string;
   kboNumber: string;
+  companyEmail: string;
   telephone: string;
   email: string;
   website: string;
@@ -90,7 +91,7 @@ export function CreateClientCompanyDialog({
   const [formData, setFormData] = useState<FormData>({
     name: "", vatNumber: "", legalName: "", street: "", number: "", bus: "",
     postalCode: "", city: "", country: "Belgium", peppolId: "", poNummer: "", kboNumber: "",
-    telephone: "", email: "", website: "", language: "Dutch", description: "",
+    companyEmail: "", telephone: "", email: "", website: "", language: "Dutch", description: "",
     hoofdtypeId: "", subtypeId: "", evaluationNotes: ""
   });
   const vatInputRef = useRef<HTMLInputElement>(null);
@@ -116,7 +117,7 @@ export function CreateClientCompanyDialog({
     setFormData({
       name: "", vatNumber: "", legalName: "", street: "", number: "", bus: "",
       postalCode: "", city: "", country: "Belgium", peppolId: "", poNummer: "", kboNumber: "",
-      telephone: "", email: "", website: "", language: "Dutch", description: "",
+      companyEmail: "", telephone: "", email: "", website: "", language: "Dutch", description: "",
       hoofdtypeId: "", subtypeId: "", evaluationNotes: ""
     });
   };
@@ -205,6 +206,14 @@ export function CreateClientCompanyDialog({
       toast.error(t('createClientCompany.companyNameRequired'));
       return;
     }
+    if (!formData.companyEmail.trim()) {
+      toast.error("Company email is required");
+      return;
+    }
+    if (formData.companyEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.companyEmail.trim())) {
+      toast.error("Please enter a valid company email");
+      return;
+    }
     if (!formData.vatNumber.trim() && !vatLookedUp) {
       // Allow save without VAT if skipped
     }
@@ -244,6 +253,14 @@ export function CreateClientCompanyDialog({
   const handleSaveAndAddNew = () => {
     if (!formData.name.trim()) {
       toast.error(t('createClientCompany.companyNameRequired'));
+      return;
+    }
+    if (!formData.companyEmail.trim()) {
+      toast.error("Company email is required");
+      return;
+    }
+    if (formData.companyEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.companyEmail.trim())) {
+      toast.error("Please enter a valid company email");
       return;
     }
     const newContact = createContact({
