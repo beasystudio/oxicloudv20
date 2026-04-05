@@ -320,15 +320,6 @@ export default function PartnershipProgram() {
                             ))}
                           </div>
                         )}
-                        {'badgesRed' in step && step.badgesRed && (
-                          <div className="flex flex-wrap gap-2 mb-3">
-                            {step.badgesRed.map((badge) => (
-                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1.5 rounded-full border border-foreground/20 bg-foreground text-background">
-                                {badge}
-                              </span>
-                            ))}
-                          </div>
-                        )}
                         {'callout' in step && step.callout && (
                           <div className="border-l-2 border-border/60 pl-4 mt-2 mb-3">
                             <p className="text-[13px] text-muted-foreground/70 leading-[1.7]">{step.callout}</p>
