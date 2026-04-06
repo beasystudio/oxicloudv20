@@ -214,7 +214,7 @@ export function ProjectNoxStatusCard({
             
             {noxStatus === 'awaiting_payment' && (
               <Button variant="outline" className="w-full" size="sm" disabled>
-                <Lock className="h-3.5 w-3.5 mr-2" />
+                <Clock className="h-3.5 w-3.5 mr-2" />
                 {t('noxStatus.calculationLocked')}
               </Button>
             )}
