@@ -93,13 +93,13 @@ export function NoxProjectDashboard({
         };
       case 'price_generated':
         return {
-          label: 'Send Quote to Client',
-          icon: CreditCard,
-          action: 'payment'
+          label: 'View Quote Status',
+          icon: Clock,
+          action: 'view-quote'
         };
       case 'awaiting_payment':
         return {
-          label: 'Awaiting Payment',
+          label: 'Awaiting Signature',
           icon: Clock,
           action: 'awaiting'
         };
@@ -111,7 +111,7 @@ export function NoxProjectDashboard({
         };
       case 'report_in_progress':
         return {
-          label: 'Continue your NOx assessment',
+          label: 'View Report (Held)',
           icon: FileCheck,
           action: 'progress'
         };
