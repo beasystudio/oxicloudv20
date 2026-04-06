@@ -379,7 +379,7 @@ function QuoteSentConfirmation({
 }) {
   const { t } = useLanguage();
   // Try to get the client email from the project contacts or company
-  const clientEmail = project.clientEmail || project.clientContact || 'client@company.com';
+  const clientEmail = (project as any).clientEmail || 'client@company.com';
 
   return (
     <div className="max-w-xl mx-auto py-8 px-4 space-y-6">
