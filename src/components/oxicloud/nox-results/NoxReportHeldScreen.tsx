@@ -71,7 +71,7 @@ export function NoxReportHeldScreen({
               <div className="blur-[6px] select-none">
                 <Badge className="bg-primary/20 text-primary">Compliant</Badge>
               </div>
-              <p className="text-xs text-muted-foreground blur-[6px] select-none">< 1%</p>
+              <p className="text-xs text-muted-foreground blur-[6px] select-none">{'< 1%'}</p>
             </div>
           </div>
 
