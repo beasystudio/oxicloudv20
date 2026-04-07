@@ -403,11 +403,12 @@ const ProjectsDashboard = () => {
   const handleDetailedCalculationSubmit = (data: DetailedCalculationData) => {
     if (!selectedProjectId) return;
     saveNoxDetailedCalculation(selectedProjectId, data);
+    // Report generated but held until client payment
+    updateNoxData(selectedProjectId, { status: 'report_in_progress' });
     setNoxProjectsRefreshKey((prev) => prev + 1);
-    setNoxFlowStep('results');
+    setNoxFlowStep('report-held');
     toast({
-      title: t('dashboard.nox.calculationComplete'),
-      description: t('dashboard.nox.noxResultsReady')
+      title: t('reportHeld.calcComplete'),
     });
   };
   const handleNoxBack = () => {
@@ -1501,6 +1502,21 @@ const ProjectsDashboard = () => {
               return oxiProject ? <NoxPaymentDemoFlow project={oxiProject} onPaymentComplete={handlePaymentComplete} onBack={() => setNoxFlowStep('price-review')} /> : null;
             case 'detailed-calculation':
               return oxiProject ? <DetailedCalculationForm project={oxiProject} onSubmit={handleDetailedCalculationSubmit} onBack={handleNoxBack} /> : null;
+            case 'report-held':
+              return (
+                <NoxReportHeldScreen
+                  projectName={currentNoxProject.name}
+                  onBack={() => setNoxFlowStep('detailed-calculation')}
+                  onBackToDashboard={handleNoxBack}
+                  onSimulatePayment={() => {
+                    if (!selectedProjectId) return;
+                    updateNoxData(selectedProjectId, { status: 'report_delivered' });
+                    setNoxProjectsRefreshKey((prev) => prev + 1);
+                    setNoxFlowStep('results');
+                    toast({ title: t('reportHeld.paymentReceived') });
+                  }}
+                />
+              );
             case 'results':
               return oxiProject ? <OxiCloudResultScreen project={oxiProject} onBack={() => setNoxFlowStep('detailed-calculation')} onRecalculate={() => setNoxFlowStep('pre-estimation')} onBackToDashboard={handleNoxBack} /> : null;
             default:
