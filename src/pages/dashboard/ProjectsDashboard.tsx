@@ -15,7 +15,7 @@ import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Search, ChevronDown, ChevronRight, User, Users, X, Download, Clock, Play, ArrowRight, CreditCard, FileCheck, RefreshCw, Trash2, Plus, UserPlus, Building, Building2, ArrowDown, ArrowUp, FileText } from 'lucide-react';
+import { Search, ChevronDown, ChevronRight, User, Users, X, Download, Clock, Play, ArrowRight, ArrowLeft, CreditCard, FileCheck, RefreshCw, Trash2, Plus, UserPlus, Building, Building2, ArrowDown, ArrowUp, FileText, Mail } from 'lucide-react';
 import { NoxStepProgress } from '@/components/projects/NoxStepProgress';
 import { cn } from '@/lib/utils';
 import { OxiCloudStatusBadge } from '@/components/oxicloud/OxiCloudStatusBadge';
