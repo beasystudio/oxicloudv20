@@ -262,10 +262,10 @@ const ProjectsDashboard = () => {
               setNoxFlowStep('pre-estimation');
               break;
             case 'payment':
-              setNoxFlowStep(isAdmin ? 'price-review' : 'quote-flow');
+              setNoxFlowStep(isAdmin ? 'price-review' : 'quote-sent');
               break;
             case 'pay':
-              setNoxFlowStep(isAdmin ? 'payment' : 'awaiting-payment');
+              setNoxFlowStep(isAdmin ? 'payment' : 'quote-sent');
               break;
             case 'details':
               setNoxFlowStep('detailed-calculation');
@@ -274,7 +274,7 @@ const ProjectsDashboard = () => {
               setNoxFlowStep('results');
               break;
             case 'quote-flow':
-              setNoxFlowStep('quote-flow');
+              setNoxFlowStep('quote-sent');
               break;
             default:
               setNoxFlowStep('pre-estimation');
@@ -302,38 +302,26 @@ const ProjectsDashboard = () => {
     switch (action) {
       case 'start':
       case 'continue':{
-          // Smart resume: route based on saved noxStatus + subStatus
           const status = currentNoxData?.status;
-          const sub = currentNoxData?.subStatus;
-          // Check subStatus first for quote-flow states
-          if (sub === 'quote_sent_to_customer') {setNoxFlowStep('awaiting-payment');break;}
-          if (sub === 'quote_drafted') {setNoxFlowStep('quote-flow');break;}
-          // Then check primary status
-          if (status === 'price_generated') {setNoxFlowStep('quote-flow');break;}
-          if (status === 'awaiting_payment') {setNoxFlowStep('awaiting-payment');break;}
+          if (status === 'price_generated' || status === 'awaiting_payment') {setNoxFlowStep('quote-sent');break;}
           if (status === 'paid') {setNoxFlowStep('detailed-calculation');break;}
-          if (status === 'report_in_progress') {setNoxFlowStep('detailed-calculation');break;}
+          if (status === 'report_in_progress') {setNoxFlowStep('report-held');break;}
           if (status === 'report_delivered') {setNoxFlowStep('results');break;}
-          // Default: pre-estimation
           setNoxFlowStep('pre-estimation');
           break;
         }
       case 'payment':
-        // Admins can review full pricing; client users must never see totals
-        if (currentNoxData?.subStatus === 'quote_drafted') {
-          setNoxFlowStep('quote-flow');
-          break;
-        }
-        setNoxFlowStep(isAdmin ? 'price-review' : 'quote-flow');
+        setNoxFlowStep(isAdmin ? 'price-review' : 'quote-sent');
         break;
       case 'pay':
-        // Admin demo flow (Pay Now) vs client view (awaiting payment status)
-        setNoxFlowStep(isAdmin ? 'payment' : 'awaiting-payment');
+        setNoxFlowStep(isAdmin ? 'payment' : 'quote-sent');
         break;
       case 'details':
         setNoxFlowStep('detailed-calculation');
         break;
       case 'progress':
+        setNoxFlowStep('report-held');
+        break;
       case 'download':
         setNoxFlowStep('results');
         break;
