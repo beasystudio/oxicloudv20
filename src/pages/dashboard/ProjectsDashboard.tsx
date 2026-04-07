@@ -22,8 +22,9 @@ import { OxiCloudStatusBadge } from '@/components/oxicloud/OxiCloudStatusBadge';
 import { NoxStatusDot } from '@/components/oxicloud/NoxStatusDot';
 import { PreEstimationForm } from '@/components/oxicloud/PreEstimationForm';
 import { PriceReviewScreen } from '@/components/oxicloud/PriceReviewScreen';
-import { QuoteFlow } from '@/components/oxicloud/quote-flow/QuoteFlow';
 import { NoxPaymentDemoFlow } from '@/components/oxicloud/NoxPaymentDemoFlow';
+import { NoxReportHeldScreen } from '@/components/oxicloud/nox-results/NoxReportHeldScreen';
+import { SimulationButtons } from '@/components/oxicloud/SimulationButtons';
 import { DetailedCalculationForm } from '@/components/oxicloud/DetailedCalculationForm';
 import { OxiCloudResultScreen } from '@/components/oxicloud/OxiCloudResultScreen';
 import { useMockAuth } from '@/contexts/MockAuthContext';
@@ -55,7 +56,7 @@ import { MonitorProjectUploadDialog } from '@/components/authority/MonitorProjec
 type AdminProductTab = 'oxicloud' | 'monitor';
 
 // NOx flow step type
-type NoxFlowStep = null | 'pre-estimation' | 'quote-flow' | 'awaiting-payment' | 'price-review' | 'payment' | 'detailed-calculation' | 'results';
+type NoxFlowStep = null | 'pre-estimation' | 'quote-sent' | 'price-review' | 'payment' | 'detailed-calculation' | 'report-held' | 'results';
 
 // Adapter to convert NoxProject to OxiCloudProject format for existing components
 function toOxiCloudProject(project: NoxProject): OxiCloudProject | null {
