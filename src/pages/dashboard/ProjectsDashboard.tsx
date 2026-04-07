@@ -15,15 +15,16 @@ import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Search, ChevronDown, ChevronRight, User, Users, X, Download, Clock, Play, ArrowRight, CreditCard, FileCheck, RefreshCw, Trash2, Plus, UserPlus, Building, Building2, ArrowDown, ArrowUp, FileText } from 'lucide-react';
+import { Search, ChevronDown, ChevronRight, User, Users, X, Download, Clock, Play, ArrowRight, ArrowLeft, CreditCard, FileCheck, RefreshCw, Trash2, Plus, UserPlus, Building, Building2, ArrowDown, ArrowUp, FileText, Mail } from 'lucide-react';
 import { NoxStepProgress } from '@/components/projects/NoxStepProgress';
 import { cn } from '@/lib/utils';
 import { OxiCloudStatusBadge } from '@/components/oxicloud/OxiCloudStatusBadge';
 import { NoxStatusDot } from '@/components/oxicloud/NoxStatusDot';
 import { PreEstimationForm } from '@/components/oxicloud/PreEstimationForm';
 import { PriceReviewScreen } from '@/components/oxicloud/PriceReviewScreen';
-import { QuoteFlow } from '@/components/oxicloud/quote-flow/QuoteFlow';
 import { NoxPaymentDemoFlow } from '@/components/oxicloud/NoxPaymentDemoFlow';
+import { NoxReportHeldScreen } from '@/components/oxicloud/nox-results/NoxReportHeldScreen';
+import { SimulationButtons } from '@/components/oxicloud/SimulationButtons';
 import { DetailedCalculationForm } from '@/components/oxicloud/DetailedCalculationForm';
 import { OxiCloudResultScreen } from '@/components/oxicloud/OxiCloudResultScreen';
 import { useMockAuth } from '@/contexts/MockAuthContext';
@@ -55,7 +56,7 @@ import { MonitorProjectUploadDialog } from '@/components/authority/MonitorProjec
 type AdminProductTab = 'oxicloud' | 'monitor';
 
 // NOx flow step type
-type NoxFlowStep = null | 'pre-estimation' | 'quote-flow' | 'awaiting-payment' | 'price-review' | 'payment' | 'detailed-calculation' | 'results';
+type NoxFlowStep = null | 'pre-estimation' | 'quote-sent' | 'price-review' | 'payment' | 'detailed-calculation' | 'report-held' | 'results';
 
 // Adapter to convert NoxProject to OxiCloudProject format for existing components
 function toOxiCloudProject(project: NoxProject): OxiCloudProject | null {
@@ -261,10 +262,10 @@ const ProjectsDashboard = () => {
               setNoxFlowStep('pre-estimation');
               break;
             case 'payment':
-              setNoxFlowStep(isAdmin ? 'price-review' : 'quote-flow');
+              setNoxFlowStep(isAdmin ? 'price-review' : 'quote-sent');
               break;
             case 'pay':
-              setNoxFlowStep(isAdmin ? 'payment' : 'awaiting-payment');
+              setNoxFlowStep(isAdmin ? 'payment' : 'quote-sent');
               break;
             case 'details':
               setNoxFlowStep('detailed-calculation');
@@ -273,7 +274,7 @@ const ProjectsDashboard = () => {
               setNoxFlowStep('results');
               break;
             case 'quote-flow':
-              setNoxFlowStep('quote-flow');
+              setNoxFlowStep('quote-sent');
               break;
             default:
               setNoxFlowStep('pre-estimation');
@@ -301,38 +302,26 @@ const ProjectsDashboard = () => {
     switch (action) {
       case 'start':
       case 'continue':{
-          // Smart resume: route based on saved noxStatus + subStatus
           const status = currentNoxData?.status;
-          const sub = currentNoxData?.subStatus;
-          // Check subStatus first for quote-flow states
-          if (sub === 'quote_sent_to_customer') {setNoxFlowStep('awaiting-payment');break;}
-          if (sub === 'quote_drafted') {setNoxFlowStep('quote-flow');break;}
-          // Then check primary status
-          if (status === 'price_generated') {setNoxFlowStep('quote-flow');break;}
-          if (status === 'awaiting_payment') {setNoxFlowStep('awaiting-payment');break;}
+          if (status === 'price_generated' || status === 'awaiting_payment') {setNoxFlowStep('quote-sent');break;}
           if (status === 'paid') {setNoxFlowStep('detailed-calculation');break;}
-          if (status === 'report_in_progress') {setNoxFlowStep('detailed-calculation');break;}
+          if (status === 'report_in_progress') {setNoxFlowStep('report-held');break;}
           if (status === 'report_delivered') {setNoxFlowStep('results');break;}
-          // Default: pre-estimation
           setNoxFlowStep('pre-estimation');
           break;
         }
       case 'payment':
-        // Admins can review full pricing; client users must never see totals
-        if (currentNoxData?.subStatus === 'quote_drafted') {
-          setNoxFlowStep('quote-flow');
-          break;
-        }
-        setNoxFlowStep(isAdmin ? 'price-review' : 'quote-flow');
+        setNoxFlowStep(isAdmin ? 'price-review' : 'quote-sent');
         break;
       case 'pay':
-        // Admin demo flow (Pay Now) vs client view (awaiting payment status)
-        setNoxFlowStep(isAdmin ? 'payment' : 'awaiting-payment');
+        setNoxFlowStep(isAdmin ? 'payment' : 'quote-sent');
         break;
       case 'details':
         setNoxFlowStep('detailed-calculation');
         break;
       case 'progress':
+        setNoxFlowStep('report-held');
+        break;
       case 'download':
         setNoxFlowStep('results');
         break;
@@ -355,10 +344,11 @@ const ProjectsDashboard = () => {
       });
       return;
     }
-    setQuoteReference(`QT-${new Date().getFullYear()}-${Math.floor(Math.random() * 9000) + 1000}`);
-    // Persist sub-status so user can return to authorization step
-    updateNoxData(selectedProjectId, { subStatus: 'quote_drafted' });
-    setNoxFlowStep('quote-flow');
+    // Auto-send quote to client
+    setNoxAwaitingPayment(selectedProjectId);
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+    setNoxFlowStep('quote-sent');
+    toast({ title: t('reportHeld.quoteSentAuto') });
   };
   const handleQuoteSent = (quoteRef: string) => {
     if (!selectedProjectId) return;
@@ -413,11 +403,12 @@ const ProjectsDashboard = () => {
   const handleDetailedCalculationSubmit = (data: DetailedCalculationData) => {
     if (!selectedProjectId) return;
     saveNoxDetailedCalculation(selectedProjectId, data);
+    // Report generated but held until client payment
+    updateNoxData(selectedProjectId, { status: 'report_in_progress' });
     setNoxProjectsRefreshKey((prev) => prev + 1);
-    setNoxFlowStep('results');
+    setNoxFlowStep('report-held');
     toast({
-      title: t('dashboard.nox.calculationComplete'),
-      description: t('dashboard.nox.noxResultsReady')
+      title: t('reportHeld.calcComplete'),
     });
   };
   const handleNoxBack = () => {
@@ -1023,9 +1014,8 @@ const ProjectsDashboard = () => {
       // Generate price first, then navigate to quote flow
       generateNoxPrice(selectedProject.id);
       setNoxProjectsRefreshKey((prev) => prev + 1);
-      setQuoteReference(`QT-${new Date().getFullYear()}-${Math.floor(Math.random() * 9000) + 1000}`);
-      updateNoxData(selectedProject.id, { subStatus: 'quote_drafted' });
-      setNoxFlowStep('quote-flow');
+      setNoxAwaitingPayment(selectedProject.id);
+      setNoxFlowStep('quote-sent');
     };
 
     const statusConfig = noxData ? STATUS_CONFIG[noxData.status] : null;
@@ -1436,40 +1426,97 @@ const ProjectsDashboard = () => {
                   setNoxProjectsRefreshKey((prev) => prev + 1);
                 }
               }} />;
-            case 'quote-flow':
+            case 'quote-sent': {
               const clientContact = allContacts.find((c) => c.companyType === 'client');
-              return <QuoteFlow projectName={currentNoxProject.name} partnerShareAmount={currentNoxProject.noxData?.commissionAmount || 0} recipientInfo={{
-                name: clientContact?.company || clientContact?.fullName || 'Onbekend',
-                email: clientContact?.email || '',
-                vatNumber: clientContact?.vatNumber,
-                billingAddress: clientContact?.invoiceAddress
-              }} quoteReference={quoteReference || undefined} initialStep="authorization" isPaid={currentNoxProject.noxData?.status === 'paid'} isPilotMode={currentUser?.email === 'demo@oxicloud.be'} onBack={handleNoxBack} onQuoteSent={handleQuoteSent} onPaymentReceived={handleClientPaymentReceived} onNavigateToNox={() => setNoxFlowStep('detailed-calculation')} onNavigateToSettlement={() => toast({
-                title: 'Settlement Claim',
-                description: 'Navigate to Financial Dashboard to submit your invoice.'
-              })} onSettlementComplete={() => toast({
-                title: 'Settlement Complete',
-                description: 'Your partner share invoice has been submitted.'
-              })} onBackToProject={handleNoxBack} />;
-            case 'awaiting-payment':
-              const clientContact2 = allContacts.find((c) => c.companyType === 'client');
-              return <QuoteFlow projectName={currentNoxProject.name} partnerShareAmount={currentNoxProject.noxData?.commissionAmount || 0} recipientInfo={{
-                name: clientContact2?.company || clientContact2?.fullName || 'Onbekend',
-                email: clientContact2?.email || '',
-                vatNumber: clientContact2?.vatNumber,
-                billingAddress: clientContact2?.invoiceAddress
-              }} quoteReference={quoteReference || `QT-${currentNoxProject.id.slice(0, 4).toUpperCase()}`} initialStep="awaiting-payment" isPaid={currentNoxProject.noxData?.status === 'paid'} isPilotMode={currentUser?.email === 'demo@oxicloud.be'} onBack={handleNoxBack} onQuoteSent={handleQuoteSent} onPaymentReceived={handleClientPaymentReceived} onNavigateToNox={() => setNoxFlowStep('detailed-calculation')} onNavigateToSettlement={() => toast({
-                title: 'Settlement Claim',
-                description: 'Navigate to Financial Dashboard to submit your invoice.'
-              })} onSettlementComplete={() => toast({
-                title: 'Settlement Complete',
-                description: 'Your partner share invoice has been submitted.'
-              })} onBackToProject={handleNoxBack} />;
+              const clientEmail = clientContact?.email || 'client@company.com';
+              return (
+                <div className="max-w-xl mx-auto py-8 px-4 space-y-6">
+                  <div className="text-center mb-6">
+                    <div className="h-16 w-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4">
+                      <Clock className="h-7 w-7 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium mb-4">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                      </span>
+                      {t('reportHeld.awaitingSignature')}
+                    </div>
+                    <h1 className="text-2xl font-medium mb-2">{t('reportHeld.quoteSentToClient')}</h1>
+                    <p className="text-sm text-muted-foreground">
+                      {t('reportHeld.sentTo')} <span className="font-medium text-foreground">{clientEmail}</span>
+                    </p>
+                  </div>
+                  <Card><CardContent className="p-5 space-y-4">
+                    <p className="text-sm font-medium">{t('reportHeld.whatHappensNext')}</p>
+                    <ol className="space-y-3 text-sm text-muted-foreground">
+                      <li className="flex items-start gap-2.5">
+                        <span className="flex items-center justify-center h-5 w-5 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0 mt-0.5">1</span>
+                        <span>{t('reportHeld.nextStep1')}</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="flex items-center justify-center h-5 w-5 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0 mt-0.5">2</span>
+                        <span>{t('reportHeld.nextStep2')}</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="flex items-center justify-center h-5 w-5 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0 mt-0.5">3</span>
+                        <span>{t('reportHeld.nextStep3')}</span>
+                      </li>
+                    </ol>
+                  </CardContent></Card>
+                  <Card><CardContent className="p-5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">{t('reportHeld.quoteCopyPdf')}</p>
+                          <p className="text-xs text-muted-foreground">{t('reportHeld.readOnlyRef')}</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm" className="gap-2" onClick={() => toast({ title: t('reportHeld.pdfDownloading') })}>
+                        <Download className="h-4 w-4" />
+                        PDF
+                      </Button>
+                    </div>
+                  </CardContent></Card>
+                  <SimulationButtons
+                    showSignButton={true}
+                    onSimulateSigned={() => {
+                      if (!selectedProjectId) return;
+                      processNoxPayment(selectedProjectId);
+                      setNoxProjectsRefreshKey((prev) => prev + 1);
+                      setNoxFlowStep('detailed-calculation');
+                      toast({ title: t('reportHeld.clientSigned') });
+                    }}
+                  />
+                  <Button variant="outline" onClick={handleNoxBack} className="w-full gap-2">
+                    <ArrowLeft className="h-4 w-4" />
+                    {t('reportHeld.backToDashboard')}
+                  </Button>
+                </div>
+              );
+            }
             case 'price-review':
               return oxiProject ? <PriceReviewScreen project={oxiProject} onProceedToPayment={handleProceedToPayment} onBackToEdit={() => setNoxFlowStep('pre-estimation')} /> : null;
             case 'payment':
               return oxiProject ? <NoxPaymentDemoFlow project={oxiProject} onPaymentComplete={handlePaymentComplete} onBack={() => setNoxFlowStep('price-review')} /> : null;
             case 'detailed-calculation':
               return oxiProject ? <DetailedCalculationForm project={oxiProject} onSubmit={handleDetailedCalculationSubmit} onBack={handleNoxBack} /> : null;
+            case 'report-held':
+              return (
+                <NoxReportHeldScreen
+                  projectName={currentNoxProject.name}
+                  onBack={() => setNoxFlowStep('detailed-calculation')}
+                  onBackToDashboard={handleNoxBack}
+                  onSimulatePayment={() => {
+                    if (!selectedProjectId) return;
+                    updateNoxData(selectedProjectId, { status: 'report_delivered' });
+                    setNoxProjectsRefreshKey((prev) => prev + 1);
+                    setNoxFlowStep('results');
+                    toast({ title: t('reportHeld.paymentReceived') });
+                  }}
+                />
+              );
             case 'results':
               return oxiProject ? <OxiCloudResultScreen project={oxiProject} onBack={() => setNoxFlowStep('detailed-calculation')} onRecalculate={() => setNoxFlowStep('pre-estimation')} onBackToDashboard={handleNoxBack} /> : null;
             default:
