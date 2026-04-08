@@ -73,7 +73,7 @@ export function NoxProjectDashboard({
   const getDynamicCTA = (project: NoxProject) => {
     if (!project.noxData) {
       return {
-        label: 'Start Input',
+        label: t('noxStatus.inputIncompleteCtaEmpty'),
         icon: Play,
         action: 'start'
       };
@@ -81,43 +81,38 @@ export function NoxProjectDashboard({
     switch (project.noxData.status) {
       case 'input_incomplete':
         return {
-          label: project.noxData.preEstimation ? 'Continue your NOx assessment' : 'Start Input',
+          label: project.noxData.preEstimation ? t('noxStatus.inputIncompleteCtaPartial') : t('noxStatus.inputIncompleteCtaEmpty'),
           icon: Play,
           action: 'start'
         };
       case 'input_completed':
         return {
-          label: 'Generate Quote',
-          icon: FileText,
+          label: t('noxStatus.inputIncompleteCtaPartial'),
+          icon: Play,
           action: 'generate'
         };
       case 'price_generated':
+      case 'awaiting_payment':
         return {
-          label: 'View Quote Status',
+          label: t('noxStatus.quoteSent'),
           icon: Clock,
           action: 'view-quote'
         };
-      case 'awaiting_payment':
-        return {
-          label: 'Awaiting Signature',
-          icon: Clock,
-          action: 'awaiting'
-        };
       case 'paid':
         return {
-          label: 'Continue your NOx assessment',
+          label: t('noxStatus.inputIncompleteCtaPartial'),
           icon: Play,
           action: 'details'
         };
       case 'report_in_progress':
         return {
-          label: 'View Report (Held)',
+          label: t('noxStatus.reportHeld'),
           icon: FileCheck,
           action: 'progress'
         };
       case 'report_delivered':
         return {
-          label: 'View Report',
+          label: t('noxStatus.released'),
           icon: Download,
           action: 'download'
         };
