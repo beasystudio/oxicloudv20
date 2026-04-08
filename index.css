@@ -1,0 +1,610 @@
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&family=Google+Sans+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Global placeholder styling */
+input::placeholder,
+textarea::placeholder {
+  font-style: italic;
+  opacity: 0.35;
+  font-weight: 400;
+  font-size: 0.8em;
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
+}
+
+/* 
+  OxiCloud Design System — Neon Brutalism
+  
+  Creative North Star: "The High-Contrast Editorial"
+  - Sharp 0px radii everywhere
+  - Four-color palette: Lime, Off-white, Charcoal, Gray
+  - No 1px borders for sectioning — use background shifts
+  - Tonal layering instead of drop shadows
+  - Space Grotesk (display) + Inter (body)
+*/
+
+@layer base {
+  :root {
+    /* Surface — Off-white #FBFBFB */
+    --background: 0 0% 98.4%;
+    --foreground: 160 4% 11%;
+
+    /* Card — Light gray #f8f8f8 */
+    --card: 0 0% 97.3%;
+    --card-foreground: 160 4% 11%;
+
+    /* Primary — Lime #ADFF3B */
+    --primary: 85 100% 62%;
+    --primary-foreground: 85 100% 5%;
+
+    /* Secondary — Dark Charcoal #2f3131 */
+    --secondary: 180 2% 19%;
+    --secondary-foreground: 0 0% 97.6%;
+
+    /* Muted — Surface container low #f3f3f4 */
+    --muted: 240 3% 95.5%;
+    --muted-foreground: 0 1% 37%;
+
+    /* Accent — same as primary for consistency */
+    --accent: 85 100% 62%;
+    --accent-foreground: 85 100% 5%;
+
+    /* Destructive — communicated via bold charcoal, not red */
+    --destructive: 160 4% 11%;
+    --destructive-foreground: 0 0% 97.6%;
+
+    /* Border — Light gray #eaeaea */
+    --border: 0 0% 91.8%;
+    --input: 240 3% 95.5%;
+    --ring: 85 100% 62%;
+
+    --radius: 0px;
+    --neon-lime: 85 100% 62%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 4% 11%;
+
+    /* Surface tiers for tonal layering */
+    --surface: 0 0% 100%;
+    --surface-container-lowest: 0 0% 100%;
+    --surface-container-low: 240 3% 95.5%;
+    --surface-container: 240 2% 93%;
+    --surface-container-high: 240 2% 91%;
+    --surface-container-highest: 240 2% 88.6%;
+
+    /* Sidebar — Charcoal */
+    --sidebar-background: 160 4% 11%;
+    --sidebar-foreground: 0 0% 97.6%;
+    --sidebar-primary: 85 100% 62%;
+    --sidebar-primary-foreground: 85 100% 5%;
+    --sidebar-accent: 180 2% 19%;
+    --sidebar-accent-foreground: 0 0% 97.6%;
+    --sidebar-border: 0 0% 22%;
+    --sidebar-ring: 85 100% 62%;
+
+    /* Chart colors — 4-color system */
+    --chart-1: 85 100% 62%;
+    --chart-2: 160 4% 11%;
+    --chart-3: 0 1% 37%;
+    --chart-4: 85 50% 45%;
+    --chart-5: 0 0% 65%;
+
+    /* Ambient shadow — on_surface at 4% opacity */
+    --shadow-ambient: 0px 20px 40px hsla(160, 4%, 11%, 0.04);
+
+    /* Glass — Frosted Neon */
+    --glass-blur: 20px;
+    --glass-bg: 0 0% 98.4% / 0.80;
+
+    --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .dark {
+    /* Surface — Deep charcoal */
+    --background: 160 4% 7%;
+    --foreground: 0 0% 95%;
+
+    /* Card — slightly lifted */
+    --card: 160 4% 10%;
+    --card-foreground: 0 0% 95%;
+
+    /* Primary — Lime stays consistent */
+    --primary: 85 100% 62%;
+    --primary-foreground: 85 100% 5%;
+
+    /* Secondary */
+    --secondary: 0 0% 13%;
+    --secondary-foreground: 0 0% 95%;
+
+    /* Muted */
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
+
+    --accent: 85 100% 62%;
+    --accent-foreground: 85 100% 5%;
+
+    --destructive: 0 0% 95%;
+    --destructive-foreground: 160 4% 7%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 15%;
+    --ring: 85 100% 62%;
+    --neon-lime: 85 100% 62%;
+
+    --popover: 160 4% 10%;
+    --popover-foreground: 0 0% 95%;
+
+    --surface: 160 4% 7%;
+    --surface-container-lowest: 160 4% 4%;
+    --surface-container-low: 160 4% 10%;
+    --surface-container: 160 4% 12%;
+    --surface-container-high: 160 4% 14%;
+    --surface-container-highest: 160 4% 17%;
+
+    --sidebar-background: 160 4% 5%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 85 100% 62%;
+    --sidebar-primary-foreground: 85 100% 5%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 85 100% 62%;
+
+    --chart-1: 85 100% 62%;
+    --chart-2: 0 0% 80%;
+    --chart-3: 0 0% 55%;
+    --chart-4: 85 50% 45%;
+    --chart-5: 0 0% 40%;
+
+    --shadow-ambient: 0px 20px 40px hsla(0, 0%, 0%, 0.12);
+    --glass-bg: 160 4% 7% / 0.80;
+
+    --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Enforce pill/round globally — override the brutalist 0px rule */
+  *, *::before, *::after {
+    /* Allow component-level border-radius to apply */
+  }
+}
+
+@layer utilities {
+  /* ═══════════════════════════════════════════════════════════
+     TONAL LAYERING SYSTEM (replaces glassmorphism)
+     ═══════════════════════════════════════════════════════════ */
+
+  .surface-level-0 {
+    background-color: hsl(var(--surface));
+  }
+
+  .surface-level-1 {
+    background-color: hsl(var(--surface-container-lowest));
+  }
+
+  .surface-level-2 {
+    background-color: hsl(var(--surface-container-highest));
+  }
+
+  /* Solid surface — no blur allowed */
+  .glass-frosted {
+    background-color: hsl(var(--card));
+  }
+
+  /* Legacy glass aliases for compatibility */
+  .glass-card {
+    background-color: hsl(var(--card));
+  }
+
+  .glass-card-strong {
+    background-color: hsl(var(--card));
+  }
+
+  .glass-nav {
+    @apply glass-frosted;
+  }
+
+  .glass-hover {
+    @apply transition-all duration-300;
+  }
+
+  .glass-hover:hover {
+    box-shadow: var(--shadow-ambient);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     POSTER MODULES (Background Sections)
+     ═══════════════════════════════════════════════════════════ */
+
+  .poster-white {
+    @apply bg-background text-foreground;
+  }
+
+  .poster-black {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+  }
+
+  .poster-green {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .poster-grey {
+    background-color: hsl(var(--surface-container-low));
+    @apply text-foreground;
+  }
+
+  .poster-charcoal {
+    background-color: hsl(160 4% 11%);
+    color: hsl(0 0% 97.6%);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     EDITORIAL CARDS — No borders, tonal layering
+     ═══════════════════════════════════════════════════════════ */
+
+  .editorial-card {
+    background-color: hsl(var(--surface-container-lowest));
+    @apply transition-all duration-300;
+  }
+
+  .editorial-card:hover {
+    box-shadow: var(--shadow-ambient);
+  }
+
+  .editorial-card-black {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+  }
+
+  .editorial-card-green {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     CTA BAND MODULE
+     ═══════════════════════════════════════════════════════════ */
+
+  .cta-band {
+    @apply poster-green py-20 md:py-28;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     TYPOGRAPHY — Space Grotesk (Display) + Inter (Body)
+     ═══════════════════════════════════════════════════════════ */
+
+  .display-lg {
+    font-family: var(--font-display);
+    @apply text-[3.5rem] sm:text-[4rem] md:text-[4.5rem] font-bold leading-[0.92] tracking-[-0.02em];
+  }
+
+  .display-md {
+    font-family: var(--font-display);
+    @apply text-[2.75rem] sm:text-[3rem] md:text-[3.5rem] font-bold leading-[0.92] tracking-[-0.02em];
+  }
+
+  .display-sm {
+    font-family: var(--font-display);
+    @apply text-[2rem] sm:text-[2.25rem] font-bold leading-[0.95] tracking-[-0.02em];
+  }
+
+  /* Legacy heading aliases mapped to new system */
+  .heading-xl {
+    font-family: var(--font-display);
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.92] tracking-[-0.02em];
+  }
+
+  .heading-lg {
+    font-family: var(--font-display);
+    @apply text-3xl sm:text-4xl md:text-5xl font-bold leading-[0.95] tracking-[-0.02em];
+  }
+
+  .heading-md {
+    font-family: var(--font-display);
+    @apply text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight tracking-[-0.02em];
+  }
+
+  .heading-sm {
+    font-family: var(--font-display);
+    @apply text-xl sm:text-2xl font-medium leading-tight tracking-[-0.01em];
+  }
+
+  .body-lg {
+    font-family: var(--font-sans);
+    @apply text-lg md:text-xl leading-relaxed font-normal;
+  }
+
+  .body-md {
+    font-family: var(--font-sans);
+    @apply text-base md:text-lg leading-relaxed font-normal;
+  }
+
+  .label-ui {
+    font-family: var(--font-sans);
+    @apply text-xs font-medium uppercase tracking-[0.12em];
+  }
+
+  /* Pill badge — no rounded corners in brutalism */
+  .overline,
+  .overline-badge,
+  .overline-dark,
+  .overline-badge-dark {
+    font-family: var(--font-sans);
+    @apply inline-block text-xs font-semibold uppercase tracking-[0.12em] px-5 py-2 bg-primary/10 text-primary;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     SECTION SPACING — Dramatic whitespace
+     ═══════════════════════════════════════════════════════════ */
+
+  .section-padding {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+
+  .section-padding-sm {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  .section-padding-lg {
+    @apply py-32 md:py-40 lg:py-48;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     INTERACTIVE EFFECTS — Subtle, no heavy shadows
+     ═══════════════════════════════════════════════════════════ */
+
+  .hover-lift {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-ambient);
+  }
+
+  .btn-spring {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn-spring:hover {
+    transform: scale(1.02);
+  }
+
+  .btn-spring:active {
+    transform: scale(0.98);
+  }
+
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     ANIMATION UTILITIES
+     ═══════════════════════════════════════════════════════════ */
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+
+  .nav-blend {
+    mix-blend-mode: exclusion;
+  }
+
+  .nav-blend-text {
+    color: white;
+    mix-blend-mode: difference;
+  }
+
+  /* Accent text readable on light backgrounds:
+     Light mode → foreground color (dark text)
+     Dark mode  → primary lime (high contrast on dark bg) */
+  .accent-value {
+    @apply text-foreground;
+  }
+  .dark .accent-value {
+    color: hsl(var(--primary));
+  }
+
+  /* Accent text inside a dark pill for light mode readability */
+  .accent-pill {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+    background: hsl(var(--secondary));
+    color: hsl(var(--primary));
+  }
+  .dark .accent-pill {
+    background: transparent;
+    color: hsl(var(--primary));
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR AUTO-HIDE — Minimal, macOS-style
+   ═══════════════════════════════════════════════════════════ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+*:hover {
+  scrollbar-color: hsl(0 0% 50% / 0.2) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+*:hover::-webkit-scrollbar-thumb {
+  background: hsl(0 0% 50% / 0.2);
+}
+*:hover::-webkit-scrollbar-thumb:hover {
+  background: hsl(0 0% 50% / 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ADVANCED CTA BUTTON STYLES
+   ═══════════════════════════════════════════════════════════ */
+
+.cta-advanced {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  border: 2px solid currentColor;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-advanced::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: hsl(85 100% 62%);
+  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.cta-advanced:hover::before {
+  height: 100%;
+}
+
+.cta-advanced:hover {
+  color: hsl(80 100% 5%);
+}
+
+.cta-advanced .cta-text {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-advanced:hover .cta-text {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.cta-advanced .cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid currentColor;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+}
+
+.cta-advanced:hover .cta-icon {
+  transform: rotate(90deg);
+  border-color: hsl(80 100% 5%);
+}
+
+.cta-advanced .cta-arrow {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-advanced:hover .cta-arrow {
+  transform: rotate(90deg);
+}
+
+/* Dark variant */
+.cta-advanced-dark {
+  color: hsl(160 4% 11%);
+  border-color: hsl(160 4% 11%);
+}
+
+.cta-advanced-dark::before {
+  background: hsl(160 4% 11%);
+}
+
+.cta-advanced-dark:hover {
+  color: hsl(0 0% 97.6%);
+}
+
+/* Light variant */
+.cta-advanced-light {
+  color: hsl(0 0% 97.6%);
+  border-color: hsl(0 0% 97.6%);
+}
+
+.cta-advanced-light::before {
+  background: hsl(0 0% 97.6%);
+}
+
+.cta-advanced-light:hover {
+  color: hsl(160 4% 11%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-advanced::before {
+    transition: none;
+  }
+  .cta-advanced:hover::before {
+    height: 100%;
+  }
+  .cta-advanced .cta-icon,
+  .cta-advanced .cta-arrow,
+  .cta-advanced .cta-text {
+    transition: none;
+  }
+}
+
+/* Dashboard bento responsive overrides */
+@media (max-width: 640px) {
+  .dashboard-bento {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .dashboard-bento > * {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
+}
+
+/* Safe-triangle hover stabilizer for dense lists */
+.hover-stable > * {
+  transition-delay: 30ms;
+  will-change: transform;
+}
+
+@media (max-width: 400px) {
+  .dashboard-bento {
+    grid-template-columns: 1fr !important;
+  }
+}
