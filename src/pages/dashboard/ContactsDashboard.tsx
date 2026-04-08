@@ -160,18 +160,6 @@ const DEMO_COMPANIES: CompanyWithDetails[] = [
     email: 'jan@gdesign.be',
     telephone: '+32 16 123 456'
   }, {
-    id: 'gd2',
-    name: 'Maria Peeters',
-    function: 'Office Manager',
-    email: 'maria@gdesign.be',
-    telephone: '+32 16 123 457'
-  }, {
-    id: 'gd3',
-    name: 'Lisa De Smet',
-    function: 'Junior Architect',
-    email: 'lisa@gdesign.be',
-    telephone: '+32 16 123 458'
-  }, {
     id: 'gd4',
     name: 'Thomas Janssen',
     function: 'Senior Architect',
@@ -573,20 +561,6 @@ const DEMO_PERSONS: PersonContact[] = [
   function: 'Managing Director',
   email: 'jan@gdesign.be',
   telephone: '+32 16 123 456'
-}, {
-  id: 'gd2',
-  name: 'Peeters Maria',
-  company: 'GDesign Architecten',
-  function: 'Office Manager',
-  email: 'maria@gdesign.be',
-  telephone: '+32 16 123 457'
-}, {
-  id: 'gd3',
-  name: 'De Smet Lisa',
-  company: 'GDesign Architecten',
-  function: 'Junior Architect',
-  email: 'lisa@gdesign.be',
-  telephone: '+32 16 123 458'
 }, {
   id: 'gd4',
   name: 'Janssen Thomas',
