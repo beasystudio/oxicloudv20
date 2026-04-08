@@ -90,8 +90,6 @@ const demoCompanies: Company[] = [
 // Demo employees for GDesign
 const gdesignEmployees: CompanyEmployee[] = [
   { id: 'gd-1', companyId: 'gdesign', name: 'Jan Vermeersch', email: 'jan@gdesign.be', role: 'client_owner', jobTitle: 'Managing Director', phone: '+32 16 123 456', startDate: '2020-03-15', isActive: true },
-  { id: 'gd-2', companyId: 'gdesign', name: 'Maria Peeters', email: 'maria@gdesign.be', role: 'client_admin', jobTitle: 'Office Manager', phone: '+32 16 123 457', startDate: '2020-06-01', isActive: true },
-  { id: 'gd-3', companyId: 'gdesign', name: 'Lisa De Smet', email: 'lisa@gdesign.be', role: 'client_user', jobTitle: 'Junior Architect', phone: '+32 16 123 458', startDate: '2021-09-01', isActive: true },
   { id: 'gd-4', companyId: 'gdesign', name: 'Thomas Janssen', email: 'thomas@gdesign.be', role: 'client_user', jobTitle: 'Senior Architect', phone: '+32 16 123 459', startDate: '2020-04-15', isActive: true },
   { id: 'gd-5', companyId: 'gdesign', name: 'Emma Van Damme', email: 'emma@gdesign.be', role: 'client_user', jobTitle: 'Project Coordinator', phone: '+32 16 123 460', startDate: '2022-01-10', isActive: true },
   { id: 'gd-6', companyId: 'gdesign', name: 'Pieter Maes', email: 'pieter@gdesign.be', role: 'client_user', jobTitle: 'Technical Draftsman', phone: '+32 16 123 461', startDate: '2021-03-01', isActive: true },

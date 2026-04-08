@@ -290,13 +290,13 @@ export const PAVEMENT_TYPES = [
 ];
 
 export const STATUS_CONFIG: Record<OxiCloudProjectStatus, { label: string; color: string }> = {
-  input_incomplete: { label: 'Input Incomplete', color: 'bg-gray-500' },
-  input_completed: { label: 'Input Complete', color: 'bg-blue-500' },
-  price_generated: { label: 'Quote Sent', color: 'bg-indigo-500' },
-  awaiting_payment: { label: 'Awaiting Signature', color: 'bg-orange-500' },
-  paid: { label: 'Client Signed', color: 'bg-green-500' },
-  report_in_progress: { label: 'Report Held', color: 'bg-purple-500' },
-  report_delivered: { label: 'Report Released', color: 'bg-emerald-700' },
+  input_incomplete: { label: 'Draft', color: 'bg-gray-500' },
+  input_completed: { label: 'Draft', color: 'bg-gray-500' },
+  price_generated: { label: 'Quote Sent', color: 'bg-blue-500' },
+  awaiting_payment: { label: 'Quote Sent', color: 'bg-blue-500' },
+  paid: { label: 'Signed', color: 'bg-indigo-500' },
+  report_in_progress: { label: 'Report Held', color: 'bg-amber-500' },
+  report_delivered: { label: 'Released', color: 'bg-emerald-600' },
 };
 
 // Secondary Sub-Status types based on Primary Status

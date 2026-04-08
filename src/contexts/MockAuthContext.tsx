@@ -70,28 +70,6 @@ const MockAuthContext = createContext<MockAuthContextType | undefined>(undefined
 // Pre-seeded demo users - all activated and ready to use
 const initialUsers: MockUser[] = [
   {
-    email: 'paul@oxicloud.com',
-    password: 'demo123',
-    role: 'owner',
-    activated: true,
-    activationPending: false,
-    activationToken: null,
-    name: 'Paul Gijsemans',
-    company: 'OxiCloud',
-    createdAt: new Date().toISOString()
-  },
-  {
-    email: 'christine@oxicloud.com',
-    password: 'demo123',
-    role: 'admin',
-    activated: true,
-    activationPending: false,
-    activationToken: null,
-    name: 'Christine Duong',
-    company: 'OxiCloud',
-    createdAt: new Date().toISOString()
-  },
-  {
     email: 'jan@gdesign.be',
     password: 'demo123',
     role: 'client_owner',
@@ -100,50 +78,6 @@ const initialUsers: MockUser[] = [
     activationToken: null,
     name: 'Jan Vermeersch',
     company: 'GDesign Architecten',
-    createdAt: new Date().toISOString()
-  },
-  {
-    email: 'maria@gdesign.be',
-    password: 'demo123',
-    role: 'client_admin',
-    activated: true,
-    activationPending: false,
-    activationToken: null,
-    name: 'Maria Peeters',
-    company: 'GDesign Architecten',
-    createdAt: new Date().toISOString()
-  },
-  {
-    email: 'lisa@gdesign.be',
-    password: 'demo123',
-    role: 'client_user',
-    activated: true,
-    activationPending: false,
-    activationToken: null,
-    name: 'Lisa De Smet',
-    company: 'GDesign Architecten',
-    createdAt: new Date().toISOString()
-  },
-  {
-    email: 'koen@antwerpen.be',
-    password: 'demo123',
-    role: 'authority',
-    activated: true,
-    activationPending: false,
-    activationToken: null,
-    name: 'Koen Van den Berg',
-    company: 'Stad Antwerpen',
-    createdAt: new Date().toISOString()
-  },
-  {
-    email: 'els@antwerpen.be',
-    password: 'demo123',
-    role: 'authority_standard',
-    activated: true,
-    activationPending: false,
-    activationToken: null,
-    name: 'Els Peeters',
-    company: 'Stad Antwerpen',
     createdAt: new Date().toISOString()
   },
   // Pilot account - clean slate for onboarding experience
@@ -539,46 +473,6 @@ export const MockAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     seedDemoLocalProject(); // Seed demo projects for NOx module
     
     let demoUsers = [...users];
-    
-    // Activate Paul
-    const paulIndex = demoUsers.findIndex(u => u.email === 'paul@oxicloud.com');
-    if (paulIndex !== -1) {
-      demoUsers[paulIndex] = {
-        ...demoUsers[paulIndex],
-        password: 'demo123',
-        activated: true,
-        activationPending: false,
-        activationToken: null
-      };
-    } else {
-      // Create Paul if not exists
-      demoUsers.push({
-        email: 'paul@oxicloud.com',
-        password: 'demo123',
-        role: 'owner',
-        activated: true,
-        activationPending: false,
-        activationToken: null,
-        name: 'Paul',
-        company: 'OxiCloud',
-        createdAt: new Date().toISOString()
-      });
-    }
-
-    // Create and activate Christine (Admin)
-    if (!demoUsers.find(u => u.email === 'christine@oxicloud.com')) {
-      demoUsers.push({
-        email: 'christine@oxicloud.com',
-        password: 'demo123',
-        role: 'admin',
-        activated: true,
-        activationPending: false,
-        activationToken: null,
-        name: 'Christine',
-        company: 'OxiCloud',
-        createdAt: new Date().toISOString()
-      });
-    }
 
     // Create and activate Client Owner (Jan - belongs to both GDesign and 4TAKT)
     if (!demoUsers.find(u => u.email === 'jan@gdesign.be')) {
@@ -591,67 +485,6 @@ export const MockAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         activationToken: null,
         name: 'Jan Vermeersch',
         company: 'GDesign Architecten',
-        createdAt: new Date().toISOString()
-      });
-    }
-
-    // Create Client Admin
-    if (!demoUsers.find(u => u.email === 'maria@gdesign.be')) {
-      demoUsers.push({
-        email: 'maria@gdesign.be',
-        password: 'demo123',
-        role: 'client_admin',
-        activated: true,
-        activationPending: false,
-        activationToken: null,
-        name: 'Maria Peeters',
-        company: 'GDesign Architecten',
-        createdAt: new Date().toISOString()
-      });
-    }
-
-    // Create Client User (auto-activated)
-    if (!demoUsers.find(u => u.email === 'lisa@gdesign.be')) {
-      demoUsers.push({
-        email: 'lisa@gdesign.be',
-        password: 'demo123',
-        role: 'client_user',
-        activated: true,
-        activationPending: false,
-        activationToken: null,
-        name: 'Lisa De Smet',
-        company: 'GDesign Architecten',
-        createdAt: new Date().toISOString()
-      });
-    }
-
-    // Create Authority Users (permit officers)
-    // Power User - has access to Settings
-    if (!demoUsers.find(u => u.email === 'koen@antwerpen.be')) {
-      demoUsers.push({
-        email: 'koen@antwerpen.be',
-        password: 'demo123',
-        role: 'authority',
-        activated: true,
-        activationPending: false,
-        activationToken: null,
-        name: 'Koen Van den Berg',
-        company: 'Stad Antwerpen',
-        createdAt: new Date().toISOString()
-      });
-    }
-    
-    // Standard User - no access to Settings
-    if (!demoUsers.find(u => u.email === 'els@antwerpen.be')) {
-      demoUsers.push({
-        email: 'els@antwerpen.be',
-        password: 'demo123',
-        role: 'authority_standard',
-        activated: true,
-        activationPending: false,
-        activationToken: null,
-        name: 'Els Peeters',
-        company: 'Stad Antwerpen',
         createdAt: new Date().toISOString()
       });
     }
