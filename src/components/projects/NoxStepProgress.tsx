@@ -3,16 +3,23 @@ import { Check } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 const NOX_STEP_KEYS = [
-  { key: 'input_incomplete', labelKey: 'noxStatus.stepData' },
-  { key: 'input_completed', labelKey: 'noxStatus.stepInput' },
-  { key: 'price_generated', labelKey: 'noxStatus.stepPrice' },
-  { key: 'awaiting_payment', labelKey: 'noxStatus.stepPayment' },
-  { key: 'paid', labelKey: 'noxStatus.stepPaid' },
-  { key: 'report_in_progress', labelKey: 'noxStatus.stepReport' },
-  { key: 'report_delivered', labelKey: 'noxStatus.stepDelivered' },
+  { key: 'input_incomplete', labelKey: 'noxStatus.stepDraft' },
+  { key: 'price_generated', labelKey: 'noxStatus.stepQuoteSent' },
+  { key: 'paid', labelKey: 'noxStatus.stepSigned' },
+  { key: 'report_in_progress', labelKey: 'noxStatus.stepNoxSubmitted' },
+  { key: 'report_delivered', labelKey: 'noxStatus.stepReportHeld' },
 ];
 
-const STATUS_ORDER = NOX_STEP_KEYS.map(s => s.key);
+// Map all possible statuses to the step index they represent
+const STATUS_TO_STEP: Record<string, number> = {
+  input_incomplete: 0,
+  input_completed: 0,
+  price_generated: 1,
+  awaiting_payment: 1,
+  paid: 2,
+  report_in_progress: 3,
+  report_delivered: 4,
+};
 
 interface NoxStepProgressProps {
   currentStatus: string;
@@ -20,7 +27,7 @@ interface NoxStepProgressProps {
 
 export function NoxStepProgress({ currentStatus }: NoxStepProgressProps) {
   const { t } = useLanguage();
-  const currentIndex = STATUS_ORDER.indexOf(currentStatus);
+  const currentIndex = STATUS_TO_STEP[currentStatus] ?? 0;
 
   return (
     <div className="w-full">
