@@ -21,19 +21,12 @@ interface StaffMember {
 
 // Initial OxiCloud staff data
 const initialStaff: StaffMember[] = [{
-  id: 'paul',
-  name: 'Paul Gijsemans',
-  email: 'paul@oxicloud.be',
+  id: 'jan',
+  name: 'Jan Vermeersch',
+  email: 'jan@gdesign.be',
   role: 'owner',
   contractType: 'Power User/Admin',
   financialDashboardAccess: true
-}, {
-  id: 'christine',
-  name: 'Christine Duong',
-  email: 'christine@oxicloud.be',
-  role: 'admin',
-  contractType: 'Power User/Admin',
-  financialDashboardAccess: false
 }];
 const getStaffSettings = (): StaffMember[] => {
   const stored = localStorage.getItem(STAFF_SETTINGS_KEY);
