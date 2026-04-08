@@ -322,7 +322,7 @@ function seedProjectContactsForProject(projectId: string, projectIndex: number):
       // Internal GDesign Team
       { projectId, contactId: 'gd-1', contactName: 'Jan Vermeersch', contactType: 'team', company: 'GDesign Architecten', phone: '+32 16 123 456', gsm: '+32 475 123 001', email: 'jan@gdesign.be', firstName: 'Jan', lastName: 'Vermeersch', function: 'Managing Director' },
       { projectId, contactId: 'gd-4', contactName: 'Thomas Janssen', contactType: 'team', company: 'GDesign Architecten', phone: '+32 16 123 459', gsm: '+32 475 123 004', email: 'thomas@gdesign.be', firstName: 'Thomas', lastName: 'Janssen', function: 'Senior Architect' },
-      { projectId, contactId: 'gd-3', contactName: 'Lisa De Smet', contactType: 'team', company: 'GDesign Architecten', phone: '+32 16 123 458', gsm: '+32 475 123 003', email: 'lisa@gdesign.be', firstName: 'Lisa', lastName: 'De Smet', function: 'Junior Architect' },
+      { projectId, contactId: 'gd-5', contactName: 'Emma Van Damme', contactType: 'team', company: 'GDesign Architecten', phone: '+32 16 123 460', gsm: '+32 475 123 005', email: 'emma@gdesign.be', firstName: 'Emma', lastName: 'Van Damme', function: 'Project Coordinator' },
       // External contacts
       { projectId, contactId: 'artebeau-1', contactName: 'Vincent Meerschaert', contactType: 'client', company: 'Artebeau BV', phone: '+32 2 123 456', gsm: '+32 475 123 456', email: 'vincent@artebeau.be', firstName: 'Vincent', lastName: 'Meerschaert', invoiceAddress: 'Client Avenue 10, 1000 Brussels', function: 'Project Owner', vatNumber: 'BE0987654321' },
       { projectId, contactId: 'artebeau-2', contactName: 'Steven Broos', contactType: 'client', company: 'Artebeau BV', phone: '+32 2 123 457', gsm: '+32 475 123 457', email: 'steven.broos@artebeau.be', firstName: 'Steven', lastName: 'Broos', function: 'Technical Manager' },
@@ -331,8 +331,8 @@ function seedProjectContactsForProject(projectId: string, projectIndex: number):
     // Project 2: Office Tower Brussels - Commercial (GDesign)
     [
       // Internal GDesign Team
-      { projectId, contactId: 'gd-2', contactName: 'Maria Peeters', contactType: 'team', company: 'GDesign Architecten', phone: '+32 16 123 457', gsm: '+32 475 123 002', email: 'maria@gdesign.be', firstName: 'Maria', lastName: 'Peeters', function: 'Office Manager' },
-      { projectId, contactId: 'gd-5', contactName: 'Emma Van Damme', contactType: 'team', company: 'GDesign Architecten', phone: '+32 16 123 460', gsm: '+32 475 123 005', email: 'emma@gdesign.be', firstName: 'Emma', lastName: 'Van Damme', function: 'Project Coordinator' },
+      { projectId, contactId: 'gd-1', contactName: 'Jan Vermeersch', contactType: 'team', company: 'GDesign Architecten', phone: '+32 16 123 456', gsm: '+32 475 123 001', email: 'jan@gdesign.be', firstName: 'Jan', lastName: 'Vermeersch', function: 'Managing Director' },
+      { projectId, contactId: 'gd-6', contactName: 'Pieter Maes', contactType: 'team', company: 'GDesign Architecten', phone: '+32 16 123 461', gsm: '+32 475 123 006', email: 'pieter@gdesign.be', firstName: 'Pieter', lastName: 'Maes', function: 'Technical Draftsman' },
       // External contacts
       { projectId, contactId: 'immobel-1', contactName: 'Immobel SA', contactType: 'client', company: 'Immobel SA', phone: '+32 2 422 5511', gsm: '+32 470 111 222', email: 'projects@immobel.be', invoiceAddress: 'Rue de la Régence 58, 1000 Brussels', function: 'Developer', vatNumber: 'BE0405966675' },
       { projectId, contactId: 'jaspers-1', contactName: 'Jaspers-Eyers Architects', contactType: 'external_team', company: 'Jaspers-Eyers Architects', phone: '+32 2 640 6070', gsm: '+32 471 222 333', email: 'office@jaspers-eyers.be', function: 'Lead Architect', vatNumber: 'BE0427243449' },
