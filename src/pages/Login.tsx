@@ -25,12 +25,7 @@ interface DemoAccount {
 }
 
 const demoAccounts: DemoAccount[] = [
-  { label: 'Owner', email: 'paul@oxicloud.com', role: 'Paul Gijsemans', initials: 'PG' },
-  { label: 'Admin', email: 'christine@oxicloud.com', role: 'Christine Duong', initials: 'CD' },
   { label: 'Power User', email: 'jan@gdesign.be', role: 'Jan Vermeersch', initials: 'JV' },
-  { label: 'Power User', email: 'maria@gdesign.be', role: 'Maria Peeters', initials: 'MP' },
-  { label: 'Standard User', email: 'lisa@gdesign.be', role: 'Lisa De Smet', initials: 'LS' },
-  { label: 'Authority (Power)', email: 'koen@antwerpen.be', role: 'Koen Van den Berg', initials: 'KD' },
 ];
 
 const Login = () => {

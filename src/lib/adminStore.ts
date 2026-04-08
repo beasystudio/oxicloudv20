@@ -169,9 +169,7 @@ const generateDemoActivityLogs = (): ActivityLog[] => {
   
   const users = [
     { email: 'jan@gdesign.be', name: 'Jan Vermeersch', companyId: 'gdesign', companyName: 'GDesign Architecten' },
-    { email: 'maria@gdesign.be', name: 'Maria Peeters', companyId: 'gdesign', companyName: 'GDesign Architecten' },
-    { email: 'karel@4takt.be', name: 'Karel Wouters', companyId: '4takt', companyName: '4TAKT' },
-    { email: 'sophie@4takt.be', name: 'Sophie Hendricks', companyId: '4takt', companyName: '4TAKT' },
+    { email: 'thomas@gdesign.be', name: 'Thomas Janssen', companyId: 'gdesign', companyName: 'GDesign Architecten' },
   ];
 
   // Generate 50 random activity logs over the past 30 days
