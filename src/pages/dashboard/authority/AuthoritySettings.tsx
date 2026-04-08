@@ -29,8 +29,7 @@ const AuthoritySettings = () => {
   };
 
   const teamMembers = [
-    { id: '1', name: 'Koen Van den Berg', email: 'koen@antwerpen.be', role: 'Power User', license: 'Power User/Admin', status: 'active' },
-    { id: '2', name: 'Els Peeters', email: 'els@antwerpen.be', role: 'Standard User', license: 'Standard User', status: 'active' },
+    { id: '1', name: 'Jan Vermeersch', email: 'jan@gdesign.be', role: 'Power User', license: 'Power User/Admin', status: 'active' },
     { id: '3', name: 'Anna Martens', email: 'anna.martens@antwerpen.be', role: 'Standard User', license: 'Standard User', status: 'active' },
     { id: '4', name: 'Thomas De Smedt', email: 'thomas.desmedt@antwerpen.be', role: 'Standard User', license: 'Standard User', status: 'pending' },
   ];
