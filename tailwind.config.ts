@@ -19,8 +19,8 @@ export default {
     	},
     	extend: {
     		fontFamily: {
-    			sans: ['"Google Sans"', '"Noto Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-    			display: ['"Google Sans"', '"Noto Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+     			sans: ['"Google Sans"', '"DM Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+     			display: ['"Google Sans"', '"DM Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
     			mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
     		},
     		colors: {
