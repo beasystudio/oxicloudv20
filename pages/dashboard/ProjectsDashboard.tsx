@@ -1,0 +1,1524 @@
+import { useState, useEffect, useMemo, lazy, Suspense } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { TopNavigation } from '@/components/TopNavigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Label } from '@/components/ui/label';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Search, ChevronDown, ChevronRight, User, Users, X, Download, Clock, Play, ArrowRight, ArrowLeft, CreditCard, FileCheck, RefreshCw, Trash2, Plus, UserPlus, Building, Building2, ArrowDown, ArrowUp, FileText, Mail, Eye } from 'lucide-react';
+import { NoxStepProgress } from '@/components/projects/NoxStepProgress';
+import { cn } from '@/lib/utils';
+import { OxiCloudStatusBadge } from '@/components/oxicloud/OxiCloudStatusBadge';
+import { NoxStatusDot } from '@/components/oxicloud/NoxStatusDot';
+import { PreEstimationForm } from '@/components/oxicloud/PreEstimationForm';
+import { PriceReviewScreen } from '@/components/oxicloud/PriceReviewScreen';
+import { NoxPaymentDemoFlow } from '@/components/oxicloud/NoxPaymentDemoFlow';
+import { NoxReportHeldScreen } from '@/components/oxicloud/nox-results/NoxReportHeldScreen';
+import { NoxProcessingScreen } from '@/components/oxicloud/nox-results/NoxProcessingScreen';
+import { SimulationButtons } from '@/components/oxicloud/SimulationButtons';
+import { DetailedCalculationForm } from '@/components/oxicloud/DetailedCalculationForm';
+import { OxiCloudResultScreen } from '@/components/oxicloud/OxiCloudResultScreen';
+import { QuoteSentAwaitingStep } from '@/components/oxicloud/quote-flow/QuoteSentAwaitingStep';
+import { useMockAuth } from '@/contexts/MockAuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { getAllLocalProjects, getProjectContacts, updateLocalProject, deleteLocalProject, type LocalProject, type ProjectContact } from '@/lib/mockLocalProjects';
+import { getEmployeesByCompany, type CompanyEmployee } from '@/lib/mockCompanyDB';
+import { getNoxDataByProjectId, getNoxProjects, initializeNoxProject, saveNoxPreEstimation, generateNoxPrice, setNoxAwaitingPayment, processNoxPayment, saveNoxDetailedCalculation, updateNoxSubStatus, updateNoxData, cloneNoxVersion, NoxProject } from '@/lib/noxProjectStore';
+import { addNotification } from '@/lib/notificationStore';
+import { OxiCloudProjectStatus, NoxSubStatus, STATUS_CONFIG, SUB_STATUS_OPTIONS, SUB_STATUS_CONFIG, PreEstimationData, DetailedCalculationData, OxiCloudProject } from '@/types/oxicloud';
+import { getTranslatedStatusLabel } from '@/lib/statusLabels';
+import { ProjectNoxStatusCard } from '@/components/oxicloud/ProjectNoxStatusCard';
+import type { Contact } from '@/types/contact';
+import { AddExistingContactDialog } from '@/components/projects/AddExistingContactDialog';
+import { CreateProjectContactDialog } from '@/components/projects/CreateProjectContactDialog';
+import { CreateNewProjectDialog } from '@/components/projects/CreateNewProjectDialog';
+import { ProjectContactDetailModal, type ProjectContactData, type ProjectInfo } from '@/components/projects/ProjectContactDetailModal';
+
+import { PaymentSuccessDialog } from '@/components/oxicloud/PaymentSuccessDialog';
+import { ProjectLocationMap } from '@/components/projects/ProjectLocationMap';
+import { NoxVersionHistory } from '@/components/projects/NoxVersionHistory';
+import { ProjectContacts } from '@/components/projects/ProjectContacts';
+
+
+
+
+// NOx flow step type
+type NoxFlowStep = null | 'pre-estimation' | 'quote-sent' | 'price-review' | 'payment' | 'detailed-calculation' | 'report-processing' | 'report-held' | 'results';
+
+// Adapter to convert NoxProject to OxiCloudProject format for existing components
+function toOxiCloudProject(project: NoxProject): OxiCloudProject | null {
+  if (!project.noxData) return null;
+  return {
+    id: project.id,
+    userId: '',
+    name: project.name,
+    status: project.noxData.status,
+    preEstimation: project.noxData.preEstimation,
+    priceData: project.noxData.priceData,
+    paymentData: project.noxData.paymentData,
+    detailedCalculation: project.noxData.detailedCalculation,
+    calculationResults: project.noxData.calculationResults,
+    reportJobQueued: project.noxData.reportJobQueued,
+    createdAt: project.noxData.noxCreatedAt,
+    updatedAt: project.noxData.noxUpdatedAt
+  };
+}
+
+// View states
+type ViewState = 'default' | 'list' | 'binder';
+
+// Extended contact interface for the binder view
+interface BinderContact {
+  id: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  mobile?: string;
+  company: string;
+  companyType: 'client' | 'team' | 'others';
+  function?: string;
+  vatNumber?: string;
+  invoiceAddress?: string;
+  workPhone?: string;
+  isCompany?: boolean;
+}
+
+// Mock coordinates for demo projects
+const projectCoordinates: Record<string, {
+  lat: number;
+  lng: number;
+}> = {
+  'proj-gdesign-001': {
+    lat: 50.9297,
+    lng: 4.4320
+  },
+  'proj-gdesign-002': {
+    lat: 50.8503,
+    lng: 4.3517
+  },
+  'proj-gdesign-003': {
+    lat: 51.0259,
+    lng: 4.4777
+  },
+  'proj-4takt-001': {
+    lat: 51.0543,
+    lng: 3.7174
+  }
+};
+
+// Helper function to format phone numbers for readability
+const formatPhoneNumber = (phone: string): string => {
+  const cleaned = phone.replace(/[^\d+]/g, '');
+  if (cleaned.startsWith('+32') || cleaned.startsWith('0')) {
+    const normalized = cleaned.startsWith('+32') ? cleaned.slice(3) : cleaned.slice(1);
+    if (normalized.length >= 8) {
+      return `0${normalized.slice(0, 2)} / ${normalized.slice(2, 5)} ${normalized.slice(5, 7)} ${normalized.slice(7)}`;
+    }
+  }
+  return phone;
+};
+const ProjectsDashboard = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { t } = useLanguage();
+  const {
+    currentUser,
+    selectedCompanyId,
+    getSelectedCompany
+  } = useMockAuth();
+  const selectedCompany = getSelectedCompany();
+  const {
+    toast
+  } = useToast();
+  const isAdmin = currentUser?.role === 'owner' || currentUser?.role === 'admin';
+  const { language } = useLanguage();
+
+  // Admin product tab
+
+  // Payment success dialog state
+  const [showPaymentSuccessDialog, setShowPaymentSuccessDialog] = useState(false);
+  const [paymentProjectName, setPaymentProjectName] = useState('');
+  const [showMockPdfDialog, setShowMockPdfDialog] = useState(false);
+
+  // View state
+  const [currentView, setCurrentView] = useState<ViewState>('default');
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [lastSelectedProjectId, setLastSelectedProjectId] = useState<string | null>(null);
+
+  // NOx flow state
+  const [noxFlowStep, setNoxFlowStep] = useState<NoxFlowStep>(null);
+  const [noxProjectsRefreshKey, setNoxProjectsRefreshKey] = useState(0);
+  const [quoteReference, setQuoteReference] = useState<string>('');
+
+  // Refresh NOx data whenever the route changes (not just on handleNoxBack)
+  useEffect(() => {
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+  }, [location.pathname]);
+
+  // Search & filter state
+  const [globalSearchQuery, setGlobalSearchQuery] = useState("");
+  const [listSearchNumber, setListSearchNumber] = useState("");
+  const [listSearchName, setListSearchName] = useState("");
+  const [searchMyActiveProjects, setSearchMyActiveProjects] = useState(false);
+
+  // Default view filter state
+  const [defaultFilterNumber, setDefaultFilterNumber] = useState("");
+  const [defaultFilterName, setDefaultFilterName] = useState("");
+  const [defaultFilterPlot, setDefaultFilterPlot] = useState("");
+  const [defaultFilterLocation, setDefaultFilterLocation] = useState("");
+  const [defaultFilterManager, setDefaultFilterManager] = useState("");
+  const [defaultFilterTeamMembers, setDefaultFilterTeamMembers] = useState("");
+  const [defaultFilterCustom, setDefaultFilterCustom] = useState("");
+  const [defaultFilterNoxStatus, setDefaultFilterNoxStatus] = useState<OxiCloudProjectStatus | "all">("all");
+
+  // Binder state
+  const [contactSearchQuery, setContactSearchQuery] = useState("");
+  const [contactFilter, setContactFilter] = useState<'all' | 'client' | 'team' | 'others'>('all');
+  const [selectedContact, setSelectedContact] = useState<BinderContact | null>(null);
+  const [expandedCompanies, setExpandedCompanies] = useState<Set<string>>(new Set());
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [modalContact, setModalContact] = useState<ProjectContactData | null>(null);
+  const [isProjectEditOpen, setIsProjectEditOpen] = useState(false);
+  const [editedProject, setEditedProject] = useState<LocalProject | null>(null);
+  const [projectsRefreshKey, setProjectsRefreshKey] = useState(0);
+
+  // Delete project state
+  const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  // Contact dialogs state
+  const [isAddExistingContactOpen, setIsAddExistingContactOpen] = useState(false);
+  const [isCreateContactOpen, setIsCreateContactOpen] = useState(false);
+  const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [contactsRefreshKey, setContactsRefreshKey] = useState(0);
+  const [noxSubStatusRefreshKey, setNoxSubStatusRefreshKey] = useState(0);
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const canEditProject = currentUser?.role === 'client_owner' || currentUser?.role === 'client_admin';
+
+  // Get current NoxProject for the selected project
+  const currentNoxProject = useMemo((): NoxProject | null => {
+    if (!selectedProjectId) return null;
+    const noxProjects = getNoxProjects();
+    return noxProjects.find((p) => p.id === selectedProjectId) || null;
+  }, [selectedProjectId, noxProjectsRefreshKey]);
+
+  // Handle navigation state (payment success, deep-link from dashboard Action Required)
+  useEffect(() => {
+    const state = location.state as {
+      showPaymentSuccess?: boolean;
+      projectName?: string;
+      selectProjectId?: string;
+      filterStatus?: string;
+      highlightProjectId?: string;
+      noxAction?: string;
+    } | null;
+    if (!state) return;
+
+    if (state.showPaymentSuccess) {
+      setShowPaymentSuccessDialog(true);
+      setPaymentProjectName(state.projectName || '');
+      if (state.selectProjectId) {
+        setSelectedProjectId(state.selectProjectId);
+        setCurrentView('binder');
+      }
+    }
+
+    // Deep-link: select project and open the correct NOx flow step
+    if (state.highlightProjectId) {
+      setSelectedProjectId(state.highlightProjectId);
+      setCurrentView('binder');
+
+      if (state.noxAction) {
+        // Small delay so project selection settles before opening flow
+        setTimeout(() => {
+          const noxData = getNoxDataByProjectId(state.highlightProjectId!);
+          if (!noxData) {
+            initializeNoxProject(state.highlightProjectId!);
+            setNoxProjectsRefreshKey((prev) => prev + 1);
+          }
+          switch (state.noxAction) {
+            case 'pre-estimation':
+              setNoxFlowStep('pre-estimation');
+              break;
+            case 'payment':
+              setNoxFlowStep(isAdmin ? 'price-review' : 'quote-sent');
+              break;
+            case 'pay':
+              setNoxFlowStep(isAdmin ? 'payment' : 'quote-sent');
+              break;
+            case 'details':
+              setNoxFlowStep('detailed-calculation');
+              break;
+            case 'results':
+              setNoxFlowStep('results');
+              break;
+            case 'quote-flow':
+              setNoxFlowStep('quote-sent');
+              break;
+            default:
+              setNoxFlowStep('pre-estimation');
+          }
+        }, 100);
+      }
+    }
+
+    navigate(location.pathname, { replace: true, state: {} });
+  }, [location, navigate]);
+
+  // NOx workflow handlers
+  const handleStartNoxFlow = (action: string) => {
+    if (!selectedProjectId) return;
+
+    // Initialize NOx data if not exists
+    const noxData = getNoxDataByProjectId(selectedProjectId);
+    if (!noxData) {
+      initializeNoxProject(selectedProjectId);
+      setNoxProjectsRefreshKey((prev) => prev + 1);
+    }
+
+    // Determine which step to go to based on action/status
+    const currentNoxData = getNoxDataByProjectId(selectedProjectId);
+    switch (action) {
+      case 'start':
+      case 'continue':{
+          const status = currentNoxData?.status;
+          if (status === 'price_generated' || status === 'awaiting_payment') {setNoxFlowStep('quote-sent');break;}
+          if (status === 'paid') {setNoxFlowStep('detailed-calculation');break;}
+          if (status === 'report_in_progress') {setNoxFlowStep('report-held');break;}
+          if (status === 'report_delivered') {setNoxFlowStep('results');break;}
+          setNoxFlowStep('pre-estimation');
+          break;
+        }
+      case 'payment':
+        setNoxFlowStep(isAdmin ? 'price-review' : 'quote-sent');
+        break;
+      case 'pay':
+        setNoxFlowStep(isAdmin ? 'payment' : 'quote-sent');
+        break;
+      case 'details':
+        setNoxFlowStep('detailed-calculation');
+        break;
+      case 'progress':
+        setNoxFlowStep('report-held');
+        break;
+      case 'download':
+        setNoxFlowStep('results');
+        break;
+      default:
+        setNoxFlowStep('pre-estimation');
+    }
+  };
+  const handlePreEstimationSubmit = (data: PreEstimationData) => {
+    if (!selectedProjectId) return;
+    saveNoxPreEstimation(selectedProjectId, data);
+    generateNoxPrice(selectedProjectId);
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+
+    // Admins can review full pricing; client users must never see totals
+    if (isAdmin) {
+      setNoxFlowStep('price-review');
+      toast({
+        title: t('dashboard.nox.priceGenerated'),
+        description: t('dashboard.nox.priceReadyForReview')
+      });
+      return;
+    }
+    // Auto-send quote to client
+    setNoxAwaitingPayment(selectedProjectId);
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+    setNoxFlowStep('quote-sent');
+    toast({ title: t('reportHeld.quoteSentAuto') });
+  };
+  const handleQuoteSent = (quoteRef: string) => {
+    if (!selectedProjectId) return;
+    setQuoteReference(quoteRef);
+    setNoxAwaitingPayment(selectedProjectId);
+    updateNoxData(selectedProjectId, { subStatus: 'quote_sent_to_customer' });
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+  };
+  const handleClientPaymentReceived = () => {
+    if (!selectedProjectId) return;
+
+    // Get project name for notification
+    const projectName = currentNoxProject?.name || 'Project';
+
+    // Process the payment
+    processNoxPayment(selectedProjectId);
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+
+    // Add notification
+    addNotification({
+      type: 'payment_success',
+      title: 'Payment Successful',
+      message: `Payment received for ${projectName}. Complete NOₓ Assessment and Settlement Claim to finalize your partner share.`,
+      projectName
+    });
+
+    // Navigate to projects page with the project selected (binder view)
+    navigate('/dashboard/projects', {
+      state: {
+        showPaymentSuccess: true,
+        projectName,
+        selectProjectId: selectedProjectId
+      }
+    });
+  };
+  const handleProceedToPayment = () => {
+    if (!selectedProjectId) return;
+    setNoxAwaitingPayment(selectedProjectId);
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+    setNoxFlowStep('payment');
+  };
+  const handlePaymentComplete = (vatNumber?: string) => {
+    if (!selectedProjectId) return;
+    processNoxPayment(selectedProjectId, vatNumber);
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+    setNoxFlowStep('detailed-calculation');
+    toast({
+      title: t('dashboard.nox.paymentSuccessful'),
+      description: t('dashboard.nox.paymentProcessed')
+    });
+  };
+  const handleDetailedCalculationSubmit = (data: DetailedCalculationData) => {
+    if (!selectedProjectId) return;
+    saveNoxDetailedCalculation(selectedProjectId, data);
+    // Report generated but held until client payment — show processing first
+    updateNoxData(selectedProjectId, { status: 'report_in_progress' });
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+    setNoxFlowStep('report-processing');
+  };
+  const handleNoxBack = () => {
+    setNoxProjectsRefreshKey((prev) => prev + 1);
+    setNoxFlowStep(null);
+  };
+
+  // Get projects filtered by selected company (admin sees ALL companies)
+  const projects = useMemo(() => {
+    const allProjects = getAllLocalProjects();
+    if (isAdmin) return allProjects; // Admin sees all companies
+    if (!selectedCompanyId) return [];
+    return allProjects.filter((p) => p.companyId === selectedCompanyId);
+  }, [selectedCompanyId, projectsRefreshKey, isAdmin]);
+
+  // Filter projects for default view
+  const defaultFilteredProjects = useMemo(() => {
+    let result = projects;
+    if (defaultFilterNumber) {
+      result = result.filter((p) => p.projectNumber.toLowerCase().includes(defaultFilterNumber.toLowerCase()));
+    }
+    if (defaultFilterName) {
+      result = result.filter((p) => p.name.toLowerCase().includes(defaultFilterName.toLowerCase()));
+    }
+    if (defaultFilterLocation) {
+      result = result.filter((p) => p.location?.toLowerCase().includes(defaultFilterLocation.toLowerCase()));
+    }
+    if (defaultFilterManager) {
+      result = result.filter((p) => p.managerName?.toLowerCase().includes(defaultFilterManager.toLowerCase()));
+    }
+    if (defaultFilterNoxStatus !== "all") {
+      // Group matching: e.g. input_incomplete also matches input_completed (both = "Draft")
+      const STATUS_GROUPS: Record<string, OxiCloudProjectStatus[]> = {
+        input_incomplete: ['input_incomplete', 'input_completed'],
+        price_generated: ['price_generated', 'awaiting_payment'],
+        paid: ['paid'],
+        report_in_progress: ['report_in_progress'],
+        report_delivered: ['report_delivered'],
+      };
+      const matchStatuses = STATUS_GROUPS[defaultFilterNoxStatus] || [defaultFilterNoxStatus];
+      result = result.filter((p) => {
+        const noxData = getNoxDataByProjectId(p.id);
+        return noxData && matchStatuses.includes(noxData.status);
+      });
+    }
+    return result;
+  }, [projects, defaultFilterNumber, defaultFilterName, defaultFilterLocation, defaultFilterManager, defaultFilterNoxStatus]);
+
+  // Filter projects for list view
+  const filteredProjects = useMemo(() => {
+    let result = projects;
+    if (listSearchNumber) {
+      result = result.filter((p) => p.projectNumber.toLowerCase().includes(listSearchNumber.toLowerCase()));
+    }
+    if (listSearchName) {
+      result = result.filter((p) => p.name.toLowerCase().includes(listSearchName.toLowerCase()));
+    }
+    if (searchMyActiveProjects && currentUser) {
+      result = result.filter((p) => p.managerId === currentUser.email);
+    }
+    return result;
+  }, [projects, listSearchNumber, listSearchName, searchMyActiveProjects, currentUser]);
+
+  // Paginated projects for default view
+  const paginatedProjects = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return defaultFilteredProjects.slice(start, start + itemsPerPage);
+  }, [defaultFilteredProjects, currentPage, itemsPerPage]);
+  const totalPages = Math.ceil(defaultFilteredProjects.length / itemsPerPage);
+  const selectedProject = useMemo(() => {
+    return projects.find((p) => p.id === selectedProjectId) || null;
+  }, [projects, selectedProjectId]);
+  const lastSelectedProject = useMemo(() => {
+    return projects.find((p) => p.id === lastSelectedProjectId) || null;
+  }, [projects, lastSelectedProjectId]);
+
+  // Get team employees from the owning company
+  const teamEmployees = useMemo(() => {
+    if (!selectedCompanyId) return [];
+    return getEmployeesByCompany(selectedCompanyId);
+  }, [selectedCompanyId]);
+
+  // Get project contacts
+  const allContacts = useMemo((): BinderContact[] => {
+    if (!selectedProjectId) return [];
+    const projectContacts = getProjectContacts(selectedProjectId);
+    const contacts: BinderContact[] = [];
+    const seenEmails = new Set<string>();
+    projectContacts.forEach((pc) => {
+      const emailKey = (pc.email || '').toLowerCase();
+      if (emailKey && seenEmails.has(emailKey)) return;
+      if (emailKey) seenEmails.add(emailKey);
+      const isClient = pc.contactType === 'client';
+      const isTeam = pc.contactType === 'team' || pc.contactType === 'external_team';
+      contacts.push({
+        id: pc.id,
+        firstName: pc.firstName || pc.contactName.split(' ')[0] || '',
+        lastName: pc.lastName || pc.contactName.split(' ').slice(1).join(' ') || '',
+        fullName: pc.contactName,
+        email: pc.email,
+        phone: pc.phone || '',
+        mobile: pc.gsm,
+        company: pc.company,
+        companyType: isClient ? 'client' : isTeam ? 'team' : 'others',
+        function: pc.function,
+        vatNumber: pc.vatNumber,
+        invoiceAddress: pc.invoiceAddress,
+        workPhone: pc.workPhone
+      });
+    });
+    return contacts;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProjectId, contactsRefreshKey]);
+
+  // Handler for when a contact is added/created
+  const handleContactAdded = () => {
+    setContactsRefreshKey((prev) => prev + 1);
+  };
+
+  // Handler for when a project is created
+  const handleProjectCreated = () => {
+    setProjectsRefreshKey((prev) => prev + 1);
+    setIsCreateProjectOpen(false);
+    toast({
+      title: t('dashboard.projectsDashboard.projectCreated'),
+      description: t('dashboard.projectsDashboard.projectCreatedDesc')
+    });
+  };
+
+  // Filter contacts based on search and tab
+  const filteredContacts = useMemo(() => {
+    return allContacts.filter((contact) => {
+      if (contactFilter !== 'all' && contact.companyType !== contactFilter) return false;
+      if (contactSearchQuery) {
+        const query = contactSearchQuery.toLowerCase();
+        return contact.fullName.toLowerCase().includes(query) || contact.company.toLowerCase().includes(query) || contact.email.toLowerCase().includes(query);
+      }
+      return true;
+    });
+  }, [allContacts, contactFilter, contactSearchQuery]);
+
+  // Group contacts by company and create company-level contacts
+  const groupedContacts = useMemo(() => {
+    const groups: Record<string, {
+      companyContact: BinderContact;
+      persons: BinderContact[];
+    }> = {};
+    filteredContacts.forEach((contact) => {
+      if (!groups[contact.company]) {
+        // Create a company-level contact from the first contact of that company
+        groups[contact.company] = {
+          companyContact: {
+            id: `company-${contact.company}`,
+            firstName: '',
+            lastName: '',
+            fullName: contact.company,
+            email: contact.email,
+            phone: contact.phone,
+            mobile: contact.mobile,
+            company: contact.company,
+            companyType: contact.companyType,
+            vatNumber: contact.vatNumber,
+            invoiceAddress: contact.invoiceAddress,
+            workPhone: contact.workPhone,
+            isCompany: true
+          },
+          persons: []
+        };
+      }
+      // Add person to the group
+      groups[contact.company].persons.push({
+        ...contact,
+        isCompany: false
+      });
+
+      // Update company contact with any available company-level data
+      if (contact.vatNumber && !groups[contact.company].companyContact.vatNumber) {
+        groups[contact.company].companyContact.vatNumber = contact.vatNumber;
+      }
+      if (contact.invoiceAddress && !groups[contact.company].companyContact.invoiceAddress) {
+        groups[contact.company].companyContact.invoiceAddress = contact.invoiceAddress;
+      }
+    });
+    return groups;
+  }, [filteredContacts]);
+  const toggleCompanyExpanded = (company: string) => {
+    setExpandedCompanies((prev) => {
+      const next = new Set(prev);
+      if (next.has(company)) {
+        next.delete(company);
+      } else {
+        next.add(company);
+      }
+      return next;
+    });
+  };
+  const handleContactClick = (contact: BinderContact) => {
+    setSelectedContact(contact);
+  };
+  const handleContactDoubleClick = (contact: BinderContact) => {
+    // Convert BinderContact to ProjectContactData for the modal
+    const projectContactData: ProjectContactData = {
+      id: contact.id,
+      name: contact.fullName,
+      company: contact.company,
+      email: contact.email,
+      phone: contact.phone,
+      mobile: contact.mobile,
+      isCompany: contact.isCompany,
+      function: contact.function,
+      vatNumber: contact.vatNumber,
+      billingStreet: contact.invoiceAddress,
+      addresses: [],
+      projects: []
+    };
+    setModalContact(projectContactData);
+    setIsContactModalOpen(true);
+  };
+  const handleContactUpdated = (updatedContact: ProjectContactData) => {
+    setSelectedContact((prev) => prev ? {
+      ...prev,
+      fullName: updatedContact.name,
+      email: updatedContact.email,
+      phone: updatedContact.phone,
+      mobile: updatedContact.mobile
+    } : null);
+    setIsContactModalOpen(false);
+  };
+
+  // Get current project info for the modal
+  const currentProjectInfo: ProjectInfo | undefined = selectedProject ? {
+    id: selectedProject.id,
+    projectNumber: selectedProject.projectNumber,
+    projectName: selectedProject.name,
+    status: selectedProject.status as 'Open' | 'In Progress' | 'On Hold' | 'Completed' || 'Open'
+  } : undefined;
+  const handleProjectFieldDoubleClick = () => {
+    if (canEditProject && selectedProject) {
+      setEditedProject({
+        ...selectedProject
+      });
+      setIsProjectEditOpen(true);
+    }
+  };
+  const handleSaveProject = () => {
+    if (editedProject) {
+      updateLocalProject(editedProject.id, {
+        name: editedProject.name,
+        projectNumber: editedProject.projectNumber,
+        managerId: editedProject.managerId,
+        managerName: editedProject.managerName,
+        description: editedProject.description
+      });
+      setProjectsRefreshKey((prev) => prev + 1);
+      toast({
+        title: t('dashboard.projectsDashboard.projectUpdated'),
+        description: t('dashboard.projectsDashboard.projectUpdatedDesc')
+      });
+    }
+    setIsProjectEditOpen(false);
+    setEditedProject(null);
+  };
+  const handleGlobalSearchClick = () => {
+    setCurrentView('list');
+  };
+  const handleCloseListView = () => {
+    setCurrentView('default');
+    setListSearchNumber("");
+    setListSearchName("");
+  };
+  const handleSelectProject = (projectId: string) => {
+    setSelectedProjectId(projectId);
+    setLastSelectedProjectId(projectId);
+    setCurrentView('binder');
+  };
+  const handleBackToDefault = () => {
+    setCurrentView('default');
+    setSelectedProjectId(null);
+  };
+
+  // Delete project handler
+  const handleDeleteProject = (projectId: string) => {
+    setDeleteProjectId(projectId);
+    setIsDeleteDialogOpen(true);
+  };
+  const confirmDeleteProject = () => {
+    if (deleteProjectId) {
+      const deleted = deleteLocalProject(deleteProjectId);
+      if (deleted) {
+        setProjectsRefreshKey((prev) => prev + 1);
+        toast({
+          title: t('dashboard.projectsDashboard.projectDeleted'),
+          description: t('dashboard.projectsDashboard.projectDeletedDesc')
+        });
+      }
+    }
+    setIsDeleteDialogOpen(false);
+    setDeleteProjectId(null);
+  };
+
+  // Companies are collapsed by default - user expands as needed
+  if (!currentUser) return null;
+
+  // VIEW 1: Default View
+  const renderDefaultView = () => <>
+      {/* Global Search Bar */}
+      <div className="relative mb-6 cursor-pointer" onClick={handleGlobalSearchClick}>
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        <Input placeholder={t('dashboard.projectsDashboard.searchProjects')} className="pl-12 h-12 text-base bg-background cursor-pointer" readOnly />
+      </div>
+
+      <div className="flex gap-6 h-[calc(100vh-180px)]">
+        {/* Left Panel: Search Field Preview */}
+        <Card className="w-80 shrink-0 flex flex-col">
+          <CardHeader className="pb-3 shrink-0">
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('dashboard.projectsDashboard.searchFilters')}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 flex-1 overflow-y-auto">
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">{t('dashboard.projectsDashboard.searchByNumber')}</Label>
+              <Input placeholder="bijv. 2025-001" className="h-8 text-sm" value={defaultFilterNumber} onChange={(e) => setDefaultFilterNumber(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">{t('dashboard.projectsDashboard.searchByName')}</Label>
+              <Input placeholder="bijv. Pauwels" className="h-8 text-sm" value={defaultFilterName} onChange={(e) => setDefaultFilterName(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">{t('dashboard.projectsDashboard.noxStatus')}</Label>
+              <Select value={defaultFilterNoxStatus} onValueChange={(v) => setDefaultFilterNoxStatus(v as OxiCloudProjectStatus | "all")}>
+                <SelectTrigger className="h-8 text-sm bg-background">
+                   <SelectValue placeholder={t('dashboard.projectsDashboard.allStatuses')} />
+                 </SelectTrigger>
+                 <SelectContent className="bg-background z-50">
+                   <SelectItem value="all">
+                     <span className="flex items-center gap-2">
+                       <span className="w-2.5 h-2.5 rounded-full border-2 border-muted-foreground/40" />
+                       {t('dashboard.projectsDashboard.allStatuses')}
+                    </span>
+                  </SelectItem>
+                  {/* Deduplicated statuses: use one representative per display group */}
+                  {([
+                    { value: 'input_incomplete' as OxiCloudProjectStatus, color: 'bg-gray-500' },
+                    { value: 'price_generated' as OxiCloudProjectStatus, color: 'bg-blue-500' },
+                    { value: 'paid' as OxiCloudProjectStatus, color: 'bg-indigo-500' },
+                    { value: 'report_in_progress' as OxiCloudProjectStatus, color: 'bg-amber-500' },
+                    { value: 'report_delivered' as OxiCloudProjectStatus, color: 'bg-emerald-600' },
+                  ]).map(({ value, color }) => <SelectItem key={value} value={value}>
+                      <span className="flex items-center gap-2">
+                        <span className={`w-2.5 h-2.5 rounded-full ${color}`} />
+                        {getTranslatedStatusLabel(value, t)}
+                      </span>
+                    </SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">{t('dashboard.projectsDashboard.searchByPlot')}</Label>
+              <Input placeholder="" className="h-8 text-sm" value={defaultFilterPlot} onChange={(e) => setDefaultFilterPlot(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">{t('dashboard.projectsDashboard.location')}</Label>
+              <Input placeholder="" className="h-8 text-sm" value={defaultFilterLocation} onChange={(e) => setDefaultFilterLocation(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">{t('dashboard.projectsDashboard.manager')}</Label>
+              <Input placeholder="" className="h-8 text-sm" value={defaultFilterManager} onChange={(e) => setDefaultFilterManager(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">{t('dashboard.projectsDashboard.teamMembers')}</Label>
+              <Input placeholder="" className="h-8 text-sm" value={defaultFilterTeamMembers} onChange={(e) => setDefaultFilterTeamMembers(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">{t('dashboard.projectsDashboard.customFields')}</Label>
+              <Input placeholder="" className="h-8 text-sm" value={defaultFilterCustom} onChange={(e) => setDefaultFilterCustom(e.target.value)} />
+            </div>
+            <div className="flex gap-2 pt-4">
+              <Button variant="outline" className="flex-1 h-8 text-sm" onClick={() => {
+              setDefaultFilterNumber("");
+              setDefaultFilterName("");
+              setDefaultFilterPlot("");
+              setDefaultFilterLocation("");
+              setDefaultFilterManager("");
+              setDefaultFilterTeamMembers("");
+              setDefaultFilterCustom("");
+              setDefaultFilterNoxStatus("all");
+            }}>
+                {t('common.clear')}
+              </Button>
+              <Button variant="outline" className="h-8 text-sm">
+                <Download className="h-3 w-3 mr-1" />
+                {t('common.export')}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Right Panel: Project Snapshot Table */}
+        <Card className="flex-1 flex flex-col min-h-0">
+          <CardHeader className="pb-3 shrink-0 flex flex-row items-center justify-between">
+            <CardTitle className="text-sm font-medium text-muted-foreground">{t('dashboard.projectsDashboard.projectOverview')}</CardTitle>
+            {!isAdmin &&
+          <Button size="sm" onClick={() => setIsCreateProjectOpen(true)}>
+                <Plus className="h-4 w-4 mr-1" />
+                {t('dashboard.projectsDashboard.newProject')}
+              </Button>
+          }
+          </CardHeader>
+          <CardContent className="flex-1 flex flex-col min-h-0 overflow-hidden">
+            <div className="flex-1 overflow-auto min-h-0">
+              {/* Table Header */}
+               <div className={cn("gap-6 px-4 py-3 border-b border-border bg-background text-[11px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20 grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]")}>
+                <div>N°</div>
+                <div>{t('dashboard.projectsDashboard.name')}</div>
+                {isAdmin && <div>{t('dashboard.projectsDashboard.company')}</div>}
+                <div>{t('dashboard.projectsDashboard.manager')}</div>
+                <div>{t('dashboard.projectsDashboard.location')}</div>
+              </div>
+
+              {/* Project Rows */}
+              <div>
+                {paginatedProjects.map((project) => <ContextMenu key={project.id}>
+                    <ContextMenuTrigger asChild>
+                      <div className={cn("gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]", "hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
+                        <div className="flex items-center gap-2.5 pt-0.5">
+                          <NoxStatusDot projectId={project.id} />
+                          <span className="text-sm font-medium text-foreground transition-colors">{project.projectNumber}</span>
+                        </div>
+                        <div className="text-sm font-medium text-foreground transition-colors pt-0.5">{project.name}</div>
+                        {isAdmin && <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors pt-0.5">{project.companyId === 'gdesign' ? 'GDesign' : project.companyId === '4takt' ? '4Takt' : project.companyId || '-'}</div>}
+                        <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors pt-0.5">{project.managerName || '-'}</div>
+                        <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors leading-relaxed">
+                          {project.location || '-'}
+                        </div>
+                      </div>
+                    </ContextMenuTrigger>
+                    {!isAdmin &&
+                <ContextMenuContent>
+                      <ContextMenuItem onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteProject(project.id);
+                  }} className="text-destructive focus:text-destructive">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        {t('dashboard.projectsDashboard.deleteProject')}
+                      </ContextMenuItem>
+                    </ContextMenuContent>
+                }
+                  </ContextMenu>)}
+                {paginatedProjects.length === 0 && <div className="text-center py-16 text-muted-foreground">
+                    
+                    <p className="text-base font-medium mb-2">{t('dashboard.projectsDashboard.noProjectsFound')}</p>
+                    <p className="text-xs">{t('dashboard.projectsDashboard.adjustFilters')}</p>
+                  </div>}
+              </div>
+            </div>
+
+            {/* Pagination */}
+            {defaultFilteredProjects.length > 0 && <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                <span className="text-sm text-muted-foreground">
+                  {defaultFilteredProjects.length} {t('dashboard.projectsDashboard.projectsFound')}
+                </span>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">{t('common.show')}</span>
+                    <Select value={String(itemsPerPage)} onValueChange={(v) => {
+                  setItemsPerPage(Number(v));
+                  setCurrentPage(1);
+                }}>
+                      <SelectTrigger className="w-16 h-8 bg-background">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background">
+                        <SelectItem value="10">10</SelectItem>
+                        <SelectItem value="25">25</SelectItem>
+                        <SelectItem value="50">50</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {totalPages > 1 && <div className="flex gap-1">
+                      {Array.from({
+                  length: totalPages
+                }, (_, i) => i + 1).map((page) => <Button key={page} variant={currentPage === page ? "default" : "outline"} size="sm" className="h-8 w-8 p-0" onClick={() => setCurrentPage(page)}>
+                          {page}
+                        </Button>)}
+                    </div>}
+                </div>
+              </div>}
+          </CardContent>
+        </Card>
+      </div>
+    </>;
+
+  // VIEW 2: Project List View
+  const renderListView = () => <>
+      {/* Top Bar with Global Search */}
+      <div className="relative mb-6">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        <Input placeholder="Search projects…" value={globalSearchQuery} onChange={(e) => setGlobalSearchQuery(e.target.value)} onClick={() => setCurrentView('default')} className="pl-12 pr-12 h-12 text-base bg-background cursor-pointer" autoFocus />
+        <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2" onClick={handleCloseListView}>
+          <X className="h-5 w-5" />
+        </Button>
+      </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          {/* Last Selected Section */}
+          {lastSelectedProject && <div className="mb-6 pb-4 border-b">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                <Clock className="h-4 w-4" />
+                <span>Last selected</span>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted cursor-pointer transition-colors" onClick={() => handleSelectProject(lastSelectedProject.id)}>
+                <span className="font-medium">{lastSelectedProject.projectNumber}</span>
+                <span className="text-muted-foreground">—</span>
+                <span>{lastSelectedProject.name}</span>
+              </div>
+            </div>}
+
+          {/* Search Controls */}
+          <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center gap-2">
+              <Switch checked={searchMyActiveProjects} onCheckedChange={setSearchMyActiveProjects} id="my-projects" />
+              <Label htmlFor="my-projects" className="text-sm cursor-pointer">
+                {t('dashboard.projectsDashboard.searchInMyActive')}
+              </Label>
+            </div>
+          </div>
+
+          {/* Search Inputs Row */}
+          
+
+          {/* Search Results List */}
+          <ScrollArea className="h-[400px]">
+            <div className="space-y-0.5 p-2">
+              {filteredProjects.map((project) => <div key={project.id} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group items-start relative", "hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
+                  <span className="font-mono text-sm font-medium w-24 flex items-center gap-2 text-foreground transition-colors pt-0.5">
+                    <NoxStatusDot projectId={project.id} />
+                    {project.projectNumber}
+                  </span>
+                  <span className="text-sm text-foreground transition-colors pt-0.5">{project.name}</span>
+                </div>)}
+              {filteredProjects.length === 0 && <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                  <Search className="h-8 w-8 mb-2 opacity-30" />
+                  <p className="text-sm">{t('dashboard.projectsDashboard.noProjectsFound')}</p>
+                </div>}
+            </div>
+          </ScrollArea>
+
+          {/* Pagination */}
+          {filteredProjects.length > itemsPerPage && <div className="flex justify-center mt-4 pt-4 border-t">
+              <div className="flex gap-1">
+                {Array.from({
+              length: totalPages
+            }, (_, i) => i + 1).map((page) => <Button key={page} variant={currentPage === page ? "default" : "outline"} size="sm" className="h-8 w-8 p-0" onClick={() => setCurrentPage(page)}>
+                    {page}
+                  </Button>)}
+              </div>
+            </div>}
+        </CardContent>
+      </Card>
+    </>;
+
+  // VIEW 3: Binder View (Project Details)
+  const renderBinderView = () => {
+    if (!selectedProject) return null;
+
+    // Get NOx data for this project
+    const noxData = getNoxDataByProjectId(selectedProject.id);
+    const handleSubStatusChange = (subStatus: NoxSubStatus | undefined) => {
+      updateNoxSubStatus(selectedProject.id, subStatus);
+      setNoxSubStatusRefreshKey((prev) => prev + 1);
+      setNoxProjectsRefreshKey((prev) => prev + 1);
+      toast({
+        title: "Sub-status updated",
+        description: subStatus ? `Set to: ${subStatus.replace(/_/g, ' ')}` : "Sub-status cleared"
+      });
+    };
+    const handleCTAClick = () => {
+      if (!noxData) {
+        handleStartNoxFlow('start');
+        return;
+      }
+      switch (noxData.status) {
+        case 'input_incomplete':
+          handleStartNoxFlow('continue');
+          break;
+        case 'input_completed':
+          handleStartNoxFlow('continue');
+          break;
+        case 'price_generated':
+          handleStartNoxFlow('payment');
+          break;
+        case 'awaiting_payment':
+          handleStartNoxFlow('pay');
+          break;
+        case 'paid':
+          handleStartNoxFlow('details');
+          break;
+        case 'report_in_progress':
+          handleStartNoxFlow('progress');
+          break;
+        case 'report_delivered':
+          // Don't re-enter the flow — show mock PDF dialog
+          setShowMockPdfDialog(true);
+          return;
+        default:
+          handleStartNoxFlow('start');
+      }
+    };
+
+    const handleCloneVersion = () => {
+      const createdBy = currentUser?.name || 'User';
+      const cloned = cloneNoxVersion(selectedProject.id, createdBy);
+      if (!cloned) return;
+      setNoxProjectsRefreshKey((prev) => prev + 1);
+      toast({
+        title: t('dashboard.projectsDashboard.newVersionCreated'),
+        description: `${cloned.currentVersion} ${t('dashboard.projectsDashboard.newVersionDesc')}`
+      });
+      // After cloning, pre-estimation is kept so skip to quote-flow
+      // Generate price first, then navigate to quote flow
+      generateNoxPrice(selectedProject.id);
+      setNoxProjectsRefreshKey((prev) => prev + 1);
+      setNoxAwaitingPayment(selectedProject.id);
+      setNoxFlowStep('quote-sent');
+    };
+
+    const statusConfig = noxData ? STATUS_CONFIG[noxData.status] : null;
+    const subStatusOptions = noxData ? SUB_STATUS_OPTIONS[noxData.status] || [] : [];
+    const isWarningSubStatus = noxData?.subStatus && SUB_STATUS_CONFIG[noxData.subStatus]?.isWarning;
+    return <>
+        {/* Search Bar with current project - clickable to return to search */}
+        <div className="relative mb-6 cursor-pointer" onClick={handleBackToDefault}>
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <div className="pl-12 h-12 text-base bg-background border rounded-full flex items-center">
+            <NoxStatusDot projectId={selectedProject.id} className="mr-2" />
+            <span className="font-medium font-mono">{selectedProject.projectNumber}</span>
+            <span className="mx-2 text-muted-foreground">-</span>
+            <span>{selectedProject.name}</span>
+          </div>
+        </div>
+
+        {/* Two-Column Split Layout - Improved ratios */}
+        <div className="flex gap-5 h-[calc(100vh-160px)]">
+          
+          {/* LEFT COLUMN: 30% width - Details + Werflocatie */}
+          <div className="w-[30%] flex flex-col gap-4 overflow-auto">
+            
+            {/* Section 1: Details Card */}
+            <Card className="rounded-xl border bg-card text-card-foreground shadow-sm">
+              <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
+                <CardTitle className="text-sm font-semibold">{t('dashboard.projectsDashboard.details')}</CardTitle>
+                {canEditProject}
+              </CardHeader>
+              <CardContent className="p-4 pt-0 space-y-3">
+                <div className={`space-y-2 ${canEditProject ? 'cursor-pointer hover:bg-muted/30 -mx-2 px-2 py-1.5 rounded-lg transition-colors' : ''}`} onDoubleClick={handleProjectFieldDoubleClick}>
+                  <div className="grid grid-cols-[80px_1fr] gap-y-1.5 text-xs">
+                    <span className="text-muted-foreground">{t('dashboard.projectsDashboard.number')}</span>
+                    <span className="font-medium">{selectedProject.projectNumber}</span>
+                    
+                    <span className="text-muted-foreground">{t('dashboard.projectsDashboard.name')}</span>
+                    <span className="font-medium">{selectedProject.name}</span>
+                    
+                    <span className="text-muted-foreground">{t('dashboard.projectsDashboard.company')}</span>
+                    <span className="font-medium">{isAdmin ? selectedProject.companyId === 'gdesign' ? 'GDesign Architecten' : selectedProject.companyId === '4takt' ? '4Takt Architecten' : selectedProject.companyId || '-' : selectedCompany?.name || '-'}</span>
+                  </div>
+                </div>
+                
+                <div className={`pt-2 border-t ${canEditProject ? 'cursor-pointer hover:bg-muted/30 -mx-2 px-2 py-1.5 rounded-lg transition-colors' : ''}`} onDoubleClick={handleProjectFieldDoubleClick}>
+                  <span className="text-xs font-medium text-muted-foreground">{t('dashboard.projectsDashboard.description')}</span>
+                  <p className="text-xs mt-1">{selectedProject.description || 'Residential project for Pauwels NV in Herent'}</p>
+                </div>
+                
+                
+                {/* Werflocatie Section */}
+                <div className="pt-2 border-t">
+                  <span className="text-xs font-medium text-muted-foreground">{t('dashboard.projectsDashboard.siteLocation')}</span>
+                  
+                   <p className="text-xs mt-1.5 text-muted-foreground">
+                     {selectedProject.location || t('dashboard.projectsDashboard.noLocation')}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Version History + Clone CTA — shown when report delivered */}
+            {noxData?.status === 'report_delivered' &&
+          <NoxVersionHistory
+            noxData={{
+              status: noxData.status,
+              currentVersion: noxData.currentVersion,
+              versionHistory: noxData.versionHistory,
+              noxCreatedAt: noxData.noxCreatedAt
+            }}
+            onCloneVersion={handleCloneVersion} />
+
+          }
+
+            {/* Audit Log Card — shown when versions exist */}
+            {(noxData?.versionHistory?.length || 0) > 0 &&
+          <Card className="rounded-xl border bg-card text-card-foreground shadow-sm">
+                <CardHeader className="p-4 pb-2">
+                  <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                    <FileCheck className="h-4 w-4" />
+                    Audit Log
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 pt-0">
+                  <div className="space-y-2">
+                    {[...(noxData?.versionHistory || []), {
+                  version: noxData?.currentVersion || 'v0',
+                  createdAt: noxData?.noxCreatedAt || new Date().toISOString(),
+                  createdBy: currentUser?.name || 'User',
+                  status: noxData?.status || 'input_incomplete'
+                }].map((entry) =>
+                <div key={entry.version} className="flex items-center justify-between py-1.5 px-2 rounded text-[10px] hover:bg-muted/30">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono font-bold text-xs">{entry.version}</span>
+                          <span className={cn(
+                      "px-1.5 py-0.5 rounded-full text-[9px] font-medium text-white",
+                      STATUS_CONFIG[entry.status as keyof typeof STATUS_CONFIG]?.color || 'bg-muted'
+                    )}>
+                            {entry.status in STATUS_CONFIG ? getTranslatedStatusLabel(entry.status as OxiCloudProjectStatus, t) : entry.status}
+                          </span>
+                        </div>
+                        <div className="text-muted-foreground flex items-center gap-2">
+                          <span>{new Date(entry.createdAt).toLocaleDateString('nl-BE', { day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
+                          <span>•</span>
+                          <span>{entry.createdBy}</span>
+                        </div>
+                      </div>
+                )}
+                  </div>
+                </CardContent>
+              </Card>
+          }
+          </div>
+
+          {/* RIGHT COLUMN: 70% width - NOx Status + Contacts */}
+          <div className="w-[70%] flex flex-col gap-4 overflow-hidden">
+            
+            {/* Admin read-only: just show status overview, no interactive NOx flows */}
+            {isAdmin ?
+          <Card className="rounded-xl border bg-card text-card-foreground shadow-sm shrink-0">
+                <CardHeader className="px-4 py-3 pb-0">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold">{t('dashboard.projectsDashboard.noxAssessment')}</h3>
+                {noxData && statusConfig &&
+                <Badge className={cn("text-[10px] font-medium px-2 py-0.5 text-white", statusConfig.color)}>
+                        {getTranslatedStatusLabel(noxData.status, t)}
+                      </Badge>
+                }
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 pt-3">
+                   {noxData ?
+              <>
+                      {/* Step progress (read-only) */}
+                      <div className="mb-3">
+                        <NoxStepProgress currentStatus={noxData.status} />
+                      </div>
+                      {/* Sub-status if any */}
+                      {noxData.subStatus &&
+                <div className="text-xs text-muted-foreground">
+                          Sub-status: <span className="font-medium text-foreground">{noxData.subStatus.replace(/_/g, ' ')}</span>
+                        </div>
+                }
+                      {/* Days pending */}
+                      {noxData.status === 'awaiting_payment' && noxData.daysPending !== undefined && noxData.daysPending > 0 &&
+                <div className={cn("flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-[10px] font-medium mt-2 w-fit",
+                noxData.daysPending > 14 ? "bg-red-100 dark:bg-red-950/50 text-red-700 dark:text-red-300" :
+                noxData.daysPending > 7 ? "bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300" :
+                "bg-muted text-muted-foreground"
+                )}>
+                          <Clock className="h-3 w-3" />
+                          <span>{noxData.daysPending} {t('dashboard.projectsDashboard.daysAwaitingPayment')}</span>
+                        </div>
+                }
+                    </> :
+
+              <p className="text-xs text-muted-foreground">{language === 'nl' ? 'Nog niet gestart' : 'Not started yet'}</p>
+              }
+                </CardContent>
+              </Card> : (
+
+          /* Architect interactive NOx card */
+          <>
+            {(() => {
+              // Check if project has required contacts (at least 1 client + 1 team)
+              const hasClientContact = allContacts.some((c) => c.companyType === 'client');
+              const hasTeamContact = allContacts.some((c) => c.companyType === 'team');
+              const isNoxFrozen = !hasClientContact || !hasTeamContact;
+              if (isNoxFrozen) {
+                // Frozen state - show disabled card with warning
+                return <Card className="rounded-xl border-muted-foreground/30 bg-muted/40 shadow-sm shrink-0 border border-dotted">
+                    <CardHeader className="px-4 py-3 pb-0">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div>
+                         <h3 className="text-sm font-semibold text-muted-foreground">{t('dashboard.projectsDashboard.noxAssessment')}</h3>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="text-[10px] font-medium px-2 py-0.5 text-muted-foreground border-muted-foreground/30">
+                          {t('dashboard.projectsDashboard.setupRequired')}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    
+                    <CardContent className="p-4 pt-3 border-dotted">
+                      {/* Warning message */}
+                      <div className="flex items-center gap-3 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 mb-3">
+                        <div className="p-1.5 rounded-full bg-amber-100 dark:bg-amber-900/50">
+                          <Users className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                        </div>
+                        <div className="space-y-0.5">
+                           <p className="text-xs font-medium text-amber-700 dark:text-amber-300">
+                             {t('dashboard.projectsDashboard.contactsRequired')}
+                           </p>
+                           <p className="text-[10px] text-amber-600 dark:text-amber-400" dangerouslySetInnerHTML={{ __html: t('dashboard.projectsDashboard.contactsRequiredDesc') }}>
+                           </p>
+                        </div>
+                      </div>
+
+                      {/* Missing contacts indicators */}
+                      <div className="flex gap-2 mb-3">
+                        
+                        <div className={cn("flex-1 px-2.5 py-1.5 rounded-md border text-[10px] font-medium flex items-center gap-1.5", hasTeamContact ? "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300" : "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300")}>
+                           {hasTeamContact ? t('dashboard.projectsDashboard.teamAdded') : t('dashboard.projectsDashboard.teamMissing')}
+                         </div>
+                      </div>
+
+                      {/* Disabled CTA */}
+                      <Button className="w-full h-9 text-xs font-medium opacity-50" variant="secondary" disabled>
+                        {t('dashboard.projectsDashboard.noxLocked')}
+                      </Button>
+                    </CardContent>
+                  </Card>;
+              }
+
+              // Normal active state
+              return <Card className={cn("rounded-xl border shadow-sm transition-all duration-200 shrink-0", isWarningSubStatus ? "bg-red-50 dark:bg-red-950/30 border-red-300 dark:border-red-800" : "bg-card text-card-foreground")}>
+                  <CardHeader className="px-4 py-3 pb-0">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div>
+                          <h3 className="text-sm font-semibold">{t('dashboard.projectsDashboard.noxAssessment')}</h3>
+                        </div>
+                      </div>
+                      {statusConfig && noxData && <Badge className={cn("text-[10px] font-medium px-2 py-0.5 text-white", statusConfig.color)}>
+                          {getTranslatedStatusLabel(noxData.status, t)}
+                        </Badge>}
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="p-4 pt-3">
+                    {/* Labeled Step Progress */}
+                    {noxData && <div className="mb-4">
+                        <NoxStepProgress currentStatus={noxData.status} />
+                      </div>}
+
+                    <div className="flex gap-3">
+                      {/* Left: Main CTA Section */}
+                      <div className="flex-1 space-y-2">
+                        {/* CTA Button */}
+                        {noxData ? <Button onClick={handleCTAClick} className="w-full h-9 text-xs font-medium" variant="outline">
+                            {noxData.status === 'input_incomplete' && <><Play className="h-3.5 w-3.5 mr-1.5" />{noxData.preEstimation ? t('dashboard.projectsDashboard.continueNox') : t('dashboard.nox.startInput')}</>}
+                            {noxData.status === 'input_completed' && <><FileText className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.generateQuote')}</>}
+                            {noxData.status === 'price_generated' && <><CreditCard className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.sendQuoteToClient')}</>}
+                            {noxData.status === 'awaiting_payment' && <><Clock className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.awaitingPayment')}</>}
+                            {noxData.status === 'paid' && <><FileCheck className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.continueNox')}</>}
+                            {noxData.status === 'report_in_progress' && <><RefreshCw className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.continueNox')}</>}
+                            {noxData.status === 'report_delivered' && <><Eye className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.viewReport')}</>}
+                          </Button> : <Button className="w-full h-9 text-xs font-medium" variant="outline" onClick={() => handleStartNoxFlow('start')}>
+                            <Play className="h-3.5 w-3.5 mr-1.5" />
+                            {t('dashboard.projectsDashboard.startNox')}
+                          </Button>}
+                        
+                        {/* Days Pending indicator */}
+                        {noxData?.status === 'awaiting_payment' && noxData.daysPending !== undefined && noxData.daysPending > 0 && <div className={cn("flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-[10px] font-medium", noxData.daysPending > 14 ? "bg-red-100 dark:bg-red-950/50 text-red-700 dark:text-red-300" : noxData.daysPending > 7 ? "bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300" : "bg-muted text-muted-foreground")}>
+                            <Clock className="h-3 w-3" />
+                            <span>{noxData.daysPending} {t('dashboard.projectsDashboard.daysAwaitingPayment')}</span>
+                          </div>}
+                      </div>
+                      
+                      {/* Right: Sub-Status Section */}
+                      
+                    </div>
+                  </CardContent>
+                </Card>;
+            })()}
+            </>)
+          }
+
+            {/* Contacts Card - Master-Detail Layout */}
+            <ProjectContacts projectId={selectedProjectId} />
+          </div>
+        </div>
+      </>;
+  };
+
+
+  return <div className="min-h-screen bg-background">
+      <TopNavigation />
+      
+      <main className="container mx-auto py-6 px-4">
+
+        {/* Main content */}
+        {<>
+        {/* Render NOx flow or current view — admins never enter NOx flows */}
+        {!isAdmin && noxFlowStep && currentNoxProject ? (() => {
+          const oxiProject = toOxiCloudProject(currentNoxProject);
+          if (!oxiProject && noxFlowStep !== 'pre-estimation') return null;
+          switch (noxFlowStep) {
+            case 'pre-estimation':
+              return <PreEstimationForm initialData={currentNoxProject.noxData?.preEstimation} initialAddress={currentNoxProject.location || undefined} onSubmit={handlePreEstimationSubmit} onBack={handleNoxBack} onAutoSave={(data) => {
+                if (selectedProjectId) {
+                  saveNoxPreEstimation(selectedProjectId, data);
+                  setNoxProjectsRefreshKey((prev) => prev + 1);
+                }
+              }} />;
+            case 'quote-sent': {
+              const clientContact = allContacts.find((c) => c.companyType === 'client');
+              const clientEmail = clientContact?.email || 'client@company.com';
+              const clientName = clientContact ? `${clientContact.firstName} ${clientContact.lastName}` : currentNoxProject.name;
+              return (
+                <QuoteSentAwaitingStep
+                  quoteReference={`QT-${new Date().getFullYear()}-${currentNoxProject.id.slice(0, 4).toUpperCase()}`}
+                  endClientName={clientName}
+                  onBackToProject={handleNoxBack}
+                  onSimulatePayment={() => {
+                    if (!selectedProjectId) return;
+                    processNoxPayment(selectedProjectId);
+                    setNoxProjectsRefreshKey((prev) => prev + 1);
+                    setNoxFlowStep('detailed-calculation');
+                    toast({ title: t('reportHeld.clientSigned') });
+                  }}
+                  recipientInfo={{ name: clientName, email: clientEmail }}
+                  partnerShareAmount={450}
+                  projectName={currentNoxProject.name}
+                  partnerCompanyName={currentUser?.company || 'GDesign Architecten'}
+                />
+              );
+            }
+            case 'price-review':
+              return oxiProject ? <PriceReviewScreen project={oxiProject} onProceedToPayment={handleProceedToPayment} onBackToEdit={() => setNoxFlowStep('pre-estimation')} /> : null;
+            case 'payment':
+              return oxiProject ? <NoxPaymentDemoFlow project={oxiProject} onPaymentComplete={handlePaymentComplete} onBack={() => setNoxFlowStep('price-review')} /> : null;
+            case 'detailed-calculation':
+              return oxiProject ? <DetailedCalculationForm project={oxiProject} onSubmit={handleDetailedCalculationSubmit} onBack={handleNoxBack} /> : null;
+            case 'report-processing':
+              return (
+                <NoxProcessingScreen
+                  onComplete={() => setNoxFlowStep('report-held')}
+                />
+              );
+            case 'report-held':
+              return (
+                <NoxReportHeldScreen
+                  projectName={currentNoxProject.name}
+                  onBackToDashboard={handleNoxBack}
+                  onReportDownloaded={() => {
+                    if (selectedProjectId) {
+                      updateNoxData(selectedProjectId, { status: 'report_delivered' });
+                      setNoxProjectsRefreshKey((prev) => prev + 1);
+                    }
+                  }}
+                />
+              );
+            case 'results':
+              return oxiProject ? <OxiCloudResultScreen project={oxiProject} onBack={() => setNoxFlowStep('detailed-calculation')} onRecalculate={() => setNoxFlowStep('pre-estimation')} onBackToDashboard={handleNoxBack} /> : null;
+            default:
+              return null;
+          }
+        })() : <>
+            {currentView === 'default' && renderDefaultView()}
+            {currentView === 'list' && renderListView()}
+            {currentView === 'binder' && renderBinderView()}
+          </>}
+        </>}
+      </main>
+
+      {/* Contact Detail Modal */}
+      <ProjectContactDetailModal open={isContactModalOpen} onOpenChange={setIsContactModalOpen} contact={modalContact} currentProject={currentProjectInfo} onContactUpdated={handleContactUpdated} />
+
+      {/* Project Edit Sheet */}
+      <Sheet open={isProjectEditOpen} onOpenChange={setIsProjectEditOpen}>
+        <SheetContent className="sm:max-w-md flex flex-col h-full">
+          <SheetHeader className="shrink-0">
+            <SheetTitle>Projectgegevens bewerken</SheetTitle>
+          </SheetHeader>
+          {editedProject && <ScrollArea className="flex-1 -mx-6 px-6">
+              <div className="mt-6 space-y-4 pb-6">
+                <div className="space-y-2">
+                  <Label>Projectnummer</Label>
+                  <Input value={editedProject.projectNumber} onChange={(e) => setEditedProject({
+                ...editedProject,
+                projectNumber: e.target.value
+              })} />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Projectnaam</Label>
+                  <Input value={editedProject.name} onChange={(e) => setEditedProject({
+                ...editedProject,
+                name: e.target.value
+              })} />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Manager</Label>
+                  <Select value={editedProject.managerId || ''} onValueChange={(value) => {
+                const selectedEmployee = teamEmployees.find((e) => e.id === value);
+                setEditedProject({
+                  ...editedProject,
+                  managerId: value,
+                  managerName: selectedEmployee?.name || ''
+                });
+              }}>
+                    <SelectTrigger className="bg-background">
+                      <SelectValue placeholder="Selecteer manager" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background">
+                      {teamEmployees.map((employee) => <SelectItem key={employee.id} value={employee.id}>
+                          {employee.name}
+                        </SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Beschrijving</Label>
+                  <Input value={editedProject.description || ''} onChange={(e) => setEditedProject({
+                ...editedProject,
+                description: e.target.value
+              })} placeholder="Projectbeschrijving..." />
+                </div>
+                
+                 <div className="flex gap-2 pt-4">
+                   <Button onClick={handleSaveProject} className="flex-1">
+                     Opslaan
+                   </Button>
+                   <Button variant="outline" onClick={() => setIsProjectEditOpen(false)}>
+                     Annuleren
+                  </Button>
+                </div>
+              </div>
+            </ScrollArea>}
+        </SheetContent>
+      </Sheet>
+
+      {/* Delete Project Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+             <AlertDialogTitle>Project verwijderen</AlertDialogTitle>
+             <AlertDialogDescription>
+               Weet u zeker dat u dit project wilt verwijderen? Dit kan niet ongedaan worden gemaakt.
+             </AlertDialogDescription>
+           </AlertDialogHeader>
+           <AlertDialogFooter>
+             <AlertDialogCancel>Annuleren</AlertDialogCancel>
+             <AlertDialogAction onClick={confirmDeleteProject} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+               Verwijderen
+             </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Add Existing Contact Dialog */}
+      {selectedProjectId && <AddExistingContactDialog open={isAddExistingContactOpen} onOpenChange={setIsAddExistingContactOpen} projectId={selectedProjectId} onContactLinked={handleContactAdded} />}
+      
+      {/* Create New Contact Dialog */}
+      {selectedProjectId && <CreateProjectContactDialog open={isCreateContactOpen} onOpenChange={setIsCreateContactOpen} projectId={selectedProjectId} onContactCreated={handleContactAdded} />}
+
+      {/* Create New Project Dialog */}
+      {selectedCompanyId && <CreateNewProjectDialog open={isCreateProjectOpen} onOpenChange={setIsCreateProjectOpen} onProjectCreated={handleProjectCreated} companyId={selectedCompanyId} useProduction={true} />}
+
+      {/* Payment Success Dialog */}
+      <PaymentSuccessDialog open={showPaymentSuccessDialog} onOpenChange={setShowPaymentSuccessDialog} projectName={paymentProjectName} />
+
+      {/* Mock PDF Viewer Dialog */}
+      <Dialog open={showMockPdfDialog} onOpenChange={setShowMockPdfDialog}>
+        <DialogContent className="max-w-2xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              NOx Assessment Report
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 overflow-auto max-h-[60vh] p-1">
+            {/* Mock PDF content */}
+            <div className="border border-border rounded-lg p-6 bg-muted/20 space-y-4">
+              <div className="text-center space-y-1 pb-4 border-b border-border">
+                <h3 className="text-lg font-bold">NOx Depositie Rapport</h3>
+                <p className="text-sm text-muted-foreground">{selectedProject?.name || 'Project'}</p>
+                <p className="text-xs text-muted-foreground">Ref: NOX-{selectedProject?.id?.slice(0, 8).toUpperCase()}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div><span className="text-muted-foreground">Total NOx:</span> <span className="font-semibold">14.85 kg/jaar</span></div>
+                <div><span className="text-muted-foreground">Threshold:</span> <span className="font-semibold">938.00 kg/jaar</span></div>
+                <div><span className="text-muted-foreground">Status:</span> <Badge variant="outline" className="ml-1 text-emerald-600 border-emerald-500/30">Compliant</Badge></div>
+                <div><span className="text-muted-foreground">Percentage:</span> <span className="font-semibold">{'< 1%'}</span></div>
+              </div>
+              <div className="space-y-2 pt-4 border-t border-border">
+                <div className="h-3 w-full rounded bg-muted/60" />
+                <div className="h-3 w-4/5 rounded bg-muted/60" />
+                <div className="h-3 w-3/4 rounded bg-muted/60" />
+                <div className="h-3 w-5/6 rounded bg-muted/60" />
+                <div className="h-3 w-2/3 rounded bg-muted/60" />
+              </div>
+              <div className="space-y-2 pt-4 border-t border-border">
+                <div className="h-3 w-full rounded bg-muted/60" />
+                <div className="h-3 w-3/5 rounded bg-muted/60" />
+                <div className="h-3 w-4/5 rounded bg-muted/60" />
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>;
+};
+export default ProjectsDashboard;

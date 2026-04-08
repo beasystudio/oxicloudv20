@@ -1,0 +1,1222 @@
+import { useState, useEffect } from 'react';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { TopNavigation } from '@/components/TopNavigation';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { seedDemoContacts, clearAllContacts } from '@/lib/mockContactDB';
+import { getAllCompanyContacts, getAllCompanies, isCompanyDataSeeded, type CompanyContact, type Company } from '@/lib/mockCompanyDB';
+import { useMockAuth } from '@/contexts/MockAuthContext';
+import { toast } from 'sonner';
+import { Search, ChevronDown, ChevronRight, Download, Building2, User, ArrowUp, ArrowDown } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ContactDetailModal } from '@/components/contacts/ContactDetailModal';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { cn } from '@/lib/utils';
+
+// Extended company type with employees and addresses
+interface CompanyWithDetails {
+  id: string;
+  name: string;
+  email: string;
+  telephone: string;
+  address: string;
+  city: string;
+  contactCategory: string;
+  employees: {
+    id: string;
+    name: string;
+    function: string;
+    email: string;
+    telephone: string;
+  }[];
+  addresses: {
+    id: string;
+    name: string;
+    street: string;
+    number: string;
+    postcode: string;
+    gemeente: string;
+  }[];
+}
+
+// Extended contact type for person view
+interface UnifiedContact {
+  id: string;
+  name: string;
+  company: string;
+  email: string;
+  mobilePhone: string;
+  workPhone: string;
+  homePhone: string;
+  contactCategory: string;
+  companyId?: string;
+  isCompany?: boolean;
+}
+
+// Contact type categories matching the reference structure
+interface ContactTypeNode {
+  id: string;
+  label: string;
+  children?: ContactTypeNode[];
+}
+
+// Demo contact type tree - only shown for non-pilot accounts
+const DEMO_CONTACT_TYPE_TREE: ContactTypeNode[] = [{
+  id: 'aannemers',
+  label: 'Aannemers',
+  children: [{
+    id: 'afbraak',
+    label: 'Afbraak'
+  }, {
+    id: 'afwerking',
+    label: 'Afwerking'
+  }, {
+    id: 'alarm',
+    label: 'Alarm'
+  }, {
+    id: 'algemeen-aannemer',
+    label: 'Algemeen aannemer'
+  }, {
+    id: 'betonvloeren',
+    label: 'Betonvloeren'
+  }, {
+    id: 'binnenschrijnwerk',
+    label: 'Binnenschrijnwerk'
+  }, {
+    id: 'boskap',
+    label: 'Boskap'
+  }, {
+    id: 'buitenschrijnwerk',
+    label: 'Buitenschrijnwerk'
+  }, {
+    id: 'chape',
+    label: 'Chape'
+  }, {
+    id: 'dakwerker',
+    label: 'Dakwerker'
+  }, {
+    id: 'diamant-boringen',
+    label: 'Diamant boringen'
+  }, {
+    id: 'droogzuiging',
+    label: 'Droogzuiging'
+  }, {
+    id: 'elektricien',
+    label: 'Elektricien'
+  }, {
+    id: 'gevelbekleding',
+    label: 'Gevelbekleding'
+  }]
+}, {
+  id: 'advies',
+  label: 'Advies'
+}, {
+  id: 'algemeen',
+  label: 'Algemeen'
+}, {
+  id: 'klanten-bedrijf',
+  label: 'Klanten bedrijf'
+}, {
+  id: 'klanten-particulier',
+  label: 'Klanten particulier'
+}, {
+  id: 'materialen',
+  label: 'Materialen'
+}, {
+  id: 'openbare-instellingen',
+  label: 'Openbare Instellingen'
+}, {
+  id: 'promotor',
+  label: 'Promotor'
+}, {
+  id: 'prospect',
+  label: 'Prospect'
+}, {
+  id: 'studiebureau',
+  label: 'Studiebureau'
+}];
+
+// Comprehensive demo companies with employees and addresses from all demo projects
+const DEMO_COMPANIES: CompanyWithDetails[] = [
+// GDesign Architecten (Internal)
+{
+  id: 'gdesign',
+  name: 'GDesign Architecten',
+  email: 'info@gdesign.be',
+  telephone: '+32 16 234 567',
+  address: 'Bondgenotenlaan 120',
+  city: '3000 Leuven',
+  contactCategory: 'studiebureau',
+  employees: [{
+    id: 'gd1',
+    name: 'Jan Vermeersch',
+    function: 'Managing Director',
+    email: 'jan@gdesign.be',
+    telephone: '+32 16 123 456'
+  }, {
+    id: 'gd4',
+    name: 'Thomas Janssen',
+    function: 'Senior Architect',
+    email: 'thomas@gdesign.be',
+    telephone: '+32 16 123 459'
+  }, {
+    id: 'gd5',
+    name: 'Emma Van Damme',
+    function: 'Project Coordinator',
+    email: 'emma@gdesign.be',
+    telephone: '+32 16 123 460'
+  }, {
+    id: 'gd6',
+    name: 'Pieter Maes',
+    function: 'Technical Draftsman',
+    email: 'pieter@gdesign.be',
+    telephone: '+32 16 123 461'
+  }],
+  addresses: [{
+    id: 'gd-addr1',
+    name: 'Hoofdkantoor Leuven',
+    street: 'Bondgenotenlaan',
+    number: '120',
+    postcode: '3000',
+    gemeente: 'Leuven'
+  }]
+},
+// 4TAKT (Internal)
+{
+  id: '4takt',
+  name: '4TAKT',
+  email: 'info@4takt.be',
+  telephone: '+32 3 456 789',
+  address: 'Meir 25',
+  city: '2000 Antwerpen',
+  contactCategory: 'studiebureau',
+  employees: [{
+    id: '4t1',
+    name: 'Sophie Willems',
+    function: 'Managing Director',
+    email: 'sophie@4takt.be',
+    telephone: '+32 478 456 789'
+  }, {
+    id: '4t2',
+    name: 'Tom Peeters',
+    function: 'Senior Architect',
+    email: 'tom@4takt.be',
+    telephone: '+32 479 567 890'
+  }],
+  addresses: [{
+    id: '4t-addr1',
+    name: 'Kantoor Antwerpen',
+    street: 'Meir',
+    number: '25',
+    postcode: '2000',
+    gemeente: 'Antwerpen'
+  }]
+},
+// Client Companies from Demo Projects
+{
+  id: 'pauwels-vastgoed',
+  name: 'Pauwels Vastgoed NV',
+  email: 'contact@pauwelsvastgoed.be',
+  telephone: '+32 16 456 789',
+  address: 'Tiensestraat 45',
+  city: '3000 Leuven',
+  contactCategory: 'klanten-bedrijf',
+  employees: [{
+    id: 'pv1',
+    name: 'Frank Pauwels',
+    function: 'CEO',
+    email: 'frank@pauwelsvastgoed.be',
+    telephone: '+32 475 111 222'
+  }, {
+    id: 'pv2',
+    name: 'Els Mertens',
+    function: 'Project Coordinator',
+    email: 'els@pauwelsvastgoed.be',
+    telephone: '+32 476 222 333'
+  }],
+  addresses: [{
+    id: 'pv-addr1',
+    name: 'Hoofdkantoor',
+    street: 'Tiensestraat',
+    number: '45',
+    postcode: '3000',
+    gemeente: 'Leuven'
+  }, {
+    id: 'pv-addr2',
+    name: 'Project Site Herent',
+    street: 'Mechelsesteenweg',
+    number: '120',
+    postcode: '3020',
+    gemeente: 'Herent'
+  }]
+}, {
+  id: 'bouwgroep-vandijk',
+  name: 'Bouwgroep Van Dijk',
+  email: 'info@vandijkbouw.be',
+  telephone: '+32 3 789 012',
+  address: 'Industrielaan 88',
+  city: '2800 Mechelen',
+  contactCategory: 'aannemers',
+  employees: [{
+    id: 'vd1',
+    name: 'Peter Van Dijk',
+    function: 'Zaakvoerder',
+    email: 'peter@vandijkbouw.be',
+    telephone: '+32 477 333 444'
+  }, {
+    id: 'vd2',
+    name: 'An Claessens',
+    function: 'Werfleider',
+    email: 'an@vandijkbouw.be',
+    telephone: '+32 478 444 555'
+  }, {
+    id: 'vd3',
+    name: 'Kris Bogaerts',
+    function: 'Calculator',
+    email: 'kris@vandijkbouw.be',
+    telephone: '+32 479 555 666'
+  }],
+  addresses: [{
+    id: 'vd-addr1',
+    name: 'Hoofdzetel Mechelen',
+    street: 'Industrielaan',
+    number: '88',
+    postcode: '2800',
+    gemeente: 'Mechelen'
+  }, {
+    id: 'vd-addr2',
+    name: 'Depot Kontich',
+    street: 'Groeningenlei',
+    number: '14',
+    postcode: '2550',
+    gemeente: 'Kontich'
+  }]
+}, {
+  id: 'elektricien-nv',
+  name: '2B-Safe Elektro',
+  email: 'info@2b-safe.be',
+  telephone: '+32 16 810 174',
+  address: 'Herkenrodestraat 25',
+  city: '3210 Glabbeek',
+  contactCategory: 'aannemers',
+  employees: [{
+    id: 'e1',
+    name: 'Saartje Verjans',
+    function: 'Dienst Administratie',
+    email: 'saartje.verjans@2b-safe.be',
+    telephone: '+32 16 810 174'
+  }, {
+    id: 'e2',
+    name: 'Ivo Verjans',
+    function: 'Bestuurder',
+    email: 'ivo.verjans@2b-safe.be',
+    telephone: '+32 16 810 174'
+  }, {
+    id: 'e3',
+    name: 'Lydia Lambrechts',
+    function: 'Diensthoofd administratie',
+    email: 'lydia.lambrechts@2b-safe.be',
+    telephone: '+32 478 332 189'
+  }, {
+    id: 'e4',
+    name: 'Kristof Berchmans',
+    function: 'CEO',
+    email: 'kristof@2b-safe.be',
+    telephone: '+32 16 303 010'
+  }],
+  addresses: [{
+    id: 'a1',
+    name: '2b-Safe Glabbeek',
+    street: 'Herkenrodestraat',
+    number: '25',
+    postcode: '3210',
+    gemeente: 'Glabbeek - Zuurbemde'
+  }]
+}, {
+  id: 'dakwerken-peeters',
+  name: 'Dakwerken Peeters BVBA',
+  email: 'info@dakwerkenpeeters.be',
+  telephone: '+32 15 234 567',
+  address: 'Nijverheidsstraat 12',
+  city: '2220 Heist-op-den-Berg',
+  contactCategory: 'aannemers',
+  employees: [{
+    id: 'dp1',
+    name: 'Johan Peeters',
+    function: 'Zaakvoerder',
+    email: 'johan@dakwerkenpeeters.be',
+    telephone: '+32 475 666 777'
+  }, {
+    id: 'dp2',
+    name: 'Bart Hermans',
+    function: 'Dakdekker',
+    email: 'bart@dakwerkenpeeters.be',
+    telephone: '+32 476 777 888'
+  }],
+  addresses: [{
+    id: 'dp-addr1',
+    name: 'Hoofdkantoor',
+    street: 'Nijverheidsstraat',
+    number: '12',
+    postcode: '2220',
+    gemeente: 'Heist-op-den-Berg'
+  }]
+}, {
+  id: 'stabiliteit-partners',
+  name: 'Stabiliteit & Partners',
+  email: 'contact@stabiliteit.be',
+  telephone: '+32 2 567 890',
+  address: 'Wetstraat 155',
+  city: '1040 Brussel',
+  contactCategory: 'studiebureau',
+  employees: [{
+    id: 'sp1',
+    name: 'Dr. Marc Vanden Berghe',
+    function: 'Hoofdingenieur',
+    email: 'marc@stabiliteit.be',
+    telephone: '+32 477 888 999'
+  }, {
+    id: 'sp2',
+    name: 'Liesbeth Aerts',
+    function: 'Stabiliteitsingenieur',
+    email: 'liesbeth@stabiliteit.be',
+    telephone: '+32 478 999 000'
+  }],
+  addresses: [{
+    id: 'sp-addr1',
+    name: 'Kantoor Brussel',
+    street: 'Wetstraat',
+    number: '155',
+    postcode: '1040',
+    gemeente: 'Brussel'
+  }]
+}, {
+  id: 'hvac-solutions',
+  name: 'HVAC Solutions NV',
+  email: 'info@hvacsolutions.be',
+  telephone: '+32 11 345 678',
+  address: 'Kanaalweg 67',
+  city: '3500 Hasselt',
+  contactCategory: 'aannemers',
+  employees: [{
+    id: 'hv1',
+    name: 'Dirk Vandeput',
+    function: 'Technical Director',
+    email: 'dirk@hvacsolutions.be',
+    telephone: '+32 479 000 111'
+  }, {
+    id: 'hv2',
+    name: 'Nathalie Goossens',
+    function: 'Sales Manager',
+    email: 'nathalie@hvacsolutions.be',
+    telephone: '+32 475 111 000'
+  }],
+  addresses: [{
+    id: 'hv-addr1',
+    name: 'Hoofdkantoor Hasselt',
+    street: 'Kanaalweg',
+    number: '67',
+    postcode: '3500',
+    gemeente: 'Hasselt'
+  }]
+}, {
+  id: 'gemeente-leuven',
+  name: 'Stad Leuven - Dienst Stedenbouw',
+  email: 'stedenbouw@leuven.be',
+  telephone: '+32 16 272 000',
+  address: 'Professor Van Overstraetenplein 1',
+  city: '3000 Leuven',
+  contactCategory: 'openbare-instellingen',
+  employees: [{
+    id: 'gl1',
+    name: 'Koen Vandenberghe',
+    function: 'Diensthoofd Stedenbouw',
+    email: 'koen.vandenberghe@leuven.be',
+    telephone: '+32 16 272 001'
+  }, {
+    id: 'gl2',
+    name: 'Sarah De Keersmaecker',
+    function: 'Vergunningsambtenaar',
+    email: 'sarah.dekeersmaecker@leuven.be',
+    telephone: '+32 16 272 002'
+  }],
+  addresses: [{
+    id: 'gl-addr1',
+    name: 'Stadskantoor',
+    street: 'Professor Van Overstraetenplein',
+    number: '1',
+    postcode: '3000',
+    gemeente: 'Leuven'
+  }]
+}, {
+  id: 'artebeau',
+  name: 'Artebeau BV',
+  email: 'contact@artebeau.be',
+  telephone: '+32 16 450 123',
+  address: 'Leuvensesteenweg 276',
+  city: '3200 Aarschot',
+  contactCategory: 'aannemers',
+  employees: [{
+    id: 'ab1',
+    name: 'Thomas Artois',
+    function: 'Zaakvoerder',
+    email: 'thomas@artebeau.be',
+    telephone: '+32 476 123 456'
+  }],
+  addresses: [{
+    id: 'ab-addr1',
+    name: 'Atelier Aarschot',
+    street: 'Leuvensesteenweg',
+    number: '276',
+    postcode: '3200',
+    gemeente: 'Aarschot'
+  }]
+}, {
+  id: 'immo-invest',
+  name: 'Immo Invest Group',
+  email: 'info@immoinvest.be',
+  telephone: '+32 2 890 123',
+  address: 'Louizalaan 500',
+  city: '1050 Elsene',
+  contactCategory: 'promotor',
+  employees: [{
+    id: 'ii1',
+    name: 'Philippe Wouters',
+    function: 'Managing Partner',
+    email: 'philippe@immoinvest.be',
+    telephone: '+32 475 222 111'
+  }, {
+    id: 'ii2',
+    name: 'Anne-Sophie Lambert',
+    function: 'Investment Manager',
+    email: 'annesophie@immoinvest.be',
+    telephone: '+32 476 333 222'
+  }, {
+    id: 'ii3',
+    name: 'Stijn Verstraeten',
+    function: 'Project Developer',
+    email: 'stijn@immoinvest.be',
+    telephone: '+32 477 444 333'
+  }],
+  addresses: [{
+    id: 'ii-addr1',
+    name: 'Hoofdkantoor Brussel',
+    street: 'Louizalaan',
+    number: '500',
+    postcode: '1050',
+    gemeente: 'Elsene'
+  }]
+}, {
+  id: 'familie-de-winter',
+  name: 'Familie De Winter',
+  email: 'dewinter.familie@gmail.com',
+  telephone: '+32 475 555 666',
+  address: 'Dennenlaan 8',
+  city: '3090 Overijse',
+  contactCategory: 'klanten-particulier',
+  employees: [{
+    id: 'dw1',
+    name: 'Marc De Winter',
+    function: 'Eigenaar',
+    email: 'marc.dewinter@gmail.com',
+    telephone: '+32 475 555 666'
+  }, {
+    id: 'dw2',
+    name: 'Katrien De Winter',
+    function: 'Eigenaar',
+    email: 'katrien.dewinter@gmail.com',
+    telephone: '+32 476 666 555'
+  }],
+  addresses: [{
+    id: 'dw-addr1',
+    name: 'Woning Overijse',
+    street: 'Dennenlaan',
+    number: '8',
+    postcode: '3090',
+    gemeente: 'Overijse'
+  }]
+}];
+
+// Comprehensive demo persons (flattened from all company employees)
+interface PersonContact {
+  id: string;
+  name: string;
+  company: string;
+  function: string;
+  email: string;
+  telephone: string;
+}
+const DEMO_PERSONS: PersonContact[] = [
+// GDesign Architecten
+{
+  id: 'gd1',
+  name: 'Vermeersch Jan',
+  company: 'GDesign Architecten',
+  function: 'Managing Director',
+  email: 'jan@gdesign.be',
+  telephone: '+32 16 123 456'
+}, {
+  id: 'gd4',
+  name: 'Janssen Thomas',
+  company: 'GDesign Architecten',
+  function: 'Senior Architect',
+  email: 'thomas@gdesign.be',
+  telephone: '+32 16 123 459'
+}, {
+  id: 'gd5',
+  name: 'Van Damme Emma',
+  company: 'GDesign Architecten',
+  function: 'Project Coordinator',
+  email: 'emma@gdesign.be',
+  telephone: '+32 16 123 460'
+}, {
+  id: 'gd6',
+  name: 'Maes Pieter',
+  company: 'GDesign Architecten',
+  function: 'Technical Draftsman',
+  email: 'pieter@gdesign.be',
+  telephone: '+32 16 123 461'
+},
+// 4TAKT
+{
+  id: '4t1',
+  name: 'Willems Sophie',
+  company: '4TAKT',
+  function: 'Managing Director',
+  email: 'sophie@4takt.be',
+  telephone: '+32 478 456 789'
+}, {
+  id: '4t2',
+  name: 'Peeters Tom',
+  company: '4TAKT',
+  function: 'Senior Architect',
+  email: 'tom@4takt.be',
+  telephone: '+32 479 567 890'
+},
+// Pauwels Vastgoed
+{
+  id: 'pv1',
+  name: 'Pauwels Frank',
+  company: 'Pauwels Vastgoed NV',
+  function: 'CEO',
+  email: 'frank@pauwelsvastgoed.be',
+  telephone: '+32 475 111 222'
+}, {
+  id: 'pv2',
+  name: 'Mertens Els',
+  company: 'Pauwels Vastgoed NV',
+  function: 'Project Coordinator',
+  email: 'els@pauwelsvastgoed.be',
+  telephone: '+32 476 222 333'
+},
+// Bouwgroep Van Dijk
+{
+  id: 'vd1',
+  name: 'Van Dijk Peter',
+  company: 'Bouwgroep Van Dijk',
+  function: 'Zaakvoerder',
+  email: 'peter@vandijkbouw.be',
+  telephone: '+32 477 333 444'
+}, {
+  id: 'vd2',
+  name: 'Claessens An',
+  company: 'Bouwgroep Van Dijk',
+  function: 'Werfleider',
+  email: 'an@vandijkbouw.be',
+  telephone: '+32 478 444 555'
+}, {
+  id: 'vd3',
+  name: 'Bogaerts Kris',
+  company: 'Bouwgroep Van Dijk',
+  function: 'Calculator',
+  email: 'kris@vandijkbouw.be',
+  telephone: '+32 479 555 666'
+},
+// 2B-Safe
+{
+  id: 'e1',
+  name: 'Verjans Saartje',
+  company: '2B-Safe Elektro',
+  function: 'Dienst Administratie',
+  email: 'saartje.verjans@2b-safe.be',
+  telephone: '+32 16 810 174'
+}, {
+  id: 'e2',
+  name: 'Verjans Ivo',
+  company: '2B-Safe Elektro',
+  function: 'Bestuurder',
+  email: 'ivo.verjans@2b-safe.be',
+  telephone: '+32 16 810 174'
+}, {
+  id: 'e3',
+  name: 'Lambrechts Lydia',
+  company: '2B-Safe Elektro',
+  function: 'Diensthoofd administratie',
+  email: 'lydia.lambrechts@2b-safe.be',
+  telephone: '+32 478 332 189'
+}, {
+  id: 'e4',
+  name: 'Berchmans Kristof',
+  company: '2B-Safe Elektro',
+  function: 'CEO',
+  email: 'kristof@2b-safe.be',
+  telephone: '+32 16 303 010'
+},
+// Dakwerken Peeters
+{
+  id: 'dp1',
+  name: 'Peeters Johan',
+  company: 'Dakwerken Peeters BVBA',
+  function: 'Zaakvoerder',
+  email: 'johan@dakwerkenpeeters.be',
+  telephone: '+32 475 666 777'
+}, {
+  id: 'dp2',
+  name: 'Hermans Bart',
+  company: 'Dakwerken Peeters BVBA',
+  function: 'Dakdekker',
+  email: 'bart@dakwerkenpeeters.be',
+  telephone: '+32 476 777 888'
+},
+// Stabiliteit & Partners
+{
+  id: 'sp1',
+  name: 'Vanden Berghe Marc',
+  company: 'Stabiliteit & Partners',
+  function: 'Hoofdingenieur',
+  email: 'marc@stabiliteit.be',
+  telephone: '+32 477 888 999'
+}, {
+  id: 'sp2',
+  name: 'Aerts Liesbeth',
+  company: 'Stabiliteit & Partners',
+  function: 'Stabiliteitsingenieur',
+  email: 'liesbeth@stabiliteit.be',
+  telephone: '+32 478 999 000'
+},
+// HVAC Solutions
+{
+  id: 'hv1',
+  name: 'Vandeput Dirk',
+  company: 'HVAC Solutions NV',
+  function: 'Technical Director',
+  email: 'dirk@hvacsolutions.be',
+  telephone: '+32 479 000 111'
+}, {
+  id: 'hv2',
+  name: 'Goossens Nathalie',
+  company: 'HVAC Solutions NV',
+  function: 'Sales Manager',
+  email: 'nathalie@hvacsolutions.be',
+  telephone: '+32 475 111 000'
+},
+// Stad Leuven
+{
+  id: 'gl1',
+  name: 'Vandenberghe Koen',
+  company: 'Stad Leuven - Dienst Stedenbouw',
+  function: 'Diensthoofd Stedenbouw',
+  email: 'koen.vandenberghe@leuven.be',
+  telephone: '+32 16 272 001'
+}, {
+  id: 'gl2',
+  name: 'De Keersmaecker Sarah',
+  company: 'Stad Leuven - Dienst Stedenbouw',
+  function: 'Vergunningsambtenaar',
+  email: 'sarah.dekeersmaecker@leuven.be',
+  telephone: '+32 16 272 002'
+},
+// Artebeau
+{
+  id: 'ab1',
+  name: 'Artois Thomas',
+  company: 'Artebeau BV',
+  function: 'Zaakvoerder',
+  email: 'thomas@artebeau.be',
+  telephone: '+32 476 123 456'
+},
+// Immo Invest
+{
+  id: 'ii1',
+  name: 'Wouters Philippe',
+  company: 'Immo Invest Group',
+  function: 'Managing Partner',
+  email: 'philippe@immoinvest.be',
+  telephone: '+32 475 222 111'
+}, {
+  id: 'ii2',
+  name: 'Lambert Anne-Sophie',
+  company: 'Immo Invest Group',
+  function: 'Investment Manager',
+  email: 'annesophie@immoinvest.be',
+  telephone: '+32 476 333 222'
+}, {
+  id: 'ii3',
+  name: 'Verstraeten Stijn',
+  company: 'Immo Invest Group',
+  function: 'Project Developer',
+  email: 'stijn@immoinvest.be',
+  telephone: '+32 477 444 333'
+},
+// Familie De Winter
+{
+  id: 'dw1',
+  name: 'De Winter Marc',
+  company: 'Familie De Winter',
+  function: 'Eigenaar',
+  email: 'marc.dewinter@gmail.com',
+  telephone: '+32 475 555 666'
+}, {
+  id: 'dw2',
+  name: 'De Winter Katrien',
+  company: 'Familie De Winter',
+  function: 'Eigenaar',
+  email: 'katrien.dewinter@gmail.com',
+  telephone: '+32 476 666 555'
+}];
+// Import pilot account utils
+import { isPilotAccount, isPilotCompany } from '@/lib/pilotAccountUtils';
+
+const ContactsDashboard = () => {
+  const { t, language } = useLanguage();
+  const {
+    currentUser,
+    selectedCompanyId,
+    getSelectedCompany
+  } = useMockAuth();
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [companies, setCompanies] = useState<CompanyWithDetails[]>([]);
+  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [advancedSearch, setAdvancedSearch] = useState(false);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  const [expandedCompanies, setExpandedCompanies] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState('lastname-asc');
+  const [showCount, setShowCount] = useState('24');
+  const [viewMode, setViewMode] = useState<'company' | 'person'>('company');
+
+  // Edit dialog state
+  const [selectedContact, setSelectedContact] = useState<UnifiedContact | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const isOwnerOrAdmin = currentUser?.role === 'owner' || currentUser?.role === 'admin';
+  const isClientOwnerOrAdmin = currentUser?.role === 'client_owner' || currentUser?.role === 'client_admin';
+  const selectedCompany = getSelectedCompany();
+
+  // Check if this is the pilot account - they should see empty data
+  const isPilot = isPilotAccount(currentUser?.email) || isPilotCompany(selectedCompanyId);
+
+  // Contact type tree - empty for pilot, demo data for others
+  const contactTypeTree = isPilot ? [] : DEMO_CONTACT_TYPE_TREE;
+
+  // Internal company IDs to hide from contacts module
+  const INTERNAL_COMPANY_IDS = ['gdesign', '4takt'];
+  const INTERNAL_COMPANY_NAMES = ['GDesign Architecten', '4TAKT'];
+
+  // Company-scoped contacts: GDesign and 4TAKT should see completely separate contact pools
+  const getCompanyScopedCompanies = () => {
+    if (isPilot) return [];
+
+    // Admin sees ALL companies' contacts
+    if (isOwnerOrAdmin) {
+      return DEMO_COMPANIES;
+    }
+
+    // Filter out the user's own company and other internal companies
+    const isGDesign = selectedCompanyId === 'gdesign';
+    const is4Takt = selectedCompanyId === '4takt';
+
+    return DEMO_COMPANIES.filter((c) => {
+      if (INTERNAL_COMPANY_IDS.includes(c.id)) return false;
+      if (isGDesign) {
+        const gdesignClients = ['pauwels-vastgoed', 'bouwgroep-vandijk', 'elektricien-nv', 'dakwerken-peeters', 'stabiliteit-partners', 'gemeente-leuven', 'artebeau'];
+        return gdesignClients.includes(c.id);
+      }
+      if (is4Takt) {
+        const taktClients = ['hvac-solutions', 'immo-invest', 'familie-de-winter', 'bouwgroep-vandijk', 'stabiliteit-partners'];
+        return taktClients.includes(c.id);
+      }
+      return true;
+    });
+  };
+
+  // Load demo companies - company-scoped
+  useEffect(() => {
+    setCompanies(getCompanyScopedCompanies());
+  }, [refreshKey, isPilot, selectedCompanyId]);
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories((prev) => prev.includes(categoryId) ? prev.filter((id) => id !== categoryId) : [...prev, categoryId]);
+  };
+  const toggleTypeSelection = (typeId: string) => {
+    setSelectedTypes((prev) => prev.includes(typeId) ? prev.filter((id) => id !== typeId) : [...prev, typeId]);
+  };
+  const toggleCompanyExpand = (companyId: string) => {
+    setExpandedCompanies((prev) => prev.includes(companyId) ? prev.filter((id) => id !== companyId) : [...prev, companyId]);
+  };
+
+  // Handle double-click to edit contact
+  const handleContactDoubleClick = (company: CompanyWithDetails) => {
+    const contact: UnifiedContact = {
+      id: company.id,
+      name: company.name,
+      company: company.name,
+      email: company.email,
+      mobilePhone: '',
+      workPhone: company.telephone,
+      homePhone: '',
+      contactCategory: company.contactCategory,
+      isCompany: true
+    };
+    setSelectedContact(contact);
+    setIsEditDialogOpen(true);
+  };
+
+  // Handle double-click on employee row to open detail modal
+  const handleEmployeeDoubleClick = (emp: CompanyWithDetails['employees'][0], company: CompanyWithDetails) => {
+    const contact: UnifiedContact = {
+      id: emp.id,
+      name: emp.name,
+      company: company.name,
+      email: emp.email,
+      mobilePhone: '',
+      workPhone: emp.telephone,
+      homePhone: '',
+      contactCategory: company.contactCategory,
+      companyId: company.id,
+      isCompany: false
+    };
+    setSelectedContact(contact);
+    setIsEditDialogOpen(true);
+  };
+
+  // Handle contact update
+  const handleContactUpdated = (updatedContact: UnifiedContact) => {
+    setSelectedContact(null);
+  };
+
+  // Filter and sort companies
+  const filteredCompanies = companies.filter((company) => {
+    const matchesSearch = !searchTerm || company.name.toLowerCase().includes(searchTerm.toLowerCase()) || company.email.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
+  }).sort((a, b) => {
+    switch (sortBy) {
+      case 'lastname-asc':
+        return a.name.localeCompare(b.name);
+      case 'lastname-desc':
+        return b.name.localeCompare(a.name);
+      default:
+        return 0;
+    }
+  }).slice(0, parseInt(showCount) || 24);
+  const handleExport = () => {
+    toast.info("Export functionality coming soon");
+  };
+
+  return <div className="min-h-screen bg-background">
+      <TopNavigation />
+      <div className="container mx-auto px-4 py-6">
+
+        {<>
+
+        {/* Search & Filter Bar with Company/Person toggle */}
+        <Card className="mb-4">
+          <CardContent className="py-3 px-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center border rounded-md overflow-hidden shrink-0">
+                <button
+                  onClick={() => setViewMode('company')}
+                  className={cn("px-3 py-1.5 text-xs font-medium transition-colors",
+                  viewMode === 'company' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                  )}>
+                  
+                  {t('dashboard.contactsDashboard.company')}
+                </button>
+                <button
+                  onClick={() => setViewMode('person')}
+                  className={cn("px-3 py-1.5 text-xs font-medium transition-colors border-l",
+                  viewMode === 'person' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                  )}>
+                  
+                  {t('dashboard.contactsDashboard.person')}
+                </button>
+              </div>
+              <div className="flex-1">
+                <Input placeholder={t('dashboard.contactsDashboard.searchContacts')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="h-8 text-sm" />
+              </div>
+              <div className="flex items-center gap-2">
+                 <Label htmlFor="advanced-search" className="text-xs text-muted-foreground cursor-pointer whitespace-nowrap">
+                   {t('common.advanced')}
+                </Label>
+                <Switch id="advanced-search" checked={advancedSearch} onCheckedChange={setAdvancedSearch} />
+              </div>
+              <Button variant="outline" className="h-8 text-sm" onClick={() => {
+                setSearchTerm("");
+                setSelectedTypes([]);
+              }}>
+                {t('common.clear')}
+              </Button>
+              <Button variant="outline" className="h-8 text-sm" onClick={handleExport}>
+                <Download className="h-3 w-3 mr-1" />
+                 {t('common.export')}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Main Content - Master-Detail Layout */}
+        <div className="h-[calc(100vh-230px)] flex gap-0 overflow-hidden">
+          {/* LEFT: Master List */}
+          <div className={cn(
+            "flex flex-col min-h-0 transition-all duration-300 border border-border/40 rounded-2xl bg-card overflow-hidden",
+            viewMode === 'company' && expandedCompanies.length > 0 ? "w-[380px] shrink-0" : "flex-1"
+          )}>
+            {/* List Header */}
+            <div className="px-4 py-3 border-b border-border/30 shrink-0">
+              <div className="flex items-center gap-2">
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-44 h-8 text-xs">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    <SelectItem value="lastname-asc">{t('dashboard.contactsDashboard.sortNameAZ')}</SelectItem>
+                    <SelectItem value="lastname-desc">{t('dashboard.contactsDashboard.sortNameZA')}</SelectItem>
+                    <SelectItem value="company-asc">{t('dashboard.contactsDashboard.sortCompanyAZ')}</SelectItem>
+                    <SelectItem value="company-desc">{t('dashboard.contactsDashboard.sortCompanyZA')}</SelectItem>
+                  </SelectContent>
+                </Select>
+                <div className="flex-1" />
+              </div>
+            </div>
+
+            {/* List Body */}
+            <div className="flex-1 overflow-auto min-h-0">
+              {viewMode === 'person' ? (
+                /* Person View */
+                <div>
+                  {(() => {
+                    const scopedCompanyNames = getCompanyScopedCompanies().map(c => c.name);
+                    const filteredPersons = isPilot ? [] : DEMO_PERSONS.filter(p => scopedCompanyNames.includes(p.company));
+                    return filteredPersons.length === 0 ? (
+                      <div className="text-center py-16 text-muted-foreground">
+                        <User className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                        <p className="text-sm font-medium mb-1">{t('dashboard.contactsDashboard.noContactsFound')}</p>
+                        <p className="text-xs">{t('dashboard.contactsDashboard.noPersonsAvailable')}</p>
+                      </div>
+                    ) : filteredPersons.map(person => (
+                      <div
+                        key={person.id}
+                        className="px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:z-10 relative group"
+                        onDoubleClick={() => {
+                          const contact: UnifiedContact = {
+                            id: person.id, name: person.name, company: person.company,
+                            email: person.email, mobilePhone: '', workPhone: person.telephone,
+                            homePhone: '', contactCategory: 'algemeen', isCompany: false
+                          };
+                          setSelectedContact(contact);
+                          setIsEditDialogOpen(true);
+                        }}
+                      >
+                        <div className="text-sm font-medium text-foreground">{person.name}</div>
+                        <div className="flex items-center gap-3 mt-0.5">
+                          <span className="text-[11px] text-muted-foreground">{person.company}</span>
+                          <span className="text-[11px] text-muted-foreground/60">·</span>
+                          <span className="text-[11px] text-muted-foreground truncate">{person.email}</span>
+                        </div>
+                      </div>
+                    ));
+                  })()}
+                </div>
+              ) : (
+                /* Company View */
+                companies.length === 0 ? (
+                  <div className="text-center py-16 text-muted-foreground">
+                    <Building2 className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                    <p className="text-sm font-medium mb-1">{t('dashboard.contactsDashboard.noContactsFound')}</p>
+                    <p className="text-xs">{t('dashboard.contactsDashboard.noCompaniesAvailable')}</p>
+                  </div>
+                ) : (
+                  <div>
+                    {filteredCompanies.map(company => {
+                      const isSelected = expandedCompanies.includes(company.id);
+                      return (
+                        <div
+                          key={company.id}
+                          className={cn(
+                            "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
+                            isSelected
+                              ? "bg-[#FBFBFB] dark:bg-muted/40 ring-1 ring-border/60 rounded-xl mx-1.5 my-0.5 border-transparent shadow-sm"
+                              : "hover:bg-muted/30"
+                          )}
+                          onClick={() => {
+                            setExpandedCompanies(isSelected ? [] : [company.id]);
+                          }}
+                          onDoubleClick={() => handleContactDoubleClick(company)}
+                        >
+                          <div className={cn("text-sm font-semibold transition-colors", isSelected ? "text-foreground" : "text-foreground")}>
+                            {company.name}
+                          </div>
+                          <div className={cn("flex items-center gap-2 mt-1 text-[11px] transition-colors", isSelected ? "text-muted-foreground" : "text-muted-foreground")}>
+                            <span className="truncate max-w-[160px]">{company.email}</span>
+                            <span className="opacity-40">·</span>
+                            <span className="whitespace-nowrap">{company.telephone}</span>
+                          </div>
+                          {company.address && (
+                            <div className={cn("text-[10px] mt-0.5 truncate transition-colors", isSelected ? "text-muted-foreground/60" : "text-muted-foreground/60")}>
+                              {company.address}, {company.city}
+                            </div>
+                          )}
+                          {company.employees.length > 0 && (
+                            <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-muted-foreground/60" : "text-muted-foreground/40")}>
+                              {company.employees.length} <User className="inline h-3 w-3 -mt-0.5" />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+
+          {/* RIGHT: Detail Panel */}
+          {viewMode === 'company' && expandedCompanies.length > 0 && (() => {
+            const selectedCompanyData = filteredCompanies.find(c => expandedCompanies.includes(c.id));
+            if (!selectedCompanyData) return null;
+            return (
+              <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-2xl bg-card ml-3">
+                {/* Detail Header */}
+                <div className="px-6 py-5 border-b border-border/30">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-lg font-semibold text-foreground">{selectedCompanyData.name}</h2>
+                      <div className="flex items-center gap-4 mt-1.5 text-xs text-muted-foreground">
+                        {selectedCompanyData.email && (
+                          <span>{selectedCompanyData.email}</span>
+                        )}
+                        {selectedCompanyData.telephone && (
+                          <span>{selectedCompanyData.telephone}</span>
+                        )}
+                      </div>
+                      {selectedCompanyData.address && (
+                        <div className="text-xs text-muted-foreground/70 mt-1">
+                          {selectedCompanyData.address}, {selectedCompanyData.city}
+                        </div>
+                      )}
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 text-[10px]"
+                      onClick={() => handleContactDoubleClick(selectedCompanyData)}
+                    >
+                      {t('common.edit') || 'Edit'}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Detail Content */}
+                <div className="p-6 space-y-6">
+                  {/* Contact Persons Section */}
+                  {selectedCompanyData.employees.length > 0 && (
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                          {t('dashboard.contactsDashboard.contactPersons')}
+                        </h3>
+                        <span className="text-[10px] text-muted-foreground tabular-nums">
+                          ({selectedCompanyData.employees.length})
+                        </span>
+                      </div>
+                      <div className="rounded-xl border border-border/30 overflow-hidden">
+                        {/* Sub-table header */}
+                        <div className="grid grid-cols-4 gap-4 px-4 py-2 bg-muted/30 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-b border-border/20">
+                          <div>{t('dashboard.contactsDashboard.name')}</div>
+                          <div>{t('dashboard.contactsDashboard.function')}</div>
+                          <div>{t('dashboard.contactsDashboard.email')}</div>
+                          <div>{t('dashboard.contactsDashboard.phone')}</div>
+                        </div>
+                        {/* Sub-table rows */}
+                        {selectedCompanyData.employees.map((emp, empIdx) => (
+                          <div
+                            key={emp.id}
+                            className={cn(
+                              "grid grid-cols-4 gap-4 px-4 py-2.5 text-xs cursor-pointer transition-all duration-200 hover:scale-[1.01] hover:z-10 relative",
+                              empIdx < selectedCompanyData.employees.length - 1 && "border-b border-border/10"
+                            )}
+                            onDoubleClick={() => handleEmployeeDoubleClick(emp, selectedCompanyData)}
+                          >
+                            <div className="font-medium text-foreground">{emp.name}</div>
+                            <div className="text-muted-foreground">{emp.function || '—'}</div>
+                            <div className="text-muted-foreground truncate">{emp.email}</div>
+                            <div className="text-muted-foreground">{emp.telephone}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Branches / Addresses Section */}
+                  {selectedCompanyData.addresses.length > 0 && (
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                          {t('dashboard.contactsDashboard.branchesAddresses')}
+                        </h3>
+                        <span className="text-[10px] text-muted-foreground tabular-nums">
+                          ({selectedCompanyData.addresses.length})
+                        </span>
+                      </div>
+                      <div className="rounded-xl border border-border/30 overflow-hidden">
+                        {/* Sub-table header */}
+                        <div className="grid grid-cols-5 gap-4 px-4 py-2 bg-muted/30 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-b border-border/20">
+                          <div>{t('dashboard.contactsDashboard.name')}</div>
+                          <div>{t('dashboard.contactsDashboard.street')}</div>
+                          <div>{t('dashboard.contactsDashboard.nr')}</div>
+                          <div>{t('dashboard.contactsDashboard.postalCode')}</div>
+                          <div>{t('dashboard.contactsDashboard.municipality')}</div>
+                        </div>
+                        {/* Sub-table rows - no hover (not editable) */}
+                        {selectedCompanyData.addresses.map((addr, addrIdx) => (
+                          <div
+                            key={addr.id}
+                            className={cn(
+                              "grid grid-cols-5 gap-4 px-4 py-2.5 text-xs",
+                              addrIdx < selectedCompanyData.addresses.length - 1 && "border-b border-border/10"
+                            )}
+                          >
+                            <div className="font-medium text-foreground">{addr.name}</div>
+                            <div className="text-muted-foreground">{addr.street}</div>
+                            <div className="text-muted-foreground">{addr.number}</div>
+                            <div className="text-muted-foreground">{addr.postcode}</div>
+                            <div className="text-muted-foreground">{addr.gemeente}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedCompanyData.employees.length === 0 && selectedCompanyData.addresses.length === 0 && (
+                    <div className="text-center py-12 text-muted-foreground">
+                      <p className="text-sm">{t('dashboard.contactsDashboard.noContactsFound')}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+        </>}
+      </div>
+
+      {/* Contact Detail Modal */}
+      <ContactDetailModal open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} contact={selectedContact} onContactUpdated={handleContactUpdated} />
+    </div>;
+};
+export default ContactsDashboard;
