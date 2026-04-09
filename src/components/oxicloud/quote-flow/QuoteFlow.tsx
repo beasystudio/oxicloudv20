@@ -194,6 +194,10 @@ export function QuoteFlow({
           isPilotMode={isPilotMode}
           onBackToProject={onBackToProject}
           onSimulatePayment={handleSimulatePayment}
+          recipientInfo={recipientInfo}
+          partnerShareAmount={partnerShareAmount}
+          projectName={projectName}
+          partnerCompanyName={defaultPartnerInfo.name}
         />
       );
 

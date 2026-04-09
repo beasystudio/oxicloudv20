@@ -23,6 +23,7 @@ import {
 } from "@/types/oxicloud";
 import { NoxStepProgress } from "@/components/projects/NoxStepProgress";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { getTranslatedStatusLabel } from "@/lib/statusLabels";
 
 interface ProjectNoxStatusCardProps {
   noxStatus: OxiCloudProjectStatus;
@@ -159,7 +160,7 @@ export function ProjectNoxStatusCard({
           <div className="flex items-center gap-3">
             <CardTitle className="text-sm font-semibold">{t('noxStatus.noxStatusLabel')}</CardTitle>
             <Badge variant="outline" className="text-[10px] font-medium">
-              {statusConfig?.label || details.title}
+              {getTranslatedStatusLabel(noxStatus, t)}
             </Badge>
           </div>
           {subStatusOptions.length > 0 && (
@@ -216,6 +217,13 @@ export function ProjectNoxStatusCard({
               <Button variant="outline" className="w-full" size="sm" disabled>
                 <Clock className="h-3.5 w-3.5 mr-2" />
                 {t('noxStatus.calculationLocked')}
+              </Button>
+            )}
+
+            {noxStatus === 'report_in_progress' && (
+              <Button variant="outline" className="w-full" size="sm" disabled>
+                <Clock className="h-3.5 w-3.5 mr-2" />
+                {t('noxStatus.reportHeldPaymentLocked')}
               </Button>
             )}
           </div>

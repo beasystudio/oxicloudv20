@@ -7,12 +7,9 @@ import { PriceReviewScreen } from './PriceReviewScreen';
 import { DetailedCalculationForm } from './DetailedCalculationForm';
 import { OxiCloudResultScreen } from './OxiCloudResultScreen';
 import { NoxReportHeldScreen } from './nox-results/NoxReportHeldScreen';
+import { NoxProcessingScreen } from './nox-results/NoxProcessingScreen';
 import { InvoicePaymentView } from './InvoicePaymentView';
 import { OxiCloudSettings } from './OxiCloudSettings';
-import { NoxAdminHome } from './NoxAdminHome';
-import { NoxFormsConfig } from './admin/NoxFormsConfig';
-import { NoxPdfTemplateBuilder } from './admin/NoxPdfTemplateBuilder';
-import { StaffManagement } from './admin/StaffManagement';
 import { SimulationButtons } from './SimulationButtons';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import {
@@ -37,7 +34,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Clock, FileText, Download, Mail } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
-type FlowStep = 'dashboard' | 'pre-estimation' | 'quote-sent' | 'price-review' | 'payment' | 'detailed-calculation' | 'results' | 'report-held';
+type FlowStep = 'dashboard' | 'pre-estimation' | 'quote-sent' | 'price-review' | 'payment' | 'detailed-calculation' | 'results' | 'report-processing' | 'report-held';
 
 // Adapter to convert NoxProject + NoxProjectData to OxiCloudProject format for existing components
 function toOxiCloudProject(project: NoxProject): OxiCloudProject | null {
@@ -223,7 +220,7 @@ export function OxiCloudContent() {
           refreshProjects();
           const re = getNoxProjects().find(p => p.id === currentProject.id);
           if (re) setCurrentProject(re);
-          setFlowStep('report-held');
+          setFlowStep('report-processing');
         } else {
           setFlowStep('results');
         }
@@ -295,13 +292,18 @@ export function OxiCloudContent() {
             />
           );
 
+        case 'report-processing':
+          return (
+            <NoxProcessingScreen
+              onComplete={() => setFlowStep('report-held')}
+            />
+          );
+
         case 'report-held':
           return (
             <NoxReportHeldScreen
               projectName={currentProject.name}
-              onBack={() => setFlowStep('detailed-calculation')}
               onBackToDashboard={handleBackToDashboard}
-              onSimulatePayment={handleSimulatePaymentReceived}
             />
           );
 
@@ -322,11 +324,9 @@ export function OxiCloudContent() {
       case 'engine':
         return <NoxCalculationEnginePlaceholder />;
       case 'forms':
-        return <NoxFormsConfig />;
       case 'pdf-template':
-        return <NoxPdfTemplateBuilder />;
       case 'users':
-        return <StaffManagement />;
+        return null;
       case 'dashboard':
         return (
           <NoxProjectDashboard

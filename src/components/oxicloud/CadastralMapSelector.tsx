@@ -509,7 +509,7 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
         {/* Top Overlay: Progress + Buttons + Hint */}
         <header className="absolute top-0 left-0 right-0 z-[1000] pointer-events-none flex justify-center">
           <div className="pointer-events-auto mt-3 w-[min(28rem,calc(100%-6rem))]">
-            <div ref={overlayRef} className="bg-background/70 backdrop-blur-md rounded-2xl p-4 flex flex-col gap-2.5 shadow-sm">
+            <div ref={overlayRef} className="bg-background rounded-2xl p-4 flex flex-col gap-2.5 shadow-sm">
               {/* Confirm Step - SPA Info */}
               {currentStep === 'confirm' && nearestSPA &&
               <div className="bg-background rounded-xl border border-border px-5 py-2.5">
@@ -595,7 +595,7 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
             {/* Search Panel - directly below the overlay card, centered */}
             {currentStep === 'address' && showSearch &&
             <div className="mt-2 flex justify-center">
-                <div className="bg-background/95 backdrop-blur-sm rounded-xl shadow-md border border-border p-4 w-80">
+                <div className="bg-background rounded-xl shadow-md border border-border p-4 w-80">
                   <div className="flex items-center gap-2 mb-3 select-none">
                     <Search className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">Adres zoeken</span>
@@ -634,7 +634,7 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
               variant="outline"
               size="icon"
               onClick={onBack}
-              className="h-10 w-10 rounded-full bg-background/95 backdrop-blur-sm shadow-md border-border pointer-events-auto">
+              className="h-10 w-10 rounded-full bg-background shadow-md border-border pointer-events-auto">
 
                 <ArrowLeft className="h-4 w-4" />
               </Button> :
@@ -646,7 +646,7 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
               size="icon"
               onClick={() => setShowLayers(!showLayers)}
               className={cn(
-                "h-10 w-10 rounded-full bg-background/95 backdrop-blur-sm shadow-md border-border pointer-events-auto",
+                "h-10 w-10 rounded-full bg-background shadow-md border-border pointer-events-auto",
                 showLayers && "ring-2 ring-primary"
               )}>
 
@@ -662,7 +662,7 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
             variant="outline"
             size="icon"
             onClick={() => setShowSearch(true)}
-            className="h-10 w-10 rounded-full bg-background/95 backdrop-blur-sm shadow-md border-border">
+            className="h-10 w-10 rounded-full bg-background shadow-md border-border">
 
               <Search className="h-4 w-4" />
             </Button>
@@ -672,7 +672,7 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
         {/* Layer Panel */}
         {showLayers &&
         <div className="absolute top-36 right-4 z-[1000]">
-            <div className="bg-background/95 backdrop-blur-sm rounded-xl shadow-md border border-border p-4 w-48">
+            <div className="bg-background rounded-xl shadow-md border border-border p-4 w-48">
               <div className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">Kaartlagen</div>
               <div className="space-y-2.5">
                 {[

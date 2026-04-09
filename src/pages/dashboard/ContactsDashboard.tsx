@@ -782,9 +782,6 @@ const DEMO_PERSONS: PersonContact[] = [
 }];
 // Import pilot account utils
 import { isPilotAccount, isPilotCompany } from '@/lib/pilotAccountUtils';
-import { getMonitorSubscriptions, type MonitorSubscription } from '@/lib/monitorSubscriptionStore';
-
-type AdminProductTab = 'oxicloud' | 'monitor';
 
 const ContactsDashboard = () => {
   const { t, language } = useLanguage();
@@ -795,7 +792,7 @@ const ContactsDashboard = () => {
   } = useMockAuth();
   const [refreshKey, setRefreshKey] = useState(0);
   const [companies, setCompanies] = useState<CompanyWithDetails[]>([]);
-  const [adminProductTab, setAdminProductTab] = useState<AdminProductTab>('oxicloud');
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [advancedSearch, setAdvancedSearch] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
@@ -920,69 +917,12 @@ const ContactsDashboard = () => {
   const handleExport = () => {
     toast.info("Export functionality coming soon");
   };
-  // Monitor contacts for admin
-  const monitorSubscriptions = isOwnerOrAdmin ? getMonitorSubscriptions() : [];
-
-  const renderMonitorContacts = () =>
-  <div className="space-y-4">
-      <div>
-        <h2 className="text-sm font-semibold">{language === 'nl' ? 'Monitor Contacten' : 'Monitor Contacts'}</h2>
-        <p className="text-xs text-muted-foreground">{monitorSubscriptions.length} {language === 'nl' ? 'gemeenten' : 'municipalities'}</p>
-      </div>
-      <div className="space-y-2">
-        {monitorSubscriptions.map((sub) =>
-      <div key={sub.id} className="rounded-2xl border border-border p-4 hover:bg-muted/20 transition-colors">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold">{sub.municipalityName}</h3>
-                  <Badge variant="outline" className="text-[10px]">{sub.plan}</Badge>
-                  <Badge variant={sub.status === 'active' ? 'default' : 'outline'} className="text-[10px]">{sub.status}</Badge>
-                </div>
-                <p className="text-xs text-muted-foreground mt-0.5">{sub.contactName} · {sub.contactEmail}</p>
-              </div>
-              <div className="text-right text-xs text-muted-foreground">
-                <p>{sub.province}</p>
-                <p>{sub.contactPhone}</p>
-              </div>
-            </div>
-          </div>
-      )}
-        {monitorSubscriptions.length === 0 &&
-      <div className="rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground">
-            <p>{language === 'nl' ? 'Geen gemeentecontacten' : 'No municipality contacts'}</p>
-          </div>
-      }
-      </div>
-    </div>;
-
 
   return <div className="min-h-screen bg-background">
       <TopNavigation />
       <div className="container mx-auto px-4 py-6">
-        {/* Admin product tabs */}
-        {isOwnerOrAdmin &&
-      <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-6">
-            <button
-          onClick={() => setAdminProductTab('oxicloud')}
-          className={cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-xs font-medium transition-all",
-          adminProductTab === 'oxicloud' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-          )}>
-          
-              OxiCloud
-            </button>
-            <button
-          onClick={() => setAdminProductTab('monitor')}
-          className={cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-xs font-medium transition-all",
-          adminProductTab === 'monitor' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-          )}>
-          
-              Monitor
-            </button>
-          </div>
-      }
 
-        {isOwnerOrAdmin && adminProductTab === 'monitor' ? renderMonitorContacts() : <>
+        {<>
 
         {/* Search & Filter Bar with Company/Person toggle */}
         <Card className="mb-4">
@@ -1033,7 +973,7 @@ const ContactsDashboard = () => {
         <div className="h-[calc(100vh-230px)] flex gap-0 overflow-hidden">
           {/* LEFT: Master List */}
           <div className={cn(
-            "flex flex-col min-h-0 transition-all duration-300 border border-border/40 rounded-2xl bg-card/80 backdrop-blur-xl overflow-hidden",
+            "flex flex-col min-h-0 transition-all duration-300 border border-border/40 rounded-2xl bg-card overflow-hidden",
             viewMode === 'company' && expandedCompanies.length > 0 ? "w-[380px] shrink-0" : "flex-1"
           )}>
             {/* List Header */}
@@ -1110,8 +1050,8 @@ const ContactsDashboard = () => {
                           className={cn(
                             "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
                             isSelected
-                              ? "bg-card ring-1 ring-border rounded-xl mx-1.5 my-0.5 border-transparent shadow-sm"
-                              : "hover:scale-[1.02] hover:z-10"
+                              ? "bg-[#FBFBFB] dark:bg-muted/40 ring-1 ring-border/60 rounded-xl mx-1.5 my-0.5 border-transparent shadow-sm"
+                              : "hover:bg-muted/30"
                           )}
                           onClick={() => {
                             setExpandedCompanies(isSelected ? [] : [company.id]);
@@ -1150,7 +1090,7 @@ const ContactsDashboard = () => {
             const selectedCompanyData = filteredCompanies.find(c => expandedCompanies.includes(c.id));
             if (!selectedCompanyData) return null;
             return (
-              <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-2xl bg-card/80 backdrop-blur-xl ml-3">
+              <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-2xl bg-card ml-3">
                 {/* Detail Header */}
                 <div className="px-6 py-5 border-b border-border/30">
                   <div className="flex items-center justify-between">

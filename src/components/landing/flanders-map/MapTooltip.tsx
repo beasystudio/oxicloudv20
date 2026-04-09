@@ -56,10 +56,10 @@ export const MapTooltip = ({ data }: MapTooltipProps) => {
           transform: 'translate(-50%, -100%)'
         }}
       >
-        <div className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-xl px-4 py-3 shadow-2xl min-w-[200px]">
+        <div className="bg-background border border-border/50 rounded-xl px-4 py-3 shadow-2xl min-w-[200px]">
           {renderContent()}
         </div>
-        <div className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 rotate-45 bg-background/95 border-r border-b border-border/50" />
+        <div className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 rotate-45 bg-background border-r border-b border-border/50" />
       </motion.div>
     </AnimatePresence>
   );

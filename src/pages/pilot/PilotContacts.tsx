@@ -308,7 +308,7 @@ export default function PilotContacts() {
           <div className="h-[calc(100vh-230px)] flex gap-0 overflow-hidden">
             {/* LEFT: Master List */}
             <div className={cn(
-              "flex flex-col min-h-0 transition-all duration-300 border border-border/40 rounded-2xl bg-card/80 backdrop-blur-xl overflow-hidden",
+              "flex flex-col min-h-0 transition-all duration-300 border border-border/40 rounded-2xl bg-card overflow-hidden",
               viewMode === 'company' && expandedCompanies.length > 0 ? "w-[380px] shrink-0" : "flex-1"
             )}>
               {/* List Header */}
@@ -417,7 +417,7 @@ export default function PilotContacts() {
               const selectedCompanyData = filteredCompanies.find(c => expandedCompanies.includes(c.id));
               if (!selectedCompanyData) return null;
               return (
-                <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-2xl bg-card/80 backdrop-blur-xl ml-3">
+                <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-2xl bg-card ml-3">
                   {/* Detail Header */}
                   <div className="px-6 py-5 border-b border-border/30">
                     <div className="flex items-center justify-between">

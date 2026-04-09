@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useMockAuth } from "@/contexts/MockAuthContext";
-import { ChevronDown, Bell, Home, FolderKanban, Building2, Moon, Sun, Users, BarChart, Settings2, Trash2, CheckCircle2, CreditCard, ArrowLeft, LogOut, Ellipsis } from "lucide-react";
+import { ChevronDown, Bell, Home, FolderKanban, Building2, Moon, Sun, Users, BarChart, Settings2, Trash2, CheckCircle2, CreditCard, ArrowLeft, LogOut, Ellipsis, FileText, Check } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "./ui/dropdown-menu";
@@ -9,7 +9,7 @@ import { getUserByEmail, getUsersByCompany } from "@/lib/mockUserDB";
 import { getAvatarUrl } from "@/lib/avatarMap";
 import { GlobalAddMenu } from "./GlobalAddMenu";
 import { cn } from "@/lib/utils";
-import { getNotifications, deleteNotification, getUnreadCount, type Notification } from "@/lib/notificationStore";
+import { getNotifications, deleteNotification, markAsRead, getUnreadCount, type Notification } from "@/lib/notificationStore";
 import { ScrollArea } from "./ui/scroll-area";
 import { useLanguage, type Language } from "@/i18n/LanguageContext";
 import { supabase } from '@/integrations/supabase/client';
@@ -171,16 +171,13 @@ export const TopNavigation = () => {
   // Branding
   const renderBranding = () => {
     if (isOwnerOrAdmin) return;
-    if (isAuthority) {
-      return <div className="flex items-center gap-3"><span className="font-semibold text-sm text-foreground">{displayName}</span></div>;
-    }
     if (effectiveLogo) {
       if (userCompanies.length > 1 && isClientRole) {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1.5 hover:opacity-80 transition-opacity">
-                <img src={effectiveLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-muted border border-border" />
+                <img src={effectiveLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-white border border-border p-0.5" />
                 <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
               </button>
             </DropdownMenuTrigger>
@@ -194,7 +191,7 @@ export const TopNavigation = () => {
           </DropdownMenu>
         );
       }
-      return <div className="flex items-center"><img src={effectiveLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-muted border border-border" /></div>;
+      return <div className="flex items-center"><img src={effectiveLogo} alt="Company logo" className="w-8 h-8 rounded-lg object-contain bg-white border border-border p-0.5" /></div>;
     }
     return <div className="flex items-center gap-3">{renderCompanySelector()}</div>;
   };
@@ -244,13 +241,6 @@ export const TopNavigation = () => {
         </div>
       );
     }
-    if (isAuthority) {
-      return (
-        <div className="flex items-center gap-2">
-          <NavItem to="/dashboard/authority/projects" icon={FolderKanban} label={t('dashboard.nav.projects')} isActiveRoute={isActive('/dashboard/authority/projects')} />
-        </div>
-      );
-    }
     return null;
   };
 
@@ -258,8 +248,8 @@ export const TopNavigation = () => {
   const renderActions = () => {
     const showFinancialMenu = hasFinancialAccess();
     const clientAdminHasSettingsAccess = currentUser.role === 'client_admin' ? getUserByEmail(currentUser.email)?.general?.settingsAccess ?? false : false;
-    const showSettings = isOwnerOrAdmin || currentUser.role === 'client_owner' || clientAdminHasSettingsAccess || (isAuthority && currentUser.role === 'authority');
-    const settingsLink = isOwnerOrAdmin ? "/dashboard/nox-settings" : isAuthority ? "/dashboard/authority/settings" : "/dashboard/settings";
+    const showSettings = isOwnerOrAdmin || currentUser.role === 'client_owner' || clientAdminHasSettingsAccess;
+    const settingsLink = isOwnerOrAdmin ? "/dashboard/nox-settings" : "/dashboard/settings";
 
     return (
       <div className="flex items-center gap-1">
@@ -309,36 +299,47 @@ export const TopNavigation = () => {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-9 w-9 relative">
               <Bell className="h-4 w-4" />
-              {unreadCount > 0 && <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-foreground rounded-full" />}
+              {unreadCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold px-1">
+                  {unreadCount}
+                </span>
+              )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80 p-0">
-            <div className="flex items-center justify-between px-4 py-3 border-b">
-              <span className="text-sm font-medium">{t('dashboard.nav.notifications')}</span>
-              {notifications.length > 0 && <span className="text-xs text-muted-foreground">{notifications.length} items</span>}
+          <DropdownMenuContent align="end" className="w-[360px] p-0 bg-background border border-border shadow-xl rounded-xl overflow-hidden" onCloseAutoFocus={(e) => e.preventDefault()}>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+              <span className="text-sm font-semibold text-foreground">{t('dashboard.nav.notifications')}</span>
+              {unreadCount > 0 && (
+                <span className="text-[11px] font-medium text-muted-foreground">{unreadCount} unread</span>
+              )}
             </div>
-            <ScrollArea className="max-h-80">
+            <div className="max-h-[340px] overflow-y-auto">
               {notifications.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <Bell className="h-8 w-8 text-muted-foreground/30 mb-2" />
-                  <p className="text-sm text-muted-foreground">{t('dashboard.nav.noNotifications')}</p>
+                <div className="flex flex-col items-center justify-center py-10 text-center">
+                  <Bell className="h-6 w-6 text-muted-foreground/25 mb-2" />
+                  <p className="text-xs text-muted-foreground">{t('dashboard.nav.noNotifications')}</p>
                 </div>
               ) : (
-                <div className="divide-y">
-                  {notifications.map((notification) => (
+                <div>
+                  {notifications.map((notification, idx) => (
                     <div
                       key={notification.id}
                       className={cn(
-                        "px-4 py-3 hover:bg-muted/50 transition-colors group",
-                        !notification.read && "bg-primary/5"
+                        "px-4 py-3.5",
+                        idx < notifications.length - 1 && "border-b border-border/50"
                       )}
                     >
                       <div className="flex items-start gap-3">
                         <div className={cn(
-                          "p-2 rounded-lg shrink-0 mt-0.5",
-                          notification.type === 'payment_success' ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                          "h-8 w-8 rounded-full shrink-0 flex items-center justify-center",
+                          notification.type === 'nox_complete' ? "bg-primary/8 text-primary" :
+                          notification.type === 'settlement_complete' ? "bg-muted text-foreground" :
+                          notification.type === 'payment_success' ? "bg-primary/8 text-primary" :
+                          "bg-muted text-muted-foreground"
                         )}>
-                          {notification.type === 'payment_success' ? (
+                          {notification.type === 'nox_complete' ? (
+                            <FileText className="h-3.5 w-3.5" />
+                          ) : notification.type === 'payment_success' ? (
                             <CreditCard className="h-3.5 w-3.5" />
                           ) : notification.type === 'settlement_complete' ? (
                             <CheckCircle2 className="h-3.5 w-3.5" />
@@ -347,31 +348,32 @@ export const TopNavigation = () => {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium">{notification.title}</p>
-                          <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{notification.message}</p>
-                          <p className="text-[10px] text-muted-foreground/60 mt-1">
+                          <p className={cn("text-[13px] leading-snug", !notification.read ? "font-semibold text-foreground" : "font-medium text-muted-foreground")}>{notification.title}</p>
+                          <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{notification.message}</p>
+                          <p className="text-[10px] text-muted-foreground/50 mt-1.5 tabular-nums">
                             {new Date(notification.createdAt).toLocaleString('nl-BE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                           </p>
+                          {!notification.read && (
+                            <button
+                              className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-medium text-foreground border border-border rounded-md px-2.5 py-1 hover:bg-muted transition-colors"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                markAsRead(notification.id);
+                                setNotifications(getNotifications());
+                                setUnreadCount(getUnreadCount());
+                              }}
+                            >
+                              <Check className="h-3 w-3" />
+                              Mark as Read
+                            </button>
+                          )}
                         </div>
-                        <Button
-                          variant="ghost" size="icon"
-                          className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            deleteNotification(notification.id);
-                            setNotifications(getNotifications());
-                            setUnreadCount(getUnreadCount());
-                            toast({ title: t('dashboard.nav.notificationDeleted'), description: t('dashboard.nav.notificationDeletedDesc') });
-                          }}
-                        >
-                          <Trash2 className="h-3 w-3 text-muted-foreground" />
-                        </Button>
                       </div>
                     </div>
                   ))}
                 </div>
               )}
-            </ScrollArea>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -476,7 +478,7 @@ export const TopNavigation = () => {
         {!isOwnerOrAdmin && (
           <div className="hidden sm:flex items-center">
             {effectiveLogo ? (
-              <img src={effectiveLogo} alt="Company logo" className="h-6 w-6 rounded object-contain" />
+              <img src={effectiveLogo} alt="Company logo" className="h-6 w-6 rounded object-contain bg-white p-0.5" />
             ) : (
               <span className="text-xs font-medium text-muted-foreground max-w-[140px] truncate">{displayName}</span>
             )}
@@ -487,12 +489,12 @@ export const TopNavigation = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
+    <nav className="sticky top-0 z-40 bg-background border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Left: OxiCloud logo + Nav */}
           <div className="flex items-center gap-6">
-            <Link to={isOwnerOrAdmin ? '/dashboard/admin' : isAuthority ? '/dashboard/authority' : '/dashboard/client/home'} className="shrink-0">
+            <Link to={isOwnerOrAdmin ? '/dashboard/admin' : '/dashboard/client/home'} className="shrink-0">
               <img src={theme === 'dark' ? oxiLogoLight : oxiLogoDark} alt="OxiCloud" className="h-7 w-7" />
             </Link>
             <div className="hidden md:flex">

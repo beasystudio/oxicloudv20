@@ -122,7 +122,7 @@ export default function ClientDashboard() {
   const pendingTasks = useMemo(() => {
     const tasks: {id: string;title: string;description: string;action: () => void;}[] = [];
     noxProjects.filter((p) => p.noxData?.status === 'awaiting_payment').forEach((p) => {
-      tasks.push({ id: `ap-${p.id}`, title: `"${p.name}" - ${t('dashboard.client.awaitingPayment')}`, description: t('dashboard.client.followUpPayment'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'pay' } }) });
+      tasks.push({ id: `ap-${p.id}`, title: `"${p.name}" - ${t('dashboard.client.awaitingSignature')}`, description: t('dashboard.client.followUpSignature'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'pay' } }) });
     });
     noxProjects.filter((p) => !p.noxData || p.noxData.status === 'input_completed' && !p.noxData.priceData).forEach((p) => {
       tasks.push({ id: `ni-${p.id}`, title: `"${p.name}" - ${t('dashboard.client.inputIncomplete')}`, description: t('dashboard.client.fillPreEstimation'), action: () => navigate('/dashboard/projects', { state: { highlightProjectId: p.id, noxAction: 'pre-estimation' } }) });
@@ -240,7 +240,7 @@ export default function ClientDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
 
             {/* Card 1 - Settings */}
-            <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col group hover:border-foreground/15 transition-colors">
+            <div className="rounded-2xl border border-border/40 bg-card p-6 flex flex-col group hover:border-foreground/15 transition-colors">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-bold text-foreground">
                   1
@@ -262,7 +262,7 @@ export default function ClientDashboard() {
             </div>
 
             {/* Card 2 - Projects */}
-            <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col group hover:border-foreground/15 transition-colors">
+            <div className="rounded-2xl border border-border/40 bg-card p-6 flex flex-col group hover:border-foreground/15 transition-colors">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-bold text-foreground">
                   2
@@ -284,7 +284,7 @@ export default function ClientDashboard() {
             </div>
 
             {/* Card 3 - Contacts */}
-            <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col group hover:border-foreground/15 transition-colors">
+            <div className="rounded-2xl border border-border/40 bg-card p-6 flex flex-col group hover:border-foreground/15 transition-colors">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-bold text-foreground">
                   3
@@ -306,9 +306,9 @@ export default function ClientDashboard() {
             </div>
 
             {/* Card 4 - Partner Program */}
-            <div className="rounded-2xl border border-border/40 bg-card/80 backdrop-blur-xl p-6 flex flex-col group hover:border-foreground/15 transition-colors">
+            <div className="rounded-2xl border-2 border-foreground/10 bg-muted/30 p-6 flex flex-col group hover:border-foreground/20 transition-colors">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-bold text-foreground">
+                <div className="w-8 h-8 rounded-full bg-foreground text-background flex items-center justify-center shrink-0 text-xs font-bold">
                   4
                 </div>
                 <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
@@ -328,12 +328,12 @@ export default function ClientDashboard() {
             </div>
 
             {/* Card 5 - Start Your Own Workspace (spans 2 cols, emphasized) */}
-            <div className="md:col-span-2 rounded-2xl border-2 border-primary/30 bg-card/80 backdrop-blur-xl p-6 flex flex-col relative overflow-hidden">
+            <div className="md:col-span-2 rounded-2xl border-2 border-foreground/15 bg-card p-6 flex flex-col relative overflow-hidden shadow-[0_2px_20px_-4px_rgba(0,0,0,0.08)]">
               
 
               <div className="flex items-center gap-3 mb-2 relative z-10">
-                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-                  <Plus className="w-4 h-4 text-primary-foreground" />
+                <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center shrink-0">
+                  <Plus className="w-4 h-4 text-background" />
                 </div>
                 <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
                   {language === 'nl' ? 'Start uw eigen Workspace' : 'Start Your Own Workspace'}
@@ -349,7 +349,7 @@ export default function ClientDashboard() {
               <div className="grid grid-cols-2 gap-3 mb-4 relative z-10">
                 <button
                   onClick={() => navigate('/pilot-demo/create-account')}
-                  className="rounded-full px-5 py-3 text-sm font-semibold transition-colors bg-muted text-foreground hover:bg-muted/70">
+                  className="rounded-full px-5 py-3 text-sm font-bold transition-all duration-200 bg-foreground text-background hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]">
                   {language === 'nl' ? 'Maak Workspace' : 'Create Workspace'}
                 </button>
                 <div className="flex items-center gap-1.5">

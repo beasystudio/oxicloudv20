@@ -155,7 +155,7 @@ export const FlandersInteractiveMap = () => {
                 className="absolute z-30 pointer-events-none"
                 style={overlayStyle}
               >
-                <div className="bg-foreground/90 backdrop-blur-sm text-background rounded-lg px-3 py-1.5 text-center shadow-lg max-w-[240px]">
+                <div className="bg-foreground/90 text-background rounded-lg px-3 py-1.5 text-center shadow-lg max-w-[240px]">
                   <p className="text-sm font-semibold whitespace-nowrap truncate">{selected.label}</p>
                   {selected.sublabel && (
                     <p className="text-xs text-background/60 whitespace-nowrap">{selected.sublabel}</p>

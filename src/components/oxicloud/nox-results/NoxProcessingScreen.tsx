@@ -24,6 +24,7 @@ export function NoxProcessingScreen({ onComplete }: NoxProcessingScreenProps) {
   const { t } = useLanguage();
   const [completedSteps, setCompletedSteps] = useState<number>(0);
   const [progress, setProgress] = useState(0);
+  const [isFadingOut, setIsFadingOut] = useState(false);
 
   const steps = STEP_KEYS.map(s => ({ label: t(s.labelKey), duration: s.duration }));
   const totalDuration = steps.reduce((sum, s) => sum + s.duration, 0);
@@ -40,9 +41,15 @@ export function NoxProcessingScreen({ onComplete }: NoxProcessingScreenProps) {
       timers.push(timer);
     });
 
+    // Hold on completed state, then fade out before transitioning
+    const fadeTimer = setTimeout(() => {
+      setIsFadingOut(true);
+    }, elapsed + 1200);
+    timers.push(fadeTimer);
+
     const finishTimer = setTimeout(() => {
       onComplete();
-    }, elapsed + 600);
+    }, elapsed + 2000);
     timers.push(finishTimer);
 
     return () => timers.forEach(clearTimeout);
@@ -64,8 +71,8 @@ export function NoxProcessingScreen({ onComplete }: NoxProcessingScreenProps) {
       <motion.div
         className="w-full max-w-lg"
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        animate={{ opacity: isFadingOut ? 0 : 1, y: isFadingOut ? -10 : 0 }}
+        transition={{ duration: isFadingOut ? 0.6 : 0.4 }}
       >
         <div className="text-center mb-10">
           <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground mb-2">

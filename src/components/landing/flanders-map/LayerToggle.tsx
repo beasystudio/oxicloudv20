@@ -14,7 +14,7 @@ const layers: { id: MapLayer; label: string }[] = [
 
 export const LayerToggle = ({ activeLayer, onLayerChange }: LayerToggleProps) => {
   return (
-    <div className="flex items-center gap-1 p-1 rounded-full bg-background/50 backdrop-blur-xl border border-border/50">
+    <div className="flex items-center gap-1 p-1 rounded-full bg-background border border-border/50">
       {layers.map((layer) => (
         <motion.button
           key={layer.id}

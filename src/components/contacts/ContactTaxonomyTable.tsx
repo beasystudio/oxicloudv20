@@ -222,7 +222,7 @@ export function ContactTaxonomyTable({ triggerAdd }: ContactTaxonomyTableProps) 
                     }
                       <button
                       onClick={() => startEdit(entries[0], "hoofdtype")}
-                      className="opacity-0 group-hover/header:opacity-100 transition-opacity p-0.5 rounded hover:bg-accent"
+                      className="p-0.5 rounded hover:bg-accent"
                       title={t('contactTaxonomy.renameHoofdtype')}>
                         <Pencil className="h-3 w-3 text-muted-foreground" />
                       </button>
@@ -264,7 +264,7 @@ export function ContactTaxonomyTable({ triggerAdd }: ContactTaxonomyTableProps) 
                         }
 
                         {!isEditingThis &&
-                        <div className="flex items-center gap-0.5 opacity-0 group-hover/row:opacity-100 transition-opacity">
+                        <div className="flex items-center gap-0.5">
                             <button
                             onClick={() => startEdit(entry, "subtype")}
                             className="p-1 rounded hover:bg-accent"

@@ -32,7 +32,7 @@ export const VideoSection = () => {
         >
           {/* Placeholder for video */}
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-            <div className="w-20 h-20 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-primary/30 transition-colors duration-300">
+            <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors duration-300">
               <Play className="w-8 h-8 text-primary ml-1" />
             </div>
             <p className="text-secondary-foreground/60 text-sm">

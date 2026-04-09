@@ -1,11 +1,11 @@
-import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DetailedCalculationData, ExploitationSystemData, OxiCloudProject } from '@/types/oxicloud';
-import { ArrowLeft, ArrowRight, Check, Info, Building2, Layers, Shovel, Wrench, Flame, CheckCircle2, Database, Save } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Info, CheckCircle2, Save } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { OxiCloudStatusBadge } from './OxiCloudStatusBadge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -96,11 +96,11 @@ const INDUSTRIAL_FUEL_TYPES = [{
 
 // Base steps - titles will use t() at render time
 const BASE_STEP_KEYS = [
-  { id: 1, titleKey: 'detailedCalc.stepBuilding', icon: Building2 },
-  { id: 2, titleKey: 'detailedCalc.stepPaving', icon: Layers },
-  { id: 3, titleKey: 'detailedCalc.stepGroundwork', icon: Shovel },
-  { id: 4, titleKey: 'detailedCalc.stepDetails', icon: Wrench },
-  { id: 5, titleKey: 'detailedCalc.stepExploitation', icon: Flame },
+  { id: 1, titleKey: 'detailedCalc.stepBuilding' },
+  { id: 2, titleKey: 'detailedCalc.stepPaving' },
+  { id: 3, titleKey: 'detailedCalc.stepGroundwork' },
+  { id: 4, titleKey: 'detailedCalc.stepDetails' },
+  { id: 5, titleKey: 'detailedCalc.stepExploitation' },
 ];
 export function DetailedCalculationForm({
   project,
@@ -147,6 +147,8 @@ export function DetailedCalculationForm({
     permeableGreenArea: 0,
     excavationDepth: 0,
     groundworkVolume: 0,
+    terrainRaisingSurfaceArea: 0,
+    terrainRaisingVolume: 0,
     prefabricatedPercentage: 0,
     parkingSpaces: 0,
     electricityAccess: 'yes',
@@ -359,16 +361,9 @@ export function DetailedCalculationForm({
         </label>
       </div>
 
-      {!hasNewPaving && <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 text-center">
-        <p className="text-sm text-emerald-700 dark:text-emerald-300">{t('detailedCalc.noPavingSkipped')}</p>
-      </div>}
 
       {hasNewPaving && <>
 
-      <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 flex justify-between items-center">
-        <span className="text-sm font-medium">{t('detailedCalc.totalNewPaving')}</span>
-        <span className="text-lg font-bold text-primary">{totalPavedArea.toLocaleString('nl-NL')} m²</span>
-      </div>
 
       <TooltipProvider delayDuration={200}>
         <div className="grid grid-cols-2 gap-4">
@@ -432,6 +427,7 @@ export function DetailedCalculationForm({
 
   // ===== STEP 3: Groundwork =====
   const [hasExcavationPit, setHasExcavationPit] = useState((formData.excavationDepth || 0) > 0);
+  const [hasTerrainRaising, setHasTerrainRaising] = useState((formData.terrainRaisingSurfaceArea || 0) > 0 || (formData.terrainRaisingVolume || 0) > 0);
   const renderStep3 = () => <div className="space-y-5">
       <div className="text-center pb-2">
         <p className="text-sm text-muted-foreground">{t('detailedCalc.groundworkExcavation')}</p>
@@ -454,25 +450,44 @@ export function DetailedCalculationForm({
         </label>
       </div>
 
-      {!hasExcavationPit && <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 text-center">
-        <p className="text-sm text-emerald-700 dark:text-emerald-300">{t('detailedCalc.noExcavationSkipped')}</p>
-      </div>}
 
       {hasExcavationPit && <>
         {renderFieldWithTooltip('excavationDepth', t('detailedCalc.excavationDepth'), t('detailedCalc.excavationDepthTooltip'), undefined, <Input id="excavationDepth" type="number" min="0" step="0.1" value={formData.excavationDepth || ''} onChange={e => updateField('excavationDepth', parseFloat(e.target.value) || 0)} placeholder={t('detailedCalc.egDepth')} className="h-11" />)}
 
-        <div className="bg-muted/50 rounded-lg p-4 space-y-1">
-          <div className="flex justify-between items-center">
-            <span className="text-sm">{t('detailedCalc.calculatedVolume')}</span>
-            <span className="text-xl font-bold">{calculatedGroundworkVolume.toLocaleString('nl-NL', {
-              maximumFractionDigits: 0
-            })} m³</span>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {t('detailedCalc.depthTimesArea')} ({project.preEstimation?.groundFloorArea || 0} m²)
-          </p>
-        </div>
       </>}
+
+      {/* Terrain Raising — collapsible toggle matching excavation pattern */}
+      <div className="rounded-lg border border-border/60 p-4">
+        <label className="flex items-center gap-3 cursor-pointer">
+          <Checkbox
+            checked={hasTerrainRaising}
+            onCheckedChange={(checked) => {
+              setHasTerrainRaising(checked === true);
+              if (!checked) {
+                updateField('terrainRaisingSurfaceArea', 0);
+                updateField('terrainRaisingVolume', 0);
+              }
+            }} />
+          <div>
+            <span className="text-sm font-medium">{t('detailedCalc.terrainRaisingToggle')}</span>
+            <p className="text-xs text-muted-foreground">{t('detailedCalc.terrainRaisingToggleDesc')}</p>
+          </div>
+        </label>
+      </div>
+
+
+      {hasTerrainRaising && <div className="space-y-4 pl-4 border-l-2 border-primary/20">
+        <div className="space-y-2">
+          <Label htmlFor="terrainRaisingSurfaceArea" className="text-sm">{t('detailedCalc.terrainRaisingSurfaceArea')}</Label>
+          <Input id="terrainRaisingSurfaceArea" type="number" min="0" value={formData.terrainRaisingSurfaceArea || ''} onChange={e => updateField('terrainRaisingSurfaceArea', parseFloat(e.target.value) || 0)} placeholder={t('detailedCalc.terrainRaisingSurfaceAreaPlaceholder')} className="h-11" />
+          <p className="text-xs text-muted-foreground">{t('detailedCalc.terrainRaisingSurfaceAreaHelper')}</p>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="terrainRaisingVolume" className="text-sm">{t('detailedCalc.terrainRaisingVolume')}</Label>
+          <Input id="terrainRaisingVolume" type="number" min="0" value={formData.terrainRaisingVolume || ''} onChange={e => updateField('terrainRaisingVolume', parseFloat(e.target.value) || 0)} placeholder={t('detailedCalc.terrainRaisingVolumePlaceholder')} className="h-11" />
+          <p className="text-xs text-muted-foreground">{t('detailedCalc.terrainRaisingVolumeHelper')}</p>
+        </div>
+      </div>}
     </div>;
 
   // ===== STEP 4: Details =====
@@ -528,7 +543,7 @@ export function DetailedCalculationForm({
             updateExploitationField('excludeFromCalculation', true);
             updateExploitationField('exclusionReason', t('detailedCalc.noCombustionReason'));
             setExploitationStep('excluded');
-          }} title={t('detailedCalc.noCombustion')} description={t('detailedCalc.noCombustionDesc')} variant="success" />
+          }} title={t('detailedCalc.noCombustion')} variant="success" />
           </div>
           {system?.hasCombustionSystem === true && <div className="space-y-3 pt-3 border-t">
               <Label className="text-sm">{t('detailedCalc.whatType')}</Label>
@@ -562,7 +577,7 @@ export function DetailedCalculationForm({
             updateExploitationField('excludeFromCalculation', true);
             updateExploitationField('exclusionReason', t('detailedCalc.decorativeReason'));
             setExploitationStep('excluded');
-          }} title={t('detailedCalc.noLess100h')} description={t('detailedCalc.noLess100hDesc')} variant="success" />
+          }} title={t('detailedCalc.noLess100h')} variant="success" />
           </div>
           <div className="flex gap-3 pt-4">
             <Button type="button" variant="outline" onClick={() => setExploitationStep('q1')}>
@@ -616,21 +631,14 @@ export function DetailedCalculationForm({
 
     if (exploitationStep === 'excluded') {
       return <div className="space-y-5">
-          <div className="text-center pb-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 rounded-full text-xs font-medium text-blue-700 dark:text-blue-300 mb-3">
-              <span>{t('detailedCalc.scenarioResidential')}</span>
-            </div>
+        <div className="text-center pb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 rounded-full text-xs font-medium text-emerald-700 dark:text-emerald-300 mb-3">
+            <span>{t('detailedCalc.exploitationExcluded')}</span>
           </div>
-          <ExclusionCard reason={system?.exclusionReason || t('detailedCalc.systemExcluded')} />
-          <Button type="button" variant="outline" onClick={() => {
-          updateExploitationField('excludeFromCalculation', false);
-          updateExploitationField('exclusionReason', undefined);
-          setExploitationStep('q1');
-        }} className="w-full">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            {t('detailedCalc.changeAnswers')}
-          </Button>
-        </div>;
+          <h3 className="font-semibold text-base">{t('detailedCalc.exploitationExcludedTitle')}</h3>
+        </div>
+        <p className="text-xs text-muted-foreground text-center">{t('detailedCalc.clickCalculateToFinish')}</p>
+      </div>;
     }
     return null;
   };
@@ -658,7 +666,7 @@ export function DetailedCalculationForm({
             updateExploitationField('excludeFromCalculation', true);
             updateExploitationField('exclusionReason', t('detailedCalc.electricRenewableReason'));
             setExploitationStep('excluded');
-          }} title={t('detailedCalc.hasElectricRenewable')} description={t('detailedCalc.hasElectricRenewableDesc')} variant="success" />
+          }} title={t('detailedCalc.hasElectricRenewable')} variant="success" />
             <DecisionCard selected={system?.industrialSystemCategory === 'both'} onClick={() => {
             updateExploitationField('industrialSystemCategory', 'both');
             updateExploitationField('excludeFromCalculation', false);
@@ -756,21 +764,15 @@ export function DetailedCalculationForm({
 
     if (exploitationStep === 'excluded') {
       return <div className="space-y-5">
-          <div className="text-center pb-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-100 dark:bg-orange-900/30 rounded-full text-xs font-medium text-orange-700 dark:text-orange-300 mb-3">
-              <span>{t('detailedCalc.scenarioIndustrial')}</span>
-            </div>
+        <div className="text-center pb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 rounded-full text-xs font-medium text-emerald-700 dark:text-emerald-300 mb-3">
+            <span>{t('detailedCalc.exploitationExcluded')}</span>
           </div>
-          <ExclusionCard reason={system?.exclusionReason || t('detailedCalc.systemExcluded')} />
-          <Button type="button" variant="outline" onClick={() => {
-          updateExploitationField('excludeFromCalculation', false);
-          updateExploitationField('exclusionReason', undefined);
-          setExploitationStep('q1');
-        }} className="w-full">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            {t('detailedCalc.changeAnswers')}
-          </Button>
-        </div>;
+          <h3 className="font-semibold text-base">{t('detailedCalc.exploitationExcludedTitle')}</h3>
+          
+        </div>
+        <p className="text-xs text-muted-foreground text-center">{t('detailedCalc.clickCalculateToFinish')}</p>
+      </div>;
     }
     return null;
   };
@@ -808,22 +810,21 @@ export function DetailedCalculationForm({
           </div>
 
           {/* Step indicator */}
-          <div className="flex items-center justify-between mt-4 pt-4 py-[31px]">
+          <div className="flex items-center mt-4 pt-4 py-[31px]">
             {BASE_STEP_KEYS.map((step, idx) => {
-            const StepIcon = step.icon;
             const isActive = currentStep === step.id;
             const isComplete = currentStep > step.id;
-            return <div key={step.id} className="flex items-center">
-                  <button type="button" onClick={() => setCurrentStep(step.id)} className={cn("flex flex-col items-center gap-1.5 transition-all", isActive && "scale-105")}>
-                    <div className={cn("w-8 h-8 rounded-full flex items-center justify-center transition-colors", isActive ? "bg-primary text-primary-foreground" : isComplete ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground")}>
-                      {isComplete ? <Database className="h-4 w-4" /> : <StepIcon className="h-4 w-4" />}
+            return <React.Fragment key={step.id}>
+                  <button type="button" onClick={() => setCurrentStep(step.id)} className={cn("flex flex-col items-center gap-1.5 transition-all flex-shrink-0", isActive && "scale-105")}>
+                    <div className={cn("w-8 h-8 rounded-full flex items-center justify-center transition-colors text-xs font-bold", isActive ? "bg-foreground text-background" : isComplete ? "bg-muted-foreground/25 text-background" : "bg-transparent text-muted-foreground")}>
+                      {step.id}
                     </div>
                     <span className={cn("text-[10px] font-medium", isActive ? "text-foreground" : "text-muted-foreground")}>
                       {t(step.titleKey)}
                     </span>
                   </button>
-                  {idx < BASE_STEP_KEYS.length - 1 && <div className={cn("w-6 h-0.5 mx-1", currentStep > step.id ? "bg-primary" : "bg-muted")} />}
-                </div>;
+                  {idx < BASE_STEP_KEYS.length - 1 && <div className={cn("h-px flex-1 mx-1 -mt-5", isComplete ? "bg-muted-foreground/30" : "bg-border")} />}
+                </React.Fragment>;
           })}
           </div>
         </CardHeader>

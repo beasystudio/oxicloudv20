@@ -14,7 +14,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { getAvatarByEmail } from '@/lib/avatarMap';
 import { supabase } from '@/integrations/supabase/client';
 import { LanguageToggle } from '@/components/LanguageToggle';
-import loginBackground from '@/assets/login-background.jpg';
+import loginBackground from '@/assets/login-bg.jpg';
 import oxicloudLogo from '@/assets/oxicloud-logo-white.png';
 
 interface DemoAccount {
@@ -41,9 +41,7 @@ const Login = () => {
 
   useEffect(() => {
     if (currentUser) {
-      if (currentUser.role === 'owner' || currentUser.role === 'admin') navigate('/dashboard/admin');
-      else if (currentUser.role === 'authority' || currentUser.role === 'authority_standard') navigate('/dashboard/authority');
-      else navigate('/dashboard/partner');
+      navigate('/dashboard/partner');
     }
   }, [currentUser, navigate]);
 
@@ -71,9 +69,7 @@ const Login = () => {
       toast({ title: "Welcome back!", description: "Login successful" });
       const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
       if (user) {
-        if (user.role === 'owner' || user.role === 'admin') navigate('/dashboard/admin');
-        else if (user.role === 'authority' || user.role === 'authority_standard') navigate('/dashboard/authority');
-        else navigate('/dashboard/partner');
+        navigate('/dashboard/partner');
       }
       setLoading(false);
       return;
@@ -108,9 +104,7 @@ const Login = () => {
         toast({ title: `Welcome, ${account.label}!`, description: "Demo login successful" });
         const user = users.find((u) => u.email.toLowerCase() === account.email.toLowerCase());
         if (user) {
-          if (user.role === 'owner' || user.role === 'admin') navigate('/dashboard/admin');
-          else if (user.role === 'authority' || user.role === 'authority_standard') navigate('/dashboard/authority');
-          else navigate('/dashboard/partner');
+          navigate('/dashboard/partner');
         }
       }
     }, 200);

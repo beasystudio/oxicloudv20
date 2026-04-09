@@ -50,7 +50,7 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
   );
 
   return (
-    <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
+    <nav className="sticky top-0 z-40 bg-background border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Left: OxiCloud logo + Nav */}
@@ -167,7 +167,7 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
             {/* Company name/logo - separate from avatar */}
             <div className="hidden sm:flex items-center">
               {companyLogo ? (
-                <img src={companyLogo} alt="Company logo" className="h-6 w-6 rounded object-contain" />
+                <img src={companyLogo} alt="Company logo" className="h-6 w-6 rounded object-contain bg-white p-0.5" />
               ) : (
                 <span className="text-xs font-medium text-muted-foreground max-w-[140px] truncate">{company.name}</span>
               )}

@@ -8,7 +8,7 @@ export const MainNavigation = () => {
     currentUser,
     logout
   } = useMockAuth();
-  return <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+  return <nav className="sticky top-0 z-50 bg-background border-b border-border">
       <div className="container mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-3">

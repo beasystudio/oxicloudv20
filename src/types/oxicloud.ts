@@ -152,6 +152,10 @@ export interface DetailedCalculationData {
   excavationDepth: number;
   // Grondwerkvolume (m³) - auto calculated
   groundworkVolume: number;
+  // Terreinophoging oppervlakte (m²)
+  terrainRaisingSurfaceArea: number;
+  // Terreinophoging volume (m³)
+  terrainRaisingVolume: number;
   // Geprefabriceerd materiaal (0-80%)
   prefabricatedPercentage: number;
   // Aantal parkeerplaatsen

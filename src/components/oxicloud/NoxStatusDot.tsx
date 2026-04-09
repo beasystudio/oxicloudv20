@@ -7,15 +7,15 @@ interface NoxStatusDotProps {
   className?: string;
 }
 
-// Map STATUS_CONFIG colors to actual tailwind-compatible colors
+// Dot colors aligned with STATUS_CONFIG display groups
 const DOT_COLORS: Record<OxiCloudProjectStatus, string> = {
-  input_incomplete: 'bg-gray-400',
-  input_completed: 'bg-blue-500',
-  price_generated: 'bg-indigo-500',
-  awaiting_payment: 'bg-orange-500',
-  paid: 'bg-green-500',
-  report_in_progress: 'bg-purple-500',
-  report_delivered: 'bg-emerald-700',
+  input_incomplete: 'bg-gray-500',      // Draft
+  input_completed: 'bg-gray-500',       // Draft
+  price_generated: 'bg-blue-500',       // Quote Sent
+  awaiting_payment: 'bg-blue-500',      // Quote Sent
+  paid: 'bg-indigo-500',                // Signed
+  report_in_progress: 'bg-amber-500',   // Report Held
+  report_delivered: 'bg-emerald-600',   // Released
 };
 
 export function NoxStatusDot({ projectId, className }: NoxStatusDotProps) {

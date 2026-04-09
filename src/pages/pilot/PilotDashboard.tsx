@@ -47,7 +47,7 @@ export default function PilotDashboard() {
   const pendingTasks = useMemo(() => {
     const tasks: {id: string;title: string;description: string;action: () => void;}[] = [];
     projects.filter((p) => p.noxStatus === 'awaiting_payment').forEach((p) => {
-      tasks.push({ id: `ap-${p.id}`, title: `"${p.name}" — ${t('pilot.dashboard.awaitingPayment')}`, description: t('pilot.dashboard.followUpPayment'), action: () => navigate('/pilot-demo/projects', { state: { highlightProjectId: p.id, noxAction: 'pay' } }) });
+      tasks.push({ id: `ap-${p.id}`, title: `"${p.name}" — ${t('pilot.dashboard.awaitingSignature')}`, description: t('pilot.dashboard.followUpSignature'), action: () => navigate('/pilot-demo/projects', { state: { highlightProjectId: p.id, noxAction: 'pay' } }) });
     });
     projects.filter((p) => !p.noxStatus || p.noxStatus === 'input_completed' && !p.priceData).forEach((p) => {
       tasks.push({ id: `ni-${p.id}`, title: `"${p.name}" — ${t('pilot.dashboard.inputIncomplete')}`, description: t('pilot.dashboard.fillPreEstimation'), action: () => navigate('/pilot-demo/projects', { state: { highlightProjectId: p.id, noxAction: 'pre-estimation' } }) });

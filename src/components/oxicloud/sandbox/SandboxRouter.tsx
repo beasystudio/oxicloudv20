@@ -58,7 +58,7 @@ export function SandboxRouter({ initialType, exceedingTypes, onComplete, onBack,
             {remainingTypes.map((type, index) => {
               const config = SANDBOX_LABELS[type];
               return (
-                <motion.button key={type} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => handleSelectSandbox(type)} className="bg-background/80 backdrop-blur-xl rounded-2xl border border-border/50 p-6 text-left hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 transition-all group">
+                <motion.button key={type} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} onClick={() => handleSelectSandbox(type)} className="bg-background rounded-2xl border border-border/50 p-6 text-left hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 transition-all group">
                   <div className="flex items-start justify-between mb-4">
                     <span className="px-3 py-1 rounded-lg bg-secondary text-xs font-bold uppercase tracking-wide">{config.phase}</span>
                     <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>

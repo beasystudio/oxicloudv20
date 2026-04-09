@@ -116,7 +116,7 @@ export function SplitPhaseFootprintScreen({
         {/* Top Overlay */}
         <header className="absolute top-0 left-0 right-0 z-[1000] pointer-events-none flex justify-center">
           <div className="pointer-events-auto mt-3 w-[min(28rem,calc(100%-6rem))]">
-            <div className="bg-background/70 backdrop-blur-md rounded-2xl p-4 flex flex-col gap-2.5 shadow-sm">
+            <div className="bg-background rounded-2xl p-4 flex flex-col gap-2.5 shadow-sm">
               <div className="flex items-center gap-2 text-xs">
                 <span className="font-medium tracking-widest uppercase text-primary">{t('modals.splitStep2of4')}</span>
                 <span className="text-muted-foreground">{t('modals.definePhase1Footprint')}</span>
@@ -169,7 +169,7 @@ export function SplitPhaseFootprintScreen({
           </div>
           <div className="absolute top-3 left-4 right-4 flex items-start justify-between pointer-events-none">
             <div />
-            <Button variant="outline" size="icon" onClick={() => setShowLayers(!showLayers)} className={cn("h-10 w-10 rounded-full bg-background/95 backdrop-blur-sm shadow-md border-border pointer-events-auto", showLayers && "ring-2 ring-primary")}>
+            <Button variant="outline" size="icon" onClick={() => setShowLayers(!showLayers)} className={cn("h-10 w-10 rounded-full bg-background shadow-md border-border pointer-events-auto", showLayers && "ring-2 ring-primary")}>
               <Layers className="h-4 w-4" />
             </Button>
           </div>
@@ -177,7 +177,7 @@ export function SplitPhaseFootprintScreen({
 
         {showLayers && (
           <div className="absolute top-36 right-4 z-[1000]">
-            <div className="bg-background/95 backdrop-blur-sm rounded-xl shadow-md border border-border p-4 w-48">
+            <div className="bg-background rounded-xl shadow-md border border-border p-4 w-48">
               <div className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">{t('modals.mapLayers')}</div>
               <div className="space-y-2.5">
                 {[
@@ -195,7 +195,7 @@ export function SplitPhaseFootprintScreen({
         )}
 
         <div className="absolute bottom-4 left-4 z-[1000]">
-          <div className="bg-background/90 backdrop-blur-sm rounded-xl shadow-md border border-border px-4 py-3 flex items-center gap-4 text-xs">
+          <div className="bg-background rounded-xl shadow-md border border-border px-4 py-3 flex items-center gap-4 text-xs">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded border-2" style={{ borderColor: MAP_COLORS.plot, backgroundColor: `${MAP_COLORS.plot}15` }} />
               <span className="text-muted-foreground">{t('modals.parcel')}</span>

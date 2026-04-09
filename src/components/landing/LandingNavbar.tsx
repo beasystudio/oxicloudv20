@@ -62,7 +62,7 @@ export const LandingNavbar = () => {
   const handleLangEnter = () => { clearTimeout(langTimeout.current); setLangOpen(true); };
   const handleLangLeave = () => { langTimeout.current = setTimeout(() => setLangOpen(false), 150); };
 
-  const navBg = 'bg-background/95 backdrop-blur-xl shadow-[0_2px_20px_-4px_rgba(0,0,0,0.08)]';
+  const navBg = 'bg-background shadow-[0_2px_20px_-4px_rgba(0,0,0,0.08)]';
 
   const langOptions: { code: Language; label: string; short: string }[] = [
     { code: 'en', label: 'English', short: 'EN' },
@@ -262,7 +262,7 @@ export const LandingNavbar = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.98 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-4 top-20 z-40 bg-popover/98 backdrop-blur-2xl border border-border/30 rounded-2xl lg:hidden overflow-hidden shadow-xl"
+            className="fixed inset-x-4 top-20 z-40 bg-popover border border-border/30 rounded-2xl lg:hidden overflow-hidden shadow-xl"
           >
             <div className="p-6">
               <div className="flex flex-col gap-2">

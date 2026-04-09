@@ -165,152 +165,159 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
 
   return (
     <>
-      <Card>
-        <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
-          <div className="flex items-center gap-3">
-            <CardTitle className="text-sm font-semibold">{t('projectContacts.title')}</CardTitle>
-            {hasAnyContacts && (
-              <PillToggle
-                items={contactFilters}
-                activeId={activeFilter}
-                onSelect={setActiveFilter}
-                layoutId="projectContactFilter"
-              />
-            )}
-          </div>
-          {hasAnyContacts && (
-            <div className="flex gap-2">
-              <Button size="sm" variant="outline" onClick={() => setIsAddExistingOpen(true)}>
-                <Plus className="h-4 w-4 mr-1" />
-                {t('projectContacts.addExisting')}
-              </Button>
-              <Button size="sm" onClick={() => setIsCreateNewOpen(true)}>
-                <UserPlus className="h-4 w-4 mr-1" />
-                {t('projectContacts.createNew')}
-              </Button>
+      <div className="space-y-3">
+        {/* Sub-card 1: Header with filters and actions */}
+        <Card>
+          <CardContent className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-semibold">{t('projectContacts.title')}</span>
+              {hasAnyContacts && (
+                <PillToggle
+                  items={contactFilters}
+                  activeId={activeFilter}
+                  onSelect={setActiveFilter}
+                  layoutId="projectContactFilter"
+                />
+              )}
             </div>
-          )}
-        </CardHeader>
-        <CardContent className="pt-0 px-4 pb-4">
-          {!hasAnyContacts ? (
-            <EmptyState />
-          ) : (
-            <div className="h-[340px] flex gap-0 overflow-hidden">
-              {/* LEFT: Company List */}
-              <div className={cn(
-                "flex flex-col min-h-0 transition-all duration-300 rounded-xl bg-card/80 overflow-hidden",
-                selectedCompany ? "w-[260px] shrink-0" : "flex-1"
-              )}>
-                <div className="flex-1 overflow-auto min-h-0">
-                  {companyGroups.map(group => {
-                    const isSelected = selectedCompany === group.firmName;
-                    return (
-                      <div
-                        key={group.firmName}
-                        className={cn(
-                          "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
-                          isSelected
-                            ? "bg-card ring-1 ring-border rounded-xl mx-1.5 my-0.5 border-transparent shadow-sm"
-                            : "hover:scale-[1.02] hover:z-10"
-                        )}
-                        onClick={() => setSelectedCompany(isSelected ? null : group.firmName)}
-                      >
-                        <div className={cn("text-xs font-semibold transition-colors", isSelected ? "text-foreground" : "text-foreground")}>
-                          {group.firmName}
-                        </div>
-                        <div className={cn("text-[10px] mt-0.5 transition-colors", isSelected ? "text-muted-foreground" : "text-muted-foreground")}>
-                          {translateContactType(group.contacts[0]?.contact_type || '')}
-                        </div>
-                        {group.contacts.length > 0 && (
-                          <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-muted-foreground/60" : "text-muted-foreground/40")}>
-                            {group.contacts.length} <User className="inline h-3 w-3 -mt-0.5" />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                  {companyGroups.length === 0 && (
-                    <div className="px-4 py-6 text-xs text-muted-foreground text-center">
-                      No contacts in this category
-                    </div>
-                  )}
-                </div>
+            {hasAnyContacts && (
+              <div className="flex gap-2">
+                <Button size="sm" variant="outline" onClick={() => setIsAddExistingOpen(true)}>
+                  <Plus className="h-4 w-4 mr-1" />
+                  {t('projectContacts.addExisting')}
+                </Button>
+                <Button size="sm" onClick={() => setIsCreateNewOpen(true)}>
+                  <UserPlus className="h-4 w-4 mr-1" />
+                  {t('projectContacts.createNew')}
+                </Button>
               </div>
+            )}
+          </CardContent>
+        </Card>
 
-              {/* RIGHT: Detail Panel */}
-              {selectedCompany && selectedCompanyData && (
-                <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-xl bg-card/80 ml-3">
-                  <div className="px-4 py-3 border-b border-border/30">
-                    <h3 className="text-sm font-semibold text-foreground">{selectedCompanyData.firmName}</h3>
-                    <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground">
-                      {selectedCompanyData.contacts[0]?.email && (
-                        <span>{selectedCompanyData.contacts[0].email}</span>
-                      )}
-                      {selectedCompanyData.contacts[0]?.phone && (
-                        <>
-                          <span className="opacity-40">·</span>
-                          <span>{selectedCompanyData.contacts[0].phone}</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="p-4 space-y-4">
-                    {/* Contact Persons */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <h4 className="text-[10px] font-semibold text-foreground uppercase tracking-wider">
-                          {t('projectContacts.contactPerson')}
-                        </h4>
-                        <span className="text-[10px] text-muted-foreground tabular-nums">
-                          ({selectedCompanyData.contacts.length})
-                        </span>
-                      </div>
-                      <div className="rounded-lg border border-border/30 overflow-hidden">
-                        <div className="grid grid-cols-4 gap-4 px-3 py-1.5 bg-muted/30 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-b border-border/20">
-                          <div>{t('projectContacts.contactPerson')}</div>
-                          <div>{t('projectContacts.email')}</div>
-                          <div>{t('projectContacts.phone')}</div>
-                          <div>{t('projectContacts.mobile')}</div>
-                        </div>
-                        {selectedCompanyData.contacts.map((contact, idx) => (
-                          <div
-                            key={contact.id}
-                            className={cn(
-                              "grid grid-cols-4 gap-4 px-3 py-2 text-xs cursor-pointer transition-all duration-200 hover:scale-[1.01] hover:z-10 relative",
-                              idx < selectedCompanyData.contacts.length - 1 && "border-b border-border/10"
-                            )}
-                            onDoubleClick={() => handleContactClick(contact)}
-                          >
-                            <div className="font-medium text-foreground">{contact.contact_person}</div>
-                            <div className="text-muted-foreground truncate">{contact.email || '—'}</div>
-                            <div className="text-muted-foreground">{contact.phone || '—'}</div>
-                            <div className="text-muted-foreground">{contact.mobile || '—'}</div>
+        {/* Sub-card 2: Contact list and detail panel */}
+        <Card>
+          <CardContent className="px-0 pt-2 pb-0">
+            {!hasAnyContacts ? (
+              <EmptyState />
+            ) : (
+              <div className="h-[340px] flex gap-0 overflow-hidden">
+                {/* LEFT: Company List */}
+                <div className={cn(
+                  "flex flex-col min-h-0 transition-all duration-300 rounded-xl bg-card/80 overflow-hidden",
+                  selectedCompany ? "w-[260px] shrink-0" : "flex-1"
+                )}>
+                  <div className="flex-1 overflow-auto min-h-0">
+                    {companyGroups.map(group => {
+                      const isSelected = selectedCompany === group.firmName;
+                      return (
+                        <div
+                          key={group.firmName}
+                          className={cn(
+                            "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
+                            isSelected
+                              ? "bg-[#FBFBFB] dark:bg-muted/40 ring-1 ring-border/60 rounded-xl mx-1.5 my-0.5 border-transparent shadow-sm"
+                              : "hover:bg-muted/30"
+                          )}
+                          onClick={() => setSelectedCompany(isSelected ? null : group.firmName)}
+                        >
+                          <div className={cn("text-xs font-semibold transition-colors", isSelected ? "text-foreground" : "text-foreground")}>
+                            {group.firmName}
                           </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Address Section */}
-                    {selectedCompanyData.contacts[0]?.address && (
-                      <div>
-                        <h4 className="text-[10px] font-semibold text-foreground uppercase tracking-wider mb-2">
-                          {t('projectContacts.address') || 'Address'}
-                        </h4>
-                        <div className="rounded-lg border border-border/30 overflow-hidden">
-                          <div className="px-3 py-2 text-xs text-muted-foreground">
-                            {selectedCompanyData.contacts[0].address}
+                          <div className={cn("text-[10px] mt-0.5 transition-colors", isSelected ? "text-muted-foreground" : "text-muted-foreground")}>
+                            {translateContactType(group.contacts[0]?.contact_type || '')}
                           </div>
+                          {group.contacts.length > 0 && (
+                            <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-muted-foreground/60" : "text-muted-foreground/40")}>
+                              {group.contacts.length} <User className="inline h-3 w-3 -mt-0.5" />
+                            </div>
+                          )}
                         </div>
+                      );
+                    })}
+                    {companyGroups.length === 0 && (
+                      <div className="px-4 py-6 text-xs text-muted-foreground text-center">
+                        No contacts in this category
                       </div>
                     )}
                   </div>
                 </div>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+
+                {/* RIGHT: Detail Panel */}
+                {selectedCompany && selectedCompanyData && (
+                  <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-xl bg-[#FBFBFB] dark:bg-muted/30 ml-3 shadow-sm">
+                    <div className="px-4 py-3 border-b border-border/30">
+                      <h3 className="text-sm font-semibold text-foreground">{selectedCompanyData.firmName}</h3>
+                      <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground">
+                        {selectedCompanyData.contacts[0]?.email && (
+                          <span>{selectedCompanyData.contacts[0].email}</span>
+                        )}
+                        {selectedCompanyData.contacts[0]?.phone && (
+                          <>
+                            <span className="opacity-40">·</span>
+                            <span>{selectedCompanyData.contacts[0].phone}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="p-4 space-y-4">
+                      {/* Contact Persons */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="text-[10px] font-semibold text-foreground uppercase tracking-wider">
+                            {t('projectContacts.contactPerson')}
+                          </h4>
+                          <span className="text-[10px] text-muted-foreground tabular-nums">
+                            ({selectedCompanyData.contacts.length})
+                          </span>
+                        </div>
+                        <div className="rounded-lg border border-border/30 overflow-hidden">
+                          <div className="grid grid-cols-4 gap-4 px-3 py-1.5 bg-muted/30 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-b border-border/20">
+                            <div>{t('projectContacts.contactPerson')}</div>
+                            <div>{t('projectContacts.email')}</div>
+                            <div>{t('projectContacts.phone')}</div>
+                            <div>{t('projectContacts.mobile')}</div>
+                          </div>
+                          {selectedCompanyData.contacts.map((contact, idx) => (
+                            <div
+                              key={contact.id}
+                              className={cn(
+                                "grid grid-cols-4 gap-4 px-3 py-2 text-xs cursor-pointer transition-all duration-200 hover:scale-[1.01] hover:z-10 relative",
+                                idx < selectedCompanyData.contacts.length - 1 && "border-b border-border/10"
+                              )}
+                              onDoubleClick={() => handleContactClick(contact)}
+                            >
+                              <div className="font-medium text-foreground">{contact.contact_person}</div>
+                              <div className="text-muted-foreground truncate">{contact.email || '—'}</div>
+                              <div className="text-muted-foreground">{contact.phone || '—'}</div>
+                              <div className="text-muted-foreground">{contact.mobile || '—'}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Address Section */}
+                      {selectedCompanyData.contacts[0]?.address && (
+                        <div>
+                          <h4 className="text-[10px] font-semibold text-foreground uppercase tracking-wider mb-2">
+                            {t('projectContacts.address') || 'Address'}
+                          </h4>
+                          <div className="rounded-lg border border-border/30 overflow-hidden">
+                            <div className="px-3 py-2 text-xs text-muted-foreground">
+                              {selectedCompanyData.contacts[0].address}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
 
       {selectedContact && (
         <ContactDetailsDialog

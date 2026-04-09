@@ -15,7 +15,8 @@ import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Search, ChevronDown, ChevronRight, User, Users, X, Download, Clock, Play, ArrowRight, ArrowLeft, CreditCard, FileCheck, RefreshCw, Trash2, Plus, UserPlus, Building, Building2, ArrowDown, ArrowUp, FileText, Mail } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Search, ChevronDown, ChevronRight, User, Users, X, Download, Clock, Play, ArrowRight, ArrowLeft, CreditCard, FileCheck, RefreshCw, Trash2, Plus, UserPlus, Building, Building2, ArrowDown, ArrowUp, FileText, Mail, Eye } from 'lucide-react';
 import { NoxStepProgress } from '@/components/projects/NoxStepProgress';
 import { cn } from '@/lib/utils';
 import { OxiCloudStatusBadge } from '@/components/oxicloud/OxiCloudStatusBadge';
@@ -24,9 +25,11 @@ import { PreEstimationForm } from '@/components/oxicloud/PreEstimationForm';
 import { PriceReviewScreen } from '@/components/oxicloud/PriceReviewScreen';
 import { NoxPaymentDemoFlow } from '@/components/oxicloud/NoxPaymentDemoFlow';
 import { NoxReportHeldScreen } from '@/components/oxicloud/nox-results/NoxReportHeldScreen';
+import { NoxProcessingScreen } from '@/components/oxicloud/nox-results/NoxProcessingScreen';
 import { SimulationButtons } from '@/components/oxicloud/SimulationButtons';
 import { DetailedCalculationForm } from '@/components/oxicloud/DetailedCalculationForm';
 import { OxiCloudResultScreen } from '@/components/oxicloud/OxiCloudResultScreen';
+import { QuoteSentAwaitingStep } from '@/components/oxicloud/quote-flow/QuoteSentAwaitingStep';
 import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { getAllLocalProjects, getProjectContacts, updateLocalProject, deleteLocalProject, type LocalProject, type ProjectContact } from '@/lib/mockLocalProjects';
@@ -41,22 +44,17 @@ import { AddExistingContactDialog } from '@/components/projects/AddExistingConta
 import { CreateProjectContactDialog } from '@/components/projects/CreateProjectContactDialog';
 import { CreateNewProjectDialog } from '@/components/projects/CreateNewProjectDialog';
 import { ProjectContactDetailModal, type ProjectContactData, type ProjectInfo } from '@/components/projects/ProjectContactDetailModal';
-import { ProjectImagePreview } from '@/components/projects/ProjectImagePreview';
+
 import { PaymentSuccessDialog } from '@/components/oxicloud/PaymentSuccessDialog';
 import { ProjectLocationMap } from '@/components/projects/ProjectLocationMap';
 import { NoxVersionHistory } from '@/components/projects/NoxVersionHistory';
 import { ProjectContacts } from '@/components/projects/ProjectContacts';
 
-import { getMonitorProjects, type MonitorProject } from '@/lib/monitorProjectStore';
-import { MonitorValidationFlow } from '@/components/authority/MonitorValidationFlow';
-import { MonitorAuditLog } from '@/components/authority/MonitorAuditLog';
-import { MonitorProjectUploadDialog } from '@/components/authority/MonitorProjectUploadDialog';
 
-// Admin product tab type
-type AdminProductTab = 'oxicloud' | 'monitor';
+
 
 // NOx flow step type
-type NoxFlowStep = null | 'pre-estimation' | 'quote-sent' | 'price-review' | 'payment' | 'detailed-calculation' | 'report-held' | 'results';
+type NoxFlowStep = null | 'pre-estimation' | 'quote-sent' | 'price-review' | 'payment' | 'detailed-calculation' | 'report-processing' | 'report-held' | 'results';
 
 // Adapter to convert NoxProject to OxiCloudProject format for existing components
 function toOxiCloudProject(project: NoxProject): OxiCloudProject | null {
@@ -149,14 +147,11 @@ const ProjectsDashboard = () => {
   const { language } = useLanguage();
 
   // Admin product tab
-  const [adminProductTab, setAdminProductTab] = useState<AdminProductTab>('oxicloud');
-  const [monitorUploadOpen, setMonitorUploadOpen] = useState(false);
-  const [selectedMonitorProject, setSelectedMonitorProject] = useState<MonitorProject | null>(null);
-  const [monitorRefreshKey, setMonitorRefreshKey] = useState(0);
 
   // Payment success dialog state
   const [showPaymentSuccessDialog, setShowPaymentSuccessDialog] = useState(false);
   const [paymentProjectName, setPaymentProjectName] = useState('');
+  const [showMockPdfDialog, setShowMockPdfDialog] = useState(false);
 
   // View state
   const [currentView, setCurrentView] = useState<ViewState>('default');
@@ -403,13 +398,10 @@ const ProjectsDashboard = () => {
   const handleDetailedCalculationSubmit = (data: DetailedCalculationData) => {
     if (!selectedProjectId) return;
     saveNoxDetailedCalculation(selectedProjectId, data);
-    // Report generated but held until client payment
+    // Report generated but held until client payment — show processing first
     updateNoxData(selectedProjectId, { status: 'report_in_progress' });
     setNoxProjectsRefreshKey((prev) => prev + 1);
-    setNoxFlowStep('report-held');
-    toast({
-      title: t('reportHeld.calcComplete'),
-    });
+    setNoxFlowStep('report-processing');
   };
   const handleNoxBack = () => {
     setNoxProjectsRefreshKey((prev) => prev + 1);
@@ -440,9 +432,18 @@ const ProjectsDashboard = () => {
       result = result.filter((p) => p.managerName?.toLowerCase().includes(defaultFilterManager.toLowerCase()));
     }
     if (defaultFilterNoxStatus !== "all") {
+      // Group matching: e.g. input_incomplete also matches input_completed (both = "Draft")
+      const STATUS_GROUPS: Record<string, OxiCloudProjectStatus[]> = {
+        input_incomplete: ['input_incomplete', 'input_completed'],
+        price_generated: ['price_generated', 'awaiting_payment'],
+        paid: ['paid'],
+        report_in_progress: ['report_in_progress'],
+        report_delivered: ['report_delivered'],
+      };
+      const matchStatuses = STATUS_GROUPS[defaultFilterNoxStatus] || [defaultFilterNoxStatus];
       result = result.filter((p) => {
         const noxData = getNoxDataByProjectId(p.id);
-        return noxData?.status === defaultFilterNoxStatus;
+        return noxData && matchStatuses.includes(noxData.status);
       });
     }
     return result;
@@ -739,10 +740,17 @@ const ProjectsDashboard = () => {
                        {t('dashboard.projectsDashboard.allStatuses')}
                     </span>
                   </SelectItem>
-                  {(Object.keys(STATUS_CONFIG) as OxiCloudProjectStatus[]).map((status) => <SelectItem key={status} value={status}>
+                  {/* Deduplicated statuses: use one representative per display group */}
+                  {([
+                    { value: 'input_incomplete' as OxiCloudProjectStatus, color: 'bg-gray-500' },
+                    { value: 'price_generated' as OxiCloudProjectStatus, color: 'bg-blue-500' },
+                    { value: 'paid' as OxiCloudProjectStatus, color: 'bg-indigo-500' },
+                    { value: 'report_in_progress' as OxiCloudProjectStatus, color: 'bg-amber-500' },
+                    { value: 'report_delivered' as OxiCloudProjectStatus, color: 'bg-emerald-600' },
+                  ]).map(({ value, color }) => <SelectItem key={value} value={value}>
                       <span className="flex items-center gap-2">
-                        <span className={`w-2.5 h-2.5 rounded-full ${STATUS_CONFIG[status].color}`} />
-                        {getTranslatedStatusLabel(status, t)}
+                        <span className={`w-2.5 h-2.5 rounded-full ${color}`} />
+                        {getTranslatedStatusLabel(value, t)}
                       </span>
                     </SelectItem>)}
                 </SelectContent>
@@ -818,9 +826,9 @@ const ProjectsDashboard = () => {
                       <div className={cn("gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]", "hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
                         <div className="flex items-center gap-2.5 pt-0.5">
                           <NoxStatusDot projectId={project.id} />
-                          <span className="text-sm font-medium text-foreground group-hover:text-black transition-colors">{project.projectNumber}</span>
+                          <span className="text-sm font-medium text-foreground transition-colors">{project.projectNumber}</span>
                         </div>
-                        <div className="text-sm font-medium text-foreground group-hover:text-black transition-colors pt-0.5">{project.name}</div>
+                        <div className="text-sm font-medium text-foreground transition-colors pt-0.5">{project.name}</div>
                         {isAdmin && <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors pt-0.5">{project.companyId === 'gdesign' ? 'GDesign' : project.companyId === '4takt' ? '4Takt' : project.companyId || '-'}</div>}
                         <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors pt-0.5">{project.managerName || '-'}</div>
                         <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors leading-relaxed">
@@ -927,11 +935,11 @@ const ProjectsDashboard = () => {
           <ScrollArea className="h-[400px]">
             <div className="space-y-0.5 p-2">
               {filteredProjects.map((project) => <div key={project.id} className={cn("flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 group items-start relative", "hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
-                  <span className="font-mono text-sm font-medium w-24 flex items-center gap-2 text-foreground group-hover:text-black transition-colors pt-0.5">
+                  <span className="font-mono text-sm font-medium w-24 flex items-center gap-2 text-foreground transition-colors pt-0.5">
                     <NoxStatusDot projectId={project.id} />
                     {project.projectNumber}
                   </span>
-                  <span className="text-sm text-foreground group-hover:text-black transition-colors pt-0.5">{project.name}</span>
+                  <span className="text-sm text-foreground transition-colors pt-0.5">{project.name}</span>
                 </div>)}
               {filteredProjects.length === 0 && <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                   <Search className="h-8 w-8 mb-2 opacity-30" />
@@ -994,8 +1002,9 @@ const ProjectsDashboard = () => {
           handleStartNoxFlow('progress');
           break;
         case 'report_delivered':
-          handleStartNoxFlow('download');
-          break;
+          // Don't re-enter the flow — show mock PDF dialog
+          setShowMockPdfDialog(true);
+          return;
         default:
           handleStartNoxFlow('start');
       }
@@ -1025,10 +1034,10 @@ const ProjectsDashboard = () => {
         {/* Search Bar with current project - clickable to return to search */}
         <div className="relative mb-6 cursor-pointer" onClick={handleBackToDefault}>
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <div className="pl-12 h-12 text-base bg-background border rounded-md flex items-center">
+          <div className="pl-12 h-12 text-base bg-background border rounded-full flex items-center">
             <NoxStatusDot projectId={selectedProject.id} className="mr-2" />
             <span className="font-medium font-mono">{selectedProject.projectNumber}</span>
-            <span className="mx-2 text-muted-foreground">—</span>
+            <span className="mx-2 text-muted-foreground">-</span>
             <span>{selectedProject.name}</span>
           </div>
         </div>
@@ -1064,8 +1073,6 @@ const ProjectsDashboard = () => {
                   <p className="text-xs mt-1">{selectedProject.description || 'Residential project for Pauwels NV in Herent'}</p>
                 </div>
                 
-                {/* Project Render Image */}
-                <ProjectImagePreview projectId={selectedProject.id} projectName={selectedProject.name} />
                 
                 {/* Werflocatie Section */}
                 <div className="pt-2 border-t">
@@ -1115,7 +1122,7 @@ const ProjectsDashboard = () => {
                       "px-1.5 py-0.5 rounded-full text-[9px] font-medium text-white",
                       STATUS_CONFIG[entry.status as keyof typeof STATUS_CONFIG]?.color || 'bg-muted'
                     )}>
-                            {STATUS_CONFIG[entry.status as keyof typeof STATUS_CONFIG]?.label || entry.status}
+                            {entry.status in STATUS_CONFIG ? getTranslatedStatusLabel(entry.status as OxiCloudProjectStatus, t) : entry.status}
                           </span>
                         </div>
                         <div className="text-muted-foreground flex items-center gap-2">
@@ -1140,9 +1147,9 @@ const ProjectsDashboard = () => {
                 <CardHeader className="px-4 py-3 pb-0">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold">{t('dashboard.projectsDashboard.noxAssessment')}</h3>
-                    {noxData && statusConfig &&
+                {noxData && statusConfig &&
                 <Badge className={cn("text-[10px] font-medium px-2 py-0.5 text-white", statusConfig.color)}>
-                        {statusConfig.label}
+                        {getTranslatedStatusLabel(noxData.status, t)}
                       </Badge>
                 }
                   </div>
@@ -1241,8 +1248,8 @@ const ProjectsDashboard = () => {
                           <h3 className="text-sm font-semibold">{t('dashboard.projectsDashboard.noxAssessment')}</h3>
                         </div>
                       </div>
-                      {statusConfig && <Badge className={cn("text-[10px] font-medium px-2 py-0.5 text-white", statusConfig.color)}>
-                          {statusConfig.label}
+                      {statusConfig && noxData && <Badge className={cn("text-[10px] font-medium px-2 py-0.5 text-white", statusConfig.color)}>
+                          {getTranslatedStatusLabel(noxData.status, t)}
                         </Badge>}
                     </div>
                   </CardHeader>
@@ -1264,7 +1271,7 @@ const ProjectsDashboard = () => {
                             {noxData.status === 'awaiting_payment' && <><Clock className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.awaitingPayment')}</>}
                             {noxData.status === 'paid' && <><FileCheck className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.continueNox')}</>}
                             {noxData.status === 'report_in_progress' && <><RefreshCw className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.continueNox')}</>}
-                            {noxData.status === 'report_delivered' && <><Download className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.viewReport')}</>}
+                            {noxData.status === 'report_delivered' && <><Eye className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.viewReport')}</>}
                           </Button> : <Button className="w-full h-9 text-xs font-medium" variant="outline" onClick={() => handleStartNoxFlow('start')}>
                             <Play className="h-3.5 w-3.5 mr-1.5" />
                             {t('dashboard.projectsDashboard.startNox')}
@@ -1292,128 +1299,15 @@ const ProjectsDashboard = () => {
         </div>
       </>;
   };
-  // Monitor projects for admin
-  const monitorProjects = useMemo(() => getMonitorProjects(), [monitorRefreshKey]);
-
-  const renderMonitorView = () =>
-  <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-semibold">{language === 'nl' ? 'Monitor Projecten' : 'Monitor Projects'}</h2>
-          <p className="text-xs text-muted-foreground">{monitorProjects.length} {language === 'nl' ? 'gemeenteprojecten' : 'municipality projects'}</p>
-        </div>
-        <Button size="sm" onClick={() => setMonitorUploadOpen(true)}>
-          <Plus className="h-4 w-4 mr-1" />
-          {language === 'nl' ? 'Project Aanmaken' : 'Create Project'}
-        </Button>
-      </div>
-
-      {monitorProjects.length === 0 ?
-    <div className="rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground">
-          <p className="font-semibold">{language === 'nl' ? 'Geen monitorprojecten' : 'No monitor projects'}</p>
-          <p className="text-sm mt-1">{language === 'nl' ? 'Projecten verschijnen hier wanneer gemeenten ze aanmaken.' : 'Projects will appear here when municipalities create them.'}</p>
-        </div> :
-
-    <div className="space-y-2">
-          {monitorProjects.map((project) =>
-      <div
-        key={project.id}
-        onClick={() => setSelectedMonitorProject(project)}
-        className={cn(
-          "rounded-2xl border p-4 cursor-pointer transition-colors hover:bg-muted/20",
-          selectedMonitorProject?.id === project.id ? "border-primary bg-primary/5" : "border-border"
-        )}>
-        
-              <div className="flex items-center justify-between">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold">{project.projectName}</span>
-                    <Badge variant="outline" className="text-[10px]">{project.referenceNumber}</Badge>
-                    <Badge
-                variant="outline"
-                className={cn("text-[10px]",
-                project.validationStatus === 'validated' ? 'text-primary border-primary/30' :
-                project.validationStatus === 'conditional' ? 'text-muted-foreground' :
-                project.validationStatus === 'not_validated' ? 'text-destructive border-destructive/30' :
-                'text-muted-foreground'
-                )}>
-                
-                      {project.validationStatus}
-                    </Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {project.municipality} · {project.architectFirm} · {project.projectType}
-                  </p>
-                </div>
-                <span className="text-xs text-muted-foreground">{project.createdAt?.split('T')[0]}</span>
-              </div>
-            </div>
-      )}
-        </div>
-    }
-
-      {selectedMonitorProject &&
-    <div className="space-y-4">
-          <div className="rounded-2xl border border-border p-4">
-            <h3 className="text-sm font-semibold mb-3">{selectedMonitorProject.projectName}</h3>
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div><span className="text-muted-foreground">{language === 'nl' ? 'Type' : 'Type'}: </span>{selectedMonitorProject.projectType}</div>
-              <div><span className="text-muted-foreground">{language === 'nl' ? 'Gemeente' : 'Municipality'}: </span>{selectedMonitorProject.municipality}</div>
-              <div><span className="text-muted-foreground">Natura 2000: </span>{selectedMonitorProject.natura2000Site} ({selectedMonitorProject.natura2000Code})</div>
-              <div><span className="text-muted-foreground">{language === 'nl' ? 'Afstand' : 'Distance'}: </span>{selectedMonitorProject.closestDistanceToHabitat} km</div>
-              <div><span className="text-muted-foreground">{language === 'nl' ? 'Architect' : 'Architect'}: </span>{selectedMonitorProject.architect}</div>
-              <div><span className="text-muted-foreground">{language === 'nl' ? 'Bureau' : 'Firm'}: </span>{selectedMonitorProject.architectFirm}</div>
-            </div>
-          </div>
-          <MonitorValidationFlow
-        project={selectedMonitorProject}
-        onUpdate={(updated) => {setSelectedMonitorProject(updated);setMonitorRefreshKey((k) => k + 1);}}
-        userName={currentUser?.name || 'Admin'}
-        municipality={selectedMonitorProject.municipality} />
-      
-          <MonitorAuditLog projectId={selectedMonitorProject.id} />
-        </div>
-    }
-
-      <MonitorProjectUploadDialog
-      open={monitorUploadOpen}
-      onOpenChange={setMonitorUploadOpen}
-      onProjectCreated={() => {setMonitorRefreshKey((k) => k + 1);setMonitorUploadOpen(false);}}
-      userName={currentUser?.name || 'Admin'}
-      municipality="OxiCloud Admin" />
-    
-    </div>;
 
 
   return <div className="min-h-screen bg-background">
       <TopNavigation />
       
       <main className="container mx-auto py-6 px-4">
-        {/* Admin product tabs */}
-        {isAdmin &&
-      <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-6">
-            <button
-          onClick={() => setAdminProductTab('oxicloud')}
-          className={cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-xs font-medium transition-all",
-          adminProductTab === 'oxicloud' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-          )}>
-          
-              OxiCloud
-            </button>
-            <button
-          onClick={() => setAdminProductTab('monitor')}
-          className={cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-xs font-medium transition-all",
-          adminProductTab === 'monitor' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-          )}>
-          
-              Monitor
-            </button>
-          </div>
-      }
 
-
-        {/* Monitor tab for admin */}
-        {isAdmin && adminProductTab === 'monitor' ? renderMonitorView() : <>
+        {/* Main content */}
+        {<>
         {/* Render NOx flow or current view — admins never enter NOx flows */}
         {!isAdmin && noxFlowStep && currentNoxProject ? (() => {
           const oxiProject = toOxiCloudProject(currentNoxProject);
@@ -1429,71 +1323,24 @@ const ProjectsDashboard = () => {
             case 'quote-sent': {
               const clientContact = allContacts.find((c) => c.companyType === 'client');
               const clientEmail = clientContact?.email || 'client@company.com';
+              const clientName = clientContact ? `${clientContact.firstName} ${clientContact.lastName}` : currentNoxProject.name;
               return (
-                <div className="max-w-xl mx-auto py-8 px-4 space-y-6">
-                  <div className="text-center mb-6">
-                    <div className="h-16 w-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4">
-                      <Clock className="h-7 w-7 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium mb-4">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                      </span>
-                      {t('reportHeld.awaitingSignature')}
-                    </div>
-                    <h1 className="text-2xl font-medium mb-2">{t('reportHeld.quoteSentToClient')}</h1>
-                    <p className="text-sm text-muted-foreground">
-                      {t('reportHeld.sentTo')} <span className="font-medium text-foreground">{clientEmail}</span>
-                    </p>
-                  </div>
-                  <Card><CardContent className="p-5 space-y-4">
-                    <p className="text-sm font-medium">{t('reportHeld.whatHappensNext')}</p>
-                    <ol className="space-y-3 text-sm text-muted-foreground">
-                      <li className="flex items-start gap-2.5">
-                        <span className="flex items-center justify-center h-5 w-5 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0 mt-0.5">1</span>
-                        <span>{t('reportHeld.nextStep1')}</span>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <span className="flex items-center justify-center h-5 w-5 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0 mt-0.5">2</span>
-                        <span>{t('reportHeld.nextStep2')}</span>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <span className="flex items-center justify-center h-5 w-5 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0 mt-0.5">3</span>
-                        <span>{t('reportHeld.nextStep3')}</span>
-                      </li>
-                    </ol>
-                  </CardContent></Card>
-                  <Card><CardContent className="p-5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <FileText className="h-5 w-5 text-muted-foreground" />
-                        <div>
-                          <p className="text-sm font-medium">{t('reportHeld.quoteCopyPdf')}</p>
-                          <p className="text-xs text-muted-foreground">{t('reportHeld.readOnlyRef')}</p>
-                        </div>
-                      </div>
-                      <Button variant="outline" size="sm" className="gap-2" onClick={() => toast({ title: t('reportHeld.pdfDownloading') })}>
-                        <Download className="h-4 w-4" />
-                        PDF
-                      </Button>
-                    </div>
-                  </CardContent></Card>
-                  <SimulationButtons
-                    showSignButton={true}
-                    onSimulateSigned={() => {
-                      if (!selectedProjectId) return;
-                      processNoxPayment(selectedProjectId);
-                      setNoxProjectsRefreshKey((prev) => prev + 1);
-                      setNoxFlowStep('detailed-calculation');
-                      toast({ title: t('reportHeld.clientSigned') });
-                    }}
-                  />
-                  <Button variant="outline" onClick={handleNoxBack} className="w-full gap-2">
-                    <ArrowLeft className="h-4 w-4" />
-                    {t('reportHeld.backToDashboard')}
-                  </Button>
-                </div>
+                <QuoteSentAwaitingStep
+                  quoteReference={`QT-${new Date().getFullYear()}-${currentNoxProject.id.slice(0, 4).toUpperCase()}`}
+                  endClientName={clientName}
+                  onBackToProject={handleNoxBack}
+                  onSimulatePayment={() => {
+                    if (!selectedProjectId) return;
+                    processNoxPayment(selectedProjectId);
+                    setNoxProjectsRefreshKey((prev) => prev + 1);
+                    setNoxFlowStep('detailed-calculation');
+                    toast({ title: t('reportHeld.clientSigned') });
+                  }}
+                  recipientInfo={{ name: clientName, email: clientEmail }}
+                  partnerShareAmount={450}
+                  projectName={currentNoxProject.name}
+                  partnerCompanyName={currentUser?.company || 'GDesign Architecten'}
+                />
               );
             }
             case 'price-review':
@@ -1502,18 +1349,22 @@ const ProjectsDashboard = () => {
               return oxiProject ? <NoxPaymentDemoFlow project={oxiProject} onPaymentComplete={handlePaymentComplete} onBack={() => setNoxFlowStep('price-review')} /> : null;
             case 'detailed-calculation':
               return oxiProject ? <DetailedCalculationForm project={oxiProject} onSubmit={handleDetailedCalculationSubmit} onBack={handleNoxBack} /> : null;
+            case 'report-processing':
+              return (
+                <NoxProcessingScreen
+                  onComplete={() => setNoxFlowStep('report-held')}
+                />
+              );
             case 'report-held':
               return (
                 <NoxReportHeldScreen
                   projectName={currentNoxProject.name}
-                  onBack={() => setNoxFlowStep('detailed-calculation')}
                   onBackToDashboard={handleNoxBack}
-                  onSimulatePayment={() => {
-                    if (!selectedProjectId) return;
-                    updateNoxData(selectedProjectId, { status: 'report_delivered' });
-                    setNoxProjectsRefreshKey((prev) => prev + 1);
-                    setNoxFlowStep('results');
-                    toast({ title: t('reportHeld.paymentReceived') });
+                  onReportDownloaded={() => {
+                    if (selectedProjectId) {
+                      updateNoxData(selectedProjectId, { status: 'report_delivered' });
+                      setNoxProjectsRefreshKey((prev) => prev + 1);
+                    }
                   }}
                 />
               );
@@ -1628,6 +1479,46 @@ const ProjectsDashboard = () => {
 
       {/* Payment Success Dialog */}
       <PaymentSuccessDialog open={showPaymentSuccessDialog} onOpenChange={setShowPaymentSuccessDialog} projectName={paymentProjectName} />
+
+      {/* Mock PDF Viewer Dialog */}
+      <Dialog open={showMockPdfDialog} onOpenChange={setShowMockPdfDialog}>
+        <DialogContent className="max-w-2xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              NOx Assessment Report
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 overflow-auto max-h-[60vh] p-1">
+            {/* Mock PDF content */}
+            <div className="border border-border rounded-lg p-6 bg-muted/20 space-y-4">
+              <div className="text-center space-y-1 pb-4 border-b border-border">
+                <h3 className="text-lg font-bold">NOx Depositie Rapport</h3>
+                <p className="text-sm text-muted-foreground">{selectedProject?.name || 'Project'}</p>
+                <p className="text-xs text-muted-foreground">Ref: NOX-{selectedProject?.id?.slice(0, 8).toUpperCase()}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div><span className="text-muted-foreground">Total NOx:</span> <span className="font-semibold">14.85 kg/jaar</span></div>
+                <div><span className="text-muted-foreground">Threshold:</span> <span className="font-semibold">938.00 kg/jaar</span></div>
+                <div><span className="text-muted-foreground">Status:</span> <Badge variant="outline" className="ml-1 text-emerald-600 border-emerald-500/30">Compliant</Badge></div>
+                <div><span className="text-muted-foreground">Percentage:</span> <span className="font-semibold">{'< 1%'}</span></div>
+              </div>
+              <div className="space-y-2 pt-4 border-t border-border">
+                <div className="h-3 w-full rounded bg-muted/60" />
+                <div className="h-3 w-4/5 rounded bg-muted/60" />
+                <div className="h-3 w-3/4 rounded bg-muted/60" />
+                <div className="h-3 w-5/6 rounded bg-muted/60" />
+                <div className="h-3 w-2/3 rounded bg-muted/60" />
+              </div>
+              <div className="space-y-2 pt-4 border-t border-border">
+                <div className="h-3 w-full rounded bg-muted/60" />
+                <div className="h-3 w-3/5 rounded bg-muted/60" />
+                <div className="h-3 w-4/5 rounded bg-muted/60" />
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>;
 };
 export default ProjectsDashboard;

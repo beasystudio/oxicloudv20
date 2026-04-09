@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&family=Google+Sans+Display:wght@400;500;600;700&family=Product+Sans:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&family=Google+Sans+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,6 +6,17 @@
 
 html {
   scrollbar-gutter: stable;
+}
+
+/* Global placeholder styling */
+input::placeholder,
+textarea::placeholder {
+  font-style: italic;
+  opacity: 0.35;
+  font-weight: 400;
+  font-size: 0.8em;
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
 }
 
 /* 
@@ -22,12 +32,12 @@ html {
 
 @layer base {
   :root {
-    /* Surface — Off-white #f9f9f9 */
-    --background: 0 0% 97.6%;
+    /* Surface — Off-white #FBFBFB */
+    --background: 0 0% 98.4%;
     --foreground: 160 4% 11%;
 
-    /* Card — Pure white (Level 1 lift) */
-    --card: 0 0% 100%;
+    /* Card — Light gray #f8f8f8 */
+    --card: 0 0% 97.3%;
     --card-foreground: 160 4% 11%;
 
     /* Primary — Lime #ADFF3B */
@@ -50,8 +60,8 @@ html {
     --destructive: 160 4% 11%;
     --destructive-foreground: 0 0% 97.6%;
 
-    /* No-Line Rule: borders are near-invisible or use bg shifts */
-    --border: 0 0% 92%;
+    /* Border — Light gray #eaeaea */
+    --border: 0 0% 91.8%;
     --input: 240 3% 95.5%;
     --ring: 85 100% 62%;
 
@@ -62,7 +72,7 @@ html {
     --popover-foreground: 160 4% 11%;
 
     /* Surface tiers for tonal layering */
-    --surface: 0 0% 97.6%;
+    --surface: 0 0% 100%;
     --surface-container-lowest: 0 0% 100%;
     --surface-container-low: 240 3% 95.5%;
     --surface-container: 240 2% 93%;
@@ -91,7 +101,7 @@ html {
 
     /* Glass — Frosted Neon */
     --glass-blur: 20px;
-    --glass-bg: 0 0% 97.6% / 0.80;
+    --glass-bg: 0 0% 98.4% / 0.80;
 
     --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
     --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -200,11 +210,9 @@ html {
     background-color: hsl(var(--surface-container-highest));
   }
 
-  /* Frosted Neon — for floating nav/modals only */
+  /* Solid surface — no blur allowed */
   .glass-frosted {
-    background-color: hsl(var(--glass-bg));
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    background-color: hsl(var(--card));
   }
 
   /* Legacy glass aliases for compatibility */

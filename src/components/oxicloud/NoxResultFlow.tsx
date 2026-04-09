@@ -6,7 +6,7 @@ import { NoxPassResultScreen } from './nox-results/NoxPassResultScreen';
 import { NoxDetailedReportScreen } from './nox-results/NoxDetailedReportScreen';
 import { NoxCommissionScreen } from './nox-results/NoxCommissionScreen';
 import { NoxExceedanceScreen } from './nox-results/NoxExceedanceScreen';
-import { NoxComplianceAchievedScreen } from './nox-results/NoxComplianceAchievedScreen';
+
 import { SettlementPlatformStep } from './quote-flow/SettlementPlatformStep';
 import { SandboxRouter, SandboxWorkspace } from './sandbox';
 import { SplitPhaseFlow } from './split-phase';
@@ -14,7 +14,7 @@ import { PassendeBeoordelingFlow } from './passende-beoordeling';
 import { toast } from 'sonner';
 import { useLanguage } from '@/i18n/LanguageContext';
 
-type ComplianceMethod = 'sandbox' | 'split_phase' | 'passende_beoordeling';
+
 
 type ResultFlowStep = 
   | 'processing'
@@ -25,8 +25,7 @@ type ResultFlowStep =
   | 'exceedance'
   | 'sandbox'
   | 'split_phase'
-  | 'passende_beoordeling'
-  | 'compliance_achieved';
+  | 'passende_beoordeling';
 
 interface NoxResultFlowProps {
   project: OxiCloudProject;
@@ -89,7 +88,7 @@ export function NoxResultFlow({
   const getStoredStep = (): ResultFlowStep => {
     try {
       const stored = sessionStorage.getItem(`nox_result_step_${project.id}`);
-      if (stored && ['exceedance', 'pass_result', 'detailed_report', 'commission', 'settlement', 'sandbox', 'split_phase', 'passende_beoordeling', 'compliance_achieved'].includes(stored)) {
+      if (stored && ['exceedance', 'pass_result', 'detailed_report', 'commission', 'settlement', 'sandbox', 'split_phase', 'passende_beoordeling'].includes(stored)) {
         return stored as ResultFlowStep;
       }
     } catch {}
@@ -97,7 +96,7 @@ export function NoxResultFlow({
   };
 
   const [currentStep, setCurrentStep] = useState<ResultFlowStep>(getStoredStep);
-  const [complianceMethod, setComplianceMethod] = useState<ComplianceMethod>('sandbox');
+  
 
   // Persist step changes
   const changeStep = (step: ResultFlowStep) => {
@@ -182,18 +181,15 @@ export function NoxResultFlow({
   };
 
   const handlePassendeBeoordelingComplete = () => {
-    setComplianceMethod('passende_beoordeling');
-    changeStep('compliance_achieved');
+    changeStep('detailed_report');
   };
 
   const handleSplitPhaseComplete = () => {
-    setComplianceMethod('split_phase');
-    changeStep('compliance_achieved');
+    changeStep('detailed_report');
   };
 
   const handleSandboxComplete = () => {
-    setComplianceMethod('sandbox');
-    changeStep('compliance_achieved');
+    changeStep('detailed_report');
   };
 
   const handleSandboxBack = () => {
@@ -290,15 +286,6 @@ export function NoxResultFlow({
         />
       );
 
-    case 'compliance_achieved':
-      return (
-        <NoxComplianceAchievedScreen
-          project={project}
-          method={complianceMethod}
-          onContinueToReport={() => changeStep('detailed_report')}
-          onBackToProjects={onBackToProjects}
-        />
-      );
 
     default:
       return null;

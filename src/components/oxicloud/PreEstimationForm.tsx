@@ -41,20 +41,47 @@ interface PreEstimationFormProps {
 
 type FormScreen = 'basisgegevens' | 'map-flow' | 'generating' | 'opdracht';
 
-// Helper: get label for a project type value (strips numeric prefix)
-function getProjectTypeLabel(value: string): string {
-  for (const cat of PROJECT_TYPE_CATEGORIES) {
-    if (cat.value === value) return cat.label;
-    for (const sub of cat.subtypes) {
-      if (sub.value === value) return sub.label.replace(/^\d+\.\d+\s*/, '');
-    }
-  }
-  return value;
-}
+// Translation key maps for category and subtype labels
+const CATEGORY_LABEL_KEYS: Record<string, string> = {
+  sloop: 'forms.projectTypes.sloop',
+  residentieel: 'forms.projectTypes.residentieel',
+  utiliteitsbouw: 'forms.projectTypes.utiliteitsbouw',
+  industrieel_agrarisch: 'forms.projectTypes.industrieelAgrarisch',
+  specifieke_projecttypes: 'forms.projectTypes.specifiekeProjecttypes',
+};
+
+const SUBTYPE_LABEL_KEYS: Record<string, string> = {
+  eengezinswoningen: 'forms.projectTypes.eengezinswoningen',
+  meergezinswoningen: 'forms.projectTypes.meergezinswoningen',
+  sociale_woningbouw: 'forms.projectTypes.socialeWoningbouw',
+  collectieve_woonvormen: 'forms.projectTypes.collectieveWoonvormen',
+  kantoren: 'forms.projectTypes.kantoren',
+  onderwijsgebouwen: 'forms.projectTypes.onderwijsgebouwen',
+  gezondheidszorg: 'forms.projectTypes.gezondheidszorg',
+  handelsgebouwen: 'forms.projectTypes.handelsgebouwen',
+  cultuur_vrijetijd: 'forms.projectTypes.cultuurVrijetijd',
+  industriele_gebouwen: 'forms.projectTypes.industrieleGebouwen',
+  opslaggebouwen: 'forms.projectTypes.opslaggebouwen',
+  agrarische_gebouwen: 'forms.projectTypes.agrarischeGebouwen',
+  complexe_projecten: 'forms.projectTypes.complexeProjecten',
+  openbare_werken: 'forms.projectTypes.openbareWerken',
+};
+
+const CONSTRUCTION_TYPE_KEYS: Record<string, string> = {
+  nieuwbouw: 'forms.constructionTypes.nieuwbouw',
+  renovatie: 'forms.constructionTypes.renovatie',
+  bijbouw: 'forms.constructionTypes.bijbouw',
+};
 
 // Inline trigger + overlay wrapper for ProjectTypePicker
 function ProjectTypePickerTrigger({ value, onSelect }: {value: string;onSelect: (v: string) => void;}) {
   const [open, setOpen] = useState(false);
+  const { t } = useLanguage();
+  const getTranslatedTypeLabel = (val: string) => {
+    if (SUBTYPE_LABEL_KEYS[val]) return t(SUBTYPE_LABEL_KEYS[val]);
+    if (CATEGORY_LABEL_KEYS[val]) return t(CATEGORY_LABEL_KEYS[val]);
+    return val;
+  };
   return (
     <>
       <Button
@@ -66,7 +93,7 @@ function ProjectTypePickerTrigger({ value, onSelect }: {value: string;onSelect: 
           !value && "text-muted-foreground"
         )}>
 
-        {value ? getProjectTypeLabel(value) : '(selecteer type)'}
+        {value ? getTranslatedTypeLabel(value) : t('preEstimation.selectType')}
       </Button>
       <AnimatePresence>
         {open &&
@@ -409,12 +436,12 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                           <div className="min-w-0">
                             <span className="text-sm font-semibold block truncate">
                               {entry.projectTypeValue ?
-                               getProjectTypeLabel(entry.projectTypeValue) :
+                               (SUBTYPE_LABEL_KEYS[entry.projectTypeValue] ? t(SUBTYPE_LABEL_KEYS[entry.projectTypeValue]) : CATEGORY_LABEL_KEYS[entry.projectTypeValue] ? t(CATEGORY_LABEL_KEYS[entry.projectTypeValue]) : entry.projectTypeValue) :
                                t('preEstimation.newProjectType')}
                             </span>
                             {entry.constructionType &&
                             <span className="text-xs text-muted-foreground block mt-0.5">
-                                {CONSTRUCTION_TYPES.find((c) => c.value === entry.constructionType)?.label}
+                                {CONSTRUCTION_TYPE_KEYS[entry.constructionType] ? t(CONSTRUCTION_TYPE_KEYS[entry.constructionType]) : entry.constructionType}
                                 {entry.gfa > 0 && ` · ${entry.gfa} m²`}
                                 {entry.height > 0 && ` · ${entry.height} m`}
                               </span>
@@ -469,12 +496,12 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                                         }
                                       }}
                                       className={cn(
-                                        "px-4 py-3 rounded-lg text-sm font-medium transition-all border text-left",
+                                        "px-4 py-2.5 rounded-lg text-xs font-medium transition-all border text-left",
                                         isSelected ?
                                         "bg-muted/50 text-foreground border-foreground/20 shadow-sm" :
                                         "bg-muted/20 text-foreground border-border/50 hover:bg-muted/40 hover:border-border"
                                       )}>
-                                        {cat.label.replace(/\s*\(.*\)/, '')}
+                                        {CATEGORY_LABEL_KEYS[cat.value] ? t(CATEGORY_LABEL_KEYS[cat.value]).replace(/\s*\(.*\)/, '') : cat.label.replace(/\s*\(.*\)/, '')}
                                       </button>);
 
                                 })}
@@ -502,12 +529,12 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                                           type="button"
                                           onClick={() => updateEntry(index, 'projectTypeValue', sub.value)}
                                           className={cn(
-                                            "px-3 py-2 rounded-lg text-sm transition-all border inline-flex items-center gap-1.5",
+                                            "px-3 py-1.5 rounded-lg text-xs transition-all border inline-flex items-center gap-1.5",
                                             isActive ?
                                             "bg-foreground text-background border-foreground shadow-sm" :
                                             "bg-card text-foreground border-border/50 hover:bg-muted/30"
                                           )}>
-                                            {sub.label.replace(/^\d+\.\d+\s*/, '')}
+                                            {SUBTYPE_LABEL_KEYS[sub.value] ? t(SUBTYPE_LABEL_KEYS[sub.value]) : sub.label.replace(/^\d+\.\d+\s*/, '')}
                                             {isActive && <Check className="h-3.5 w-3.5" />}
                                           </button>);
 
@@ -528,7 +555,7 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                                   </SelectTrigger>
                                   <SelectContent>
                                     {CONSTRUCTION_TYPES.map((type) =>
-                                  <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
+                                  <SelectItem key={type.value} value={type.value}>{CONSTRUCTION_TYPE_KEYS[type.value] ? t(CONSTRUCTION_TYPE_KEYS[type.value]) : type.label}</SelectItem>
                                   )}
                                   </SelectContent>
                                 </Select>

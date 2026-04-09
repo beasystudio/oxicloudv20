@@ -226,28 +226,6 @@ export default function PartnershipProgram() {
           </Button>
 
           <div className="flex gap-12">
-            {/* Side nav - sticky */}
-            <nav className="hidden lg:block w-44 shrink-0">
-              <div className="sticky top-24">
-                <ul className="space-y-1">
-                  {navItems.map((item) => (
-                    <li key={item.id}>
-                      <button
-                        onClick={() => scrollTo(item.id)}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-[13px] transition-all ${
-                          activeSection === item.id
-                            ? 'text-foreground font-semibold bg-muted/60'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
-                        }`}
-                      >
-                        {item.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </nav>
-
             {/* Main content */}
             <main className="flex-1 min-w-0">
               {/* Hero */}
@@ -269,11 +247,11 @@ export default function PartnershipProgram() {
               <section id="who" ref={(el) => { sectionRefs.current.who = el; }} className="mb-16 scroll-mt-24">
                 <h2 className="text-xl font-bold text-foreground mb-5">{t.whoTitle}</h2>
                 <p className="text-[15px] text-muted-foreground leading-[1.8] mb-6">{t.whoIntro}</p>
-                <div className="rounded-2xl bg-card/60 backdrop-blur-xl border border-border/30 p-6 mb-6">
+                <div className="rounded-2xl bg-card border border-border/30 p-6 mb-6">
                   <ul className="space-y-3">
                     {t.whoList.map((item) => (
                       <li key={item} className="flex items-center gap-3 text-[15px] text-foreground">
-                        <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -291,9 +269,9 @@ export default function PartnershipProgram() {
                   {t.steps.map((step, i) => (
                     <div key={i} className="flex gap-6">
                       <div className="flex flex-col items-center">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-colors ${
+                       <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-colors ${
                           i === t.steps.length - 1
-                            ? 'bg-primary text-primary-foreground'
+                            ? 'bg-foreground text-background'
                             : 'bg-card border border-border/60 text-foreground'
                         }`}>
                           {i + 1}
@@ -335,7 +313,7 @@ export default function PartnershipProgram() {
 
               {/* Multi-firm */}
               <section id="multi" ref={(el) => { sectionRefs.current.multi = el; }} className="mb-16 scroll-mt-24">
-                <div className="rounded-2xl border-2 border-primary/40 bg-primary/[0.08] p-6 sm:p-8 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.15)]">
+                <div className="rounded-2xl border border-border/40 bg-muted/30 p-6 sm:p-8">
                   <h2 className="text-lg font-bold text-foreground mb-4">{t.multiTitle}</h2>
                   <div className="space-y-3 text-[14px] text-muted-foreground leading-[1.7]">
                     <p>{t.multiBody1}</p>
@@ -345,7 +323,7 @@ export default function PartnershipProgram() {
                   <ul className="space-y-2.5 mt-4 ml-1">
                     {t.multiList.map((item) => (
                       <li key={item} className="flex items-center gap-3 text-[14px] font-medium text-foreground">
-                        <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -360,9 +338,9 @@ export default function PartnershipProgram() {
                 <h2 className="text-xl font-bold text-foreground mb-6">{t.whyTitle}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {t.benefits.map((b) => (
-                    <div key={b.title} className="rounded-2xl bg-card/60 backdrop-blur-xl border border-border/30 p-6">
+                    <div key={b.title} className="rounded-2xl bg-card border border-border/30 p-6">
                       <div className="flex items-start gap-3 mb-3">
-                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
                         <p className="text-[15px] font-semibold text-foreground leading-snug">{b.title}</p>
                       </div>
                       <p className="text-[14px] text-muted-foreground leading-[1.8] ml-8">{b.body}</p>
@@ -372,11 +350,11 @@ export default function PartnershipProgram() {
               </section>
 
               {/* CTA */}
-              <section id="cta" ref={(el) => { sectionRefs.current.cta = el; }} className="rounded-2xl bg-card/80 backdrop-blur-xl border border-border/30 p-8 relative overflow-hidden mb-10 scroll-mt-24">
+              <section id="cta" ref={(el) => { sectionRefs.current.cta = el; }} className="rounded-2xl bg-card border border-border/30 p-8 relative overflow-hidden mb-10 scroll-mt-24">
 
                 <div className="flex items-center gap-3 mb-2 relative z-10">
-                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
-                    <Plus className="w-5 h-5 text-primary-foreground" />
+                  <div className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center shrink-0">
+                    <Plus className="w-5 h-5 text-background" />
                   </div>
                   <h2 className="text-lg font-bold text-foreground">{t.ctaTitle}</h2>
                 </div>
@@ -414,6 +392,28 @@ export default function PartnershipProgram() {
                 </p>
               </section>
             </main>
+
+            {/* Side nav - sticky, right side */}
+            <nav className="hidden lg:block w-44 shrink-0">
+              <div className="sticky top-24">
+                <ul className="space-y-1">
+                  {navItems.map((item) => (
+                    <li key={item.id}>
+                      <button
+                        onClick={() => scrollTo(item.id)}
+                        className={`w-full text-left px-3 py-2 rounded-lg text-[13px] transition-all ${
+                          activeSection === item.id
+                            ? 'text-foreground font-semibold bg-muted/60'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </nav>
           </div>
         </div>
       </div>

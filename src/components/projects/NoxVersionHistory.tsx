@@ -55,11 +55,8 @@ export function NoxVersionHistory({ noxData, onCloneVersion }: NoxVersionHistory
   return (
     <Card className="border-border/50">
       <CardHeader className="pb-3">
-        <CardTitle className="text-xs flex items-center justify-between">
-          <span className="flex items-center gap-2">
-            <FileText className="h-3.5 w-3.5" />
-            {t('versionHistory.title')}
-          </span>
+        <CardTitle className="text-sm font-semibold flex items-center justify-between">
+          <span>{t('versionHistory.title')}</span>
           <Badge variant="secondary" className="text-[10px]">
             {allVersions.length} {allVersions.length === 1 ? t('versionHistory.version') : t('versionHistory.versions')}
           </Badge>
@@ -82,12 +79,6 @@ export function NoxVersionHistory({ noxData, onCloneVersion }: NoxVersionHistory
                   "flex items-start gap-2.5 p-2 rounded-lg transition-colors",
                   isCurrent ? "bg-primary/5 border border-primary/20" : "hover:bg-muted/20"
                 )}>
-                  <div className={cn(
-                    "mt-0.5 h-[22px] w-[22px] rounded-full flex items-center justify-center shrink-0 text-white text-[8px] font-bold",
-                    isCurrent ? "bg-primary" : "bg-muted-foreground/30"
-                  )}>
-                    {isLocked ? <Lock className="h-2.5 w-2.5" /> : entry.version.toUpperCase()}
-                  </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
@@ -96,7 +87,9 @@ export function NoxVersionHistory({ noxData, onCloneVersion }: NoxVersionHistory
                         {statusInfo.label}
                       </span>
                       {isCurrent && (
-                        <Badge variant="outline" className="text-[9px] px-1 py-0 h-3.5 border-primary text-primary">
+                        <Badge
+                          className="h-4 px-1.5 py-0 text-[9px] font-bold border border-primary/80 bg-primary text-primary-foreground dark:bg-transparent dark:text-primary dark:border-primary"
+                        >
                           {t('versionHistory.active')}
                         </Badge>
                       )}
@@ -128,18 +121,18 @@ export function NoxVersionHistory({ noxData, onCloneVersion }: NoxVersionHistory
 
         {isReportDelivered && (
           <div className="pt-2 border-t border-border/40 space-y-2">
-            <div className="flex items-start gap-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2 p-2 rounded-lg bg-muted/50 border border-border">
+              <CheckCircle2 className="h-4 w-4 text-foreground/60 shrink-0 mt-0.5" />
               <div>
-                <p className="text-[11px] font-medium text-emerald-800 dark:text-emerald-200">
+                <p className="text-[11px] font-medium text-foreground">
                   {t('versionHistory.reportDelivered')}
                 </p>
-                <p className="text-[10px] text-emerald-600 dark:text-emerald-400 mt-0.5">
+                <p className="text-[10px] text-muted-foreground mt-0.5">
                   {t('versionHistory.cloneDescription')}
                 </p>
               </div>
             </div>
-            <Button onClick={onCloneVersion} className="w-full gap-2" size="sm">
+            <Button onClick={onCloneVersion} variant="outline" className="w-full gap-2" size="sm">
               <Copy className="h-3.5 w-3.5" />
               {t('versionHistory.createNewVersion')}
               <ArrowRight className="h-3.5 w-3.5 ml-auto" />

@@ -21,7 +21,7 @@ import { getAllCompanies } from '@/lib/mockCompanyDB';
 import { isPilotAccount, isPilotCompany } from '@/lib/pilotAccountUtils';
 import { ChevronDown } from 'lucide-react';
 
-const COLORS = ['hsl(var(--primary))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
+const COLORS = ['hsl(var(--foreground))', 'hsl(var(--muted-foreground))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
 const COMMISSION_RATE = 0.15;
 
 interface PaymentRecord {
@@ -265,8 +265,8 @@ const FinancialDashboard = () => {
             accent
             footer={totals.growth !== 0 ? (
               <div className="flex items-center gap-1">
-                {totals.growth >= 0 ? <ArrowUpRight className="h-3 w-3 accent-value" /> : <ArrowDownRight className="h-3 w-3 text-destructive" />}
-                <span className={cn("text-xs font-medium", totals.growth >= 0 ? "accent-value" : "text-destructive")}>
+                {totals.growth >= 0 ? <ArrowUpRight className="h-3 w-3 text-foreground" /> : <ArrowDownRight className="h-3 w-3 text-destructive" />}
+                <span className={cn("text-xs font-medium", totals.growth >= 0 ? "text-foreground" : "text-destructive")}>
                   {totals.growth >= 0 ? '+' : ''}{totals.growth}%
                 </span>
                 <span className="text-xs text-muted-foreground">{t('dashboard.financial.vsLastYear')}</span>
@@ -305,7 +305,7 @@ const FinancialDashboard = () => {
                       <span className="text-sm text-muted-foreground">{paymentStats.paidProjects.length} {paymentStats.paidProjects.length !== 1 ? t('dashboard.financial.projects') : t('dashboard.financial.project')}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-lg font-semibold accent-value">{formatCurrency(paymentStats.totalCommissionEarned)}</span>
+                      <span className="text-lg font-semibold text-foreground">{formatCurrency(paymentStats.totalCommissionEarned)}</span>
                       <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", commissionsOpen && "rotate-180")} />
                     </div>
                   </div>
@@ -327,7 +327,7 @@ const FinancialDashboard = () => {
                               </div>
                               <div className="flex items-center gap-4">
                                 <OxiCloudStatusBadge status={project.noxData?.status || 'paid'} />
-                                <span className="font-semibold accent-value tabular-nums min-w-[80px] text-right">{formatCurrency(commission)}</span>
+                                <span className="font-semibold text-foreground tabular-nums min-w-[80px] text-right">{formatCurrency(commission)}</span>
                               </div>
                             </div>
                           );
@@ -372,7 +372,7 @@ const FinancialDashboard = () => {
               <div className="grid grid-cols-4 gap-px rounded-xl border overflow-hidden">
                 <MiniStat label={t('dashboard.financial.pendingPayments')} value={pendingCount} color="text-chart-4" />
                 <MiniStat label={t('dashboard.financial.overdue')} value={overdueCount} color="text-destructive" />
-                <MiniStat label={t('dashboard.financial.received')} value={formatCurrency2(receivedTotal)} color="accent-value" />
+                <MiniStat label={t('dashboard.financial.received')} value={formatCurrency2(receivedTotal)} color="text-foreground" />
                 <MiniStat label={t('dashboard.financial.outstanding')} value={formatCurrency2(outstandingTotal)} />
               </div>
 
@@ -430,7 +430,7 @@ const FinancialDashboard = () => {
                         <TableCell className="text-muted-foreground">{p.projectName}</TableCell>
                         <TableCell className="text-right tabular-nums">{formatCurrency2(p.amount)}</TableCell>
                         <TableCell className="text-right tabular-nums text-muted-foreground">{formatCurrency2(p.vatAmount)}</TableCell>
-                        <TableCell className="text-right tabular-nums font-semibold text-primary">{formatCurrency2(p.totalAmount)}</TableCell>
+                        <TableCell className="text-right tabular-nums font-semibold">{formatCurrency2(p.totalAmount)}</TableCell>
                         <TableCell><StatusBadge status={p.status} t={t} /></TableCell>
                         <TableCell className="text-right text-sm text-muted-foreground">{format(new Date(p.paidAt || p.createdAt), 'MMM d, yyyy')}</TableCell>
                       </TableRow>
@@ -446,10 +446,10 @@ const FinancialDashboard = () => {
             <div className="space-y-6">
               <div className="grid grid-cols-5 gap-px rounded-xl border overflow-hidden">
                 <MiniStat label={t('dashboard.financial.awaitingInvoice')} value={awaitingInvoiceCount} color="text-chart-4" />
-                <MiniStat label={t('dashboard.financial.invoiceReceived')} value={invoiceReceivedCount} color="text-chart-2" />
-                <MiniStat label={t('dashboard.financial.paid')} value={commPaidCount} color="text-primary" />
+                <MiniStat label={t('dashboard.financial.invoiceReceived')} value={invoiceReceivedCount} color="text-muted-foreground" />
+                <MiniStat label={t('dashboard.financial.paid')} value={commPaidCount} color="text-foreground" />
                 <MiniStat label={t('dashboard.financial.outstanding')} value={formatCurrency2(commOutstanding)} />
-                <MiniStat label={t('dashboard.financial.totalPaid')} value={formatCurrency2(commPaidTotal)} color="text-primary" />
+                <MiniStat label={t('dashboard.financial.totalPaid')} value={formatCurrency2(commPaidTotal)} color="text-foreground" />
               </div>
 
               <div className="flex items-center justify-between gap-4">
@@ -507,7 +507,7 @@ const FinancialDashboard = () => {
                         <TableCell className="text-muted-foreground">{c.projectName}</TableCell>
                         <TableCell className="text-right tabular-nums">{formatCurrency2(c.quoteAmount)}</TableCell>
                         <TableCell className="text-right">{c.commissionPercentage}%</TableCell>
-                        <TableCell className="text-right tabular-nums font-semibold text-primary">{formatCurrency2(c.commissionAmount)}</TableCell>
+                        <TableCell className="text-right tabular-nums font-semibold">{formatCurrency2(c.commissionAmount)}</TableCell>
                         <TableCell><CommissionStatusBadge status={c.status} t={t} /></TableCell>
                         <TableCell className="text-right">
                           {c.status === 'pending_invoice' && (
@@ -548,15 +548,15 @@ const FinancialDashboard = () => {
                     <AreaChart data={getFiveYearData()}>
                       <defs>
                         <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.15} />
-                          <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                          <stop offset="5%" stopColor="hsl(var(--foreground))" stopOpacity={0.08} />
+                          <stop offset="95%" stopColor="hsl(var(--foreground))" stopOpacity={0} />
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" className="stroke-muted" vertical={false} />
                       <XAxis dataKey="year" className="text-xs" axisLine={false} tickLine={false} />
                       <YAxis className="text-xs" tickFormatter={(v) => `€${v / 1000}k`} axisLine={false} tickLine={false} />
                       <Tooltip formatter={(value: number) => formatCurrency(value)} contentStyle={tooltipStyle} />
-                      <Area type="monotone" dataKey="totalRevenue" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorRevenue)" strokeWidth={2} name="Total Revenue" />
+                      <Area type="monotone" dataKey="totalRevenue" stroke="hsl(var(--foreground))" fillOpacity={1} fill="url(#colorRevenue)" strokeWidth={2} name="Total Revenue" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
@@ -571,8 +571,8 @@ const FinancialDashboard = () => {
                       <YAxis className="text-xs" tickFormatter={(v) => `€${v / 1000}k`} axisLine={false} tickLine={false} />
                       <Tooltip formatter={(value: number) => formatCurrency(value)} contentStyle={tooltipStyle} />
                       <Legend wrapperStyle={{ fontSize: '12px' }} />
-                      <Bar dataKey="subscriptions" name={t('dashboard.financial.subscriptions')} fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="projects" name={t('dashboard.financial.projects')} fill="hsl(var(--chart-2))" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="subscriptions" name={t('dashboard.financial.subscriptions')} fill="hsl(var(--muted-foreground) / 0.25)" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="projects" name={t('dashboard.financial.projects')} fill="hsl(var(--muted-foreground) / 0.55)" radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -592,9 +592,9 @@ const FinancialDashboard = () => {
                     <YAxis className="text-xs" tickFormatter={(v) => `€${v / 1000}k`} axisLine={false} tickLine={false} />
                     <Tooltip formatter={(value: number) => formatCurrency(value)} contentStyle={tooltipStyle} />
                     <Legend wrapperStyle={{ fontSize: '12px' }} />
-                    <Line type="monotone" dataKey="revenue" name={t('dashboard.financial.totalLabel')} stroke="hsl(var(--primary))" strokeWidth={2} dot={false} />
-                    <Line type="monotone" dataKey="subscriptions" name={t('dashboard.financial.subscriptions')} stroke="hsl(var(--chart-2))" strokeWidth={2} dot={false} />
-                    <Line type="monotone" dataKey="projects" name={t('dashboard.financial.projects')} stroke="hsl(var(--chart-3))" strokeWidth={2} dot={false} />
+                    <Line type="monotone" dataKey="revenue" name={t('dashboard.financial.totalLabel')} stroke="hsl(var(--foreground))" strokeWidth={2} dot={false} />
+                    <Line type="monotone" dataKey="subscriptions" name={t('dashboard.financial.subscriptions')} stroke="hsl(var(--muted-foreground))" strokeWidth={2} dot={false} />
+                    <Line type="monotone" dataKey="projects" name={t('dashboard.financial.projects')} stroke="hsl(var(--foreground))" strokeWidth={1.5} dot={false} strokeDasharray="4 4" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -631,8 +631,8 @@ const FinancialDashboard = () => {
                         <div className="text-right">
                           <p className="font-semibold">{formatCurrency(currentFY?.totalRevenue || 0)}</p>
                           <div className="flex items-center justify-end gap-1">
-                            {growth >= 0 ? <TrendingUp className="h-3 w-3 accent-value" /> : <TrendingDown className="h-3 w-3 text-destructive" />}
-                            <span className={cn("text-xs", growth >= 0 ? "accent-value" : "text-destructive")}>{growth >= 0 ? '+' : ''}{growth}%</span>
+                            {growth >= 0 ? <TrendingUp className="h-3 w-3 text-foreground" /> : <TrendingDown className="h-3 w-3 text-destructive" />}
+                            <span className={cn("text-xs", growth >= 0 ? "text-foreground" : "text-destructive")}>{growth >= 0 ? '+' : ''}{growth}%</span>
                           </div>
                         </div>
                       </div>
@@ -657,7 +657,7 @@ const FinancialDashboard = () => {
 
 function KpiCard({ label, value, footer, accent }: { label: string; value: string | number; footer: React.ReactNode; accent?: boolean }) {
   return (
-    <div className={cn("flex flex-col justify-between p-5 rounded-2xl border min-h-[120px]", accent ? "bg-primary/5 border-primary/10" : "border-border/40")}>
+    <div className={cn("flex flex-col justify-between p-5 rounded-2xl border min-h-[120px] bg-background", accent ? "border-foreground/10" : "border-border/40")}>
       <span className="text-[10px] text-muted-foreground uppercase tracking-[0.14em] font-medium">{label}</span>
       <div>
         <p className="text-3xl font-semibold tracking-tight text-foreground">{value}</p>

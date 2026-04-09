@@ -211,7 +211,7 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
         </div>
 
         {/* ── Bar 2: Project compliance bar ── */}
-        <div className="sticky top-12 z-40 border-b border-border bg-card/95 backdrop-blur-md">
+        <div className="sticky top-12 z-40 border-b border-border bg-card">
           <div className="px-5 py-3">
             <div className="flex items-center justify-between mb-2.5">
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Totale projectstatus</span>

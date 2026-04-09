@@ -109,7 +109,7 @@ export function ProjectTypePicker({ value, onSelect, open, onOpenChange }: Proje
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/30" onClick={handleClose} />
+      <div className="fixed inset-0 z-50 bg-white/60" onClick={handleClose} />
       <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}

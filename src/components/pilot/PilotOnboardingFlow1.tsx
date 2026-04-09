@@ -210,7 +210,7 @@ export function PilotOnboardingFlow1({ onComplete, onClose, initialStep, onStepC
   const stepIndex = currentStep === 'vat-lookup' ? 0 : currentStep === 'company-details' ? 0 : 1;
 
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-white/60 z-50 flex items-center justify-center p-4">
       <Card className="max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden border-border/50">
         {/* Header */}
         <div className="px-6 py-4 border-b bg-background shrink-0">

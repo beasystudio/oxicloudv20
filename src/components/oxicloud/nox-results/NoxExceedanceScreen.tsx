@@ -141,7 +141,7 @@ export function NoxExceedanceScreen({
                 return (
                   <motion.div
                     key={criterion.id}
-                    className="group relative rounded-2xl border-border/60 overflow-hidden bg-card/80 backdrop-blur-xl hover:shadow-destructive/5 hover:border-destructive/20 transition-all duration-500 ease-out border-0 shadow-lg"
+                    className="group relative rounded-2xl border-border/60 overflow-hidden bg-card hover:shadow-destructive/5 hover:border-destructive/20 transition-all duration-500 ease-out border-0 shadow-lg"
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 + i * 0.12, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
