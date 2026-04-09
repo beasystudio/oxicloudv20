@@ -91,7 +91,7 @@ export function NoxResultFlow({
   const getStoredStep = (): ResultFlowStep => {
     try {
       const stored = sessionStorage.getItem(`nox_result_step_${project.id}`);
-      if (stored && ['exceedance', 'pass_result', 'detailed_report', 'commission', 'settlement', 'sandbox', 'split_phase', 'passende_beoordeling'].includes(stored)) {
+      if (stored && ['exceedance', 'pass_result', 'detailed_report', 'commission', 'settlement', 'sandbox', 'split_phase', 'passende_beoordeling', 'nc_report_held', 'pb_report_held'].includes(stored)) {
         return stored as ResultFlowStep;
       }
     } catch {}
