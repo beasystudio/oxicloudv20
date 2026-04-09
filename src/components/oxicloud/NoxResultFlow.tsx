@@ -183,16 +183,17 @@ export function NoxResultFlow({
     changeStep('passende_beoordeling');
   };
 
+  // Sandbox/SplitPhase → report held behind payment wall (same original quote)
   const handlePassendeBeoordelingComplete = () => {
-    changeStep('detailed_report');
+    changeStep('pb_report_held');
   };
 
   const handleSplitPhaseComplete = () => {
-    changeStep('detailed_report');
+    changeStep('nc_report_held');
   };
 
   const handleSandboxComplete = () => {
-    changeStep('detailed_report');
+    changeStep('nc_report_held');
   };
 
   const handleSandboxBack = () => {
