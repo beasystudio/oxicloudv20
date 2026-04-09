@@ -26,7 +26,9 @@ type ResultFlowStep =
   | 'exceedance'
   | 'sandbox'
   | 'split_phase'
-  | 'passende_beoordeling';
+  | 'passende_beoordeling'
+  | 'nc_report_held'
+  | 'pb_report_held';
 
 interface NoxResultFlowProps {
   project: OxiCloudProject;
