@@ -2630,6 +2630,7 @@ export const en = {
     exportDesc: 'Choose your desired format in the next window.',
     adjusting: 'Adjusting {category}',
     redirecting: 'Redirecting to the calculation form...',
+    reportDownloaded: 'Report downloaded successfully',
   },
 
   // Project Details NOx status labels

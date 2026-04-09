@@ -2563,6 +2563,7 @@ export const nl = {
     exportDesc: 'Kies uw gewenste formaat in het volgende venster.',
     adjusting: '{category} aanpassen',
     redirecting: 'Doorverwijzen naar het berekeningsformulier...',
+    reportDownloaded: 'Rapport succesvol gedownload',
   },
 
   noxStatus: {
