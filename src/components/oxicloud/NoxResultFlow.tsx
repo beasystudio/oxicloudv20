@@ -290,6 +290,33 @@ export function NoxResultFlow({
         />
       );
 
+    // Non-compliant report held: Sandbox or Split Phase achieved compliance
+    // Report is ready but held until client pays the original quote
+    case 'nc_report_held':
+      return (
+        <NoxReportHeldScreen
+          projectName={project.name}
+          onBackToDashboard={onBackToProjects}
+          onReportDownloaded={() => {
+            toast.success(t('noxResultFlow.reportDownloaded'));
+            onBackToProjects();
+          }}
+        />
+      );
+
+    // Passende Beoordeling report held: new quote was needed,
+    // report held until client pays the new PB quote
+    case 'pb_report_held':
+      return (
+        <NoxReportHeldScreen
+          projectName={project.name}
+          onBackToDashboard={onBackToProjects}
+          onReportDownloaded={() => {
+            toast.success(t('noxResultFlow.reportDownloaded'));
+            onBackToProjects();
+          }}
+        />
+      );
 
     default:
       return null;
