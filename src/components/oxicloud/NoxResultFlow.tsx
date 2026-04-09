@@ -6,6 +6,7 @@ import { NoxPassResultScreen } from './nox-results/NoxPassResultScreen';
 import { NoxDetailedReportScreen } from './nox-results/NoxDetailedReportScreen';
 import { NoxCommissionScreen } from './nox-results/NoxCommissionScreen';
 import { NoxExceedanceScreen } from './nox-results/NoxExceedanceScreen';
+import { NoxReportHeldScreen } from './nox-results/NoxReportHeldScreen';
 
 import { SettlementPlatformStep } from './quote-flow/SettlementPlatformStep';
 import { SandboxRouter, SandboxWorkspace } from './sandbox';
