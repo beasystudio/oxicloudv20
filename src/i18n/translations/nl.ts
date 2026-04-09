@@ -2563,6 +2563,7 @@ export const nl = {
     exportDesc: 'Kies uw gewenste formaat in het volgende venster.',
     adjusting: '{category} aanpassen',
     redirecting: 'Doorverwijzen naar het berekeningsformulier...',
+    reportDownloaded: 'Rapport succesvol gedownload',
   },
 
   noxStatus: {
@@ -2758,12 +2759,12 @@ export const nl = {
     bottlenecks: 'Knelpunten',
     choosePath: 'Kies een oplossingspad',
     adjustParams: 'Parameters aanpassen',
-    quickestFix: 'Snelste oplossing',
+    quickestFix: 'Optimaliseer in sandbox — rapport geblokkeerd tot betaling',
     recommended: 'Aanbevolen',
     splitPhases: 'Fases opsplitsen',
-    divideProject: 'Verdeel het project',
+    divideProject: 'Splits in conforme fases — rapport geblokkeerd tot betaling',
     appropriateAssessment: 'Passende Beoordeling',
-    extendedAnalysis: 'Uitgebreide analyse',
+    extendedAnalysis: 'Nieuwe offerte vereist — uitgebreide studie door ons team',
     backToProjects: '← Terug naar projecten',
     constructionStationary: 'Bouwfase — Stationair materieel',
     constructionStationaryExpl: 'Emissies van werfmachines tijdens de bouwfase overschrijden de drempelwaarde.',

@@ -6,6 +6,7 @@ import { NoxPassResultScreen } from './nox-results/NoxPassResultScreen';
 import { NoxDetailedReportScreen } from './nox-results/NoxDetailedReportScreen';
 import { NoxCommissionScreen } from './nox-results/NoxCommissionScreen';
 import { NoxExceedanceScreen } from './nox-results/NoxExceedanceScreen';
+import { NoxReportHeldScreen } from './nox-results/NoxReportHeldScreen';
 
 import { SettlementPlatformStep } from './quote-flow/SettlementPlatformStep';
 import { SandboxRouter, SandboxWorkspace } from './sandbox';
@@ -25,7 +26,9 @@ type ResultFlowStep =
   | 'exceedance'
   | 'sandbox'
   | 'split_phase'
-  | 'passende_beoordeling';
+  | 'passende_beoordeling'
+  | 'nc_report_held'
+  | 'pb_report_held';
 
 interface NoxResultFlowProps {
   project: OxiCloudProject;
@@ -88,7 +91,7 @@ export function NoxResultFlow({
   const getStoredStep = (): ResultFlowStep => {
     try {
       const stored = sessionStorage.getItem(`nox_result_step_${project.id}`);
-      if (stored && ['exceedance', 'pass_result', 'detailed_report', 'commission', 'settlement', 'sandbox', 'split_phase', 'passende_beoordeling'].includes(stored)) {
+      if (stored && ['exceedance', 'pass_result', 'detailed_report', 'commission', 'settlement', 'sandbox', 'split_phase', 'passende_beoordeling', 'nc_report_held', 'pb_report_held'].includes(stored)) {
         return stored as ResultFlowStep;
       }
     } catch {}
@@ -180,16 +183,17 @@ export function NoxResultFlow({
     changeStep('passende_beoordeling');
   };
 
+  // Sandbox/SplitPhase → report held behind payment wall (same original quote)
   const handlePassendeBeoordelingComplete = () => {
-    changeStep('detailed_report');
+    changeStep('pb_report_held');
   };
 
   const handleSplitPhaseComplete = () => {
-    changeStep('detailed_report');
+    changeStep('nc_report_held');
   };
 
   const handleSandboxComplete = () => {
-    changeStep('detailed_report');
+    changeStep('nc_report_held');
   };
 
   const handleSandboxBack = () => {
@@ -286,6 +290,33 @@ export function NoxResultFlow({
         />
       );
 
+    // Non-compliant report held: Sandbox or Split Phase achieved compliance
+    // Report is ready but held until client pays the original quote
+    case 'nc_report_held':
+      return (
+        <NoxReportHeldScreen
+          projectName={project.name}
+          onBackToDashboard={onBackToProjects}
+          onReportDownloaded={() => {
+            toast.success(t('noxResultFlow.reportDownloaded'));
+            onBackToProjects();
+          }}
+        />
+      );
+
+    // Passende Beoordeling report held: new quote was needed,
+    // report held until client pays the new PB quote
+    case 'pb_report_held':
+      return (
+        <NoxReportHeldScreen
+          projectName={project.name}
+          onBackToDashboard={onBackToProjects}
+          onReportDownloaded={() => {
+            toast.success(t('noxResultFlow.reportDownloaded'));
+            onBackToProjects();
+          }}
+        />
+      );
 
     default:
       return null;

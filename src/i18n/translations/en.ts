@@ -2630,6 +2630,7 @@ export const en = {
     exportDesc: 'Choose your desired format in the next window.',
     adjusting: 'Adjusting {category}',
     redirecting: 'Redirecting to the calculation form...',
+    reportDownloaded: 'Report downloaded successfully',
   },
 
   // Project Details NOx status labels
@@ -2834,12 +2835,12 @@ export const en = {
     bottlenecks: 'Bottlenecks',
     choosePath: 'Choose a solution path',
     adjustParams: 'Adjust parameters',
-    quickestFix: 'Quickest fix',
+    quickestFix: 'Optimize in sandbox — report held until payment',
     recommended: 'Recommended',
     splitPhases: 'Split phases',
-    divideProject: 'Divide the project',
+    divideProject: 'Split into compliant phases — report held until payment',
     appropriateAssessment: 'Appropriate Assessment',
-    extendedAnalysis: 'Extended analysis',
+    extendedAnalysis: 'New quote required — extended study by our team',
     backToProjects: '← Back to projects',
     // Criteria
     constructionStationary: 'Construction — Stationary equipment',
