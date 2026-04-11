@@ -1,20 +1,22 @@
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-const STEPS = [
-  'Offerte verstuurd',
-  'Betaling bevestigd',
-  'Rapport in uitvoering',
-  'Rapport geleverd',
-];
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface TimelineStepperProps {
-  /** 0-based index of the current active step. -1 means none active yet. */
   currentStep: number;
 }
 
 export function TimelineStepper({ currentStep }: TimelineStepperProps) {
+  const { t } = useLanguage();
+
+  const STEPS = [
+    t('timelineStepper.quoteSent'),
+    t('timelineStepper.paymentConfirmed'),
+    t('timelineStepper.reportInProgress'),
+    t('timelineStepper.reportDelivered'),
+  ];
+
   return (
     <div className="flex items-center w-full gap-0">
       {STEPS.map((label, i) => {

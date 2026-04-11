@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import { PB_STATUSES, PB_STATUS_CONFIG, type PBStatus } from './types';
 import { Bug } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface DevStatusSimulatorProps {
   currentStatus: PBStatus;
@@ -19,11 +20,13 @@ export function DevStatusSimulator({
   edgeCases,
   onToggleEdgeCase,
 }: DevStatusSimulatorProps) {
+  const { t } = useLanguage();
+
   return (
     <div className="rounded-xl border-2 border-dashed border-amber-400/50 bg-amber-50/50 p-4 space-y-3">
       <div className="flex items-center gap-2 text-xs font-semibold text-amber-700 uppercase tracking-wide">
         <Bug className="w-3.5 h-3.5" />
-        Dev only — status simulator
+        {t('devSimulator.title')}
       </div>
 
       <div className="flex flex-wrap gap-1.5">
@@ -44,19 +47,19 @@ export function DevStatusSimulator({
       </div>
 
       <div className="flex flex-wrap gap-1.5 pt-1 border-t border-amber-300/50">
-        <span className="text-[10px] text-amber-600 font-medium self-center mr-1">Edge cases:</span>
+        <span className="text-[10px] text-amber-600 font-medium self-center mr-1">{t('devSimulator.edgeCases')}</span>
         <EdgeToggle
-          label="14d geen reactie"
+          label={t('devSimulator.noResponse14d')}
           active={edgeCases.noResponse14Days}
           onClick={() => onToggleEdgeCase('noResponse14Days')}
         />
         <EdgeToggle
-          label="Offerte verlopen"
+          label={t('devSimulator.quoteExpired')}
           active={edgeCases.quoteExpired}
           onClick={() => onToggleEdgeCase('quoteExpired')}
         />
         <EdgeToggle
-          label="SLA overschreden"
+          label={t('devSimulator.slaExceeded')}
           active={edgeCases.slaMissed}
           onClick={() => onToggleEdgeCase('slaMissed')}
         />
