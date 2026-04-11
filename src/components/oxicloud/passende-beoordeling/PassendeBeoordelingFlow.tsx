@@ -23,6 +23,7 @@ import {
   RefreshCw,
   Eye,
 } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 import { type PBStatus, buildPBProjectData, QUOTE_LINE_ITEMS, COMMISSION_RATE } from './types';
 import { DevStatusSimulator } from './DevStatusSimulator';
@@ -38,7 +39,6 @@ interface PassendeBeoordelingFlowProps {
   onBack: () => void;
 }
 
-// ─── Mockup flags ───
 const sandboxExhausted = true;
 
 export function PassendeBeoordelingFlow({
@@ -47,6 +47,7 @@ export function PassendeBeoordelingFlow({
   onComplete,
   onBack,
 }: PassendeBeoordelingFlowProps) {
+  const { t } = useLanguage();
   const [pbStatus, setPbStatus] = useState<PBStatus>('input_complete');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [confirmDialogAction, setConfirmDialogAction] = useState<'generate_quote' | 'reactivate' | 'confirm_changes' | null>(null);
@@ -90,24 +91,12 @@ export function PassendeBeoordelingFlow({
 
   const handleEmailConfirm = () => {
     setShowEmailPreview(false);
-    toast.success('Offerte succesvol verstuurd naar opdrachtgever.');
+    toast.success(t('pbFlow.quoteSentSuccess'));
     setPbStatus('awaiting_payment');
   };
 
-  // Timeline step mapping for statuses 3-5
-  const getTimelineStep = (): number => {
-    switch (pbStatus) {
-      case 'awaiting_payment': return 0;
-      case 'paid': return 2;
-      case 'report_delivered': return 3;
-      default: return -1;
-    }
-  };
-
-  // ─── RENDER ───
   return (
     <div className="space-y-6">
-      {/* Dev Simulator */}
       <DevStatusSimulator
         currentStatus={pbStatus}
         onStatusChange={setPbStatus}
@@ -115,21 +104,17 @@ export function PassendeBeoordelingFlow({
         onToggleEdgeCase={toggleEdgeCase}
       />
 
-      {/* Section Header */}
       <Separator />
       <div className="flex items-center gap-3">
-        <h2 className="text-xl font-semibold text-foreground">Passende Beoordeling</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('pbFlow.title')}</h2>
         <Badge className="bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-100">
-          Wettelijk vereist
+          {t('pbFlow.legallyRequired')}
         </Badge>
       </div>
       <p className="text-sm text-muted-foreground leading-relaxed">
-        Na uitputting van alle optimalisatiemogelijkheden overschrijdt dit project de toegestane
-        NOx-drempel. Conform de toepasselijke wetgeving is een Passende Beoordeling verplicht
-        alvorens dit project verder kan worden ingediend.
+        {t('pbFlow.introDesc')}
       </p>
 
-      {/* Status Content */}
       <AnimatePresence mode="wait">
         <motion.div
           key={pbStatus}
@@ -139,12 +124,11 @@ export function PassendeBeoordelingFlow({
           transition={{ duration: 0.25 }}
           className="space-y-4"
         >
-          {/* ─── STATUS 0: ON HOLD ─── */}
+          {/* STATUS 0: ON HOLD */}
           {pbStatus === 'on_hold' && (
             <>
               <StatusBanner variant="grey">
-                Project on hold — De opdrachtgever heeft aangegeven momenteel niet verder te willen
-                gaan met de Passende Beoordeling.
+                {t('pbFlow.onHoldBanner')}
               </StatusBanner>
               <TemporaryReport project={pbProject} condensed />
               <Button
@@ -153,18 +137,17 @@ export function PassendeBeoordelingFlow({
                 onClick={() => openConfirm('reactivate')}
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Opdrachtgever wil toch doorgaan — Hervatten
+                {t('pbFlow.resumeProject')}
               </Button>
             </>
           )}
 
-          {/* ─── STATUS 1: INPUT COMPLETE ─── */}
+          {/* STATUS 1: INPUT COMPLETE */}
           {pbStatus === 'input_complete' && (
             <>
               <TemporaryReport project={pbProject} />
               <p className="text-xs text-muted-foreground">
-                Bespreek dit rapport met uw opdrachtgever en verkrijg diens goedkeuring voordat u een
-                formeel verzoek indient.
+                {t('pbFlow.discussReport')}
               </p>
               <div className="flex gap-3">
                 <Button
@@ -172,26 +155,26 @@ export function PassendeBeoordelingFlow({
                   className="flex-1"
                   onClick={() => setPbStatus('on_hold')}
                 >
-                  Opdrachtgever gaat niet verder
+                  {t('pbFlow.clientNotProceeding')}
                 </Button>
                 <Button className="flex-1" onClick={() => openConfirm('generate_quote')}>
-                  Offerte Genereren
+                  {t('pbFlow.generateQuote')}
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
             </>
           )}
 
-          {/* ─── STATUS 2: QUOTE GENERATED ─── */}
+          {/* STATUS 2: QUOTE GENERATED */}
           {pbStatus === 'quote_generated' && (
             <>
               <TemporaryReport project={pbProject} condensed />
 
               <div className="rounded-xl border border-border bg-card p-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">Gegenereerde Offerte</h4>
+                  <h4 className="text-sm font-semibold">{t('pbFlow.generatedQuote')}</h4>
                   <Badge className="bg-blue-100 text-blue-800 border-blue-300 hover:bg-blue-100">
-                    Klaar om te versturen
+                    {t('pbFlow.readyToSend')}
                   </Badge>
                 </div>
 
@@ -200,10 +183,10 @@ export function PassendeBeoordelingFlow({
                     <thead>
                       <tr className="bg-muted/30">
                         <th className="px-4 py-2 text-left font-medium text-muted-foreground">
-                          Omschrijving
+                          {t('pbFlow.description')}
                         </th>
                         <th className="px-4 py-2 text-right font-medium text-muted-foreground">
-                          Bedrag
+                          {t('pbFlow.amount')}
                         </th>
                       </tr>
                     </thead>
@@ -217,31 +200,31 @@ export function PassendeBeoordelingFlow({
                         </tr>
                       ))}
                       <tr className="bg-muted/20">
-                        <td className="px-4 py-2.5 font-medium">Subtotaal</td>
+                        <td className="px-4 py-2.5 font-medium">{t('pbFlow.subtotal')}</td>
                         <td className="px-4 py-2.5 text-right font-medium tabular-nums">
                           € {subtotal.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
                         </td>
                       </tr>
                       <tr>
                         <td className="px-4 py-2.5 text-muted-foreground">
-                          Architectencommissie (8%)
+                          {t('pbFlow.architectCommission')}
                         </td>
                         <td className="px-4 py-2.5 text-right tabular-nums text-muted-foreground">
                           € {commission.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
                         </td>
                       </tr>
                       <tr className="font-semibold">
-                        <td className="px-4 py-3">Totaal (excl. BTW)</td>
+                        <td className="px-4 py-3">{t('pbFlow.totalExclVat')}</td>
                         <td className="px-4 py-3 text-right tabular-nums">
                           € {subtotal.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
                         </td>
                       </tr>
                       <tr>
                         <td className="px-4 py-2.5 text-muted-foreground">
-                          Verwachte leveringstermijn
+                          {t('pbFlow.expectedDelivery')}
                         </td>
                         <td className="px-4 py-2.5 text-right text-muted-foreground">
-                          ± 3 weken na betaling
+                          {t('pbFlow.threeWeeksAfterPayment')}
                         </td>
                       </tr>
                     </tbody>
@@ -249,98 +232,90 @@ export function PassendeBeoordelingFlow({
                 </div>
 
                 <p className="text-xs text-muted-foreground">
-                  De commissie wordt automatisch verrekend conform uw standaard commissiepercentage.
-                  Geen handmatige configuratie vereist.
+                  {t('pbFlow.commissionAutoSettled')}
                 </p>
               </div>
 
               <Button className="w-full" onClick={handleSendQuote}>
                 <Send className="w-4 h-4 mr-2" />
-                Offerte Versturen naar Opdrachtgever
+                {t('pbFlow.sendQuoteToClient')}
               </Button>
             </>
           )}
 
-          {/* ─── STATUS 3: AWAITING PAYMENT ─── */}
+          {/* STATUS 3: AWAITING PAYMENT */}
           {pbStatus === 'awaiting_payment' && (
             <>
               <StatusBanner variant="amber">
-                Wachten op betaling — Offerte verstuurd naar opdrachtgever. Betaling via
-                bankoverschrijving wordt verwacht.
+                {t('pbFlow.awaitingPaymentBanner')}
               </StatusBanner>
 
               {edgeCases.noResponse14Days && (
                 <StatusBanner variant="amber">
-                  Geen reactie ontvangen na 14 dagen. Een herinnering is automatisch verstuurd naar de
-                  opdrachtgever.
+                  {t('pbFlow.noResponse14d')}
                 </StatusBanner>
               )}
 
               {edgeCases.quoteExpired && (
                 <>
                   <StatusBanner variant="red">
-                    Offerte verlopen na 30 dagen.
+                    {t('pbFlow.quoteExpired30d')}
                   </StatusBanner>
                   <Button
                     variant="outline"
                     className="w-full"
                     onClick={() => setPbStatus('input_complete')}
                   >
-                    Nieuwe Offerte Aanvragen
+                    {t('pbFlow.requestNewQuote')}
                   </Button>
                 </>
               )}
 
               <p className="text-xs text-muted-foreground">
-                De opdrachtgever dient het bedrag over te schrijven. Na verwerking van de betaling
-                door het OxiCloud-team wordt de status automatisch bijgewerkt.
+                {t('pbFlow.clientMustTransfer')}
               </p>
 
               <TemporaryReport project={pbProject} condensed />
 
               <div className="flex items-center justify-between rounded-xl border border-border bg-muted/20 px-4 py-3">
                 <div>
-                  <p className="text-sm font-medium">Offerte</p>
+                  <p className="text-sm font-medium">{t('pbFlow.quote')}</p>
                   <p className="text-xs text-muted-foreground">
                     € {subtotal.toLocaleString('nl-BE', { minimumFractionDigits: 2 })} •
-                    Verstuurd op {quoteSentDate}
+                    {t('pbFlow.sentOn')} {quoteSentDate}
                   </p>
                 </div>
               </div>
 
               <p className="text-xs text-muted-foreground">
-                Geen reactie na 14 dagen? Het systeem stuurt automatisch een herinnering naar de
-                opdrachtgever.
+                {t('pbFlow.noResponse14dAuto')}
               </p>
 
               <TimelineStepper currentStep={0} />
             </>
           )}
 
-          {/* ─── STATUS 4: PAID / REPORT IN PROGRESS ─── */}
+          {/* STATUS 4: PAID / REPORT IN PROGRESS */}
           {pbStatus === 'paid' && (
             <>
               <StatusBanner variant="blue">
-                Rapport in uitvoering — Betaling bevestigd. Het OxiCloud-team is gestart met de
-                Passende Beoordeling.
+                {t('pbFlow.reportInProgressBanner')}
               </StatusBanner>
 
               {edgeCases.slaMissed && (
                 <StatusBanner variant="amber">
-                  Vertraging verwacht. Het OxiCloud-team heeft u geïnformeerd. Wij houden u op de
-                  hoogte.
+                  {t('pbFlow.delayExpected')}
                 </StatusBanner>
               )}
 
               <div className="rounded-xl border border-border bg-card p-5 space-y-2">
-                <p className="text-sm font-semibold">Verwachte oplevering</p>
+                <p className="text-sm font-semibold">{t('pbFlow.expectedDeliveryDate')}</p>
                 <p className="text-lg font-semibold tabular-nums">{slaDate}</p>
                 <p className="text-xs text-muted-foreground">
-                  ± 3 weken (15 werkdagen) na betalingsbevestiging
+                  {t('pbFlow.threeWeeksWorking')}
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
-                  U ontvangt een melding zodra uw rapport beschikbaar is. Bij vertraging informeren
-                  wij u proactief.
+                  {t('pbFlow.notificationWhenReady')}
                 </p>
               </div>
 
@@ -349,58 +324,58 @@ export function PassendeBeoordelingFlow({
             </>
           )}
 
-          {/* ─── STATUS 5: REPORT DELIVERED ─── */}
+          {/* STATUS 5: REPORT DELIVERED */}
           {pbStatus === 'report_delivered' && (
             <>
               <StatusBanner variant="green">
-                Rapport Geleverd — De Passende Beoordeling is afgerond en beschikbaar in uw dossier.
+                {t('pbFlow.reportDelivered')}
               </StatusBanner>
 
               <div className="rounded-xl border border-border bg-card p-5 space-y-3">
-                <h4 className="text-sm font-semibold">Documenten</h4>
+                <h4 className="text-sm font-semibold">{t('pbFlow.documents')}</h4>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-muted/20">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">Tijdelijk Conformiteitsrapport — {pbProject.scanDate}</span>
+                      <span className="text-sm">{t('pbFlow.temporaryComplianceReport')} — {pbProject.scanDate}</span>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="text-xs gap-1"
-                      onClick={() => toast.info('PDF wordt voorbereid en is straks beschikbaar.')}
+                      onClick={() => toast.info(t('pbFlow.pdfPreparing'))}
                     >
                       <Download className="w-3.5 h-3.5" />
-                      Download
+                      {t('pbFlow.download')}
                     </Button>
                   </div>
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-muted/20">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">Passende Beoordeling Rapport — {pbProject.scanDate}</span>
+                      <span className="text-sm">{t('pbFlow.appropriateAssessmentReport')} — {pbProject.scanDate}</span>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="text-xs gap-1"
-                      onClick={() => toast.info('Rapport wordt geladen...')}
+                      onClick={() => toast.info(t('pbFlow.reportLoading'))}
                     >
                       <Download className="w-3.5 h-3.5" />
-                      Download
+                      {t('pbFlow.download')}
                     </Button>
                   </div>
                 </div>
               </div>
 
-              <Button className="w-full" onClick={() => toast.info('Rapport wordt geopend...')}>
+              <Button className="w-full" onClick={() => toast.info(t('pbFlow.reportOpening'))}>
                 <Eye className="w-4 h-4 mr-2" />
-                Rapport Bekijken
+                {t('pbFlow.viewReport')}
               </Button>
 
               <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                 <p className="text-sm text-emerald-800">
-                  Dit project komt in aanmerking voor verdere vergunningsaanvraag.
+                  {t('pbFlow.eligibleForPermit')}
                 </p>
               </div>
 
@@ -410,33 +385,31 @@ export function PassendeBeoordelingFlow({
         </motion.div>
       </AnimatePresence>
 
-      {/* ─── Confirmation Dialog ─── */}
+      {/* Confirmation Dialog */}
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <DialogTitle>
-              {confirmDialogAction === 'generate_quote' && 'Offerte genereren'}
-              {confirmDialogAction === 'reactivate' && 'Project hervatten'}
+              {confirmDialogAction === 'generate_quote' && t('pbFlow.generateQuoteTitle')}
+              {confirmDialogAction === 'reactivate' && t('pbFlow.resumeProjectTitle')}
             </DialogTitle>
             <DialogDescription>
-              {confirmDialogAction === 'generate_quote' &&
-                'Heeft u het tijdelijk rapport met uw opdrachtgever besproken en diens goedkeuring ontvangen?'}
-              {confirmDialogAction === 'reactivate' &&
-                'Bevestigt u dat de opdrachtgever akkoord gaat om verder te gaan?'}
+              {confirmDialogAction === 'generate_quote' && t('pbFlow.generateQuoteDesc')}
+              {confirmDialogAction === 'reactivate' && t('pbFlow.resumeProjectDesc')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex gap-3 pt-2">
             <Button variant="outline" className="flex-1" onClick={() => setShowConfirmDialog(false)}>
-              Annuleren
+              {t('sandboxTabs.cancel')}
             </Button>
             <Button className="flex-1" onClick={handleConfirm}>
-              {confirmDialogAction === 'generate_quote' ? 'Ja, genereer offerte' : 'Bevestigen'}
+              {confirmDialogAction === 'generate_quote' ? t('pbFlow.yesGenerateQuote') : t('pbFlow.confirmBtn')}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* ─── Email Preview Modal ─── */}
+      {/* Email Preview Modal */}
       <EmailPreviewModal
         open={showEmailPreview}
         onOpenChange={setShowEmailPreview}
