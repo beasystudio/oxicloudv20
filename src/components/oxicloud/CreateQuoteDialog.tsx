@@ -12,6 +12,7 @@ import { FileText, Send, Loader2, User, Mail, Building2, Lock, AlertCircle, Chec
 import { getAllContacts } from '@/lib/mockContactDB';
 import type { Contact } from '@/types/contact';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface CreateQuoteDialogProps {
   open: boolean;
@@ -23,14 +24,6 @@ interface CreateQuoteDialogProps {
   onQuoteCreated: (quoteId: string) => void;
 }
 
-const PROCESSING_STEPS = [
-  'Projectgegevens ophalen...',
-  'Tarieven en parameters berekenen...',
-  'Offerte samenstellen...',
-  'Document genereren...',
-  'Offerte klaarzetten...',
-];
-
 export function CreateQuoteDialog({
   open,
   onOpenChange,
@@ -41,6 +34,7 @@ export function CreateQuoteDialog({
   onQuoteCreated
 }: CreateQuoteDialogProps) {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [isCreating, setIsCreating] = useState(false);
   const [selectedContactId, setSelectedContactId] = useState<string>('');
   const [clientContacts, setClientContacts] = useState<Contact[]>([]);
@@ -48,6 +42,14 @@ export function CreateQuoteDialog({
   const [processingStep, setProcessingStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const quoteResultRef = useRef<{ quoteId: string; quoteNumber: string } | null>(null);
+
+  const PROCESSING_STEPS = [
+    t('createQuoteDialog.processingStep1'),
+    t('createQuoteDialog.processingStep2'),
+    t('createQuoteDialog.processingStep3'),
+    t('createQuoteDialog.processingStep4'),
+    t('createQuoteDialog.processingStep5'),
+  ];
 
   const vatRate = 0.21;
   const vatAmount = estimatedAmount * vatRate;
@@ -69,7 +71,6 @@ export function CreateQuoteDialog({
     }
   }, [open]);
 
-  // Processing animation
   useEffect(() => {
     if (!showProcessing) return;
 
@@ -90,12 +91,11 @@ export function CreateQuoteDialog({
 
       if (elapsed >= totalDuration) {
         clearInterval(interval);
-        // Finish after a small delay
         setTimeout(() => {
           if (quoteResultRef.current) {
             toast({
-              title: "Offerte aangemaakt",
-              description: `Offerte ${quoteResultRef.current.quoteNumber} is succesvol aangemaakt`
+              title: t('createQuoteDialog.quoteCreated'),
+              description: t('createQuoteDialog.quoteCreatedDesc').replace('{number}', quoteResultRef.current.quoteNumber)
             });
             onQuoteCreated(quoteResultRef.current.quoteId);
             onOpenChange(false);
@@ -122,8 +122,8 @@ export function CreateQuoteDialog({
   const handleCreateQuote = async () => {
     if (!selectedContact) {
       toast({
-        title: "Geen klant geselecteerd",
-        description: "Selecteer een klantcontact uit de lijst",
+        title: t('createQuoteDialog.noClientSelected'),
+        description: t('createQuoteDialog.selectClientFromList'),
         variant: "destructive"
       });
       return;
@@ -131,8 +131,8 @@ export function CreateQuoteDialog({
 
     if (!selectedContact.email) {
       toast({
-        title: "E-mail ontbreekt",
-        description: "Het geselecteerde contact heeft geen e-mailadres",
+        title: t('createQuoteDialog.emailMissing'),
+        description: t('createQuoteDialog.selectedContactNoEmail'),
         variant: "destructive"
       });
       return;
@@ -184,8 +184,8 @@ export function CreateQuoteDialog({
       console.error('Failed to create quote:', error);
       setShowProcessing(false);
       toast({
-        title: "Fout",
-        description: error.message || "Kon offerte niet aanmaken",
+        title: t('createQuoteDialog.error'),
+        description: error.message || t('createQuoteDialog.couldNotCreateQuote'),
         variant: "destructive"
       });
     } finally {
@@ -193,7 +193,6 @@ export function CreateQuoteDialog({
     }
   };
 
-  // Processing Screen
   if (showProcessing) {
     return (
       <Dialog open={open} onOpenChange={() => {}}>
@@ -203,8 +202,8 @@ export function CreateQuoteDialog({
               <Loader2 className="h-6 w-6 text-primary animate-spin" />
             </div>
             <div className="text-center space-y-1">
-              <h3 className="text-lg font-semibold">Offerte genereren</h3>
-              <p className="text-sm text-muted-foreground">Even geduld, we bereiden alles voor...</p>
+              <h3 className="text-lg font-semibold">{t('createQuoteDialog.generatingQuote')}</h3>
+              <p className="text-sm text-muted-foreground">{t('createQuoteDialog.pleaseWait')}</p>
             </div>
 
             <div className="w-full space-y-4">
@@ -249,61 +248,59 @@ export function CreateQuoteDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
-            Offerte aanmaken
+            {t('createQuoteDialog.createQuoteTitle')}
           </DialogTitle>
           <DialogDescription>
-            Maak een offerte aan voor {projectName} om naar de klant te sturen.
+            {t('createQuoteDialog.createQuoteDesc').replace('{project}', projectName)}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
-          {/* Project Info */}
           <div className="bg-muted/50 rounded-lg p-4 space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Project</span>
+              <span className="text-muted-foreground">{t('createQuoteDialog.project')}</span>
               <span className="font-medium">{projectName}</span>
             </div>
             <Separator />
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Basisbedrag</span>
+              <span className="text-muted-foreground">{t('createQuoteDialog.baseAmount')}</span>
               <span>€{estimatedAmount.toLocaleString('nl-NL', { minimumFractionDigits: 2 })}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">BTW (21%)</span>
+              <span className="text-muted-foreground">{t('createQuoteDialog.vat21')}</span>
               <span>€{vatAmount.toLocaleString('nl-NL', { minimumFractionDigits: 2 })}</span>
             </div>
             <Separator />
             <div className="flex justify-between font-semibold">
-              <span>Totaal</span>
+              <span>{t('createQuoteDialog.total')}</span>
               <span>€{totalAmount.toLocaleString('nl-NL', { minimumFractionDigits: 2 })}</span>
             </div>
           </div>
 
-          {/* Client Contact Selection */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h4 className="font-medium">Klantcontact</h4>
+              <h4 className="font-medium">{t('createQuoteDialog.clientContact')}</h4>
               <Badge variant="outline" className="text-xs gap-1">
                 <Lock className="h-3 w-3" />
-                Uit Contacten
+                {t('createQuoteDialog.fromContacts')}
               </Badge>
             </div>
             
             {clientContacts.length === 0 ? (
               <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 text-center">
                 <AlertCircle className="h-8 w-8 mx-auto mb-2 text-destructive/70" />
-                <p className="text-sm font-medium text-destructive">Geen contacten beschikbaar</p>
+                <p className="text-sm font-medium text-destructive">{t('createQuoteDialog.noContactsAvailable')}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Voeg eerst klantcontacten toe via Instellingen → Contacten
+                  {t('createQuoteDialog.addContactsFirst')}
                 </p>
               </div>
             ) : (
               <>
                 <div className="space-y-2">
-                  <Label>Selecteer klant</Label>
+                  <Label>{t('createQuoteDialog.selectClient')}</Label>
                   <Select value={selectedContactId} onValueChange={setSelectedContactId}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Kies een klantcontact..." />
+                      <SelectValue placeholder={t('createQuoteDialog.chooseClientContact')} />
                     </SelectTrigger>
                     <SelectContent>
                       {clientContacts.map(contact => (
@@ -329,30 +326,30 @@ export function CreateQuoteDialog({
                   <div className="bg-muted/30 border border-border rounded-lg p-4 space-y-3">
                     <div className="flex items-center gap-2 text-sm">
                       <User className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">Naam:</span>
+                      <span className="text-muted-foreground">{t('createQuoteDialog.name')}:</span>
                       <span className="font-medium">{selectedContact.name}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Mail className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">E-mail:</span>
-                      <span className="font-medium">{selectedContact.email || 'Geen e-mail'}</span>
+                      <span className="text-muted-foreground">{t('createQuoteDialog.email')}:</span>
+                      <span className="font-medium">{selectedContact.email || t('createQuoteDialog.noEmail')}</span>
                     </div>
                     {selectedContact.companyName && (
                       <div className="flex items-center gap-2 text-sm">
                         <Building2 className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">Bedrijf:</span>
+                        <span className="text-muted-foreground">{t('createQuoteDialog.company')}:</span>
                         <span className="font-medium">{selectedContact.companyName}</span>
                       </div>
                     )}
                     {selectedContact.vatNumber && (
                       <div className="flex items-center gap-2 text-sm">
                         <FileText className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">BTW:</span>
+                        <span className="text-muted-foreground">{t('createQuoteDialog.vatNumber')}:</span>
                         <span className="font-medium font-mono text-xs">{selectedContact.vatNumber}</span>
                       </div>
                     )}
                     <p className="text-xs text-muted-foreground pt-2 border-t border-border">
-                      Contactgegevens worden gesynchroniseerd vanuit Instellingen → Contacten
+                      {t('createQuoteDialog.contactsSyncedFrom')}
                     </p>
                   </div>
                 )}
@@ -360,14 +357,13 @@ export function CreateQuoteDialog({
             )}
           </div>
 
-          {/* Actions */}
           <div className="flex gap-3 pt-4">
             <Button 
               variant="outline" 
               onClick={() => onOpenChange(false)}
               className="flex-1"
             >
-              Annuleren
+              {t('createQuoteDialog.cancelBtn')}
             </Button>
             <Button
               onClick={handleCreateQuote}
@@ -375,7 +371,7 @@ export function CreateQuoteDialog({
               className="flex-1 gap-2"
             >
               <Send className="h-4 w-4" />
-              Offerte aanmaken
+              {t('createQuoteDialog.createQuoteBtn')}
             </Button>
           </div>
         </div>
