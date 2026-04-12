@@ -1,6 +1,6 @@
 /**
  * 3D open booklet mockup - realistic printed report on a light gray surface
- * Features: perspective tilt, center spine shadow, drop shadow, paper texture
+ * Features: strong perspective tilt, center spine shadow, drop shadow, paper texture
  */
 
 import { Badge } from '@/components/ui/badge';
@@ -21,119 +21,131 @@ export function ReportBookletMockup({ projectName, isPaid, isUnblurring, t }: Re
   );
 
   return (
-    <div className="relative py-8 px-2">
-      {/* Surface background */}
-      <div className="absolute inset-0 rounded-2xl bg-muted/30" />
-
-      {/* Drop shadow under booklet */}
+    <div className="relative py-10 px-4">
+      {/* Surface background - subtle gradient */}
       <div
-        className="absolute left-1/2 -translate-x-1/2 bottom-4 w-[85%] h-8 rounded-[50%]"
+        className="absolute inset-0 rounded-2xl"
         style={{
-          background: 'radial-gradient(ellipse at center, hsl(var(--foreground) / 0.08) 0%, transparent 70%)',
+          background: 'linear-gradient(180deg, hsl(var(--muted) / 0.2) 0%, hsl(var(--muted) / 0.4) 100%)',
         }}
       />
 
-      {/* Booklet container with perspective */}
+      {/* Drop shadow under booklet - elongated ellipse */}
       <div
-        className="relative mx-auto max-w-2xl"
+        className="absolute left-1/2 -translate-x-1/2 bottom-3 w-[80%] h-6"
         style={{
-          perspective: '1200px',
+          background: 'radial-gradient(ellipse 80% 100% at center, hsl(var(--foreground) / 0.12) 0%, transparent 70%)',
+          filter: 'blur(6px)',
         }}
+      />
+
+      {/* Booklet container with strong perspective */}
+      <div
+        className="relative mx-auto max-w-[600px]"
+        style={{ perspective: '800px' }}
       >
         <div
-          className="grid grid-cols-2 gap-0"
+          className="grid grid-cols-2 gap-0 rounded-lg overflow-hidden"
           style={{
-            transform: 'rotateX(2deg)',
-            transformOrigin: 'center bottom',
+            transform: 'rotateX(4deg) rotateY(-1deg)',
+            transformOrigin: 'center 80%',
+            boxShadow: '0 20px 40px -12px hsl(var(--foreground) / 0.10), 0 8px 16px -8px hsl(var(--foreground) / 0.06)',
           }}
         >
-          {/* Left page - cover/title page */}
+          {/* ─── Left page: cover / title ─── */}
           <div
-            className="relative bg-card rounded-l-lg p-5 min-h-[280px] border border-border/30 border-r-0"
+            className="relative p-5 min-h-[300px]"
             style={{
-              background: 'linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--muted) / 0.3) 100%)',
-              boxShadow: 'inset -4px 0 8px -4px hsl(var(--foreground) / 0.06)',
+              background: 'linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted) / 0.15) 100%)',
+              borderRight: '1px solid hsl(var(--foreground) / 0.04)',
             }}
           >
-            {/* Subtle paper grain */}
-            <div className="absolute inset-0 rounded-l-lg opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'200\' height=\'200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")' }} />
+            {/* Paper grain overlay */}
+            <div
+              className="absolute inset-0 opacity-[0.04] pointer-events-none"
+              style={{
+                backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'4\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")',
+              }}
+            />
+            {/* Inner shadow from spine */}
+            <div
+              className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none"
+              style={{
+                background: 'linear-gradient(to left, hsl(var(--foreground) / 0.04), transparent)',
+              }}
+            />
 
             <div className="relative z-10 h-full flex flex-col justify-between">
               <div>
-                <p className="text-[9px] text-muted-foreground uppercase tracking-[0.2em] mb-1">
-                  {t('reportHeld.technicalReport') || 'Technical Report'}
+                <p className="text-[9px] text-muted-foreground uppercase tracking-[0.2em] mb-0.5">
+                  {t('reportHeld.technicalReport')} - {t('reportHeld.environmentalPermit')}
                 </p>
-                <p className="text-[8px] text-muted-foreground/60 mb-4">
-                  {t('reportHeld.environmentalPermit') || 'Environmental Permit'}
-                </p>
+                <div className="w-8 h-[2px] bg-primary/40 rounded-full mt-2 mb-4" />
 
-                <h3 className="text-base font-bold text-foreground leading-tight mb-1">
-                  {t('reportHeld.nitrogenEmission') || 'Nitrogen Emission Report'}
+                <h3 className="text-[15px] font-bold text-foreground leading-snug mb-1.5">
+                  {t('reportHeld.nitrogenEmission')}
                 </h3>
-                <p className={cn('text-[11px] text-muted-foreground/70 leading-relaxed', blurClass)}>
-                  {t('reportHeld.preAssessment') || 'Pre-assessment - impact score construction phase'}
+                <p className={cn('text-[11px] text-muted-foreground/60 leading-relaxed', blurClass)}>
+                  {t('reportHeld.preAssessment')}
                 </p>
               </div>
 
-              <div className="space-y-3 mt-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <p className="text-[8px] text-muted-foreground/50 uppercase tracking-wider mb-0.5">
-                      {t('reportHeld.projectLabel') || 'Project'}
-                    </p>
-                    <p className={cn('text-[10px] font-medium text-foreground/80', blurClass)}>{projectName}</p>
-                  </div>
-                  <div>
-                    <p className="text-[8px] text-muted-foreground/50 uppercase tracking-wider mb-0.5">
-                      {t('reportHeld.phaseLabel') || 'Phase'}
-                    </p>
-                    <p className={cn('text-[10px] font-medium text-foreground/80', blurClass)}>
-                      {t('reportHeld.constructionPhase') || 'Construction phase'}
-                    </p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <p className="text-[8px] text-muted-foreground/50 uppercase tracking-wider mb-0.5">
-                      {t('reportHeld.methodologyLabel') || 'Methodology'}
-                    </p>
-                    <p className={cn('text-[10px] font-medium text-foreground/80', blurClass)}>VITO 2024</p>
-                  </div>
-                  <div>
-                    <p className="text-[8px] text-muted-foreground/50 uppercase tracking-wider mb-0.5">
-                      {t('reportHeld.regulationLabel') || 'Regulation'}
-                    </p>
-                    <p className={cn('text-[10px] font-medium text-foreground/80', blurClass)}>
-                      {t('reportHeld.nitrogenDecree') || 'Nitrogen Decree Flanders'}
-                    </p>
-                  </div>
+              <div className="space-y-3 mt-6">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                  {[
+                    { label: t('reportHeld.projectLabel'), value: projectName },
+                    { label: t('reportHeld.phaseLabel'), value: t('reportHeld.constructionPhase') },
+                    { label: t('reportHeld.methodologyLabel'), value: 'VITO 2024' },
+                    { label: t('reportHeld.regulationLabel'), value: t('reportHeld.nitrogenDecree') },
+                  ].map((field) => (
+                    <div key={field.label}>
+                      <p className="text-[7px] text-muted-foreground/40 uppercase tracking-[0.15em] mb-0.5">
+                        {field.label}
+                      </p>
+                      <p className={cn('text-[10px] font-medium text-foreground/70 leading-tight', blurClass)}>
+                        {field.value}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Center spine shadow */}
+          {/* ─── Spine crease ─── */}
           <div
-            className="absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 z-20"
+            className="absolute left-1/2 top-0 bottom-0 w-[3px] -translate-x-1/2 z-20 pointer-events-none"
             style={{
-              background: 'linear-gradient(to bottom, hsl(var(--foreground) / 0.03), hsl(var(--foreground) / 0.08), hsl(var(--foreground) / 0.03))',
-              boxShadow: '0 0 6px 2px hsl(var(--foreground) / 0.04)',
+              background: 'linear-gradient(to bottom, hsl(var(--foreground) / 0.02), hsl(var(--foreground) / 0.08) 50%, hsl(var(--foreground) / 0.02))',
+              boxShadow: '-2px 0 4px hsl(var(--foreground) / 0.03), 2px 0 4px hsl(var(--foreground) / 0.03)',
             }}
           />
 
-          {/* Right page - data page */}
+          {/* ─── Right page: data ─── */}
           <div
-            className="relative bg-card rounded-r-lg p-5 min-h-[280px] border border-border/30 border-l-0"
+            className="relative p-5 min-h-[300px]"
             style={{
-              background: 'linear-gradient(225deg, hsl(var(--card)) 0%, hsl(var(--muted) / 0.2) 100%)',
-              boxShadow: 'inset 4px 0 8px -4px hsl(var(--foreground) / 0.06)',
+              background: 'linear-gradient(215deg, hsl(var(--card)) 0%, hsl(var(--muted) / 0.1) 100%)',
+              borderLeft: '1px solid hsl(var(--foreground) / 0.04)',
             }}
           >
-            <div className="absolute inset-0 rounded-r-lg opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'200\' height=\'200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")' }} />
+            <div
+              className="absolute inset-0 opacity-[0.04] pointer-events-none"
+              style={{
+                backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'4\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")',
+              }}
+            />
+            {/* Inner shadow from spine */}
+            <div
+              className="absolute left-0 top-0 bottom-0 w-8 pointer-events-none"
+              style={{
+                background: 'linear-gradient(to right, hsl(var(--foreground) / 0.04), transparent)',
+              }}
+            />
 
             <div className="relative z-10 h-full flex flex-col">
               {/* Status badge */}
-              <div className="flex justify-end mb-4">
+              <div className="flex justify-end mb-3">
                 <Badge
                   variant="outline"
                   className={cn(
@@ -148,30 +160,30 @@ export function ReportBookletMockup({ projectName, isPaid, isUnblurring, t }: Re
               </div>
 
               {/* Metric tiles */}
-              <div className="space-y-3 flex-1">
+              <div className="space-y-2.5 flex-1">
                 {[
                   { label: t('reportHeld.totalNox'), value: '14.85', unit: 'kg/jaar' },
                   { label: t('reportHeld.threshold'), value: '938.00', unit: 'kg/jaar' },
-                  { label: t('reportHeld.status') || 'Status', value: t('reportHeld.compliant') || 'Compliant', unit: '< 1%', isBadge: true },
+                  { label: t('reportHeld.status'), value: t('reportHeld.compliant'), unit: '< 1%', isBadge: true },
                 ].map((metric) => (
-                  <div key={metric.label} className="rounded-lg border border-border/20 p-3 bg-muted/10">
-                    <p className="text-[8px] text-muted-foreground/60 uppercase tracking-wider mb-1">{metric.label}</p>
-                    <div className={cn('flex items-baseline gap-2', blurClass)}>
+                  <div key={metric.label} className="rounded-lg border border-border/15 p-3 bg-muted/5">
+                    <p className="text-[7px] text-muted-foreground/50 uppercase tracking-[0.15em] mb-1">{metric.label}</p>
+                    <div className={cn('flex items-baseline gap-1.5', blurClass)}>
                       {metric.isBadge ? (
-                        <Badge className="bg-primary/20 text-primary text-[11px]">{metric.value}</Badge>
+                        <Badge className="bg-primary/20 text-primary text-[10px] font-semibold">{metric.value}</Badge>
                       ) : (
-                        <span className="text-lg font-bold text-foreground">{metric.value}</span>
+                        <span className="text-base font-bold text-foreground">{metric.value}</span>
                       )}
-                      <span className="text-[10px] text-muted-foreground">{metric.unit}</span>
+                      <span className="text-[9px] text-muted-foreground/60">{metric.unit}</span>
                     </div>
                   </div>
                 ))}
               </div>
 
               {/* Blurred placeholder rows */}
-              <div className="space-y-2 mt-3">
-                {['w-full', 'w-3/4', 'w-5/6'].map((w, i) => (
-                  <div key={i} className={cn(`h-2 ${w} rounded-full bg-muted/40 transition-all duration-700 ease-out`, !isUnblurring && 'blur-[4px]', isUnblurring && 'blur-0')} />
+              <div className="space-y-1.5 mt-3">
+                {['w-full', 'w-4/5', 'w-11/12'].map((w, i) => (
+                  <div key={i} className={cn(`h-1.5 ${w} rounded-full bg-muted/30 transition-all duration-700 ease-out`, !isUnblurring && 'blur-[4px]', isUnblurring && 'blur-0')} />
                 ))}
               </div>
             </div>
