@@ -26,7 +26,7 @@ export function Tab2BouwfaseLijnLV({ onBack }: TabProps) {
         <div className="lg:col-span-3 space-y-5">
           <div className="rounded-xl border border-border bg-muted/20 px-4 py-2.5">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Traffic Generation Rates — gebaseerd op CROW 381, Brugge Mobiliteitsstudie
+              Traffic Generation Rates - gebaseerd op CROW 381, Brugge Mobiliteitsstudie
             </p>
           </div>
 
@@ -49,7 +49,7 @@ export function Tab2BouwfaseLijnLV({ onBack }: TabProps) {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-medium text-foreground">Prefabricage percentage</label>
-              <span className="text-[10px] text-muted-foreground">0.00–1.00</span>
+              <span className="text-[10px] text-muted-foreground">0.00-1.00</span>
             </div>
             <Input
               type="number" value={state.prefab_percentage}
@@ -59,7 +59,7 @@ export function Tab2BouwfaseLijnLV({ onBack }: TabProps) {
             />
             <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
               <p className="text-[11px] text-amber-700 dark:text-amber-400">
-                30%–56% prefabricage houdt beide lijnbron- en puntbrondrempels in de bouwfase conform.
+                30%-56% prefabricage houdt beide lijnbron- en puntbrondrempels in de bouwfase conform.
               </p>
             </div>
             <p className="text-[10px] text-amber-600 dark:text-amber-400 flex items-start gap-1">
@@ -90,7 +90,7 @@ export function Tab2BouwfaseLijnLV({ onBack }: TabProps) {
         {/* Right */}
         <div className="lg:col-span-2">
           <CompliancePanel
-            label="Compliance Status — Lijnbron LV"
+            label="Compliance Status - Lijnbron LV"
             threshold={thresholds[src]}
             currentEmission={emissions[src]}
             remaining={remaining[src]}

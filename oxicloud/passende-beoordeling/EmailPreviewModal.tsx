@@ -37,7 +37,7 @@ export function EmailPreviewModal({ open, onOpenChange, project, onConfirm }: Em
             <div className="flex gap-2">
               <span className="font-medium text-muted-foreground w-16">{isNL ? 'Betreft' : 'Subject'}:</span>
               <span className="text-foreground">
-                {isNL ? 'Offerte Passende Beoordeling' : 'Appropriate Assessment Quote'} — {project.name}
+                {isNL ? 'Offerte Passende Beoordeling' : 'Appropriate Assessment Quote'} - {project.name}
               </span>
             </div>
           </div>

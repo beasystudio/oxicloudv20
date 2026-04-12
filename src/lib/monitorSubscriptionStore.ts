@@ -1,4 +1,4 @@
-// Monitor Subscription Store — Municipal subscription management for OxiCloud Monitor
+// Monitor Subscription Store - Municipal subscription management for OxiCloud Monitor
 
 export interface MonitorSubscription {
   id: string;

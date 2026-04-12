@@ -16,7 +16,7 @@ const steps = [
   {
     number: '03',
     title: 'Start producing',
-    description: 'Generate a quote, align with your project owner, and deliver your first reports in OxiCloud — powered by our NOx engine.',
+    description: 'Generate a quote, align with your project owner, and deliver your first reports in OxiCloud - powered by our NOx engine.',
   },
 ];
 
@@ -28,7 +28,7 @@ export const HowItWorksSection = () => {
     <section id="how-it-works" className="py-24 md:py-32 px-6 bg-background">
       <div className="container mx-auto max-w-6xl" ref={ref}>
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20">
-          {/* Left column — intro */}
+          {/* Left column - intro */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -44,7 +44,7 @@ export const HowItWorksSection = () => {
             </h2>
           </motion.div>
 
-          {/* Right column — vertical timeline */}
+          {/* Right column - vertical timeline */}
           <div className="relative">
             <motion.div
               initial={{ scaleY: 0 }}

@@ -56,7 +56,7 @@ export default function PilotFinancial() {
             </div>
           </div>
 
-          {/* KPI Stats — Bento Grid */}
+          {/* KPI Stats - Bento Grid */}
            <div className="grid grid-cols-12 gap-4 mb-8 pb-6 border-b">
              <div className="col-span-6 md:col-span-3 flex flex-col justify-between p-5 rounded-2xl border border-border/40 bg-primary/5 min-h-[120px]">
                <span className="text-[10px] text-muted-foreground uppercase tracking-[0.14em] font-medium">{selectedYear} {t('dashboard.financial.yearRevenue')}</span>

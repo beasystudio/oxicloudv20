@@ -289,9 +289,9 @@ export const ProjectContacts = ({ projectId, onContactsChanged }: ProjectContact
                               onDoubleClick={() => handleContactClick(contact)}
                             >
                               <div className="font-medium text-foreground">{contact.contact_person}</div>
-                              <div className="text-muted-foreground truncate">{contact.email || '—'}</div>
-                              <div className="text-muted-foreground">{contact.phone || '—'}</div>
-                              <div className="text-muted-foreground">{contact.mobile || '—'}</div>
+                              <div className="text-muted-foreground truncate">{contact.email || '-'}</div>
+                              <div className="text-muted-foreground">{contact.phone || '-'}</div>
+                              <div className="text-muted-foreground">{contact.mobile || '-'}</div>
                             </div>
                           ))}
                         </div>

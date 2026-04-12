@@ -43,10 +43,10 @@ export const SolutionSection = () => {
             For many project owners, the architecture firm is their only guiding advisor and main responsible partner. But right now, too much of their day is spent on unpaid administrative tasks rather than on controlling the project as it should be.
           </motion.p>
           <motion.p {...fadeIn(0.15)} className="text-muted-foreground text-base leading-relaxed mb-6">
-            There is a need for a platform to keep architects, engineers, and firms actively engaged in the building permit cycle. They should decide how NOx reports are prepared and submitted — especially in a context where legislation is evolving, time is scarce, precision matters, and fast compliance is the priority.
+            There is a need for a platform to keep architects, engineers, and firms actively engaged in the building permit cycle. They should decide how NOx reports are prepared and submitted - especially in a context where legislation is evolving, time is scarce, precision matters, and fast compliance is the priority.
           </motion.p>
           <motion.p {...fadeIn(0.2)} className="text-foreground font-medium text-lg">
-            Free architects, engineers, surveyors — whoever has to deal with unrewarded effort and hidden workload. We see your pain.
+            Free architects, engineers, surveyors - whoever has to deal with unrewarded effort and hidden workload. We see your pain.
           </motion.p>
         </div>
       </div>
@@ -80,10 +80,10 @@ export const SolutionSection = () => {
             We know, because we were that architect.
           </motion.h3>
           <motion.p {...fadeIn(0.1)} className="text-muted-foreground text-base leading-relaxed mb-8 max-w-2xl mx-auto">
-            The unpaid hours, the unanswered follow-ups, the work that vanished into someone else's dossier. OxiCloud was built by someone who lived it — and refused to accept it as normal.
+            The unpaid hours, the unanswered follow-ups, the work that vanished into someone else's dossier. OxiCloud was built by someone who lived it - and refused to accept it as normal.
           </motion.p>
           <motion.p {...fadeIn(0.15)} className="text-foreground font-medium text-lg max-w-2xl mx-auto text-balance">
-            With OxiCloud, architects and engineers can focus again on what truly matters: leading projects, making decisions, and delivering quality design — while staying fully in control of compliance.
+            With OxiCloud, architects and engineers can focus again on what truly matters: leading projects, making decisions, and delivering quality design - while staying fully in control of compliance.
           </motion.p>
         </div>
       </div>

@@ -118,7 +118,7 @@ export default function PilotContacts() {
     if (!user || !company) return [];
     const groups: Record<string, CompanyGroup> = {};
 
-    // Only external contacts — own company belongs in Settings
+    // Only external contacts - own company belongs in Settings
     contacts.filter(c => c.type === 'company').forEach(cc => {
       const addr = [cc.street, cc.number].filter(Boolean).join(' ');
       const cityLine = [cc.postalCode, cc.city].filter(Boolean).join(' ');
@@ -158,7 +158,7 @@ export default function PilotContacts() {
     return Object.values(groups);
   }, [contacts, company, user]);
 
-  // All persons flat list — external contacts only
+  // All persons flat list - external contacts only
   const allPersons = useMemo(() => {
     const persons: { id: string; name: string; company: string; function: string; email: string; telephone: string }[] = [];
 
@@ -265,7 +265,7 @@ export default function PilotContacts() {
         <PilotNavigation />
         <div className="container mx-auto px-4 py-6">
 
-          {/* Search & Filter Bar with Company/Person toggle — matches Demo */}
+          {/* Search & Filter Bar with Company/Person toggle - matches Demo */}
           <Card className="mb-4">
             <CardContent className="py-3 px-4">
               <div className="flex items-center gap-3">
@@ -389,9 +389,9 @@ export default function PilotContacts() {
                           >
                             <div className="text-sm font-semibold text-foreground">{grp.name}</div>
                             <div className="flex items-center gap-2 mt-1 text-[11px] text-muted-foreground">
-                              <span className="truncate max-w-[160px]">{grp.email || '—'}</span>
+                              <span className="truncate max-w-[160px]">{grp.email || '-'}</span>
                               <span className="opacity-40">·</span>
-                              <span className="whitespace-nowrap">{grp.telephone || '—'}</span>
+                              <span className="whitespace-nowrap">{grp.telephone || '-'}</span>
                             </div>
                             {grp.address && (
                               <div className="text-[10px] mt-0.5 truncate text-muted-foreground/60">
@@ -467,7 +467,7 @@ export default function PilotContacts() {
                               onDoubleClick={(e) => { e.stopPropagation(); handlePersonDoubleClick({ ...p, company: selectedCompanyData.name }); }}
                             >
                               <div className="font-medium text-foreground">{p.name}</div>
-                              <div className="text-muted-foreground">{p.function || '—'}</div>
+                              <div className="text-muted-foreground">{p.function || '-'}</div>
                               <div className="text-muted-foreground truncate">{p.email}</div>
                               <div className="text-muted-foreground">{p.telephone}</div>
                             </div>

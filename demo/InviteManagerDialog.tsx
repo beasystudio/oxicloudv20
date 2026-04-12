@@ -20,7 +20,7 @@ export function InviteManagerDialog({ open, onOpenChange }: InviteManagerDialogP
   const handleSend = async () => {
     if (!email) return;
     setLoading(true);
-    // Simulate sending — in production this would call an edge function
+    // Simulate sending - in production this would call an edge function
     await new Promise(r => setTimeout(r, 1200));
     setLoading(false);
     setSent(true);

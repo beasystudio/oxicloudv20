@@ -137,7 +137,7 @@ export function cloneNoxVersion(projectId: string, createdBy: string): NoxProjec
   const nextVersionNum = history.length;
   const nextVersion = `v${nextVersionNum}`;
   
-  // Create new version — pre-estimation and map data are preserved, but payment/calc data reset
+  // Create new version - pre-estimation and map data are preserved, but payment/calc data reset
   allData[index] = {
     ...current,
     status: 'input_completed', // Pre-estimation is kept, so start from input_completed
@@ -208,7 +208,7 @@ export function saveNoxPreEstimation(projectId: string, data: PreEstimationData)
   const currentData = getNoxDataByProjectId(projectId);
   const newStatus: OxiCloudProjectStatus = isPreEstimationComplete(data) ? 'input_completed' : 'input_incomplete';
   
-  // Status progression order — never go backwards
+  // Status progression order - never go backwards
   const STATUS_ORDER: OxiCloudProjectStatus[] = [
     'input_incomplete', 'input_completed', 'price_generated',
     'awaiting_payment', 'paid', 'report_in_progress', 'report_delivered'

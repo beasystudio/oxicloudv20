@@ -77,7 +77,7 @@ const MapInvalidateSize: React.FC<{trigger: string;}> = ({ trigger }) => {
   return null;
 };
 
-// Click-to-select parcel component – queries Belgian cadastral WFS for real polygon
+// Click-to-select parcel component - queries Belgian cadastral WFS for real polygon
 const ParcelSelector: React.FC<{
   onParcelSelected: (coords: [number, number][]) => void;
   enabled: boolean;
@@ -299,7 +299,7 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
           setCurrentStep('plot');
         }
       } catch (error) {
-        // Silently fail — user can still search manually
+        // Silently fail - user can still search manually
         setSearchQuery(initialData.address!);
       }
     };
@@ -354,7 +354,7 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
         setMarkerPosition(coords);
         setAddress(display_name);
         setShowSearch(false);
-        toast.success('Locatie gevonden — klik op de kaart om een perceel te selecteren');
+        toast.success('Locatie gevonden - klik op de kaart om een perceel te selecteren');
         setCurrentStep('plot');
       } else {
         toast.error('Adres niet gevonden in België');

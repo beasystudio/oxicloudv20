@@ -397,20 +397,20 @@ export default function PilotSettings() {
                                       </div>
                                     </div>
                                   </TableCell>
-                                  <TableCell className="py-3 text-xs text-muted-foreground">{comp.vatNumber || '—'}</TableCell>
-                                  <TableCell className="py-3 text-xs text-muted-foreground">{comp.email || '—'}</TableCell>
+                                  <TableCell className="py-3 text-xs text-muted-foreground">{comp.vatNumber || '-'}</TableCell>
+                                  <TableCell className="py-3 text-xs text-muted-foreground">{comp.email || '-'}</TableCell>
                                   <TableCell className="py-3">
                                     {comp.street || comp.city ? (
                                       <div>
                                         <div className="text-xs">{comp.street && `${comp.street} ${comp.number}`}</div>
                                         {comp.city && <div className="text-xs text-muted-foreground">{comp.postalCode} {comp.city}</div>}
                                       </div>
-                                    ) : <span className="text-xs text-muted-foreground">—</span>}
+                                    ) : <span className="text-xs text-muted-foreground">-</span>}
                                   </TableCell>
                                   <TableCell className="py-3">
                                     {comp.branchAddress ? (
                                       <span className="text-xs text-muted-foreground">{comp.branchAddress}</span>
-                                    ) : <span className="text-xs text-muted-foreground">—</span>}
+                                    ) : <span className="text-xs text-muted-foreground">-</span>}
                                   </TableCell>
                                   <TableCell className="py-3 !pr-5">
                                     <div className="flex flex-wrap gap-1">
@@ -423,7 +423,7 @@ export default function PilotSettings() {
                                             <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 font-normal">+{comp.divisions.length - 2}</Badge>
                                           )}
                                         </>
-                                      ) : <span className="text-xs text-muted-foreground">—</span>}
+                                      ) : <span className="text-xs text-muted-foreground">-</span>}
                                     </div>
                                   </TableCell>
                                 </TableRow>

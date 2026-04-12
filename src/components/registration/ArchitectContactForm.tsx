@@ -52,7 +52,7 @@ export const ArchitectContactForm = ({ onSubmit }: ArchitectContactFormProps) =>
     setVatLooking(true);
     setVatResult(null);
 
-    // Always use mock mode — any input returns fake data
+    // Always use mock mode - any input returns fake data
     const result = await lookupVATNumber(vatNumber, true);
 
     if (result.success && result.data) {
@@ -66,7 +66,7 @@ export const ArchitectContactForm = ({ onSubmit }: ArchitectContactFormProps) =>
       }));
       toast({
         title: 'Company found',
-        description: `${result.data.companyName} — ${result.data.city}`,
+        description: `${result.data.companyName} - ${result.data.city}`,
       });
     }
     setVatLooking(false);

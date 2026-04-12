@@ -198,7 +198,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
           animate={{ opacity: 1, y: 0 }}
           className="rounded-xl border border-primary/30 bg-primary/5 p-4 flex items-center justify-between"
         >
-          <p className="text-sm text-foreground">Scenariowaarden laden in Sandbox? — <strong>{pendingScenario.title}</strong></p>
+          <p className="text-sm text-foreground">Scenariowaarden laden in Sandbox? - <strong>{pendingScenario.title}</strong></p>
           <div className="flex gap-2">
             <Button variant="ghost" size="sm" onClick={() => setPendingScenario(null)}>Annuleren</Button>
             <Button size="sm" onClick={confirmScenario}>Bevestigen</Button>
@@ -208,7 +208,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
 
       {/* Split panel */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-        {/* Left panel — inputs */}
+        {/* Left panel - inputs */}
         <div className="lg:col-span-3 space-y-5">
           {/* Mode toggle */}
           <div className="flex items-center gap-1 p-1 rounded-xl bg-muted/50 w-fit">
@@ -312,7 +312,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
               {/* Expert info banners */}
               <div className="rounded-xl border border-border bg-muted/30 p-3 flex items-center gap-3">
                 <Info className="h-4 w-4 text-muted-foreground shrink-0" />
-                <p className="text-xs text-muted-foreground">Input emissies: {seedEmission.toFixed(1)} kg NOₓ — Zelfde als begeleide modus</p>
+                <p className="text-xs text-muted-foreground">Input emissies: {seedEmission.toFixed(1)} kg NOₓ - Zelfde als begeleide modus</p>
               </div>
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 flex items-center gap-3">
                 <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
@@ -367,7 +367,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
                   className="min-h-[80px] text-sm"
                 />
                 <p className="text-[10px] text-muted-foreground">
-                  Minimaal 20 tekens vereist — {state.expertReason.length} tekens ingevoerd
+                  Minimaal 20 tekens vereist - {state.expertReason.length} tekens ingevoerd
                 </p>
               </div>
             </div>
@@ -394,7 +394,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
           </div>
         </div>
 
-        {/* Right panel — projection */}
+        {/* Right panel - projection */}
         <div className="lg:col-span-2">
           <CompliancePanel
             label="Emissieprojectie"

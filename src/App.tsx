@@ -47,7 +47,7 @@ const queryClient = new QueryClient();
 const AnimatedRoutes = () => {
   return (
     <Routes>
-        {/* Public / Auth pages — theme-aware */}
+        {/* Public / Auth pages - theme-aware */}
         <Route path="/" element={<ThemeWrapper><PageTransition><Index /></PageTransition></ThemeWrapper>} />
         <Route path="/login" element={<ThemeWrapper><PageTransition><Login /></PageTransition></ThemeWrapper>} />
         <Route path="/forgot-password" element={<ThemeWrapper><PageTransition><ForgotPassword /></PageTransition></ThemeWrapper>} />
@@ -61,7 +61,7 @@ const AnimatedRoutes = () => {
         <Route path="/government-register" element={<Navigate to="/" replace />} />
         <Route path="/book-a-demo" element={<Navigate to="/pilot-demo" replace />} />
         
-        {/* Pilot Auth — theme-aware */}
+        {/* Pilot Auth - theme-aware */}
         <Route path="/pilot-demo" element={<Navigate to="/pilot-demo/create-account" replace />} />
         <Route path="/pilot-demo/register" element={<Navigate to="/pilot-demo/create-account" replace />} />
         <Route path="/pilot-demo/activation-sent" element={<ThemeWrapper><PageTransition><PilotActivationSent /></PageTransition></ThemeWrapper>} />
@@ -69,7 +69,7 @@ const AnimatedRoutes = () => {
         <Route path="/pilot-demo/login" element={<ThemeWrapper><PageTransition><PilotLogin /></PageTransition></ThemeWrapper>} />
         <Route path="/pilot-demo/forgot-password" element={<ThemeWrapper><PageTransition><PilotForgotPassword /></PageTransition></ThemeWrapper>} />
 
-        {/* Pilot Dashboard — theme-aware */}
+        {/* Pilot Dashboard - theme-aware */}
         <Route path="/pilot-demo/dashboard" element={<ThemeWrapper><PageTransition><PilotDashboard /></PageTransition></ThemeWrapper>} />
         <Route path="/pilot-demo/projects" element={<ThemeWrapper><PageTransition><PilotProjects /></PageTransition></ThemeWrapper>} />
         <Route path="/pilot-demo/contacts" element={<ThemeWrapper><PageTransition><PilotContacts /></PageTransition></ThemeWrapper>} />
@@ -80,7 +80,7 @@ const AnimatedRoutes = () => {
         
         <Route path="/register/workspace" element={<Navigate to="/pilot-demo/create-account" replace />} />
         
-        {/* Dashboard — theme-aware */}
+        {/* Dashboard - theme-aware */}
         <Route path="/dashboard/demo" element={<ThemeWrapper><PageTransition><DemoDashboard /></PageTransition></ThemeWrapper>} />
         <Route path="/dashboard/partner" element={<ThemeWrapper><ProtectedRoute allowedRoles={['client_owner', 'client_admin', 'client_user']}><PageTransition><PartnerHome /></PageTransition></ProtectedRoute></ThemeWrapper>} />
         <Route path="/dashboard/admin" element={<Navigate to="/dashboard/client/home" replace />} />

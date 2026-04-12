@@ -111,7 +111,7 @@ export function QuotePreviewStep({
                 <div className={`h-5 w-5 rounded-full flex items-center justify-center text-xs shrink-0 ${
                   item.included ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
                 }`}>
-                  {item.included ? "✓" : "—"}
+                  {item.included ? "✓" : "-"}
                 </div>
                 <span className={item.included ? "text-foreground" : "text-muted-foreground"}>
                   {item.label}

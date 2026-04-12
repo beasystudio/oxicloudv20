@@ -398,7 +398,7 @@ const ProjectsDashboard = () => {
   const handleDetailedCalculationSubmit = (data: DetailedCalculationData) => {
     if (!selectedProjectId) return;
     saveNoxDetailedCalculation(selectedProjectId, data);
-    // Report generated but held until client payment — show processing first
+    // Report generated but held until client payment - show processing first
     updateNoxData(selectedProjectId, { status: 'report_in_progress' });
     setNoxProjectsRefreshKey((prev) => prev + 1);
     setNoxFlowStep('report-processing');
@@ -913,7 +913,7 @@ const ProjectsDashboard = () => {
               </div>
               <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted cursor-pointer transition-colors" onClick={() => handleSelectProject(lastSelectedProject.id)}>
                 <span className="font-medium">{lastSelectedProject.projectNumber}</span>
-                <span className="text-muted-foreground">—</span>
+                <span className="text-muted-foreground">-</span>
                 <span>{lastSelectedProject.name}</span>
               </div>
             </div>}
@@ -1002,7 +1002,7 @@ const ProjectsDashboard = () => {
           handleStartNoxFlow('progress');
           break;
         case 'report_delivered':
-          // Don't re-enter the flow — show mock PDF dialog
+          // Don't re-enter the flow - show mock PDF dialog
           setShowMockPdfDialog(true);
           return;
         default:
@@ -1085,7 +1085,7 @@ const ProjectsDashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Version History + Clone CTA — shown when report delivered */}
+            {/* Version History + Clone CTA - shown when report delivered */}
             {noxData?.status === 'report_delivered' &&
           <NoxVersionHistory
             noxData={{
@@ -1098,7 +1098,7 @@ const ProjectsDashboard = () => {
 
           }
 
-            {/* Audit Log Card — shown when versions exist */}
+            {/* Audit Log Card - shown when versions exist */}
             {(noxData?.versionHistory?.length || 0) > 0 &&
           <Card className="rounded-xl border bg-card text-card-foreground shadow-sm">
                 <CardHeader className="p-4 pb-2">
@@ -1308,7 +1308,7 @@ const ProjectsDashboard = () => {
 
         {/* Main content */}
         {<>
-        {/* Render NOx flow or current view — admins never enter NOx flows */}
+        {/* Render NOx flow or current view - admins never enter NOx flows */}
         {!isAdmin && noxFlowStep && currentNoxProject ? (() => {
           const oxiProject = toOxiCloudProject(currentNoxProject);
           if (!oxiProject && noxFlowStep !== 'pre-estimation') return null;

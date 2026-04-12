@@ -31,7 +31,7 @@ const getTourSteps = (t: (key: string) => string): { step: string; title: string
         rows: [
           { label: 'Project name', value: 'Residence Helios' },
           { label: 'Address', value: 'Bondgenotenlaan 42, 3000 Leuven' },
-          { label: 'Project type', value: 'Residential — New build' },
+          { label: 'Project type', value: 'Residential - New build' },
         ],
         badge: 'Auto-detecting location data…',
       },
@@ -39,10 +39,10 @@ const getTourSteps = (t: (key: string) => string): { step: string; title: string
         heading: 'New Project',
         rows: [
           { label: 'Parcel', value: 'BE-44032A (auto-detected)' },
-          { label: 'Natura 2000', value: '1.2km — Demervallei' },
+          { label: 'Natura 2000', value: '1.2km - Demervallei' },
           { label: 'Zoning', value: 'Residential area' },
         ],
-        badge: 'Project created — ready for screening',
+        badge: 'Project created - ready for screening',
       },
     ],
   },
@@ -52,7 +52,7 @@ const getTourSteps = (t: (key: string) => string): { step: string; title: string
     desc: t('forArchitects.tourStep2Desc'),
     screens: [
       {
-        heading: 'NOx Screening — Construction',
+        heading: 'NOx Screening - Construction',
         rows: [
           { label: 'Excavators', value: 'Select…' },
           { label: 'Duration', value: 'Select…' },
@@ -61,22 +61,22 @@ const getTourSteps = (t: (key: string) => string): { step: string; title: string
         badge: 'Choose from simple dropdowns',
       },
       {
-        heading: 'NOx Screening — Construction',
+        heading: 'NOx Screening - Construction',
         rows: [
           { label: 'Excavators', value: '2' },
           { label: 'Duration', value: '18 months' },
-          { label: 'Crane', value: 'Yes — tower crane' },
+          { label: 'Crane', value: 'Yes - tower crane' },
         ],
         badge: 'Construction phase complete',
       },
       {
-        heading: 'NOx Screening — Exploitation',
+        heading: 'NOx Screening - Exploitation',
         rows: [
-          { label: 'Heating system', value: 'Gas condensing — 24kW' },
+          { label: 'Heating system', value: 'Gas condensing - 24kW' },
           { label: 'Parking spaces', value: '12 (underground)' },
-          { label: 'Traffic generation', value: 'Low — residential' },
+          { label: 'Traffic generation', value: 'Low - residential' },
         ],
-        badge: 'All inputs confirmed — calculating',
+        badge: 'All inputs confirmed - calculating',
       },
     ],
   },
@@ -99,18 +99,18 @@ const getTourSteps = (t: (key: string) => string): { step: string; title: string
         rows: [
           { label: 'Construction NOx', value: '0.42 kg/ha/y' },
           { label: 'Exploitation NOx', value: '0.18 kg/ha/y' },
-          { label: 'KDW threshold', value: 'Below — compliant' },
+          { label: 'KDW threshold', value: 'Below - compliant' },
         ],
         badge: 'Screening passed ✓',
       },
       {
         heading: 'Report Ready',
         rows: [
-          { label: 'Result', value: 'Below KDW threshold — compliant' },
-          { label: 'Format', value: 'PDF — municipality standard' },
+          { label: 'Result', value: 'Below KDW threshold - compliant' },
+          { label: 'Format', value: 'PDF - municipality standard' },
           { label: 'Validity', value: '6 months from generation' },
         ],
-        badge: 'Report generated — ready for download',
+        badge: 'Report generated - ready for download',
       },
     ],
   },
@@ -141,7 +141,7 @@ const getTourSteps = (t: (key: string) => string): { step: string; title: string
   },
 ];
 
-/* ── Mockup Screen (stateless — parent controls screen index) ── */
+/* ── Mockup Screen (stateless - parent controls screen index) ── */
 const AnimatedMockup = ({ data, animKey }: { data: MockupData; animKey: string }) => (
   <div className="rounded-xl border border-border shadow-xl bg-background overflow-hidden">
     {/* Browser chrome */}
@@ -169,7 +169,7 @@ const AnimatedMockup = ({ data, animKey }: { data: MockupData; animKey: string }
               <div key={row.label} className="flex items-center justify-between py-3 border-b border-border/60 last:border-0">
                 <span className="text-xs text-muted-foreground uppercase tracking-wider">{row.label}</span>
                 <span className={`text-sm font-medium ${row.value && !row.value.includes('Select') && !row.value.includes('Processing') ? 'text-foreground' : 'text-muted-foreground/40'}`}>
-                  {row.value || '—'}
+                  {row.value || '-'}
                 </span>
               </div>
             ))}
@@ -199,7 +199,7 @@ const fadeIn = (delay = 0) => ({
   transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
 });
 
-/* ── Onboarding Tour — unified timing ── */
+/* ── Onboarding Tour - unified timing ── */
 const SCREEN_MS = 3500;
 
 const OnboardingTour = () => {
@@ -223,7 +223,7 @@ const OnboardingTour = () => {
     elapsedRef.current = 0;
   }, [active]);
 
-  // Unified timer — drives sub-screens within a step, then advances step
+  // Unified timer - drives sub-screens within a step, then advances step
   useEffect(() => {
     if (paused) return;
     let raf: number;
@@ -285,7 +285,7 @@ const OnboardingTour = () => {
         </motion.div>
 
         <div>
-          {/* Step indicator — segmented progress bars (like Instagram stories) */}
+          {/* Step indicator - segmented progress bars (like Instagram stories) */}
           <div className="flex gap-3 mb-12">
             {tourSteps.map((s, i) => {
               const stepScreens = s.screens.length;
@@ -352,7 +352,7 @@ const OnboardingTour = () => {
             </AnimatePresence>
           </div>
 
-          {/* Controls — arrows + pause */}
+          {/* Controls - arrows + pause */}
           <div className="flex items-center justify-end mt-8 gap-2">
             <button
               onClick={togglePause}

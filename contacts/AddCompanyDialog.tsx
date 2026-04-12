@@ -324,7 +324,7 @@ export function AddCompanyDialog({ open, onOpenChange, onSaved }: AddCompanyDial
               />
             </div>
 
-            {/* Removed Contact Type section — contact types are only assigned within project dossiers */}
+            {/* Removed Contact Type section - contact types are only assigned within project dossiers */}
 
             {/* Section: Evaluation */}
             <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide pt-2">

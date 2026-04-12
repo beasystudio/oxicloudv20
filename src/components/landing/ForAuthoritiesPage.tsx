@@ -23,8 +23,8 @@ const tracks = {
     steps: [
       { title: 'Spatial validation', desc: 'Verifies distance from plot centre to nearest site boundary, parcel data, and Natura 2000 proximity.' },
       { title: 'Consistency check', desc: 'Confirms results are spatially and logically coherent with the project context.' },
-      { title: 'Deviation flagging', desc: 'If the algorithm suggests 2–3 excavators but the user submitted 1, the system flags it.' },
-      { title: 'Structured remarks', desc: 'A clear performance summary is generated — ready for the reviewer to sign off.' },
+      { title: 'Deviation flagging', desc: 'If the algorithm suggests 2-3 excavators but the user submitted 1, the system flags it.' },
+      { title: 'Structured remarks', desc: 'A clear performance summary is generated - ready for the reviewer to sign off.' },
     ],
   },
   thirdParty: {
@@ -46,7 +46,7 @@ const featureTabs = [
     label: 'Validate',
     icon: Shield,
     title: 'Automated spatial & logical validation',
-    desc: 'Every report is checked against parcel boundaries, Natura 2000 proximity, building footprints, and deviation thresholds — automatically.',
+    desc: 'Every report is checked against parcel boundaries, Natura 2000 proximity, building footprints, and deviation thresholds - automatically.',
     details: [
       'Distance from plot centre to nearest site boundary',
       'Parcel boundaries & building footprint verification',
@@ -54,10 +54,10 @@ const featureTabs = [
       'Deviation flagging for altered parameters',
     ],
     mockupRows: [
-      { label: 'Distance to site', value: '142m — Verified ✓' },
-      { label: 'Parcel match', value: 'BE-44032A — Confirmed ✓' },
-      { label: 'Natura 2000', value: '1.2km — Not in proximity ✓' },
-      { label: 'Footprint', value: '326m² — Within limits ✓' },
+      { label: 'Distance to site', value: '142m - Verified ✓' },
+      { label: 'Parcel match', value: 'BE-44032A - Confirmed ✓' },
+      { label: 'Natura 2000', value: '1.2km - Not in proximity ✓' },
+      { label: 'Footprint', value: '326m² - Within limits ✓' },
     ],
   },
   {
@@ -74,9 +74,9 @@ const featureTabs = [
     ],
     mockupRows: [
       { label: 'Source document', value: 'NOx_Report_External.pdf' },
-      { label: 'Fields extracted', value: '24 of 24 — Complete' },
+      { label: 'Fields extracted', value: '24 of 24 - Complete' },
       { label: 'Baseline result', value: '0.38 kg/ha/y (OxiCloud)' },
-      { label: 'Submitted result', value: '0.41 kg/ha/y — Δ 7.9%' },
+      { label: 'Submitted result', value: '0.41 kg/ha/y - Δ 7.9%' },
     ],
   },
   {
@@ -92,9 +92,9 @@ const featureTabs = [
       'Reviewer identification logged',
     ],
     mockupRows: [
-      { label: 'Report format', value: 'PDF — Municipality standard' },
-      { label: 'Digital signature', value: 'SHA-256 — Signed ✓' },
-      { label: 'Reviewer', value: 'J. Peeters — ENV-024' },
+      { label: 'Report format', value: 'PDF - Municipality standard' },
+      { label: 'Digital signature', value: 'SHA-256 - Signed ✓' },
+      { label: 'Reviewer', value: 'J. Peeters - ENV-024' },
       { label: 'Timestamp', value: '07 Mar 2026 · 14:22 CET' },
     ],
   },
@@ -111,10 +111,10 @@ const featureTabs = [
       'Structured risk assessment',
     ],
     mockupRows: [
-      { label: 'Excavators', value: '1 submitted (rec: 2–3) ⚠' },
-      { label: 'Duration', value: '6 months (rec: 12–18) ⚠' },
-      { label: 'Heating system', value: 'Gas condensing — OK ✓' },
-      { label: 'Risk level', value: 'Medium — 2 flags' },
+      { label: 'Excavators', value: '1 submitted (rec: 2-3) ⚠' },
+      { label: 'Duration', value: '6 months (rec: 12-18) ⚠' },
+      { label: 'Heating system', value: 'Gas condensing - OK ✓' },
+      { label: 'Risk level', value: 'Medium - 2 flags' },
     ],
   },
 ];
@@ -124,7 +124,7 @@ const timelineMockups = [
   {
     step: '01',
     title: 'Upload the report',
-    desc: 'OxiCloud or third-party — just submit. The system automatically identifies the type and routes it.',
+    desc: 'OxiCloud or third-party - just submit. The system automatically identifies the type and routes it.',
     mockup: {
       heading: 'Report Upload',
       rows: [
@@ -137,11 +137,11 @@ const timelineMockups = [
   {
     step: '02',
     title: 'System validates',
-    desc: 'Distance, parcel, footprint, Natura 2000 — all checked automatically in seconds.',
+    desc: 'Distance, parcel, footprint, Natura 2000 - all checked automatically in seconds.',
     mockup: {
       heading: 'Validation Engine',
       rows: [
-        { label: 'Distance check', value: '142m — Verified ✓' },
+        { label: 'Distance check', value: '142m - Verified ✓' },
         { label: 'Parcel boundaries', value: 'Confirmed ✓' },
         { label: 'Natura 2000', value: 'Not in proximity ✓' },
       ],
@@ -154,21 +154,21 @@ const timelineMockups = [
     mockup: {
       heading: 'Deviation Report',
       rows: [
-        { label: 'Excavators', value: '1 submitted (system: 2–3) ⚠' },
+        { label: 'Excavators', value: '1 submitted (system: 2-3) ⚠' },
         { label: 'Baseline comparison', value: 'Within tolerance ✓' },
-        { label: 'Risk level', value: 'Low — flagged item noted' },
+        { label: 'Risk level', value: 'Low - flagged item noted' },
       ],
     },
   },
   {
     step: '04',
     title: 'Generate the report',
-    desc: 'One click. A certified validation report — proving this project was reviewed and approved.',
+    desc: 'One click. A certified validation report - proving this project was reviewed and approved.',
     mockup: {
       heading: 'Validation Complete',
       rows: [
-        { label: 'Result', value: 'Acceptable — 1 flag noted' },
-        { label: 'Report', value: 'PDF generated — audit-ready' },
+        { label: 'Result', value: 'Acceptable - 1 flag noted' },
+        { label: 'Report', value: 'PDF generated - audit-ready' },
         { label: 'Timestamp', value: '07 Mar 2026 · 14:22 CET' },
       ],
     },

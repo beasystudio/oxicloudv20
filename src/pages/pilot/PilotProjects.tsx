@@ -340,7 +340,7 @@ export default function PilotProjects() {
         <div className="pl-12 h-12 text-base bg-background border rounded-md flex items-center">
           <span className={cn("inline-block w-2.5 h-2.5 rounded-full mr-2", noxInfo.status ? STATUS_CONFIG[noxInfo.status].color : 'border-2 border-muted-foreground/40')} />
           <span className="font-medium font-mono">{selectedProject.projectNumber}</span>
-          <span className="mx-2 text-muted-foreground">—</span>
+          <span className="mx-2 text-muted-foreground">-</span>
           <span>{selectedProject.name}</span>
         </div>
       </div>
@@ -378,7 +378,7 @@ export default function PilotProjects() {
             </CardContent>
           </Card>
 
-          {/* Version History + Clone CTA Card — shown after v0 report delivered */}
+          {/* Version History + Clone CTA Card - shown after v0 report delivered */}
           {selectedProject.noxStatus === 'report_delivered' && (
             <Card className="rounded-xl border bg-card text-card-foreground shadow-sm">
               <CardHeader className="p-4 pb-2">
@@ -496,7 +496,7 @@ export default function PilotProjects() {
             </Card>
           )}
 
-          {/* Audit Log Card — shown when versions exist */}
+          {/* Audit Log Card - shown when versions exist */}
           {(selectedProject.versionHistory?.length || 0) > 0 && (
             <Card className="rounded-xl border bg-card text-card-foreground shadow-sm">
               <CardHeader className="p-4 pb-2">
@@ -661,9 +661,9 @@ export default function PilotProjects() {
                       });
                     }}>
                           <div className={cn("font-medium text-xs truncate transition-colors", expandedCompanies.has(companyName) ? "text-black" : "text-foreground group-hover:text-foreground")}>{companyName}</div>
-                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{persons[0]?.email || '—'}</div>
-                          <div className={cn("text-xs transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{persons[0]?.phone || '—'}</div>
-                          <div className={cn("text-xs transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>—</div>
+                          <div className={cn("text-xs truncate transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{persons[0]?.email || '-'}</div>
+                          <div className={cn("text-xs transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>{persons[0]?.phone || '-'}</div>
+                          <div className={cn("text-xs transition-colors", expandedCompanies.has(companyName) ? "text-black/80" : "text-muted-foreground group-hover:text-foreground/80")}>-</div>
                         </div>
 
                         {/* Expanded Content */}
@@ -704,10 +704,10 @@ export default function PilotProjects() {
                               </div>
                               <div className="grid grid-cols-[minmax(80px,1fr)_minmax(100px,1fr)_50px_60px_minmax(90px,1fr)] gap-2 py-1.5 px-2 -mx-2 text-xs rounded-lg hover:scale-[1.01] hover:z-10 cursor-pointer transition-all group/address">
                                 <div className="font-medium text-foreground truncate group-hover/address:text-foreground">{companyName.split(' ')[0]}</div>
-                                <div className="text-muted-foreground truncate group-hover/address:text-foreground/70">—</div>
-                                <div className="text-muted-foreground group-hover/address:text-foreground/70">—</div>
-                                <div className="text-muted-foreground group-hover/address:text-foreground/70">—</div>
-                                <div className="text-muted-foreground truncate group-hover/address:text-foreground/70">—</div>
+                                <div className="text-muted-foreground truncate group-hover/address:text-foreground/70">-</div>
+                                <div className="text-muted-foreground group-hover/address:text-foreground/70">-</div>
+                                <div className="text-muted-foreground group-hover/address:text-foreground/70">-</div>
+                                <div className="text-muted-foreground truncate group-hover/address:text-foreground/70">-</div>
                               </div>
                             </div>
                           </div>}
@@ -747,7 +747,7 @@ export default function PilotProjects() {
               </div>
               <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted cursor-pointer transition-colors" onClick={() => handleSelectProject(lastSelectedProject.id)}>
                 <span className="font-medium">{lastSelectedProject.projectNumber}</span>
-                <span className="text-muted-foreground">—</span>
+                <span className="text-muted-foreground">-</span>
                 <span>{lastSelectedProject.name}</span>
               </div>
             </div>}
@@ -898,7 +898,7 @@ export default function PilotProjects() {
                       <div className="text-sm font-medium text-foreground group-hover:text-black transition-colors pt-0.5">{project.name}</div>
                       <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors pt-0.5">{user.firstName} {user.lastName}</div>
                       <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors leading-relaxed">
-                        {project.siteAddress ? `${project.siteAddress.street} ${project.siteAddress.number}, ${project.siteAddress.postalCode} ${project.siteAddress.city}` : '—'}
+                        {project.siteAddress ? `${project.siteAddress.street} ${project.siteAddress.number}, ${project.siteAddress.postalCode} ${project.siteAddress.city}` : '-'}
                       </div>
                     </div>;
               })}

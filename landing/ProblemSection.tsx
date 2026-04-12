@@ -39,13 +39,13 @@ export const ProblemSection = () => {
             Every building permit in Flanders within 20 km of a Natura 2000 area now requires a full nitrogen impact assessment.
           </motion.h2>
           <motion.p {...fadeIn(0.1)} className="text-muted-foreground text-base md:text-lg leading-relaxed mb-6">
-            The Nitrogen Decree, PAS regulations, and VITO guidelines are essentially legislation written by scientists — for scientists.
+            The Nitrogen Decree, PAS regulations, and VITO guidelines are essentially legislation written by scientists - for scientists.
           </motion.p>
           <motion.p {...fadeIn(0.15)} className="text-muted-foreground text-base leading-relaxed mb-6">
             Clients and developers assume architects handle everything from A to Z. This includes all indirect tasks related to the project dossier, particularly the building permit process. They take it for granted.
           </motion.p>
           <motion.p {...fadeIn(0.2)} className="text-muted-foreground text-base leading-relaxed">
-            Architects operate in a grey zone between creative design responsibilities and administrative support for building permit applications. They are expected to provide continuous follow-up and support — but this work is unpaid.
+            Architects operate in a grey zone between creative design responsibilities and administrative support for building permit applications. They are expected to provide continuous follow-up and support - but this work is unpaid.
           </motion.p>
         </div>
       </div>
@@ -128,7 +128,7 @@ export const ProblemSection = () => {
             ))}
           </div>
           <motion.p {...fadeIn(0.25)} className="text-foreground font-semibold text-lg text-center">
-            But you are still expected to do it — completely.
+            But you are still expected to do it - completely.
           </motion.p>
         </div>
       </div>

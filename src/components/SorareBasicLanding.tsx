@@ -243,7 +243,7 @@ export const SorareBasicLanding = () => {
               <div className="flex flex-col h-full">
                 <Quote className="w-10 h-10 text-primary/30 mb-4" />
                 <p className="text-muted-foreground leading-relaxed mb-6 flex-grow">
-                  "We integrated OxiCloud into our workflow six months ago. The ROI was immediate—faster permit approvals and happier clients who appreciate our environmental commitment."
+                  "We integrated OxiCloud into our workflow six months ago. The ROI was immediate-faster permit approvals and happier clients who appreciate our environmental commitment."
                 </p>
                 <div className="border-t border-border pt-6">
                   <p className="font-semibold text-foreground">Eva de Groot</p>

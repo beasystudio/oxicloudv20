@@ -1153,7 +1153,7 @@ const ContactsDashboard = () => {
                             onDoubleClick={() => handleEmployeeDoubleClick(emp, selectedCompanyData)}
                           >
                             <div className="font-medium text-foreground">{emp.name}</div>
-                            <div className="text-muted-foreground">{emp.function || '—'}</div>
+                            <div className="text-muted-foreground">{emp.function || '-'}</div>
                             <div className="text-muted-foreground truncate">{emp.email}</div>
                             <div className="text-muted-foreground">{emp.telephone}</div>
                           </div>

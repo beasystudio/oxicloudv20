@@ -1,5 +1,5 @@
 /**
- * Avatar map — maps user emails to their B&W profile photos
+ * Avatar map - maps user emails to their B&W profile photos
  */
 import janAvatar from '@/assets/avatars/jan-vermeersch.jpg';
 import thomasAvatar from '@/assets/avatars/thomas-janssen.jpg';

@@ -1,5 +1,5 @@
 /**
- * PilotOnboardingFlow1 — Bedrijf & Team instellen
+ * PilotOnboardingFlow1 - Bedrijf & Team instellen
  * Step 1: BTW-opzoeken → bedrijfsgegevens invullen (matches PilotAddCompanyDialog)
  * Step 2: Teamleden toevoegen (matches PilotAddEmployeeDialog)
  */
@@ -32,7 +32,7 @@ interface Props {
 
 type Step = 'vat-lookup' | 'company-details' | 'team';
 
-// Mock KBO lookup — always returns random data
+// Mock KBO lookup - always returns random data
 function mockKBOLookup(vatInput: string) {
   const companies = [
   { name: 'Architectenbureau Van Der Berg BV', form: 'BV', street: 'Lange Nieuwstraat', city: 'Antwerpen', postalCode: '2000' },
@@ -74,7 +74,7 @@ export function PilotOnboardingFlow1({ onComplete, onClose, initialStep, onStepC
     return [...new Set(taxonomy.filter((t) => t.hoofdtype === 'Consultant').map((t) => t.subtype))];
   }, []);
 
-  // Auto-run VAT lookup on mount — skip the lookup screen entirely
+  // Auto-run VAT lookup on mount - skip the lookup screen entirely
   const autoData = useMemo(() => mockKBOLookup(company?.vatNumber || 'BE0885703733'), []);
 
   const [currentStep, setCurrentStep] = useState<Step>(initialStep || 'company-details');

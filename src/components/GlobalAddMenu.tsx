@@ -53,7 +53,7 @@ export function GlobalAddMenu({ companyId }: GlobalAddMenuProps) {
     setCreateProjectOpen(false);
     toast({
       title: t('forms.globalAdd.projectCreated'),
-      description: `${t('forms.globalAdd.goToProjects')} — ${project.name}`
+      description: `${t('forms.globalAdd.goToProjects')} - ${project.name}`
     });
   };
 

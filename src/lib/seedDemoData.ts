@@ -191,7 +191,7 @@ export function seedNoxDemoData(): void {
     },
   ];
 
-  // Merge with existing data — add demo entries, don't remove user data
+  // Merge with existing data - add demo entries, don't remove user data
   const existingParsed: any[] = existing ? JSON.parse(existing) : [];
   const otherEntries = existingParsed.filter(
     (d: any) => d.projectId !== 'proj-gdesign-001' && d.projectId !== 'proj-gdesign-002'

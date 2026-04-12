@@ -136,7 +136,7 @@ export interface ExploitationSystemData {
 }
 
 export interface DetailedCalculationData {
-  // Ruwbouw winddicht – duur (maanden)
+  // Ruwbouw winddicht - duur (maanden)
   shellWindtightMonths: number;
   // Omtrek van het nieuwe gebouw (m)
   buildingPerimeter: number;
@@ -174,7 +174,7 @@ export interface CalculationResults {
   project_nox_stationary: number;
   percent_stationary: number;
   
-  // Lijnbronnen – Construction Phase
+  // Lijnbronnen - Construction Phase
   max_light_construction: number;
   project_light_construction: number;
   percent_light_construction: number;
@@ -183,7 +183,7 @@ export interface CalculationResults {
   percent_heavy_construction: number;
   total_movements_construction: number;
   
-  // Lijnbronnen – Operation Phase
+  // Lijnbronnen - Operation Phase
   max_light_operation: number;
   project_light_operation: number;
   percent_light_operation: number;
@@ -226,7 +226,7 @@ export const PROJECT_TYPE_CATEGORIES: ProjectTypeCategory[] = [
     value: 'sloop',
     label: 'Sloop',
     tooltip: 'Afbraak van bestaande constructies.',
-    subtypes: [], // Sloop has no subtypes – it's a standalone type
+    subtypes: [], // Sloop has no subtypes - it's a standalone type
   },
   {
     value: 'residentieel',
@@ -286,10 +286,10 @@ export const CONSTRUCTION_TYPES = [
 ];
 
 export const PAVEMENT_TYPES = [
-  { value: 'asphalt', label: 'Asfaltverharding – wegen, parking, paden' },
-  { value: 'concrete', label: 'Betonverharding – Grasdallen, gewapend beton, betonklinkers, betonstraatstenen' },
-  { value: 'natural_stone', label: 'Natuursteen & baksteen – klinkers (baksteen)' },
-  { value: 'loose_materials', label: 'Losse & halfgebonden materialen – steenslag / grind, halfverharding' },
+  { value: 'asphalt', label: 'Asfaltverharding - wegen, parking, paden' },
+  { value: 'concrete', label: 'Betonverharding - Grasdallen, gewapend beton, betonklinkers, betonstraatstenen' },
+  { value: 'natural_stone', label: 'Natuursteen & baksteen - klinkers (baksteen)' },
+  { value: 'loose_materials', label: 'Losse & halfgebonden materialen - steenslag / grind, halfverharding' },
   { value: 'permeable_green', label: 'Permeabele & "groene" verharding' },
 ];
 

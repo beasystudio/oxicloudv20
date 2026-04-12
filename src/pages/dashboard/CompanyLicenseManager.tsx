@@ -40,8 +40,8 @@ export default function CompanyLicenseManager() {
 
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="mb-6">
-              <TabsTrigger value="architects">OxiCloud – Architects</TabsTrigger>
-              <TabsTrigger value="monitor">OxiCloud – Monitor</TabsTrigger>
+              <TabsTrigger value="architects">OxiCloud - Architects</TabsTrigger>
+              <TabsTrigger value="monitor">OxiCloud - Monitor</TabsTrigger>
               <TabsTrigger value="aspine" disabled>
                 A-Spine
                 <Badge variant="outline" className="ml-2 text-[9px] px-1.5 py-0">Soon</Badge>

@@ -135,7 +135,7 @@ export function saveDetailedCalculation(projectId: string, data: DetailedCalcula
     project_nox_stationary: 14.1 + (data.shellWindtightMonths * 0.75),
     percent_stationary: percentStationary,
     
-    // Lijnbronnen – Construction Phase
+    // Lijnbronnen - Construction Phase
     max_light_construction: 2538000,
     project_light_construction: 1270 + (totalPavedArea * 0.38),
     percent_light_construction: percentLightConstruction,
@@ -144,7 +144,7 @@ export function saveDetailedCalculation(projectId: string, data: DetailedCalcula
     percent_heavy_construction: percentHeavyConstruction,
     total_movements_construction: 1684 + (totalPavedArea * 0.38) + (data.groundworkVolume * 0.028),
     
-    // Lijnbronnen – Operation Phase
+    // Lijnbronnen - Operation Phase
     max_light_operation: 2538000,
     project_light_operation: 762 + (data.parkingSpaces * 76),
     percent_light_operation: percentOperation,

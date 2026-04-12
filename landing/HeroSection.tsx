@@ -44,7 +44,7 @@ export const HeroSection = () => {
         >
           Nitrogen report compliance-ready
           <br />
-          <span className="text-muted-foreground">In minutes — not weeks</span>
+          <span className="text-muted-foreground">In minutes - not weeks</span>
         </motion.h1>
 
         <motion.p
@@ -61,10 +61,10 @@ export const HeroSection = () => {
           >
             <span className="relative overflow-hidden h-[1.2em] inline-flex items-center">
               <span className="block transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full">
-                Try now — It's free
+                Try now - It's free
               </span>
               <span className="absolute top-full left-0 block transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full">
-                Try now — It's free
+                Try now - It's free
               </span>
             </span>
           </Link>

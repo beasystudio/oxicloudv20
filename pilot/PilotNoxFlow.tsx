@@ -1,5 +1,5 @@
 /**
- * PilotNoxFlow – Full NOx assessment flow for Pilot mode
+ * PilotNoxFlow - Full NOx assessment flow for Pilot mode
  * Mirrors OxiCloudContent's flow logic using identical production components
  * but backed by pilotSessionStore instead of noxProjectStore/localStorage.
  */
@@ -23,7 +23,7 @@ import {
   OxiCloudProject,
 } from '@/types/oxicloud';
 
-// Production components – reused as-is
+// Production components - reused as-is
 import { PreEstimationForm } from '@/components/oxicloud/PreEstimationForm';
 import { QuoteFlow } from '@/components/oxicloud/quote-flow/QuoteFlow';
 import { NoxPaymentDemoFlow } from '@/components/oxicloud/NoxPaymentDemoFlow';
@@ -121,7 +121,7 @@ export function PilotNoxFlow({ projectId, onBack, onRefresh }: PilotNoxFlowProps
     // Persist sub-status so user can return to authorization step
     updatePilotProject(projectId, { noxSubStatus: 'quote_drafted' });
     setStep('quote-flow');
-    toast.success('Price generated – quote is ready.');
+    toast.success('Price generated - quote is ready.');
   };
 
   const handleQuoteSent = (quoteRef: string) => {
@@ -139,7 +139,7 @@ export function PilotNoxFlow({ projectId, onBack, onRefresh }: PilotNoxFlowProps
     processPilotNoxPayment(projectId, vatNumber);
     refresh();
     setStep('detailed-calculation');
-    toast.success('Payment processed – detailed calculation unlocked.');
+    toast.success('Payment processed - detailed calculation unlocked.');
   };
 
   const handleDetailedCalculationSubmit = (data: DetailedCalculationData) => {

@@ -8,8 +8,8 @@ interface MapLegendProps {
 export const MapLegend = ({ activeLayer }: MapLegendProps) => {
   const legends: Record<MapLayer, { color: string; label: string; dashed?: boolean }[]> = {
     natura2000: [
-      { color: 'hsl(152 60% 42%)', label: 'SPA — Bird Directive' },
-      { color: 'hsl(168 55% 38%)', label: 'SAC — Habitat Directive', dashed: true },
+      { color: 'hsl(152 60% 42%)', label: 'SPA - Bird Directive' },
+      { color: 'hsl(168 55% 38%)', label: 'SAC - Habitat Directive', dashed: true },
     ],
     projects: [
       { color: 'hsl(var(--primary))', label: 'Active Project' },

@@ -433,7 +433,7 @@ const AuthorityProjects = () => {
         {/* Search Bar - returns to default view */}
         <div className="relative cursor-pointer" onClick={handleBackToDefault}>
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input value={`${selectedProject.projectCode} — ${selectedProject.projectName}`} className="pl-11 h-11 text-sm bg-background cursor-pointer font-medium border rounded-lg" readOnly />
+          <Input value={`${selectedProject.projectCode} - ${selectedProject.projectName}`} className="pl-11 h-11 text-sm bg-background cursor-pointer font-medium border rounded-lg" readOnly />
         </div>
 
         {/* Horizontal Phase Tabs - Left aligned */}

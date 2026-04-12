@@ -174,7 +174,7 @@ export function ProjectNoxStatusCard({
               </SelectTrigger>
               <SelectContent className="bg-background">
                 <SelectItem value="none" className="text-muted-foreground text-xs">
-                  — None —
+                  - None -
                 </SelectItem>
                 {subStatusOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value} className="text-xs">

@@ -23,7 +23,7 @@ export function DevStatusSimulator({
     <div className="rounded-xl border-2 border-dashed border-amber-400/50 bg-amber-50/50 p-4 space-y-3">
       <div className="flex items-center gap-2 text-xs font-semibold text-amber-700 uppercase tracking-wide">
         <Bug className="w-3.5 h-3.5" />
-        Dev only — status simulator
+        Dev only - status simulator
       </div>
 
       <div className="flex flex-wrap gap-1.5">

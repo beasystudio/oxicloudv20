@@ -79,7 +79,7 @@ const INITIAL_STATE: SandboxState = {
   hv_trips_rate_op: SEEDS.hv_trips_rate_op,
 };
 
-// Which tabs to show — set to all 6 for mockup
+// Which tabs to show - set to all 6 for mockup
 const visibleSources: SourceId[] = [
   'bouwfase_punt',
   'bouwfase_lijn_lv',
@@ -107,7 +107,7 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
   const computed = useMemo(() => {
     const s = state;
 
-    // Tab 1: Bouwfase Punt — guided uses parameterized model, expert uses machine table
+    // Tab 1: Bouwfase Punt - guided uses parameterized model, expert uses machine table
     const bouwfasePuntEmission = s.tab1Mode === 'expert'
       ? calcPointSourceConstruction(s.machines)
       : calcPointSourceConstruction(DEFAULT_MACHINES); // In guided mode we apply parameter adjustments below
@@ -197,7 +197,7 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
               <span className="text-sm font-bold tracking-tight">OxiCloud Sandbox</span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-400 text-[11px] font-medium">
                 <AlertTriangle className="h-3 w-3" />
-                Sandbox-modus — Wijzigingen worden niet opgeslagen in het dossier
+                Sandbox-modus - Wijzigingen worden niet opgeslagen in het dossier
               </span>
             </div>
             <div className="flex items-center gap-3">

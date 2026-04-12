@@ -188,9 +188,9 @@ export function MonitorSubscriptionManager() {
                 <Select value={selectedSub.plan} onValueChange={v => setSelectedSub({ ...selectedSub, plan: v as MonitorSubscription['plan'] })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Basic">Basic – €79/mo</SelectItem>
-                    <SelectItem value="Standard">Standard – €149/mo</SelectItem>
-                    <SelectItem value="Premium">Premium – €249/mo</SelectItem>
+                    <SelectItem value="Basic">Basic - €79/mo</SelectItem>
+                    <SelectItem value="Standard">Standard - €149/mo</SelectItem>
+                    <SelectItem value="Premium">Premium - €249/mo</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -243,9 +243,9 @@ export function MonitorSubscriptionManager() {
               <Select value={newForm.plan} onValueChange={v => setNewForm({ ...newForm, plan: v as MonitorSubscription['plan'] })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Basic">Basic – €79/mo</SelectItem>
-                  <SelectItem value="Standard">Standard – €149/mo</SelectItem>
-                  <SelectItem value="Premium">Premium – €249/mo</SelectItem>
+                  <SelectItem value="Basic">Basic - €79/mo</SelectItem>
+                  <SelectItem value="Standard">Standard - €149/mo</SelectItem>
+                  <SelectItem value="Premium">Premium - €249/mo</SelectItem>
                 </SelectContent>
               </Select>
             </div>

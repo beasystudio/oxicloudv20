@@ -25,7 +25,7 @@ export function PartnerProgramModal({ onClose }: PartnerProgramModalProps) {
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-md bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
         
-        {/* Header — production dark style */}
+        {/* Header - production dark style */}
         <div className="relative bg-secondary text-secondary-foreground p-6 pb-6">
           <button
             onClick={onClose}
@@ -36,7 +36,7 @@ export function PartnerProgramModal({ onClose }: PartnerProgramModalProps) {
           <p className="text-sm text-secondary-foreground/60 mt-0.5">Your Partner Program overview</p>
         </div>
 
-        {/* Content — production spacing */}
+        {/* Content - production spacing */}
         <div className="p-5 space-y-4">
           {/* Free message */}
           <div className="flex items-center gap-2 p-3 rounded-xl border border-border">
@@ -65,7 +65,7 @@ export function PartnerProgramModal({ onClose }: PartnerProgramModalProps) {
           {/* Important distinction */}
           <div className="p-3 rounded-xl bg-muted/50 border border-border">
             <p className="text-xs text-muted-foreground leading-relaxed">
-              If you're an employee, commission earned through your firm's projects goes to the firm — not to you personally. 
+              If you're an employee, commission earned through your firm's projects goes to the firm - not to you personally. 
               Are you self-employed or running your own practice? Create your own Workspace to receive payments directly.
             </p>
           </div>

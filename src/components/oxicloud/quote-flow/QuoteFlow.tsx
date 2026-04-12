@@ -1,8 +1,8 @@
 /**
- * Quote Flow Container — Simplified workflow:
- * 1. Quote Preview + Self-Billing — Review & authorize
+ * Quote Flow Container - Simplified workflow:
+ * 1. Quote Preview + Self-Billing - Review & authorize
  * 2. Generating animation
- * 3. Authorize & Send — Final confirmation + send
+ * 3. Authorize & Send - Final confirmation + send
  * 4. Sending animation (Peppol/Email)
  * 5. Awaiting Payment
  * 6. Payment Confirmed

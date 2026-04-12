@@ -63,7 +63,7 @@ const features = [
     icon: Archive,
     title: 'Searchable Project Archive',
     hook: 'They came back six months later. You had to find everything again.',
-    description: 'Every report your firm has ever generated — stored and instantly retrievable. The answer is always there.',
+    description: 'Every report your firm has ever generated - stored and instantly retrievable. The answer is always there.',
   },
 ];
 
