@@ -70,7 +70,7 @@ export default function Register() {
   return (
     <>
       <Helmet>
-        <title>Create Account — OxiCloud</title>
+        <title>Create Account - OxiCloud</title>
         <meta name="description" content="Create your free OxiCloud account. Choose your role and get started." />
       </Helmet>
 

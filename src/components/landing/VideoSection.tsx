@@ -36,7 +36,7 @@ export const VideoSection = () => {
               <Play className="w-8 h-8 text-primary ml-1" />
             </div>
             <p className="text-secondary-foreground/60 text-sm">
-              2D animation walkthrough — coming soon
+              2D animation walkthrough - coming soon
             </p>
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent" />

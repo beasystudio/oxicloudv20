@@ -143,7 +143,7 @@ export function PassendeBeoordelingFlow({
           {pbStatus === 'on_hold' && (
             <>
               <StatusBanner variant="grey">
-                Project on hold — De opdrachtgever heeft aangegeven momenteel niet verder te willen
+                Project on hold - De opdrachtgever heeft aangegeven momenteel niet verder te willen
                 gaan met de Passende Beoordeling.
               </StatusBanner>
               <TemporaryReport project={pbProject} condensed />
@@ -153,7 +153,7 @@ export function PassendeBeoordelingFlow({
                 onClick={() => openConfirm('reactivate')}
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Opdrachtgever wil toch doorgaan — Hervatten
+                Opdrachtgever wil toch doorgaan - Hervatten
               </Button>
             </>
           )}
@@ -265,7 +265,7 @@ export function PassendeBeoordelingFlow({
           {pbStatus === 'awaiting_payment' && (
             <>
               <StatusBanner variant="amber">
-                Wachten op betaling — Offerte verstuurd naar opdrachtgever. Betaling via
+                Wachten op betaling - Offerte verstuurd naar opdrachtgever. Betaling via
                 bankoverschrijving wordt verwacht.
               </StatusBanner>
 
@@ -321,7 +321,7 @@ export function PassendeBeoordelingFlow({
           {pbStatus === 'paid' && (
             <>
               <StatusBanner variant="blue">
-                Rapport in uitvoering — Betaling bevestigd. Het OxiCloud-team is gestart met de
+                Rapport in uitvoering - Betaling bevestigd. Het OxiCloud-team is gestart met de
                 Passende Beoordeling.
               </StatusBanner>
 
@@ -353,7 +353,7 @@ export function PassendeBeoordelingFlow({
           {pbStatus === 'report_delivered' && (
             <>
               <StatusBanner variant="green">
-                Rapport Geleverd — De Passende Beoordeling is afgerond en beschikbaar in uw dossier.
+                Rapport Geleverd - De Passende Beoordeling is afgerond en beschikbaar in uw dossier.
               </StatusBanner>
 
               <div className="rounded-xl border border-border bg-card p-5 space-y-3">
@@ -362,7 +362,7 @@ export function PassendeBeoordelingFlow({
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-muted/20">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">Tijdelijk Conformiteitsrapport — {pbProject.scanDate}</span>
+                      <span className="text-sm">Tijdelijk Conformiteitsrapport - {pbProject.scanDate}</span>
                     </div>
                     <Button
                       variant="ghost"
@@ -377,7 +377,7 @@ export function PassendeBeoordelingFlow({
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-muted/20">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">Passende Beoordeling Rapport — {pbProject.scanDate}</span>
+                      <span className="text-sm">Passende Beoordeling Rapport - {pbProject.scanDate}</span>
                     </div>
                     <Button
                       variant="ghost"

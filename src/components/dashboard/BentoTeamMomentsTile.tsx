@@ -34,7 +34,7 @@ export function BentoTeamMomentsTile({ moments }: BentoTeamMomentsTileProps) {
             <div>
               <span className="text-foreground font-semibold">{m.name}</span>
               {m.detail && (
-                <span className="text-muted-foreground text-xs ml-1.5">— {m.detail}</span>
+                <span className="text-muted-foreground text-xs ml-1.5">- {m.detail}</span>
               )}
             </div>
           </div>

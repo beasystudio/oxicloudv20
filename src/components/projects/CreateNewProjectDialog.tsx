@@ -1,9 +1,9 @@
 /**
- * Create New Project Dialog — Production Mode
+ * Create New Project Dialog - Production Mode
  * 5-step wizard mirroring pilot flow:
  *   Step 1: Projectgegevens (naam, nummer, projectleider dropdown, team members)
  *   Step 2: Opdrachtgeverbedrijf (search address book / KBO lookup)
- *   Step 3: Bedrijfsgegevens invullen (company detail form — only if new company)
+ *   Step 3: Bedrijfsgegevens invullen (company detail form - only if new company)
  *   Step 4: Bouwheer (person linked to client company)
  *   Step 5: Werflocatie (construction site address)
  */
@@ -633,13 +633,13 @@ export const CreateNewProjectDialog = ({
               </div>
             </>}
 
-            {/* Step 2 — company selected from address book */}
+            {/* Step 2 - company selected from address book */}
             {step === 2 && companySearchMode === 'selected' && selectedExistingCompany && <>
               <div className="flex items-center gap-3 p-3 rounded-lg bg-green-500/10 border border-green-500/20">
                 <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />
                 <div>
                   <p className="text-sm font-medium text-green-700 dark:text-green-400">{t('createProject.clientCompanySelected')}</p>
-                  <p className="text-[11px] text-green-600 dark:text-green-500">{selectedExistingCompany.companyName || selectedExistingCompany.name} — {selectedExistingCompany.vatNumber}</p>
+                  <p className="text-[11px] text-green-600 dark:text-green-500">{selectedExistingCompany.companyName || selectedExistingCompany.name} - {selectedExistingCompany.vatNumber}</p>
                 </div>
               </div>
 
@@ -670,7 +670,7 @@ export const CreateNewProjectDialog = ({
                 </div>
               }
 
-              {/* Contact Type — fixed to Opdrachtgever */}
+              {/* Contact Type - fixed to Opdrachtgever */}
               <section className="space-y-2">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('createProject.contactType')}</h4>
                 <div className="flex items-center gap-2 p-2.5 rounded-lg border bg-muted/30">

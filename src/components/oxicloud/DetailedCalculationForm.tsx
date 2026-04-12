@@ -456,7 +456,7 @@ export function DetailedCalculationForm({
 
       </>}
 
-      {/* Terrain Raising — collapsible toggle matching excavation pattern */}
+      {/* Terrain Raising - collapsible toggle matching excavation pattern */}
       <div className="rounded-lg border border-border/60 p-4">
         <label className="flex items-center gap-3 cursor-pointer">
           <Checkbox

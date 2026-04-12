@@ -48,7 +48,7 @@ export default function DemoDashboard() {
   return (
     <>
       <Helmet>
-        <title>Demo Environment — OxiCloud</title>
+        <title>Demo Environment - OxiCloud</title>
         <meta name="description" content="Explore OxiCloud in Demo mode" />
       </Helmet>
 

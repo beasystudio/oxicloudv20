@@ -117,15 +117,15 @@ export function OxiCloudContent() {
         setFlowStep(isAdmin ? 'price-review' : 'quote-sent');
         break;
       case 'awaiting_payment':
-        // Awaiting signature — show quote-sent state
+        // Awaiting signature - show quote-sent state
         setFlowStep('quote-sent');
         break;
       case 'paid':
-        // Client signed — NOx engine unlocked
+        // Client signed - NOx engine unlocked
         setFlowStep('detailed-calculation');
         break;
       case 'report_in_progress':
-        // Report ready but held — awaiting payment
+        // Report ready but held - awaiting payment
         setFlowStep('report-held');
         break;
       case 'report_delivered':
@@ -178,7 +178,7 @@ export function OxiCloudContent() {
     }
   };
 
-  // Simulate payment received — unblur report
+  // Simulate payment received - unblur report
   const handleSimulatePaymentReceived = () => {
     if (!currentProject) return;
     updateNoxData(currentProject.id, { status: 'report_delivered' });

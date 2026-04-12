@@ -91,19 +91,19 @@ export function DecisionAuditTrail({ project, internalNotes, onNotesChange }: De
                 <SelectItem value="approved">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-green-500" />
-                    Approved — Permit can be granted
+                    Approved - Permit can be granted
                   </div>
                 </SelectItem>
                 <SelectItem value="conditional">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-amber-500" />
-                    Conditional — Requires modifications
+                    Conditional - Requires modifications
                   </div>
                 </SelectItem>
                 <SelectItem value="rejected">
                   <div className="flex items-center gap-2">
                     <XCircle className="h-4 w-4 text-red-500" />
-                    Rejected — Does not meet requirements
+                    Rejected - Does not meet requirements
                   </div>
                 </SelectItem>
               </SelectContent>

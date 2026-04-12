@@ -384,7 +384,7 @@ export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: Onboar
                     </motion.div>
                   )}
 
-                  {/* Step 2: Complete — auto-mark as done on first visit */}
+                  {/* Step 2: Complete - auto-mark as done on first visit */}
                   {state.currentStep === 2 && (
                     <CompleteStepWrapper
                       completedSet={completedSet}
@@ -400,7 +400,7 @@ export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: Onboar
         )}
       </AnimatePresence>
 
-      {/* Legacy PilotOnboardingFlow1 modal — reused for company/team content */}
+      {/* Legacy PilotOnboardingFlow1 modal - reused for company/team content */}
       <AnimatePresence>
         {/* We embed the steps inline now, no separate flow needed */}
       </AnimatePresence>

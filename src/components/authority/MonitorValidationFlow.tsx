@@ -50,15 +50,15 @@ export function MonitorValidationFlow({ project, onUpdate, userName, municipalit
 
       if (impactPercent <= 0.5) {
         status = 'validated';
-        level = 'Compliant – Below KDW threshold';
+        level = 'Compliant - Below KDW threshold';
         result = `The NOx assessment for this project demonstrates compliance with current regulatory thresholds. The calculated impact percentage (${impactPercent.toFixed(2)}%) remains well below the 1% significance threshold for the nearest Natura 2000 habitat directive area (${project.natura2000Site}, ${project.natura2000Code}).`;
       } else if (impactPercent <= 1.0) {
         status = 'conditional';
-        level = 'Conditional – Additional review recommended';
+        level = 'Conditional - Additional review recommended';
         result = `The NOx assessment indicates a calculated impact of ${impactPercent.toFixed(2)}%, which approaches the 1% significance threshold for the ${project.natura2000Site} area (${project.natura2000Code}). Additional review of emission sources and potential mitigation measures is recommended.`;
       } else {
         status = 'not_validated';
-        level = 'Exceeds threshold – Requires passende beoordeling';
+        level = 'Exceeds threshold - Requires passende beoordeling';
         result = `The calculated NOx impact (${impactPercent.toFixed(2)}%) exceeds the 1% significance threshold for the ${project.natura2000Site} habitat directive area. A comprehensive appropriate assessment (passende beoordeling) is required.`;
       }
 

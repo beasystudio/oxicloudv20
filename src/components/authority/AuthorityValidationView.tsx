@@ -205,7 +205,7 @@ export function AuthorityValidationView({
                 At-a-Glance Verification
               </CardTitle>
               <CardDescription>
-                Key checkpoints for permit decision — all using the same OxiCloud calculation core
+                Key checkpoints for permit decision - all using the same OxiCloud calculation core
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -242,7 +242,7 @@ export function AuthorityValidationView({
           <Card className="border-primary/20 bg-primary/5">
             <CardContent className="p-4">
               <p className="text-sm">Glass-Box View: Each step below shows how the calculation was performed, using the same OxiCloud engine as the applicant. <strong>Glass-Box View:</strong> Each step below shows how the calculation was performed, 
-                using the same OxiCloud engine as the applicant. No raw formulas — just clear verification checkpoints.
+                using the same OxiCloud engine as the applicant. No raw formulas - just clear verification checkpoints.
               </p>
             </CardContent>
           </Card>

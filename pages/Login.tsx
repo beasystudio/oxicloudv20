@@ -116,12 +116,12 @@ const Login = () => {
   return (
     <>
       <Helmet>
-        <title>Login — OxiCloud</title>
+        <title>Login - OxiCloud</title>
         <meta name="description" content="Sign in to your OxiCloud account" />
       </Helmet>
 
       <div className="min-h-screen flex bg-background">
-        {/* Left — Photo panel (stays dark) */}
+        {/* Left - Photo panel (stays dark) */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
           <img src={loginBackground} alt="Architecture" className="absolute inset-0 w-full h-full object-cover" />
           
@@ -130,7 +130,7 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Right — Light form panel */}
+        {/* Right - Light form panel */}
         <div className="w-full lg:w-1/2 flex items-center justify-center px-8 lg:px-12 xl:px-16 overflow-y-auto">
           <motion.div variants={container} initial="hidden" animate="show" className="max-w-[400px] w-full py-12">
             <motion.div variants={item} className="mb-16 flex items-center justify-between">

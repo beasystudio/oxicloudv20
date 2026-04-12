@@ -148,7 +148,7 @@ export const seedDemoUsers = (): void => {
       isFormerEmployee: false,
       terminationDate: null
     },
-    // (Maria and Lisa removed — not part of active demo)
+    // (Maria and Lisa removed - not part of active demo)
     {
       id: 'gd-4',
       general: {

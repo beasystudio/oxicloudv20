@@ -337,7 +337,7 @@ export function PassendeBeoordelingFlow({
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-muted/20">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">{t('pbFlow.temporaryComplianceReport')} — {pbProject.scanDate}</span>
+                      <span className="text-sm">{t('pbFlow.temporaryComplianceReport')} - {pbProject.scanDate}</span>
                     </div>
                     <Button
                       variant="ghost"
@@ -352,7 +352,7 @@ export function PassendeBeoordelingFlow({
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-muted/20">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">{t('pbFlow.appropriateAssessmentReport')} — {pbProject.scanDate}</span>
+                      <span className="text-sm">{t('pbFlow.appropriateAssessmentReport')} - {pbProject.scanDate}</span>
                     </div>
                     <Button
                       variant="ghost"

@@ -110,7 +110,7 @@ const DashboardScreen = () => (
             <div key={i} className="flex items-center gap-2 py-1.5">
               <StatusDot status={item.color} />
               <span className="text-[10px] font-semibold text-foreground">{item.name}</span>
-              <span className="text-[9px] text-muted-foreground">— {item.desc}</span>
+              <span className="text-[9px] text-muted-foreground">- {item.desc}</span>
             </div>
           ))}
         </div>
@@ -193,7 +193,7 @@ const NoxInputScreen = () => (
         <div className="space-y-1.5">
           <div className="text-[9px] font-medium text-foreground/50 uppercase tracking-wider">Projecttype</div>
           <div className="h-8 rounded-lg border border-border bg-muted/30 px-3 flex items-center text-[11px] text-foreground">
-            Nieuwbouw — Woningen
+            Nieuwbouw - Woningen
           </div>
         </div>
         <div className="space-y-1.5">
@@ -259,7 +259,7 @@ const NoxResultScreen = () => (
 
       <div className="p-3 rounded-xl bg-primary/5 border border-primary/20 mb-3">
         <div className="text-[11px] font-bold text-foreground">Geen significante effecten</div>
-        <div className="text-[9px] text-muted-foreground mt-0.5">Voortoets volstaat — geen passende beoordeling nodig</div>
+        <div className="text-[9px] text-muted-foreground mt-0.5">Voortoets volstaat - geen passende beoordeling nodig</div>
       </div>
 
       <div className="h-1.5 rounded-full bg-muted overflow-hidden">
@@ -288,7 +288,7 @@ const ReportScreen = () => (
 
       <div className="p-4 rounded-xl border border-primary/20 bg-primary/5 mb-3">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[11px] font-semibold text-foreground">Stikstofscreening — Berkenlaan 7</span>
+          <span className="text-[11px] font-semibold text-foreground">Stikstofscreening - Berkenlaan 7</span>
           <span className="text-[8px] text-muted-foreground">11 maart 2026 • v1.0</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
@@ -303,7 +303,7 @@ const ReportScreen = () => (
 
       <div className="flex items-center justify-between">
         <div className="flex-1 mr-3 p-2.5 rounded-xl bg-muted/50">
-          <span className="text-[9px] text-muted-foreground">Partner settlement — <span className="font-semibold text-foreground">automatisch verrekend</span></span>
+          <span className="text-[9px] text-muted-foreground">Partner settlement - <span className="font-semibold text-foreground">automatisch verrekend</span></span>
         </div>
         <div className="flex gap-2">
           <Pill>Verstuur</Pill>
@@ -358,7 +358,7 @@ export const HeroProductDemo = () => {
         </div>
       </div>
 
-      {/* Step navigation — numbered text pills, no icons */}
+      {/* Step navigation - numbered text pills, no icons */}
       <div className="flex items-center gap-1 px-5 pt-3 pb-2">
         {demoSteps.map((step, i) => (
           <button

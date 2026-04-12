@@ -122,7 +122,7 @@ export function BouwfasePuntbronnenSandbox({ onComplete, onBack, results }: Bouw
               ) : (
                 <motion.div key="expert" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.15 }} className="space-y-5">
                   <div className="bg-muted/50 rounded-xl p-4 border border-border"><p className="text-sm text-muted-foreground">{t('sandbox.expertDisclaimer')}</p></div>
-                  <div className="bg-primary/10 rounded-xl p-4 border border-primary/30"><p className="text-sm text-foreground"><span className="font-medium">{t('sandbox.inputEmissions')}:</span> {BASELINE_EMISSIONS} kg NOₓ — {t('sandbox.sameAsGuided')}</p></div>
+                  <div className="bg-primary/10 rounded-xl p-4 border border-primary/30"><p className="text-sm text-foreground"><span className="font-medium">{t('sandbox.inputEmissions')}:</span> {BASELINE_EMISSIONS} kg NOₓ - {t('sandbox.sameAsGuided')}</p></div>
                   <div className="bg-muted/30 rounded-xl border border-border overflow-hidden">
                     <div className="p-4 border-b border-border"><h3 className="font-medium text-foreground">{t('sandbox.equipmentInventory')}</h3><p className="text-sm text-muted-foreground mt-0.5">{t('sandbox.equipmentInventoryDesc')}</p></div>
                     <div className="divide-y divide-border">

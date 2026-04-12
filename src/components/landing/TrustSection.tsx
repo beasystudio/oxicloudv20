@@ -6,7 +6,7 @@ const trustItems = [
   { title: 'Regulatory Accepted', description: 'OxiCloud reports meet Brussels regional standards for environmental compliance documentation' },
   { title: 'Data Security', description: 'ISO 27001 compliant. Your project data is protected and never shared.' },
   { title: 'Neutral Infrastructure', description: 'We don\'t favor architects or authorities. We serve the process.' },
-  { title: 'Sustainability First', description: 'Every report includes carbon impact — because compliance should advance climate goals.' },
+  { title: 'Sustainability First', description: 'Every report includes carbon impact - because compliance should advance climate goals.' },
   { title: 'Partnership Integrity', description: 'Settlement terms defined by contract, not fine print.' },
   { title: 'Modern Stack', description: 'Built on proven technology: Automated calculations, API-ready, integration-friendly.' }
 ];

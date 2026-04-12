@@ -26,7 +26,7 @@ export function Tab3BouwfaseLijnHV({ onBack }: TabProps) {
         <div className="lg:col-span-3 space-y-5">
           <div className="rounded-xl border border-border bg-muted/20 px-4 py-2.5">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Traffic Generation Rates — gebaseerd op CROW 381, Brugge Mobiliteitsstudie
+              Traffic Generation Rates - gebaseerd op CROW 381, Brugge Mobiliteitsstudie
             </p>
           </div>
 
@@ -51,7 +51,7 @@ export function Tab3BouwfaseLijnHV({ onBack }: TabProps) {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-medium text-foreground">Prefabricage percentage</label>
-              <span className="text-[10px] text-muted-foreground">0.00–1.00</span>
+              <span className="text-[10px] text-muted-foreground">0.00-1.00</span>
             </div>
             <Input
               type="number" value={state.prefab_percentage}
@@ -85,7 +85,7 @@ export function Tab3BouwfaseLijnHV({ onBack }: TabProps) {
 
         <div className="lg:col-span-2">
           <CompliancePanel
-            label="Compliance Status — Lijnbron HV"
+            label="Compliance Status - Lijnbron HV"
             threshold={thresholds[src]}
             currentEmission={emissions[src]}
             remaining={remaining[src]}

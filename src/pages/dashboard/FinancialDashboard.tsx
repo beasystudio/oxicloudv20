@@ -583,7 +583,7 @@ const FinancialDashboard = () => {
           {/* ───── MONTHLY ───── */}
           {activeTab === 'monthly' && (
             <div className="rounded-2xl border p-5">
-              <h3 className="text-sm font-medium text-muted-foreground mb-4">{t('dashboard.financial.monthlyRevenue')} — {selectedYear}</h3>
+              <h3 className="text-sm font-medium text-muted-foreground mb-4">{t('dashboard.financial.monthlyRevenue')} - {selectedYear}</h3>
               <div className="h-[340px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={getMonthlyData()}>
@@ -606,7 +606,7 @@ const FinancialDashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="rounded-2xl border p-5">
                 <h3 className="text-sm font-medium text-muted-foreground mb-4">
-                  {isOwnerOrAdmin ? t('dashboard.financial.revenueByClient') : t('dashboard.financial.revenueByCompany')} — {selectedYear}
+                  {isOwnerOrAdmin ? t('dashboard.financial.revenueByClient') : t('dashboard.financial.revenueByCompany')} - {selectedYear}
                 </h3>
                 <div className="h-[260px]">
                   <ResponsiveContainer width="100%" height="100%">

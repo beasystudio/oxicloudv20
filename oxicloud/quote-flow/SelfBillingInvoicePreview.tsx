@@ -154,7 +154,7 @@ export function SelfBillingInvoicePreview({
                     </div>
                     <div>
                       <span className="text-muted-foreground">Service Period:</span>
-                      <span className="ml-2">{currentDate} – {currentDate}</span>
+                      <span className="ml-2">{currentDate} - {currentDate}</span>
                     </div>
                   </div>
                 </div>
@@ -164,7 +164,7 @@ export function SelfBillingInvoicePreview({
               <section>
                 <h3 className="font-semibold mb-3">3. Description of Service</h3>
                 <div className="bg-muted/50 rounded-lg p-4">
-                  <p className="font-medium mb-2">Partner Commission / Facilitation Services – OxiCloud Platform</p>
+                  <p className="font-medium mb-2">Partner Commission / Facilitation Services - OxiCloud Platform</p>
                   <p className="text-muted-foreground">
                     This invoice relates to partner services provided by {partnerCompanyName} in connection with 
                     the introduction, facilitation, and platform participation for an environmental compliance 
@@ -240,7 +240,7 @@ export function SelfBillingInvoicePreview({
                     confirmation within the OxiCloud platform.
                   </p>
                   <div className="border-t pt-3 mt-3">
-                    <p><span className="text-muted-foreground">Approval Timestamp:</span> ___ / ___ / {new Date().getFullYear()} – __:__ CET</p>
+                    <p><span className="text-muted-foreground">Approval Timestamp:</span> ___ / ___ / {new Date().getFullYear()} - __:__ CET</p>
                     <p><span className="text-muted-foreground">Approval Reference:</span> {projectReference}</p>
                   </div>
                   <div className="text-xs text-muted-foreground mt-4 pt-4 border-t">

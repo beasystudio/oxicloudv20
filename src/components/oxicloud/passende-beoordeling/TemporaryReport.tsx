@@ -50,8 +50,8 @@ export function TemporaryReport({ project, condensed = false }: TemporaryReportP
           </h3>
           <p className="text-xs text-muted-foreground mt-1">
             {isNL
-              ? 'Vertrouwelijk — Opgesteld door OxiCloud voor professioneel gebruik'
-              : 'Confidential — Prepared by OxiCloud for professional use'}
+              ? 'Vertrouwelijk - Opgesteld door OxiCloud voor professioneel gebruik'
+              : 'Confidential - Prepared by OxiCloud for professional use'}
           </p>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0">
@@ -152,14 +152,14 @@ export function TemporaryReport({ project, condensed = false }: TemporaryReportP
           <ul className="text-sm text-foreground space-y-2 list-disc list-inside">
             {isNL ? (
               <>
-                <li>Habitatrichtlijn — Artikel 6, lid 3: vereist een passende beoordeling voor projecten die significante effecten op Natura 2000-gebieden kunnen hebben.</li>
-                <li>Wet Natuurbescherming — Artikel 2.8: implementeert de Europese verplichting in nationaal recht en vereist een voorafgaande beoordeling bij mogelijke significante effecten.</li>
+                <li>Habitatrichtlijn - Artikel 6, lid 3: vereist een passende beoordeling voor projecten die significante effecten op Natura 2000-gebieden kunnen hebben.</li>
+                <li>Wet Natuurbescherming - Artikel 2.8: implementeert de Europese verplichting in nationaal recht en vereist een voorafgaande beoordeling bij mogelijke significante effecten.</li>
                 <li>PAS-uitspraak (ECLI:NL:RVS:2019:1603): het Programma Aanpak Stikstof is ongeldig verklaard. Individuele projectbeoordelingen zijn nu verplicht.</li>
               </>
             ) : (
               <>
-                <li>Habitats Directive — Article 6(3): requires an appropriate assessment for projects likely to have significant effects on Natura 2000 sites.</li>
-                <li>Nature Conservation Act — Article 2.8: transposes the European obligation into national law, requiring prior assessment where significant effects are possible.</li>
+                <li>Habitats Directive - Article 6(3): requires an appropriate assessment for projects likely to have significant effects on Natura 2000 sites.</li>
+                <li>Nature Conservation Act - Article 2.8: transposes the European obligation into national law, requiring prior assessment where significant effects are possible.</li>
                 <li>PAS ruling (ECLI:NL:RVS:2019:1603): the Programmatic Approach to Nitrogen was invalidated. Individual project assessments are now mandatory.</li>
               </>
             )}

@@ -1,5 +1,5 @@
 /**
- * Report Held Screen — Report is ready but values are blurred until payment
+ * Report Held Screen - Report is ready but values are blurred until payment
  * After simulated payment: values unblur with animation, download unlocks, notifications fire
  * Download: fake progress bar → auto-return to project binder with report_delivered status
  */
@@ -103,7 +103,7 @@ export function NoxReportHeldScreen({
           <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-medium text-emerald-800 dark:text-emerald-200">
-              {t('reportHeld.paymentConfirmed') || 'Payment confirmed — report unlocked'}
+              {t('reportHeld.paymentConfirmed') || 'Payment confirmed - report unlocked'}
             </p>
           </div>
         </div>
@@ -201,7 +201,7 @@ export function NoxReportHeldScreen({
         </div>
       )}
 
-      {/* Why Work With Us — collapsible card */}
+      {/* Why Work With Us - collapsible card */}
       {!isPaid && (
         <Collapsible>
           <Card className="overflow-hidden border-border/30 shadow-none">
@@ -235,7 +235,7 @@ export function NoxReportHeldScreen({
                 </div>
 
                 <button
-                  onClick={() => toast.info('This page will be available soon — a shareable link for your client.')}
+                  onClick={() => toast.info('This page will be available soon - a shareable link for your client.')}
                   className="w-full flex items-center justify-between gap-3 p-3.5 rounded-xl border border-border/30 bg-muted/10 hover:bg-muted/30 transition-colors group cursor-pointer text-left"
                 >
                   <p className="text-xs text-muted-foreground group-hover:text-foreground/80">

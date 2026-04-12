@@ -9,11 +9,11 @@ const faqs = [
   },
   {
     question: 'Can I use OxiCloud without an environmental background?',
-    answer: 'Yes. OxiCloud is specifically designed for architects and project managers without specialised environmental training. You enter basic project data — address, built surface area, building category, and location relative to Natura 2000 areas. OxiCloud processes this automatically, performs the required nitrogen calculations, and generates a complete, ready-to-submit report.',
+    answer: 'Yes. OxiCloud is specifically designed for architects and project managers without specialised environmental training. You enter basic project data - address, built surface area, building category, and location relative to Natura 2000 areas. OxiCloud processes this automatically, performs the required nitrogen calculations, and generates a complete, ready-to-submit report.',
   },
   {
     question: 'Does OxiCloud stay up to date with regulatory changes?',
-    answer: 'Yes. The OxiCloud team continuously monitors all changes to the Nitrogen Decree, PAS regulations, and VITO guidelines. When legislation changes, the platform is updated automatically — without you having to do anything. Every report you generate complies with the currently applicable regulations.',
+    answer: 'Yes. The OxiCloud team continuously monitors all changes to the Nitrogen Decree, PAS regulations, and VITO guidelines. When legislation changes, the platform is updated automatically - without you having to do anything. Every report you generate complies with the currently applicable regulations.',
   },
   {
     question: 'How is our project data secured and stored?',

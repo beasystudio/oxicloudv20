@@ -308,7 +308,7 @@ export const ProjectContactDetailModal = ({
                     />
                   </div>
                 ) : (
-                  <div className="text-sm py-2">{editedContact.peppolId || '—'}</div>
+                  <div className="text-sm py-2">{editedContact.peppolId || '-'}</div>
                 )}
               </div>
               <FieldInput
@@ -360,7 +360,7 @@ export const ProjectContactDetailModal = ({
                   <div className="text-sm py-2">
                     {editedContact.contactType ? (
                       <Badge variant="outline">{editedContact.contactType}</Badge>
-                    ) : '—'}
+                    ) : '-'}
                   </div>
                 )}
               </div>
@@ -587,7 +587,7 @@ const FieldInput = ({ label, value, onChange, readOnly, required, placeholder }:
       {label} {required && <span className="text-destructive">*</span>}
     </Label>
     {readOnly ? (
-      <div className="text-sm py-2">{value || '—'}</div>
+      <div className="text-sm py-2">{value || '-'}</div>
     ) : (
       <Input
         value={value || ''}

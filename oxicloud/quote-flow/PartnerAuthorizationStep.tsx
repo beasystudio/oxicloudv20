@@ -157,7 +157,7 @@ export function PartnerAuthorizationStep({
         <div className="rounded-lg border border-border/60 p-3.5 space-y-2.5">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t('quoteFlow.recipient')}</p>
           <p className="font-medium truncate">{recipientInfo.name}</p>
-          <p className="text-xs text-muted-foreground truncate">{recipientInfo.email || '—'}</p>
+          <p className="text-xs text-muted-foreground truncate">{recipientInfo.email || '-'}</p>
         </div>
       </div>
 

@@ -45,7 +45,7 @@ function isKnownGovDomain(email: string): boolean {
 
 const formSchema = z.object({
   fullName: z.string().trim().min(2, 'Full name is required').max(100),
-  workEmail: z.string().trim().email('Valid email required').max(255).refine(isWorkEmail, 'Please use a work email address — personal email providers are not accepted.'),
+  workEmail: z.string().trim().email('Valid email required').max(255).refine(isWorkEmail, 'Please use a work email address - personal email providers are not accepted.'),
   organization: z.string().trim().min(2, 'Organization is required').max(200),
   position: z.string().trim().min(2, 'Position is required').max(100),
   country: z.string().trim().min(2, 'Country is required').max(100),
@@ -140,7 +140,7 @@ const GovernmentRegister = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>{isNL ? 'Toegang aanvragen — Overheid' : 'Request access — Government'} | OxiCloud</title>
+        <title>{isNL ? 'Toegang aanvragen - Overheid' : 'Request access - Government'} | OxiCloud</title>
         <meta name="description" content={isNL ? 'Vraag toegang aan tot OxiCloud als overheid of milieuautoriteit.' : 'Request access to OxiCloud as a government or environmental authority.'} />
       </Helmet>
 

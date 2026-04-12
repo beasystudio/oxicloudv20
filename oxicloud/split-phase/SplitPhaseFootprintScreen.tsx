@@ -131,7 +131,7 @@ export function SplitPhaseFootprintScreen({
                   <div className="text-center flex-1">
                     <span className="text-muted-foreground block text-[10px] uppercase tracking-wider mb-0.5">{t('modals.drawn')}</span>
                     <span className={cn("font-semibold text-xs", phase1Area > 0 ? "text-foreground" : "text-muted-foreground")}>
-                      {phase1Area > 0 ? `${phase1Area} m²` : '—'}
+                      {phase1Area > 0 ? `${phase1Area} m²` : '-'}
                     </span>
                   </div>
                   <div className="w-px h-8 bg-border" />

@@ -1,5 +1,5 @@
 /**
- * Simulation Buttons — Dev/demo tools for simulating client actions
+ * Simulation Buttons - Dev/demo tools for simulating client actions
  * Styled with dashed borders to clearly indicate they are not part of the real UI
  */
 

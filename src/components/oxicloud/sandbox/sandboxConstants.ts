@@ -1,4 +1,4 @@
-// OxiCloud Sandbox — Constants & Calculation Utilities
+// OxiCloud Sandbox - Constants & Calculation Utilities
 
 export const GFA = 4500; // m², gross floor area
 export const WORKING_DAYS_CONSTRUCTION = 220;
@@ -26,20 +26,20 @@ export const THRESHOLDS = {
 
 // Seed values
 export const SEEDS = {
-  // Tab 1 — Bouwfase Puntbronnen
+  // Tab 1 - Bouwfase Puntbronnen
   prefab_percentage: 0.40, // as decimal for tabs 2/3, as % (40) for slider in tab 1
   sloopoppervlakte: 1800,
   nieuwe_verharding: 950,
   diepte_bouwput: 4.5,
   grondwerkvolume: 2400,
   terrein_ophoging: 600,
-  // Tab 2/3 — Lijnbron
+  // Tab 2/3 - Lijnbron
   lv_trips_rate: 8.2,
   hv_trips_rate: 1.4,
-  // Tab 4 — Exploitatie Punt
+  // Tab 4 - Exploitatie Punt
   operating_hours: 1000,
   vermogen: 60,
-  // Tab 5/6 — Exploitatie Lijn
+  // Tab 5/6 - Exploitatie Lijn
   parking_spaces: 42,
   modal_split_lv: 0.65,
   lv_trips_rate_op: 6.5,
@@ -132,10 +132,10 @@ export const SOURCE_LABELS: Record<SourceId, string> = {
 };
 
 export const TAB_LABELS: Record<SourceId, string> = {
-  bouwfase_punt: 'Bouwfase — Puntbronnen',
-  bouwfase_lijn_lv: 'Bouwfase — Lijnbron LV',
-  bouwfase_lijn_hv: 'Bouwfase — Lijnbron HV',
-  exploitatie_punt: 'Exploitatiefase — Puntbronnen',
-  exploitatie_lijn_lv: 'Exploitatiefase — Lijnbron LV',
-  exploitatie_lijn_hv: 'Exploitatiefase — Lijnbron HV',
+  bouwfase_punt: 'Bouwfase - Puntbronnen',
+  bouwfase_lijn_lv: 'Bouwfase - Lijnbron LV',
+  bouwfase_lijn_hv: 'Bouwfase - Lijnbron HV',
+  exploitatie_punt: 'Exploitatiefase - Puntbronnen',
+  exploitatie_lijn_lv: 'Exploitatiefase - Lijnbron LV',
+  exploitatie_lijn_hv: 'Exploitatiefase - Lijnbron HV',
 };

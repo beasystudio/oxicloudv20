@@ -50,7 +50,7 @@ export default function PilotLogin() {
       </Helmet>
 
       <div className="min-h-screen flex bg-background">
-        {/* Left — Photo panel (stays dark) */}
+        {/* Left - Photo panel (stays dark) */}
         <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden">
           <img src={loginBackground} alt="Architecture" className="absolute inset-0 w-full h-full object-cover" />
           
@@ -62,7 +62,7 @@ export default function PilotLogin() {
           </div>
         </div>
 
-        {/* Right — Light form */}
+        {/* Right - Light form */}
         <div className="w-full lg:w-[45%] flex flex-col justify-center px-8 lg:px-16 xl:px-20">
           <motion.div variants={container} initial="hidden" animate="show" className="max-w-sm mx-auto w-full">
             <motion.div variants={item} className="lg:hidden mb-12">

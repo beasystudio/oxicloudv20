@@ -1,4 +1,4 @@
-// Monitor Project Store — Project data for OxiCloud Monitor (Government)
+// Monitor Project Store - Project data for OxiCloud Monitor (Government)
 
 export interface EmissionSource {
   id: string;
@@ -68,7 +68,7 @@ const defaultProjects: MonitorProject[] = [
       { id: 'es2', name: 'Verkeer bouwfase', type: 'Mobile', emissionRate: 8.2, unit: 'kg NOx/year' },
     ],
     validationStatus: 'validated',
-    validationLevel: 'Compliant – Below KDW threshold',
+    validationLevel: 'Compliant - Below KDW threshold',
     validationResult: 'The NOx assessment for this project demonstrates compliance with current regulatory thresholds. The calculated impact percentage (0.42%) remains well below the 1% significance threshold for the nearest Natura 2000 habitat directive area.',
     validationDate: '2025-02-15',
     validatedBy: 'Koen Vandenberg',
@@ -128,7 +128,7 @@ const defaultProjects: MonitorProject[] = [
       { id: 'es1', name: 'Gasketel renovatie', type: 'Stationary', emissionRate: 6.8, unit: 'kg NOx/year' },
     ],
     validationStatus: 'conditional',
-    validationLevel: 'Conditional – Requires additional mitigation measures',
+    validationLevel: 'Conditional - Requires additional mitigation measures',
     validationResult: 'The project is located within 0.6 km of a Natura 2000 habitat. While the calculated NOx contribution (0.78%) is below the 1% threshold, the proximity warrants additional mitigation measures during the construction phase.',
     validationDate: '2025-03-05',
     validatedBy: 'Pieter De Groote',

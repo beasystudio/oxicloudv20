@@ -237,7 +237,7 @@ const PartnerHome = () => {
                     </p>
                     <p className="text-sm text-secondary-foreground">
                       Typical residential project: <span className="font-semibold text-primary">
-                        €{dashboardData.typicalSettlementRange.min} – €{dashboardData.typicalSettlementRange.max}
+                        €{dashboardData.typicalSettlementRange.min} - €{dashboardData.typicalSettlementRange.max}
                       </span>
                     </p>
                   </div>

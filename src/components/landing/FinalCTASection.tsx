@@ -35,7 +35,7 @@ export const FinalCTASection = () => {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="body-lg text-secondary-foreground/60 mb-12 max-w-2xl mx-auto"
           >
-            Join the architectural firms building the future of environmental compliance — 
+            Join the architectural firms building the future of environmental compliance - 
             and finally earning fair compensation for it.
           </motion.p>
 

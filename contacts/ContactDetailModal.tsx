@@ -271,7 +271,7 @@ export const ContactDetailModal = ({ open, onOpenChange, contact, onContactUpdat
                         <Input value={editedContact.peppolId || ''} onChange={e => updateField('peppolId', e.target.value)} className="pl-9" placeholder={t('contactDetail.searchPeppol')} />
                       </div>
                     ) : (
-                      <div className="text-sm py-2">{editedContact.peppolId || '—'}</div>
+                      <div className="text-sm py-2">{editedContact.peppolId || '-'}</div>
                     )}
                   </div>
                   <FieldInput label={t('contactDetail.website')} value={editedContact.website} onChange={v => updateField('website', v)} readOnly={!isEditing} placeholder="https://" />
@@ -309,7 +309,7 @@ export const ContactDetailModal = ({ open, onOpenChange, contact, onContactUpdat
                       <Badge variant="outline">
                         {CONTACT_TYPE_KEYS[editedContact.contactType] ? t(CONTACT_TYPE_KEYS[editedContact.contactType]) : editedContact.contactType}
                       </Badge>
-                    ) : '—'}
+                    ) : '-'}
                   </div>
                 )}
               </div>
@@ -482,7 +482,7 @@ const FieldInput = ({ label, value, onChange, readOnly, required, placeholder }:
       {label} {required && <span className="text-destructive">*</span>}
     </Label>
     {readOnly ? (
-      <div className="text-sm py-2">{value || '—'}</div>
+      <div className="text-sm py-2">{value || '-'}</div>
     ) : (
       <Input
         value={value || ''}

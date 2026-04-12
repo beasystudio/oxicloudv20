@@ -254,7 +254,7 @@ export const MockAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setCurrentUser(mergedUser);
     localStorage.setItem('mockCurrentUser', JSON.stringify(mergedUser));
 
-    // Always ensure demo data is seeded on every login — synchronous so dashboard sees it immediately
+    // Always ensure demo data is seeded on every login - synchronous so dashboard sees it immediately
     if (!isCompanyDataSeeded()) {
       seedCompanyData();
     }

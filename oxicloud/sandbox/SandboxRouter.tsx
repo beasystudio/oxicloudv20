@@ -75,7 +75,7 @@ export function SandboxRouter({ initialType, exceedingTypes, onComplete, onBack,
               <div className="flex flex-wrap gap-3">
                 {Array.from(completedTypes).map(type => {
                   const config = SANDBOX_LABELS[type];
-                  return <span key={type} className="px-4 py-2 rounded-xl bg-primary/10 text-primary text-sm font-medium">{config.phase} — {config.label}</span>;
+                  return <span key={type} className="px-4 py-2 rounded-xl bg-primary/10 text-primary text-sm font-medium">{config.phase} - {config.label}</span>;
                 })}
               </div>
             </div>

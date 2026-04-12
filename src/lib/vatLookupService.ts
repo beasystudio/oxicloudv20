@@ -180,7 +180,7 @@ export async function lookupVATNumber(vatNumber: string, useMock = false): Promi
   const validation = validateBelgianVAT(vatNumber);
   
   if (useMock) {
-    // For mock/demo: accept ANY input — always return fake data
+    // For mock/demo: accept ANY input - always return fake data
     let cleaned = vatNumber.replace(/[\s.]/g, '').toUpperCase();
     if (!cleaned.startsWith('BE')) cleaned = 'BE' + cleaned;
     // Pad or trim to 12 chars (BE + 10 digits) for consistent mock data generation

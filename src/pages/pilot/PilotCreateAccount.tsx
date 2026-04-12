@@ -256,7 +256,7 @@ export default function PilotCreateAccount() {
             {lookupStatus === 'success' && (
               <div className="flex items-center gap-1.5 -mt-1">
                 <CheckCircle2 className="h-3 w-3 text-muted-foreground" />
-                <span className="text-[11px] text-muted-foreground">{t.lookupSuccess} — {kboData?.naceDescription || 'Architectenactiviteiten'}</span>
+                <span className="text-[11px] text-muted-foreground">{t.lookupSuccess} - {kboData?.naceDescription || 'Architectenactiviteiten'}</span>
               </div>
             )}
 

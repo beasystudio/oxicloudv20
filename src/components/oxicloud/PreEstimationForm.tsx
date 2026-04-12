@@ -323,7 +323,7 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
           </div>
         </header>
 
-        {/* Content – scrollable */}
+        {/* Content - scrollable */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <div className="max-w-2xl mx-auto w-full space-y-8">
 
@@ -476,7 +476,7 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                           className="overflow-hidden">
                             <div className="px-5 pb-5 pt-1 border-t border-border/30 space-y-6">
 
-                              {/* Projecttype — Main category pills */}
+                              {/* Projecttype - Main category pills */}
                               <div className="space-y-3">
                                 <Label className="text-sm font-semibold">{t('preEstimation.projectType')} <span className="text-destructive">*</span></Label>
                                 <div className="grid grid-cols-2 gap-2">
@@ -508,7 +508,7 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                                 </div>
                               </div>
 
-                              {/* Subtype pills — show subtypes of selected category */}
+                              {/* Subtype pills - show subtypes of selected category */}
                               {(() => {
                               const selectedCat = PROJECT_TYPE_CATEGORIES.find((c) =>
                               c.subtypes.some((s) => s.value === entry.projectTypeValue)
@@ -561,7 +561,7 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                                 </Select>
                               </div>
 
-                              {/* GFA + Height — side by side */}
+                              {/* GFA + Height - side by side */}
                               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/20">
                                 <div className="space-y-2">
                                   <Label className="text-sm font-semibold">{t('preEstimation.grossFloorArea')} <span className="text-destructive">*</span></Label>

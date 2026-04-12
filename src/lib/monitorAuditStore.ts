@@ -1,4 +1,4 @@
-// Monitor Audit Store — Full action logging for OxiCloud Monitor
+// Monitor Audit Store - Full action logging for OxiCloud Monitor
 
 export interface MonitorAuditEntry {
   id: string;

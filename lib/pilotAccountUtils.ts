@@ -90,7 +90,7 @@ export const ONBOARDING_STEPS: ModuleOnboardingStep[] = [
     id: 'home-settlement',
     module: 'home',
     title: 'Partner Settlement Preview',
-    description: 'For a typical residential project, you\'ll earn €280–€450 per approved report. This is your 40% commission on report fees.',
+    description: 'For a typical residential project, you\'ll earn €280-€450 per approved report. This is your 40% commission on report fees.',
     targetSelector: '[data-onboarding="settlement-preview"]',
     placement: 'right',
   },

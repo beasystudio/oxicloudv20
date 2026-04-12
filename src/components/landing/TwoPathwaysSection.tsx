@@ -45,7 +45,7 @@ export const TwoPathwaysSection = () => {
                 </h3>
                 <p className="mb-8 leading-relaxed text-secondary">
                   OxiCloud's Partnership Program ensures you're compensated for environmental 
-                  validation — not just delivering projects, but getting paid for the regulatory heavy lifting.
+                  validation - not just delivering projects, but getting paid for the regulatory heavy lifting.
                 </p>
                 
                 <ul className="space-y-3 mb-8">

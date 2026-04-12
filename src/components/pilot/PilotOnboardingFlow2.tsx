@@ -1,5 +1,5 @@
 /**
- * Create Project Wizard — Pilot Mode
+ * Create Project Wizard - Pilot Mode
  * 5-step flow:
  *   Step 1: Projectgegevens (naam, nummer, projectleider)
  *   Step 2: Opdrachtgeverbedrijf (zoeken in adresboek / KBO opzoeken / handmatig)
@@ -335,7 +335,7 @@ export function PilotOnboardingFlow2({ onComplete, onClose }: Props) {
       contactType: 'Bouwheer'
     });
 
-    // Determine project leader — empty means the owner himself
+    // Determine project leader - empty means the owner himself
     const leaderId = projectData.projectLeaderId || user?.id || '';
 
     // Create project
@@ -445,7 +445,7 @@ export function PilotOnboardingFlow2({ onComplete, onClose }: Props) {
                       <SelectContent>
                         {selectableEmployees.map((emp) =>
                     <SelectItem key={emp.id} value={emp.id}>
-                            {emp.firstName} {emp.lastName} — {emp.function || emp.contactSubtype || 'Medewerker'}
+                            {emp.firstName} {emp.lastName} - {emp.function || emp.contactSubtype || 'Medewerker'}
                           </SelectItem>
                     )}
                       </SelectContent>
@@ -551,7 +551,7 @@ export function PilotOnboardingFlow2({ onComplete, onClose }: Props) {
               </>
             }
 
-            {/* Step 2 — company selected from address book */}
+            {/* Step 2 - company selected from address book */}
             {currentStep === 2 && companySearchMode === 'selected' && selectedExistingCompany &&
             <>
                 <div className="flex items-center gap-3 p-4 rounded-lg bg-green-500/10 border border-green-500/20">
@@ -561,7 +561,7 @@ export function PilotOnboardingFlow2({ onComplete, onClose }: Props) {
                       Opdrachtgeverbedrijf geselecteerd
                     </p>
                     <p className="text-xs text-green-600 dark:text-green-500">
-                      {selectedExistingCompany.companyName} — {selectedExistingCompany.vatNumber}
+                      {selectedExistingCompany.companyName} - {selectedExistingCompany.vatNumber}
                     </p>
                   </div>
                 </div>
@@ -608,12 +608,12 @@ export function PilotOnboardingFlow2({ onComplete, onClose }: Props) {
                   </div>
               }
 
-                {/* Contact Type — fixed to Opdrachtgever */}
+                {/* Contact Type - fixed to Opdrachtgever */}
                 <section className="space-y-3">
                   <h4 className="text-sm font-semibold">Contacttype</h4>
                   <div className="flex items-center gap-2 p-2.5 rounded-lg border bg-muted/30">
                     <Badge variant="outline" className="text-xs">Opdrachtgever</Badge>
-                    <span className="text-xs text-muted-foreground">— Automatisch ingesteld voor projectdossiers</span>
+                    <span className="text-xs text-muted-foreground">- Automatisch ingesteld voor projectdossiers</span>
                   </div>
                 </section>
 

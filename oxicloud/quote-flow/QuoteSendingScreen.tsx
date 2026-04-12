@@ -1,5 +1,5 @@
 /**
- * Quote Sending Screen — Realistic Peppol/Email delivery animation
+ * Quote Sending Screen - Realistic Peppol/Email delivery animation
  */
 
 import { useState, useEffect } from 'react';

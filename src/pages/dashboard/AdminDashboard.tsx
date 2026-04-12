@@ -179,7 +179,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* ═══ ROW 4: Collapsible sections — full width (bottom) ═══ */}
+            {/* ═══ ROW 4: Collapsible sections - full width (bottom) ═══ */}
             <div
               className="rounded-2xl border border-border p-4 overflow-y-auto"
               style={{ gridColumn: '1 / 4', gridRow: '4' }}

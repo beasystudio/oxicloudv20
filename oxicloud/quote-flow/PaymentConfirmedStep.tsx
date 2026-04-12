@@ -1,5 +1,5 @@
 /**
- * Payment Confirmed — Clean, focused confirmation screen
+ * Payment Confirmed - Clean, focused confirmation screen
  */
 
 import { Button } from "@/components/ui/button";

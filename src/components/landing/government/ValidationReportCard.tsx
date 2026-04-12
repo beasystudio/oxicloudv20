@@ -3,12 +3,12 @@ import { CheckCircle, Shield } from '@/components/icons/OxiIcons';
 
 const reportRows = [
   { label: 'Project ID', value: 'PRJ-2024-00471', status: 'info' },
-  { label: 'Distance to site', value: '142m — Verified', status: 'pass' },
+  { label: 'Distance to site', value: '142m - Verified', status: 'pass' },
   { label: 'Building perceel', value: 'Boundaries confirmed', status: 'pass' },
   { label: 'Natura 2000', value: 'Not in proximity', status: 'pass' },
-  { label: 'Excavators (submitted)', value: '1 unit (system recommends: 2–3)', status: 'warn' },
+  { label: 'Excavators (submitted)', value: '1 unit (system recommends: 2-3)', status: 'warn' },
   { label: 'Baseline comparison', value: 'Within tolerance', status: 'pass' },
-  { label: 'Reviewer conclusion', value: 'Acceptable — flagged item noted', status: 'info' },
+  { label: 'Reviewer conclusion', value: 'Acceptable - flagged item noted', status: 'info' },
 ];
 
 export const ValidationReportCard = () => {

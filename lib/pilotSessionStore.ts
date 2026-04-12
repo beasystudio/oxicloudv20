@@ -529,7 +529,7 @@ export const savePilotPreEstimation = (projectId: string, data: import('@/types/
 
   const newStatus = (isComplete ? 'input_completed' : 'input_incomplete') as import('@/types/oxicloud').OxiCloudProjectStatus;
 
-  // Status progression guard — never downgrade status (mirrors noxProjectStore logic)
+  // Status progression guard - never downgrade status (mirrors noxProjectStore logic)
   const STATUS_ORDER: import('@/types/oxicloud').OxiCloudProjectStatus[] = [
     'input_incomplete', 'input_completed', 'price_generated',
     'awaiting_payment', 'paid', 'report_in_progress', 'report_delivered'

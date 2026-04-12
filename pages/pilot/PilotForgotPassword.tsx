@@ -37,7 +37,7 @@ export default function PilotForgotPassword() {
 
   return (
     <>
-      <Helmet><title>Wachtwoord vergeten — OxiCloud Demo</title></Helmet>
+      <Helmet><title>Wachtwoord vergeten - OxiCloud Demo</title></Helmet>
       <div className="min-h-screen flex bg-background">
         <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden">
           <img src={loginBackground} alt="Architecture" className="absolute inset-0 w-full h-full object-cover" />
