@@ -4301,6 +4301,16 @@ export const en = {
     liabilityProtectionDesc: 'Reduce your risk with reliable, compliant, and well-documented outputs.',
     shareWithClient: 'Share with your client to help them clearly understand the value, build trust, and confidently move forward.',
     comingSoon: 'This page will be available soon - a shareable link for your client.',
+    technicalReport: 'Technical Report',
+    environmentalPermit: 'Environmental Permit',
+    nitrogenEmission: 'Nitrogen Emission Report',
+    preAssessment: 'Pre-assessment - impact score construction phase',
+    projectLabel: 'Project',
+    phaseLabel: 'Phase',
+    constructionPhase: 'Construction phase',
+    methodologyLabel: 'Methodology',
+    regulationLabel: 'Regulation',
+    nitrogenDecree: 'Nitrogen Decree Flanders',
   },
 
   // ── OxiCloudResultScreen ──
