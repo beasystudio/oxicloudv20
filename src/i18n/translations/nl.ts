@@ -4208,6 +4208,16 @@ export const nl = {
     liabilityProtectionDesc: 'Verminder uw risico met betrouwbare, conforme en goed gedocumenteerde output.',
     shareWithClient: 'Deel met uw klant om hen te helpen de waarde duidelijk te begrijpen, vertrouwen op te bouwen en vol vertrouwen verder te gaan.',
     comingSoon: 'Deze pagina is binnenkort beschikbaar - een deelbare link voor uw klant.',
+    technicalReport: 'Technisch Rapport',
+    environmentalPermit: 'Omgevingsvergunning',
+    nitrogenEmission: 'Stikstof Emissie Rapport',
+    preAssessment: 'Voortoets - analyse impactscore bouwfase',
+    projectLabel: 'Project',
+    phaseLabel: 'Fase',
+    constructionPhase: 'Bouwfase (aanlegfase)',
+    methodologyLabel: 'Methodologie',
+    regulationLabel: 'Regelgeving',
+    nitrogenDecree: 'Stikstofdecreet Vlaanderen',
   },
 
   // ── OxiCloudResultScreen ──
