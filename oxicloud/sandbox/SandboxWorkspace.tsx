@@ -34,8 +34,9 @@ export interface SandboxState {
   prefab_percentage: number; // 0-1 decimal
   lv_trips_rate: number;
   hv_trips_rate: number;
-  // Tab 4
-  operating_hours: number;
+  // Tab 4 — op_ps screening gate (Spec §8.4)
+  op_ps_combustion_present: boolean; // Q1
+  operating_hours: number;           // Q2 derives: > 100h/yr
   // Tab 5/6 shared
   parking_spaces: number;
   modal_split_lv: number;
@@ -54,6 +55,13 @@ interface SandboxContextType {
   isCompliant: Record<SourceId, boolean>;
   projectCompliant: boolean;
   projectProgress: number;
+  // SOM (Spec §3.1) — combined LV+HV pct of limit per pair
+  cpLsSomPct: number;
+  opLsSomPct: number;
+  cpLsSomCompliant: boolean;
+  opLsSomCompliant: boolean;
+  // op_ps screening gate (Spec §8.4)
+  opPsExcluded: boolean;
 }
 
 export const SandboxContext = createContext<SandboxContextType>(null!);
@@ -72,6 +80,7 @@ const INITIAL_STATE: SandboxState = {
   prefab_percentage: SEEDS.prefab_percentage,
   lv_trips_rate: SEEDS.lv_trips_rate,
   hv_trips_rate: SEEDS.hv_trips_rate,
+  op_ps_combustion_present: true,
   operating_hours: SEEDS.operating_hours,
   parking_spaces: SEEDS.parking_spaces,
   modal_split_lv: SEEDS.modal_split_lv,
@@ -124,7 +133,11 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
 
     const tab2Emission = calcLineSourceConstruction(s.lv_trips_rate, 0.0021, s.prefab_percentage);
     const tab3Emission = calcLineSourceConstruction(s.hv_trips_rate, 0.014, s.prefab_percentage);
-    const tab4Emission = calcOperationPointEmission(60, s.operating_hours);
+    // op_ps screening gate (Spec §8.4):
+    // Q1: combustion system present? Q2: operating > 100 h/yr?
+    // If either is false → op_ps = 0, excluded from ratios/recommendations.
+    const opPsExcluded = !s.op_ps_combustion_present || s.operating_hours <= 100;
+    const tab4Emission = opPsExcluded ? 0 : calcOperationPointEmission(60, s.operating_hours);
     const tab5Emission = calcLineSourceOperation(s.lv_trips_rate_op, 0.0021, s.modal_split_lv, s.parking_spaces);
     const tab6Emission = calcLineSourceOperation(s.hv_trips_rate_op, 0.014, 1 - s.modal_split_lv, s.parking_spaces);
 
@@ -161,19 +174,45 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
     const progress: Record<SourceId, number> = {} as any;
     const isCompliant: Record<SourceId, boolean> = {} as any;
 
+    // Per-source overshoot/remaining still computed for display; compliance for line sources uses SOM (LV+HV ≤ 100%).
     for (const src of visibleSources) {
       overshoots[src] = Math.max(0, seedEmissions[src] - thresholds[src]);
       remaining[src] = calcRemainingReduction(emissions[src], thresholds[src]);
       progress[src] = calcProgress(remaining[src], overshoots[src]);
-      isCompliant[src] = remaining[src] === 0;
     }
 
-    const totalRemaining = visibleSources.reduce((s, id) => s + remaining[id], 0);
-    const totalOvershoot = visibleSources.reduce((s, id) => s + overshoots[id], 0);
-    const projectProgress = calcProgress(totalRemaining, totalOvershoot);
-    const projectCompliant = visibleSources.every(id => isCompliant[id]);
+    // SOM compliance for line source pairs (Spec §3.1)
+    const cpLsLvPct = thresholds.bouwfase_lijn_lv > 0 ? (emissions.bouwfase_lijn_lv / thresholds.bouwfase_lijn_lv) * 100 : 0;
+    const cpLsHvPct = thresholds.bouwfase_lijn_hv > 0 ? (emissions.bouwfase_lijn_hv / thresholds.bouwfase_lijn_hv) * 100 : 0;
+    const opLsLvPct = thresholds.exploitatie_lijn_lv > 0 ? (emissions.exploitatie_lijn_lv / thresholds.exploitatie_lijn_lv) * 100 : 0;
+    const opLsHvPct = thresholds.exploitatie_lijn_hv > 0 ? (emissions.exploitatie_lijn_hv / thresholds.exploitatie_lijn_hv) * 100 : 0;
+    const cpLsSomPct = cpLsLvPct + cpLsHvPct;
+    const opLsSomPct = opLsLvPct + opLsHvPct;
+    const cpLsSomCompliant = cpLsSomPct <= 100;
+    const opLsSomCompliant = opLsSomPct <= 100;
 
-    return { emissions, thresholds, overshoots, remaining, progress, isCompliant, projectCompliant, projectProgress };
+    isCompliant.bouwfase_punt = remaining.bouwfase_punt === 0;
+    // Excluded op_ps does not contribute to ratios or compliance (Spec §13.1 + §8.4)
+    isCompliant.exploitatie_punt = opPsExcluded ? true : remaining.exploitatie_punt === 0;
+    // Both halves of a SOM pair share the same compliance verdict
+    isCompliant.bouwfase_lijn_lv = cpLsSomCompliant;
+    isCompliant.bouwfase_lijn_hv = cpLsSomCompliant;
+    isCompliant.exploitatie_lijn_lv = opLsSomCompliant;
+    isCompliant.exploitatie_lijn_hv = opLsSomCompliant;
+
+    // Active sources for project totals — exclude op_ps when screening gate fails
+    const activeSources = visibleSources.filter(id => !(id === 'exploitatie_punt' && opPsExcluded));
+    const totalRemaining = activeSources.reduce((acc, id) => acc + remaining[id], 0);
+    const totalOvershoot = activeSources.reduce((acc, id) => acc + overshoots[id], 0);
+    const projectProgress = calcProgress(totalRemaining, totalOvershoot);
+    const projectCompliant = activeSources.every(id => isCompliant[id]);
+
+    return {
+      emissions, thresholds, overshoots, remaining, progress, isCompliant,
+      projectCompliant, projectProgress,
+      cpLsSomPct, opLsSomPct, cpLsSomCompliant, opLsSomCompliant,
+      opPsExcluded,
+    };
   }, [state]);
 
   const ctx: SandboxContextType = {
@@ -230,23 +269,49 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
                 {computed.projectCompliant ? 'Project Conform' : 'Project Niet Conform'}
               </motion.span>
             </div>
-            <div className="flex flex-wrap gap-1.5 mb-3">
-              {visibleSources.map(src => (
-                <button
-                  key={src}
-                  onClick={() => setActiveTab(src)}
-                  className={cn(
-                    "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all border",
-                    computed.isCompliant[src]
-                      ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-                      : "bg-destructive/5 border-destructive/20 text-destructive",
-                    activeTab === src && "ring-1 ring-ring"
-                  )}
-                >
-                  {computed.isCompliant[src] ? <Check className="h-2.5 w-2.5" /> : <X className="h-2.5 w-2.5" />}
-                  {SOURCE_LABELS[src]}
-                </button>
-              ))}
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {visibleSources.map(src => {
+                const isExcluded = src === 'exploitatie_punt' && computed.opPsExcluded;
+                return (
+                  <button
+                    key={src}
+                    onClick={() => setActiveTab(src)}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all border",
+                      isExcluded
+                        ? "bg-muted/50 border-border text-muted-foreground"
+                        : computed.isCompliant[src]
+                          ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                          : "bg-destructive/5 border-destructive/20 text-destructive",
+                      activeTab === src && "ring-1 ring-ring"
+                    )}
+                  >
+                    {isExcluded ? <span className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40" /> :
+                      computed.isCompliant[src] ? <Check className="h-2.5 w-2.5" /> : <X className="h-2.5 w-2.5" />}
+                    {SOURCE_LABELS[src]}
+                    {isExcluded && <span className="text-[9px] opacity-70">· buiten beschouwing</span>}
+                  </button>
+                );
+              })}
+            </div>
+            {/* SOM badges (Spec §3.1) — line source pair compliance is the SOM, not individual ratios */}
+            <div className="flex flex-wrap gap-1.5 mb-3 text-[10px]">
+              <span className={cn(
+                "inline-flex items-center gap-1 px-2 py-0.5 rounded-md border font-semibold tabular-nums",
+                computed.cpLsSomCompliant
+                  ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                  : "bg-destructive/5 border-destructive/20 text-destructive"
+              )}>
+                Bouwfase Lijn SOM (LV+HV): {computed.cpLsSomPct.toFixed(1)}% / 100%
+              </span>
+              <span className={cn(
+                "inline-flex items-center gap-1 px-2 py-0.5 rounded-md border font-semibold tabular-nums",
+                computed.opLsSomCompliant
+                  ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                  : "bg-destructive/5 border-destructive/20 text-destructive"
+              )}>
+                Exploitatie Lijn SOM (LV+HV): {computed.opLsSomPct.toFixed(1)}% / 100%
+              </span>
             </div>
             <div className="flex items-center gap-3">
               <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">

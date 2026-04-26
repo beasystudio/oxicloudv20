@@ -41,27 +41,33 @@ export interface PhaseEmissionResult {
   percentOfThreshold: number;
 }
 
+// 6-code taxonomy per Spec §3 / §18.4
+export type EmissionSourceCode =
+  | 'cp_ps'
+  | 'cp_ls_lv'
+  | 'cp_ls_hv'
+  | 'op_ps'
+  | 'op_ls_lv'
+  | 'op_ls_hv';
+
+export type PerSourceRatios = Record<EmissionSourceCode, number | null>;
+
 export interface SplitPhaseCalculation {
   projectEmission: number;
   threshold: number;
   minimumUtilizationRatio: number;
-  
+
   // Calculated ratios
   complianceRatio: number; // R_compliance
-  minimumRatio: number; // R_min
-  candidateRatio: number; // R_candidate with safety margin
-  finalRatio: number; // R_phase1 (worst case across emission types)
-  
-  // Per emission type ratios
-  emissionTypeRatios: {
-    demolition: number;
-    constructionEquipment: number;
-    constructionTraffic: number;
-    operationalEquipment: number;
-    operationalTraffic: number;
-    operationalIndustrial: number;
-  };
-  
+  minimumRatio: number; // R_min (70% floor)
+  candidateRatio: number; // R_candidate = R_compliance × safetyMargin
+  finalRatio: number; // R_phase1 = MIN across all per-source ratios (Spec §18.2)
+  safetyMarginApplied: number;
+
+  // Per emission type ratios (6-code taxonomy). op_ps = null when screening gate fails.
+  perSourceRatios: PerSourceRatios;
+  bindingEmissionType: EmissionSourceCode; // source producing the MIN ratio
+
   // Phases
   phase1: PhaseProject | null;
   phase2: PhaseProject | null;
@@ -99,18 +105,31 @@ export const computeMinimumRatio = (
   return (minimumUtilizationRatio * threshold) / projectEmission;
 };
 
+/**
+ * Spec §18.2 — R_phase1 = MIN across all per-source ratios.
+ * Per-source ratios are legal R_compliance values; the safety margin is
+ * applied to the resulting candidate.
+ */
 export const computeWorstCaseRatio = (
   emissionTypeRatios: number[],
   complianceRatio: number
 ): number => {
   const safetyMargin = 0.97;
   const candidateRatio = complianceRatio * safetyMargin;
-  
-  // Get minimum ratio across all emission types
-  const minEmissionRatio = Math.min(...emissionTypeRatios);
-  
-  // Final ratio must not exceed the candidate
+  const minEmissionRatio = emissionTypeRatios.length
+    ? Math.min(...emissionTypeRatios)
+    : candidateRatio;
   return Math.min(candidateRatio, minEmissionRatio);
+};
+
+/** Spec §18.2 — return the source code whose ratio is the binding (MIN) one. */
+export const computeBindingEmissionType = (
+  perSourceRatios: PerSourceRatios
+): EmissionSourceCode => {
+  const entries = (Object.entries(perSourceRatios) as Array<[EmissionSourceCode, number | null]>)
+    .filter(([, r]) => r !== null) as Array<[EmissionSourceCode, number]>;
+  if (entries.length === 0) return 'cp_ps';
+  return entries.reduce((a, b) => (a[1] <= b[1] ? a : b))[0];
 };
 
 export const createPhaseProjects = (

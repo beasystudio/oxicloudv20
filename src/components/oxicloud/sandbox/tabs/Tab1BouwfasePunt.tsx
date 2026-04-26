@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Textarea } from '@/components/ui/textarea';
-import { Sparkles, RotateCcw, ArrowLeft, ChevronRight, Plus, Trash2, AlertTriangle, Info, Lightbulb } from 'lucide-react';
 import { toast } from 'sonner';
 import { useSandbox } from '../SandboxWorkspace';
 import { CompliancePanel } from '../CompliancePanel';
@@ -26,8 +25,8 @@ function NumberField({ label, value, onChange, min = 0, max, unit, recommended, 
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <label className="text-xs font-medium text-foreground">{label}</label>
-        {unit && <span className="text-[10px] text-muted-foreground">{unit}</span>}
+        <label className="text-sm text-foreground">{label}</label>
+        {unit && <span className="text-xs text-muted-foreground">{unit}</span>}
       </div>
       <Input
         type="number"
@@ -35,19 +34,16 @@ function NumberField({ label, value, onChange, min = 0, max, unit, recommended, 
         onChange={e => onChange(Math.max(min, Number(e.target.value)))}
         min={min}
         max={max}
-        className={cn("h-9 text-sm tabular-nums", isNeg && "border-destructive")}
+        className={cn("h-10 text-sm tabular-nums rounded-md", isNeg && "border-destructive")}
       />
-      {isNeg && <p className="text-[10px] text-destructive">{t('sandboxTabs.valueCannotBeNegative')}</p>}
+      {isNeg && <p className="text-xs text-destructive">{t('sandboxTabs.valueCannotBeNegative')}</p>}
       {recommended !== undefined && (
-        <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
+        <p className="text-xs text-muted-foreground">
           {t('sandboxTabs.recommended')} {recommended.toLocaleString()} {unit}
         </p>
       )}
       {note && (
-        <p className="text-[10px] text-amber-600 dark:text-amber-400 flex items-start gap-1">
-          <Info className="h-3 w-3 mt-0.5 shrink-0" />
-          {note}
-        </p>
+        <p className="text-xs text-muted-foreground">{note}</p>
       )}
     </div>
   );
@@ -57,14 +53,12 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
   const { t } = useLanguage();
   const { state, update, emissions, thresholds, remaining, progress, isCompliant } = useSandbox();
   const src = 'bouwfase_punt' as const;
-  const [pendingScenario, setPendingScenario] = useState<{ id: string; title: string; badge: string; badgeColor: string; summary: string; projected: number; values: any } | null>(null);
+  const [pendingScenario, setPendingScenario] = useState<{ id: string; title: string; summary: string; projected: number; values: any } | null>(null);
 
   const SCENARIOS = useMemo(() => [
     {
       id: 'high',
       title: t('sandboxTabs.maxPrefab'),
-      badge: t('sandboxTabs.maxPrefabBadge'),
-      badgeColor: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400',
       summary: t('sandboxTabs.maxPrefabSummary'),
       projected: 26.1,
       values: { prefabSlider: 72, grondwerkvolume: 1800 },
@@ -72,8 +66,6 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
     {
       id: 'mid',
       title: t('sandboxTabs.optimizedPhasing'),
-      badge: t('sandboxTabs.optimizedPhasingBadge'),
-      badgeColor: 'bg-amber-500/15 text-amber-600 dark:text-amber-400',
       summary: t('sandboxTabs.optimizedPhasingSummary'),
       projected: 29.8,
       values: { prefabSlider: 55, sloopoppervlakte: 1200 },
@@ -81,8 +73,6 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
     {
       id: 'low',
       title: t('sandboxTabs.minMachineHours'),
-      badge: t('sandboxTabs.minMachineHoursBadge'),
-      badgeColor: 'bg-blue-500/15 text-blue-600 dark:text-blue-400',
       summary: t('sandboxTabs.minMachineHoursSummary'),
       projected: 31.4,
       values: { machines: DEFAULT_MACHINES.map(m => m.id === '1' ? { ...m, uren: 384 } : { ...m }) },
@@ -167,54 +157,70 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
   };
 
   return (
-    <div className="p-5 space-y-5">
-      {/* AI Scenario Cards */}
-      <div>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
-          <Sparkles className="h-3.5 w-3.5 text-primary" />
-          {t('sandboxTabs.aiScenarios')}
-        </h3>
-        <div className="grid grid-cols-3 gap-3">
-          {SCENARIOS.map(sc => (
+    <div className="px-8 py-8 max-w-[1400px] mx-auto space-y-10">
+      {/* AI Scenarios — single unified suggestion section */}
+      <section>
+        <div className="flex items-end justify-between mb-4">
+          <div>
+            <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              {t('sandboxTabs.aiScenarios')}
+            </h3>
+            <p className="text-xs text-muted-foreground mt-1">{t('sandboxTabs.applyOptimizedValues')}</p>
+          </div>
+          <button
+            onClick={handleApplyRecommendations}
+            className="text-xs text-foreground underline underline-offset-4 hover:no-underline"
+          >
+            {t('sandboxTabs.applySuggestions')}
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-border">
+          {SCENARIOS.map((sc) => (
             <button
               key={sc.id}
               onClick={() => handleApplyScenario(sc)}
-              className="text-left rounded-xl border border-border bg-card p-4 hover:border-primary/40 hover:shadow-md transition-all group"
+              className="text-left p-5 border-b border-border md:border-b-0 md:border-r last:md:border-r-0 hover:bg-muted/40 transition-colors"
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className={cn("px-2 py-0.5 rounded-md text-[10px] font-bold uppercase", sc.badgeColor)}>{sc.badge}</span>
-                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
-              </div>
-              <h4 className="text-sm font-semibold text-foreground mb-1">{sc.title}</h4>
-              <p className="text-[11px] text-muted-foreground leading-relaxed mb-3">{sc.summary}</p>
-              <p className="text-xs font-bold tabular-nums text-foreground">{sc.projected} kg NOₓ</p>
+              <h4 className="text-sm text-foreground mb-1.5">{sc.title}</h4>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-4">{sc.summary}</p>
+              <p className="text-sm tabular-nums text-foreground">{sc.projected} kg NOₓ</p>
             </button>
           ))}
         </div>
-      </div>
+      </section>
 
       {pendingScenario && (
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-xl border border-primary/30 bg-primary/5 p-4 flex items-center justify-between"
+          className="border-y border-border py-3 px-4 flex items-center justify-between"
         >
-          <p className="text-sm text-foreground">{t('sandboxTabs.loadScenarioValues')} <strong>{pendingScenario.title}</strong></p>
+          <p className="text-sm text-foreground">
+            {t('sandboxTabs.loadScenarioValues')} <span className="font-medium">{pendingScenario.title}</span>
+          </p>
           <div className="flex gap-2">
-            <Button variant="ghost" size="sm" onClick={() => setPendingScenario(null)}>{t('sandboxTabs.cancel')}</Button>
-            <Button size="sm" onClick={confirmScenario}>{t('sandboxTabs.confirm')}</Button>
+            <Button variant="ghost" size="sm" onClick={() => setPendingScenario(null)} className="h-8 rounded-full text-xs">
+              {t('sandboxTabs.cancel')}
+            </Button>
+            <Button size="sm" onClick={confirmScenario} className="h-8 rounded-full text-xs">
+              {t('sandboxTabs.confirm')}
+            </Button>
           </div>
         </motion.div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-        <div className="lg:col-span-3 space-y-5">
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-muted/50 w-fit">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
+        {/* ── Left: inputs ── */}
+        <div className="lg:col-span-3 space-y-8">
+          {/* Mode switch — flat underline tabs */}
+          <div className="flex items-center gap-6 border-b border-border">
             <button
               onClick={() => handleModeSwitch('guided')}
               className={cn(
-                "px-4 py-2 rounded-lg text-xs font-medium transition-all",
-                state.tab1Mode === 'guided' ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                "pb-2 -mb-px border-b-2 text-sm transition-colors",
+                state.tab1Mode === 'guided'
+                  ? "border-foreground text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               )}
             >
               {t('sandboxTabs.guidedOptimization')}
@@ -222,8 +228,10 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
             <button
               onClick={() => handleModeSwitch('expert')}
               className={cn(
-                "px-4 py-2 rounded-lg text-xs font-medium transition-all",
-                state.tab1Mode === 'expert' ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                "pb-2 -mb-px border-b-2 text-sm transition-colors",
+                state.tab1Mode === 'expert'
+                  ? "border-foreground text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               )}
             >
               {t('sandboxTabs.expertMode')}
@@ -231,28 +239,14 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
           </div>
 
           {state.tab1Mode === 'guided' ? (
-            <div className="space-y-5">
-              <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-lg bg-primary/15 flex items-center justify-center">
-                    <Lightbulb className="h-4 w-4 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-foreground">{t('sandboxTabs.oxicloudRecommendation')}</p>
-                    <p className="text-[11px] text-muted-foreground">{t('sandboxTabs.applyOptimizedValues')}</p>
-                  </div>
-                </div>
-                <Button size="sm" variant="default" onClick={handleApplyRecommendations} className="text-xs h-8">
-                  {t('sandboxTabs.applySuggestions')}
-                </Button>
-              </div>
-
-              <div className="space-y-2">
+            <div className="space-y-8">
+              {/* Prefab slider */}
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-medium text-foreground">{t('sandboxTabs.prefabLevel')}</label>
-                  <span className="text-xs font-bold tabular-nums text-foreground">{state.prefabSlider}%</span>
+                  <label className="text-sm text-foreground">{t('sandboxTabs.prefabLevel')}</label>
+                  <span className="text-sm tabular-nums text-foreground">{state.prefabSlider}%</span>
                 </div>
-                <div className="relative">
+                <div className="relative [&_[role=slider]]:!border-foreground/40 [&_.bg-primary]:!bg-foreground/30 [&_.bg-secondary]:!bg-muted">
                   <Slider
                     value={[state.prefabSlider]}
                     onValueChange={([v]) => update({ prefabSlider: v })}
@@ -262,18 +256,18 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
                     className="w-full"
                   />
                   <div
-                    className="absolute top-1/2 -translate-y-1/2 w-0.5 h-4 bg-emerald-500 rounded-full pointer-events-none"
+                    className="absolute top-1/2 -translate-y-1/2 w-px h-3 bg-muted-foreground pointer-events-none"
                     style={{ left: `${(RECOMMENDED.prefab_percentage / 80) * 100}%` }}
                   />
                 </div>
-                <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">{t('sandboxTabs.prefabRecommended').replace('{value}', String(RECOMMENDED.prefab_percentage))}</p>
-                <p className="text-[10px] text-amber-600 dark:text-amber-400 flex items-start gap-1">
-                  <AlertTriangle className="h-3 w-3 mt-0.5 shrink-0" />
-                  {t('sandboxTabs.prefabWarning')}
+                <p className="text-xs text-muted-foreground">
+                  {t('sandboxTabs.prefabRecommended').replace('{value}', String(RECOMMENDED.prefab_percentage))}
                 </p>
+                <p className="text-xs text-muted-foreground">{t('sandboxTabs.prefabWarning')}</p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              {/* Number fields */}
+              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
                 <NumberField
                   label={t('sandboxTabs.demolitionSurface')} value={state.sloopoppervlakte}
                   onChange={v => update({ sloopoppervlakte: v })}
@@ -302,89 +296,94 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
               </div>
             </div>
           ) : (
-            <div className="space-y-5">
-              <div className="rounded-xl border border-border bg-muted/30 p-3 flex items-center gap-3">
-                <Info className="h-4 w-4 text-muted-foreground shrink-0" />
-                <p className="text-xs text-muted-foreground">{t('sandboxTabs.inputEmissionsLabel').replace('{value}', seedEmission.toFixed(1))}</p>
-              </div>
-              <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 flex items-center gap-3">
-                <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
-                <p className="text-xs text-amber-700 dark:text-amber-400">{t('sandboxTabs.expertDisclaimer')}</p>
-              </div>
+            <div className="space-y-6">
+              <p className="text-xs text-muted-foreground">
+                {t('sandboxTabs.inputEmissionsLabel').replace('{value}', seedEmission.toFixed(1))}
+              </p>
+              <p className="text-xs text-muted-foreground border-l-2 border-foreground/40 pl-3">
+                {t('sandboxTabs.expertDisclaimer')}
+              </p>
 
-              <div className="rounded-xl border border-border overflow-hidden">
-                <div className="bg-muted/30 px-4 py-2.5 border-b border-border">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.equipmentInventory')}</h4>
-                </div>
-                <div className="divide-y divide-border">
-                  <div className="grid grid-cols-[1fr_80px_80px_40px] gap-3 px-4 py-2 bg-muted/20">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.machine')}</span>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.quantity')}</span>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.hours')}</span>
+              {/* Equipment table — flat */}
+              <div>
+                <h4 className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-3">
+                  {t('sandboxTabs.equipmentInventory')}
+                </h4>
+                <div className="border-t border-border">
+                  <div className="grid grid-cols-[1fr_90px_90px_40px] gap-3 py-2 border-b border-border">
+                    <span className="text-xs text-muted-foreground">{t('sandboxTabs.machine')}</span>
+                    <span className="text-xs text-muted-foreground">{t('sandboxTabs.quantity')}</span>
+                    <span className="text-xs text-muted-foreground">{t('sandboxTabs.hours')}</span>
                     <span />
                   </div>
                   {state.machines.map(m => (
-                    <div key={m.id} className="grid grid-cols-[1fr_80px_80px_40px] gap-3 px-4 py-2 items-center">
+                    <div key={m.id} className="grid grid-cols-[1fr_90px_90px_40px] gap-3 py-2.5 items-center border-b border-border">
                       <span className="text-sm text-foreground">{m.machine}</span>
                       <Input
                         type="number" value={m.aantal} min={0} max={20}
                         onChange={e => updateMachine(m.id, 'aantal', e.target.value)}
-                        className="h-8 text-xs tabular-nums"
+                        className="h-9 text-sm tabular-nums rounded-md"
                       />
                       <Input
                         type="number" value={m.uren} min={0} max={2000}
                         onChange={e => updateMachine(m.id, 'uren', e.target.value)}
-                        className="h-8 text-xs tabular-nums"
+                        className="h-9 text-sm tabular-nums rounded-md"
                       />
-                      <button onClick={() => removeMachineRow(m.id)} className="text-muted-foreground hover:text-destructive transition-colors">
-                        <Trash2 className="h-3.5 w-3.5" />
+                      <button
+                        onClick={() => removeMachineRow(m.id)}
+                        className="text-xs text-muted-foreground hover:text-foreground transition-colors text-right"
+                        aria-label={t('compliancePanel.remove')}
+                      >
+                        {t('compliancePanel.remove')}
                       </button>
                     </div>
                   ))}
-                </div>
-                <div className="px-4 py-2 border-t border-border">
-                  <button onClick={addMachineRow} className="text-xs text-primary font-medium flex items-center gap-1 hover:underline">
-                    <Plus className="h-3 w-3" /> {t('sandboxTabs.addRow')}
-                  </button>
+                  <div className="py-2">
+                    <button onClick={addMachineRow} className="text-xs text-foreground hover:underline">
+                      + {t('sandboxTabs.addRow')}
+                    </button>
+                  </div>
                 </div>
               </div>
 
+              {/* Reason */}
               <div className="space-y-2">
-                <label className="text-xs font-medium text-foreground">{t('sandboxTabs.deviationReason')}</label>
+                <label className="text-sm text-foreground">{t('sandboxTabs.deviationReason')}</label>
                 <Textarea
                   value={state.expertReason}
                   onChange={e => update({ expertReason: e.target.value })}
                   placeholder={t('sandboxTabs.deviationPlaceholder')}
-                  className="min-h-[80px] text-sm"
+                  className="min-h-[88px] text-sm rounded-md"
                 />
-                <p className="text-[10px] text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {t('sandboxTabs.minCharsRequired').replace('{count}', String(state.expertReason.length))}
                 </p>
               </div>
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-4 border-t border-border">
-            <div className="flex gap-2">
-              <Button variant="ghost" size="sm" onClick={handleReset} className="text-xs gap-1.5">
-                <RotateCcw className="h-3 w-3" /> {t('sandboxTabs.resetToBase')}
+          {/* Footer actions */}
+          <div className="flex items-center justify-between pt-6 border-t border-border">
+            <div className="flex gap-1">
+              <Button variant="ghost" size="sm" onClick={handleReset} className="h-9 rounded-full text-xs text-muted-foreground hover:text-foreground">
+                {t('sandboxTabs.resetToBase')}
               </Button>
-              <Button variant="ghost" size="sm" onClick={onBack} className="text-xs gap-1.5">
-                <ArrowLeft className="h-3 w-3" /> {t('sandboxTabs.back')}
+              <Button variant="ghost" size="sm" onClick={onBack} className="h-9 rounded-full text-xs text-muted-foreground hover:text-foreground">
+                {t('sandboxTabs.back')}
               </Button>
             </div>
             <Button
-              size="sm"
               onClick={onConfirm}
               disabled={state.tab1Mode === 'expert' && state.expertReason.length < 20}
-              className="text-xs"
+              className="h-10 rounded-full text-sm px-6"
             >
               {state.tab1Mode === 'expert' ? t('sandboxTabs.applyToProject') : t('sandboxTabs.confirmChanges')}
             </Button>
           </div>
         </div>
 
-        <div className="lg:col-span-2">
+        {/* ── Right: compliance summary ── */}
+        <div className="lg:col-span-2 lg:border-l lg:border-border lg:pl-12">
           <CompliancePanel
             label={t('sandboxTabs.emissionProjectionLabel')}
             threshold={thresholds[src]}

@@ -7,6 +7,8 @@
 // Session timeout in milliseconds (60 minutes)
 const SESSION_TIMEOUT = 60 * 60 * 1000;
 
+import { applyMockOutcome } from '@/components/dev/MockComplianceToggle';
+
 // Storage keys
 const PILOT_SESSION_KEY = 'pilot_session';
 const PILOT_USER_KEY = 'pilot_user';
@@ -611,7 +613,8 @@ export const savePilotDetailedCalculation = (projectId: string, data: import('@/
     total_movements_operation: 774 + (data.parkingSpaces * 76),
     overall_max_percent: overallMaxPercent,
     dominant_phase: dominantPhase,
-    compliance_status: overallMaxPercent <= 1 ? 'compliant' : 'exceeds_threshold',
+    // MOCKUP RULE (testability): shellWindtightMonths < 12 → PASS, else FAIL. Override via floating Mock toggle.
+    compliance_status: applyMockOutcome(data.shellWindtightMonths < 12 ? 'compliant' : 'exceeds_threshold'),
   };
 
   const noxStatus = calculationResults.compliance_status === 'compliant' ? 'report_delivered' : 'report_in_progress';

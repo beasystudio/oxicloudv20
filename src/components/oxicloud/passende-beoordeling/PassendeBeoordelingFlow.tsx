@@ -13,16 +13,6 @@ import {
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { OxiCloudProject, CalculationResults } from '@/types/oxicloud';
-import {
-  FileText,
-  Download,
-  CheckCircle2,
-  Send,
-  AlertTriangle,
-  ArrowRight,
-  RefreshCw,
-  Eye,
-} from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 import { type PBStatus, buildPBProjectData, QUOTE_LINE_ITEMS, COMMISSION_RATE } from './types';
@@ -107,7 +97,7 @@ export function PassendeBeoordelingFlow({
       <Separator />
       <div className="flex items-center gap-3">
         <h2 className="text-xl font-semibold text-foreground">{t('pbFlow.title')}</h2>
-        <Badge className="bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-100">
+        <Badge variant="outline" className="text-xs font-medium text-muted-foreground border-border rounded-full">
           {t('pbFlow.legallyRequired')}
         </Badge>
       </div>
@@ -136,7 +126,7 @@ export function PassendeBeoordelingFlow({
                 className="w-full"
                 onClick={() => openConfirm('reactivate')}
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
+                
                 {t('pbFlow.resumeProject')}
               </Button>
             </>
@@ -159,7 +149,7 @@ export function PassendeBeoordelingFlow({
                 </Button>
                 <Button className="flex-1" onClick={() => openConfirm('generate_quote')}>
                   {t('pbFlow.generateQuote')}
-                  <ArrowRight className="w-4 h-4 ml-1" />
+                  
                 </Button>
               </div>
             </>
@@ -173,7 +163,7 @@ export function PassendeBeoordelingFlow({
               <div className="rounded-xl border border-border bg-card p-5 space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-sm font-semibold">{t('pbFlow.generatedQuote')}</h4>
-                  <Badge className="bg-blue-100 text-blue-800 border-blue-300 hover:bg-blue-100">
+                  <Badge variant="outline" className="text-xs font-medium text-muted-foreground border-border rounded-full">
                     {t('pbFlow.readyToSend')}
                   </Badge>
                 </div>
@@ -237,7 +227,7 @@ export function PassendeBeoordelingFlow({
               </div>
 
               <Button className="w-full" onClick={handleSendQuote}>
-                <Send className="w-4 h-4 mr-2" />
+                
                 {t('pbFlow.sendQuoteToClient')}
               </Button>
             </>
@@ -336,7 +326,7 @@ export function PassendeBeoordelingFlow({
                 <div className="space-y-2">
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-muted/20">
                     <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-muted-foreground" />
+                      
                       <span className="text-sm">{t('pbFlow.temporaryComplianceReport')} - {pbProject.scanDate}</span>
                     </div>
                     <Button
@@ -345,13 +335,13 @@ export function PassendeBeoordelingFlow({
                       className="text-xs gap-1"
                       onClick={() => toast.info(t('pbFlow.pdfPreparing'))}
                     >
-                      <Download className="w-3.5 h-3.5" />
+                      
                       {t('pbFlow.download')}
                     </Button>
                   </div>
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-muted/20">
                     <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-muted-foreground" />
+                      
                       <span className="text-sm">{t('pbFlow.appropriateAssessmentReport')} - {pbProject.scanDate}</span>
                     </div>
                     <Button
@@ -360,7 +350,7 @@ export function PassendeBeoordelingFlow({
                       className="text-xs gap-1"
                       onClick={() => toast.info(t('pbFlow.reportLoading'))}
                     >
-                      <Download className="w-3.5 h-3.5" />
+                      
                       {t('pbFlow.download')}
                     </Button>
                   </div>
@@ -368,13 +358,12 @@ export function PassendeBeoordelingFlow({
               </div>
 
               <Button className="w-full" onClick={() => toast.info(t('pbFlow.reportOpening'))}>
-                <Eye className="w-4 h-4 mr-2" />
+                
                 {t('pbFlow.viewReport')}
               </Button>
 
-              <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <p className="text-sm text-emerald-800">
+              <div className="rounded-2xl border border-border bg-background px-4 py-3">
+                <p className="text-sm text-foreground">
                   {t('pbFlow.eligibleForPermit')}
                 </p>
               </div>

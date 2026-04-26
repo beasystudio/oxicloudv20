@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { OxiCloudProjectStatus, NoxSubStatus, PreEstimationData, PriceData, PaymentData, DetailedCalculationData, CalculationResults } from '@/types/oxicloud';
+import { applyMockOutcome } from '@/components/dev/MockComplianceToggle';
 
 export interface NoxVersionEntry {
   version: string;
@@ -284,7 +285,8 @@ export async function saveNoxDetailedCalculation(projectId: string, detailedCalc
     total_movements_operation: 774 + (detailedCalculation.parkingSpaces * 76),
     overall_max_percent: overallMaxPercent,
     dominant_phase: dominantPhase,
-    compliance_status: overallMaxPercent <= 1 ? 'compliant' : 'exceeds_threshold',
+    // MOCKUP RULE (testability): shellWindtightMonths < 12 → PASS, else FAIL → full remediation flow.
+    compliance_status: applyMockOutcome(detailedCalculation.shellWindtightMonths < 12 ? 'compliant' : 'exceeds_threshold'),
   };
 
   const status = calculationResults.compliance_status === 'compliant' 

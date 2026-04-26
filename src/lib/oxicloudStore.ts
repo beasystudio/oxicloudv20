@@ -1,4 +1,5 @@
 import { OxiCloudProject, OxiCloudProjectStatus, PreEstimationData, PriceData, PaymentData, DetailedCalculationData, AssessmentRequest, AssessmentRequestStatus } from '@/types/oxicloud';
+import { applyMockOutcome } from '@/components/dev/MockComplianceToggle';
 
 const STORAGE_KEY = 'oxicloud_projects';
 const ASSESSMENT_STORAGE_KEY = 'oxicloud_assessment_requests';
@@ -153,10 +154,12 @@ export function saveDetailedCalculation(projectId: string, data: DetailedCalcula
     percent_heavy_operation: 0.003,
     total_movements_operation: 774 + (data.parkingSpaces * 76),
     
-    // Global Result - compliance if overall max < 1 (100% of threshold)
+    // Global Result - MOCKUP RULE (testability): shellWindtightMonths < 12 → PASS, else FAIL.
+    // This overrides the real compliance computation so testers can toggle a single field
+    // to walk through both the PASS flow and the full FAIL → remediation flow.
     overall_max_percent: overallMaxPercent,
     dominant_phase: dominantPhase,
-    compliance_status: (overallMaxPercent <= 1 ? 'compliant' : 'exceeds_threshold') as 'compliant' | 'exceeds_threshold',
+    compliance_status: applyMockOutcome(data.shellWindtightMonths < 12 ? 'compliant' : 'exceeds_threshold'),
   };
   
   // Auto-set status to report_delivered if compliant

@@ -4415,14 +4415,21 @@ export const en = {
   // ── CompliancePanel ──
   compliancePanel: {
     allowedLimit: 'Allowed limit',
-    recommendedEmission: 'Recommended emission',
+    recommendedEmission: 'Current emission',
     exceedsBy: 'Exceeds by',
     remainingReduction: 'Remaining reduction',
     complianceProgress: 'Compliance progress',
     reductionAchieved: 'reduction achieved',
     conform: 'Compliant',
-    notConform: 'Not Compliant',
+    notConform: 'Not compliant',
     summary: 'Summary',
+    stillToReduce: 'still to reduce to be compliant',
+    underTarget: 'under target',
+    starting: 'Starting',
+    current: 'Current',
+    target: 'Target',
+    status: 'Status',
+    remove: 'Remove',
   },
 
   // ── Sandbox Tabs (shared) ──

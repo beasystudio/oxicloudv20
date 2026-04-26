@@ -5,6 +5,7 @@
 
 import { getAllLocalProjects, LocalProject } from './mockLocalProjects';
 import { OxiCloudProjectStatus, NoxSubStatus, PreEstimationData, PriceData, PaymentData, DetailedCalculationData, CalculationResults, isPreEstimationComplete } from '@/types/oxicloud';
+import { applyMockOutcome } from '@/components/dev/MockComplianceToggle';
 
 const NOX_DATA_KEY = 'nox_project_data';
 const COMMISSION_RATES_KEY = 'oxicloud_commission_rates';
@@ -328,7 +329,8 @@ export function saveNoxDetailedCalculation(projectId: string, data: DetailedCalc
     total_movements_operation: 774 + (data.parkingSpaces * 76),
     overall_max_percent: overallMaxPercent,
     dominant_phase: dominantPhase,
-    compliance_status: overallMaxPercent <= 1 ? 'compliant' : 'exceeds_threshold',
+    // MOCKUP RULE (testability): shellWindtightMonths < 12 → PASS, else FAIL. Override via floating Mock toggle.
+    compliance_status: applyMockOutcome(data.shellWindtightMonths < 12 ? 'compliant' : 'exceeds_threshold'),
   };
   
   // Auto-set status to report_delivered if compliant

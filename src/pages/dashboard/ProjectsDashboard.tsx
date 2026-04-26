@@ -49,6 +49,7 @@ import { PaymentSuccessDialog } from '@/components/oxicloud/PaymentSuccessDialog
 import { ProjectLocationMap } from '@/components/projects/ProjectLocationMap';
 import { NoxVersionHistory } from '@/components/projects/NoxVersionHistory';
 import { ProjectContacts } from '@/components/projects/ProjectContacts';
+import { applyMockOutcome, MOCK_COMPLIANCE_EVENT } from '@/components/dev/MockComplianceToggle';
 
 
 
@@ -676,6 +677,28 @@ const ProjectsDashboard = () => {
     setLastSelectedProjectId(projectId);
     setCurrentView('binder');
   };
+
+  useEffect(() => {
+    const syncMockedOutcome = () => {
+      if (!selectedProjectId || noxFlowStep !== 'report-held') return;
+
+      const noxData = getNoxDataByProjectId(selectedProjectId);
+      const complianceStatus = noxData?.calculationResults?.compliance_status;
+
+      if (complianceStatus && applyMockOutcome(complianceStatus) === 'exceeds_threshold') {
+        setNoxFlowStep('results');
+      }
+    };
+
+    syncMockedOutcome();
+    window.addEventListener(MOCK_COMPLIANCE_EVENT, syncMockedOutcome);
+    window.addEventListener('storage', syncMockedOutcome);
+
+    return () => {
+      window.removeEventListener(MOCK_COMPLIANCE_EVENT, syncMockedOutcome);
+      window.removeEventListener('storage', syncMockedOutcome);
+    };
+  }, [noxFlowStep, selectedProjectId, noxProjectsRefreshKey]);
   const handleBackToDefault = () => {
     setCurrentView('default');
     setSelectedProjectId(null);

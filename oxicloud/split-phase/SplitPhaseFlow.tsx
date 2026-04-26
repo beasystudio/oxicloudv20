@@ -2,13 +2,16 @@ import { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { OxiCloudProject, CalculationResults } from '@/types/oxicloud';
-import { 
-  SplitPhaseStep, 
+import {
+  SplitPhaseStep,
   SplitPhaseCalculation,
   PhaseProject,
+  PerSourceRatios,
+  EmissionSourceCode,
   computeComplianceRatio,
   computeMinimumRatio,
   computeWorstCaseRatio,
+  computeBindingEmissionType,
   createPhaseProjects,
 } from '@/types/splitPhase';
 import * as turf from '@turf/turf';
@@ -89,28 +92,34 @@ export function SplitPhaseFlow({
     constructionDuration: 180,
   }), [totalFootprint, project.preEstimation]);
 
-  // Calculate the split phase parameters
+  // Calculate the split phase parameters (Spec §18.2)
   const calculation = useMemo((): SplitPhaseCalculation => {
     const projectEmission = 18.2; // Total project emissions in kg NOx
     const threshold = 12.5; // Legal threshold
     const minimumUtilizationRatio = 0.7;
+    const safetyMargin = 0.97;
 
     const complianceRatio = computeComplianceRatio(projectEmission, threshold);
     const minimumRatio = computeMinimumRatio(projectEmission, threshold, minimumUtilizationRatio);
-    
-    // Per emission type ratios (in production, calculate from actual emissions)
-    const emissionTypeRatios = {
-      demolition: 0.72,
-      constructionEquipment: 0.68,
-      constructionTraffic: 0.75,
-      operationalEquipment: 0.80,
-      operationalTraffic: 0.70,
-      operationalIndustrial: 0.85,
+
+    // Per-source R_compliance ratios (6-code taxonomy, Spec §3 + §18.4).
+    // op_ps = null when screening gate excludes the source.
+    const opPsExcluded = true;
+    const perSourceRatios: PerSourceRatios = {
+      cp_ps:    0.621,
+      cp_ls_lv: 0.598,
+      cp_ls_hv: 0.712,
+      op_ps:    opPsExcluded ? null : 0.640,
+      op_ls_lv: 0.570,
+      op_ls_hv: 0.634,
     };
 
-    const ratioValues = Object.values(emissionTypeRatios);
-    const finalRatio = computeWorstCaseRatio(ratioValues, complianceRatio);
-    const candidateRatio = complianceRatio * 0.97;
+    const ratioValues = (Object.values(perSourceRatios).filter(v => v !== null) as number[]);
+    const candidateRatio = complianceRatio * safetyMargin;
+    const worstCase = computeWorstCaseRatio(ratioValues, complianceRatio);
+    // Enforce 70% floor (R_min) — Spec §18.2 Constraint B
+    const finalRatio = Math.max(minimumRatio, worstCase);
+    const bindingEmissionType = computeBindingEmissionType(perSourceRatios);
 
     return {
       projectEmission,
@@ -119,8 +128,10 @@ export function SplitPhaseFlow({
       complianceRatio,
       minimumRatio,
       candidateRatio,
-      finalRatio: Math.max(minimumRatio, finalRatio),
-      emissionTypeRatios,
+      finalRatio,
+      safetyMarginApplied: safetyMargin,
+      perSourceRatios,
+      bindingEmissionType,
       phase1: null,
       phase2: null,
     };

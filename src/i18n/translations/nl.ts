@@ -4322,14 +4322,21 @@ export const nl = {
   // ── CompliancePanel ──
   compliancePanel: {
     allowedLimit: 'Toegestane limiet',
-    recommendedEmission: 'Aanbevolen emissie',
+    recommendedEmission: 'Huidige emissie',
     exceedsBy: 'Overschrijdt met',
     remainingReduction: 'Resterende reductie',
     complianceProgress: 'Conformiteitsvoortgang',
     reductionAchieved: 'reductie bereikt',
     conform: 'Conform',
-    notConform: 'Niet Conform',
+    notConform: 'Niet conform',
     summary: 'Samenvatting',
+    stillToReduce: 'nog te reduceren om conform te zijn',
+    underTarget: 'onder doel',
+    starting: 'Start',
+    current: 'Huidig',
+    target: 'Doel',
+    status: 'Status',
+    remove: 'Verwijderen',
   },
 
   // ── Sandbox Tabs (shared) ──

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { OxiCloudProject, AssessmentRequest, ASSESSMENT_STATUS_CONFIG } from '@/types/oxicloud';
@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { getAssessmentRequestByProjectId, createAssessmentRequest } from '@/lib/oxicloudStore';
 import { toast } from 'sonner';
 import { NoxResultFlow } from './NoxResultFlow';
+import { applyMockOutcome, MOCK_COMPLIANCE_EVENT } from '@/components/dev/MockComplianceToggle';
 
 interface OxiCloudResultScreenProps {
   project: OxiCloudProject;
@@ -21,7 +22,29 @@ export function OxiCloudResultScreen({
   onRecalculate,
   onBackToDashboard
 }: OxiCloudResultScreenProps) {
-  const results = project.calculationResults;
+  const [mockVersion, setMockVersion] = useState(0);
+
+  useEffect(() => {
+    const handleMockChange = () => setMockVersion((value) => value + 1);
+    window.addEventListener(MOCK_COMPLIANCE_EVENT, handleMockChange);
+    window.addEventListener('storage', handleMockChange);
+
+    return () => {
+      window.removeEventListener(MOCK_COMPLIANCE_EVENT, handleMockChange);
+      window.removeEventListener('storage', handleMockChange);
+    };
+  }, []);
+
+  const results = useMemo(() => {
+    const baseResults = project.calculationResults;
+    if (!baseResults) return baseResults;
+
+    return {
+      ...baseResults,
+      compliance_status: applyMockOutcome(baseResults.compliance_status),
+    };
+  }, [project.calculationResults, mockVersion]);
+
   const hasValidResults = results && typeof results.max_nox_stationary === 'number' && typeof results.compliance_status === 'string';
   
   if (!hasValidResults) {

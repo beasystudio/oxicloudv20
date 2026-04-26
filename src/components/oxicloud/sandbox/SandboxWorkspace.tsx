@@ -190,90 +190,17 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
   return (
     <SandboxContext.Provider value={ctx}>
       <div className="min-h-screen bg-background flex flex-col">
-        {/* ── Bar 1: App bar ── */}
-        <div className="sticky top-0 z-50 bg-secondary text-secondary-foreground">
-          <div className="flex items-center justify-between px-5 h-12">
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-bold tracking-tight">OxiCloud Sandbox</span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-400 text-[11px] font-medium">
-                <AlertTriangle className="h-3 w-3" />
-                Sandbox-modus - Wijzigingen worden niet opgeslagen in het dossier
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xs text-muted-foreground">Project:</span>
-              <span className="text-sm font-medium">Residentie Brugge Noord</span>
-              <Button variant="ghost" size="sm" onClick={onBack} className="text-secondary-foreground/60 hover:text-secondary-foreground h-7 text-xs">
-                <X className="h-3.5 w-3.5 mr-1" /> Sluiten
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Bar 2: Project compliance bar ── */}
-        <div className="sticky top-12 z-40 border-b border-border bg-card">
-          <div className="px-5 py-3">
-            <div className="flex items-center justify-between mb-2.5">
-              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Totale projectstatus</span>
-              <motion.span
-                key={computed.projectCompliant ? 'ok' : 'nok'}
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className={cn(
-                  "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold",
-                  computed.projectCompliant
-                    ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
-                    : "bg-destructive/10 text-destructive"
-                )}
-              >
-                {computed.projectCompliant ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
-                {computed.projectCompliant ? 'Project Conform' : 'Project Niet Conform'}
-              </motion.span>
-            </div>
-            <div className="flex flex-wrap gap-1.5 mb-3">
-              {visibleSources.map(src => (
-                <button
-                  key={src}
-                  onClick={() => setActiveTab(src)}
-                  className={cn(
-                    "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all border",
-                    computed.isCompliant[src]
-                      ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-                      : "bg-destructive/5 border-destructive/20 text-destructive",
-                    activeTab === src && "ring-1 ring-ring"
-                  )}
-                >
-                  {computed.isCompliant[src] ? <Check className="h-2.5 w-2.5" /> : <X className="h-2.5 w-2.5" />}
-                  {SOURCE_LABELS[src]}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
-                <motion.div
-                  className={cn("h-full rounded-full", computed.projectCompliant ? "bg-emerald-500" : "bg-amber-500")}
-                  animate={{ width: `${computed.projectProgress}%` }}
-                  transition={{ duration: 0.4, ease: 'easeOut' }}
-                />
-              </div>
-              <span className="text-xs font-semibold tabular-nums text-muted-foreground w-12 text-right">
-                {Math.round(computed.projectProgress)}%
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Tab navigation + content ── */}
+        {/* ── Minimal tab navigation: only failed sources ── */}
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as SourceId)} className="flex-1 flex flex-col">
-          <div className="border-b border-border bg-card/50">
+          <div className="sticky top-0 z-40 border-b border-border bg-background">
             <TabsList className="h-auto p-0 bg-transparent rounded-none px-5 gap-0">
-              {visibleSources.map(src => (
+              {visibleSources.filter(src => !computed.isCompliant[src]).map(src => (
                 <TabsTrigger
                   key={src}
                   value={src}
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-xs font-medium"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-xs font-medium text-muted-foreground data-[state=active]:text-foreground"
                 >
-                  {TAB_LABELS[src]}
+                  {SOURCE_LABELS[src]}
                 </TabsTrigger>
               ))}
             </TabsList>

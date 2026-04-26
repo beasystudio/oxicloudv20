@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { OxiCloudProject, CalculationResults } from '@/types/oxicloud';
 import { SandboxEmissionType } from '@/types/sandbox';
 import { NoxProcessingScreen } from './nox-results/NoxProcessingScreen';
@@ -99,7 +99,21 @@ export function NoxResultFlow({
   };
 
   const [currentStep, setCurrentStep] = useState<ResultFlowStep>(getStoredStep);
-  
+
+  useEffect(() => {
+    const passOnlySteps: ResultFlowStep[] = ['pass_result', 'detailed_report', 'commission', 'settlement'];
+    const failOnlySteps: ResultFlowStep[] = ['exceedance', 'sandbox', 'split_phase', 'passende_beoordeling', 'nc_report_held', 'pb_report_held'];
+
+    if (!isCompliant && passOnlySteps.includes(currentStep)) {
+      changeStep('exceedance');
+      return;
+    }
+
+    if (isCompliant && failOnlySteps.includes(currentStep)) {
+      changeStep('pass_result');
+    }
+  }, [currentStep, isCompliant, project.id]);
+
 
   // Persist step changes
   const changeStep = (step: ResultFlowStep) => {

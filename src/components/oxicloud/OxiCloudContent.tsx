@@ -33,6 +33,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Clock, FileText, Download, Mail } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { applyMockOutcome, MOCK_COMPLIANCE_EVENT } from '@/components/dev/MockComplianceToggle';
 
 type FlowStep = 'dashboard' | 'pre-estimation' | 'quote-sent' | 'price-review' | 'payment' | 'detailed-calculation' | 'results' | 'report-processing' | 'report-held';
 
@@ -228,6 +229,25 @@ export function OxiCloudContent() {
       }
     }
   };
+
+  useEffect(() => {
+    const syncMockedOutcome = () => {
+      if (flowStep !== 'report-held' || !currentProject?.noxData?.calculationResults?.compliance_status) return;
+
+      if (applyMockOutcome(currentProject.noxData.calculationResults.compliance_status) === 'exceeds_threshold') {
+        setFlowStep('results');
+      }
+    };
+
+    syncMockedOutcome();
+    window.addEventListener(MOCK_COMPLIANCE_EVENT, syncMockedOutcome);
+    window.addEventListener('storage', syncMockedOutcome);
+
+    return () => {
+      window.removeEventListener(MOCK_COMPLIANCE_EVENT, syncMockedOutcome);
+      window.removeEventListener('storage', syncMockedOutcome);
+    };
+  }, [flowStep, currentProject]);
 
   const handleBackToDashboard = () => {
     setFlowStep('dashboard');
