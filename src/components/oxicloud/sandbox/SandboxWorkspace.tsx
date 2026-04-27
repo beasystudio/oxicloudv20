@@ -107,20 +107,15 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
   const computed = useMemo(() => {
     const s = state;
 
-    // Tab 1: Bouwfase Punt - guided uses parameterized model, expert uses machine table
-    const bouwfasePuntEmission = s.tab1Mode === 'expert'
-      ? calcPointSourceConstruction(s.machines)
-      : calcPointSourceConstruction(DEFAULT_MACHINES); // In guided mode we apply parameter adjustments below
-
-    // For guided mode, we model the effect of parameters as multipliers on the baseline
-    const baselinePointEmission = calcPointSourceConstruction(DEFAULT_MACHINES.map(m => ({ ...m })));
+    // Tab 1: Bouwfase Punt — combines BOTH expert (machine table) and guided (parameter multipliers).
+    // Expert edits change the machine baseline; guided sliders apply reduction multipliers on top.
+    const machineEmission = calcPointSourceConstruction(s.machines);
     const prefabEffect = 1 - ((s.prefabSlider - 40) / 100) * 0.6; // higher prefab = less emission
     const sloopEffect = s.sloopoppervlakte / SEEDS.sloopoppervlakte;
     const verhardingEffect = s.nieuwe_verharding / SEEDS.nieuwe_verharding;
     const grondEffect = s.grondwerkvolume / SEEDS.grondwerkvolume;
-    const guidedPointEmission = baselinePointEmission * prefabEffect * (0.3 + 0.7 * sloopEffect) * (0.2 + 0.8 * verhardingEffect) * (0.3 + 0.7 * grondEffect);
-
-    const tab1Emission = s.tab1Mode === 'expert' ? bouwfasePuntEmission : guidedPointEmission;
+    const guidedMultiplier = prefabEffect * (0.3 + 0.7 * sloopEffect) * (0.2 + 0.8 * verhardingEffect) * (0.3 + 0.7 * grondEffect);
+    const tab1Emission = machineEmission * guidedMultiplier;
 
     const tab2Emission = calcLineSourceConstruction(s.lv_trips_rate, 0.0021, s.prefab_percentage);
     const tab3Emission = calcLineSourceConstruction(s.hv_trips_rate, 0.014, s.prefab_percentage);

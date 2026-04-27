@@ -25,130 +25,134 @@ export function CompliancePanel({
 }: CompliancePanelProps) {
   const { t } = useLanguage();
 
-  // Visual gauge: position of current vs target on a 0..max scale
-  const max = Math.max(currentEmission, beforeValue ?? 0, threshold) * 1.05;
-  const currentPct = Math.min(100, (currentEmission / max) * 100);
+  const start = beforeValue ?? currentEmission;
+  const saved = Math.max(0, start - currentEmission);
+  const savedPct = start > 0 ? Math.round((saved / start) * 100) : 0;
+  const delta = currentEmission - threshold; // positive = over target
+
+  // Visual scale: 0 → start (or current if higher)
+  const max = Math.max(start, currentEmission, threshold) * 1.05;
   const targetPct = Math.min(100, (threshold / max) * 100);
-  const startPct = beforeValue !== undefined ? Math.min(100, (beforeValue / max) * 100) : null;
+  const currentPct = Math.min(100, (currentEmission / max) * 100);
+  const startPct = Math.min(100, (start / max) * 100);
 
   return (
-    <div className="space-y-10">
-      {/* Eyebrow */}
-      <div className="space-y-1">
+    <div className="space-y-5">
+      {/* Eyebrow + status pill */}
+      <div className="flex items-center justify-between">
         <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
           {label}
         </p>
+        <span className={cn(
+          "text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border",
+          isCompliant
+            ? "border-foreground text-foreground"
+            : "border-muted-foreground/30 text-muted-foreground"
+        )}>
+          {isCompliant ? t('sandboxTabs.compliantStatus') : t('sandboxTabs.notCompliantStatus')}
+        </span>
       </div>
 
-      {/* HERO — current emission, dominant */}
-      <div className="space-y-3">
-        <p className="text-xs text-muted-foreground">{t('compliancePanel.recommendedEmission')}</p>
+      {/* HERO — current value, big */}
+      <div>
+        <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
+          {t('sandboxTabs.nowAt')}
+        </p>
         <motion.div
-          key={currentEmission}
-          initial={{ opacity: 0.5, y: 4 }}
+          key={currentEmission.toFixed(1)}
+          initial={{ opacity: 0.4, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
           className="flex items-baseline gap-2"
         >
-          <span className="text-6xl font-light tracking-tight tabular-nums text-foreground leading-none">
+          <span className="text-5xl font-light tracking-tight tabular-nums text-foreground leading-none">
             {currentEmission.toFixed(1)}
           </span>
           <span className="text-sm text-muted-foreground">{unit}</span>
         </motion.div>
-
-        {/* Delta line — most important for the user */}
-        <div className="pt-1">
-          {isCompliant ? (
-            <p className="text-sm text-foreground">
-              {t('compliancePanel.conform')} · {(threshold - currentEmission).toFixed(1)} {unit}{' '}
-              <span className="text-muted-foreground">{t('compliancePanel.underTarget')}</span>
-            </p>
-          ) : (
-            <p className="text-sm text-foreground">
-              <span className="tabular-nums">−{remaining.toFixed(1)} {unit}</span>{' '}
-              <span className="text-muted-foreground">{t('compliancePanel.stillToReduce')}</span>
-            </p>
-          )}
-        </div>
       </div>
 
-      {/* GAUGE — measurement scale: shaded compliance zone, current = single marker */}
-      <div className="space-y-3 pt-2">
-        <div className="relative h-6">
-          {/* baseline */}
-          <div className="absolute top-1/2 -translate-y-1/2 inset-x-0 h-px bg-border" />
-          {/* compliance zone (0 → target) */}
+      {/* DELTA card — the answer to "am I compliant?" */}
+      <div className={cn(
+        "rounded-md border p-3",
+        isCompliant ? "border-foreground/30 bg-foreground/[0.03]" : "border-border bg-muted/30"
+      )}>
+        <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
+          {isCompliant ? t('sandboxTabs.underTargetBy') : t('sandboxTabs.stillNeedToCut')}
+        </p>
+        <p className="text-2xl font-light tabular-nums text-foreground">
+          {isCompliant ? '−' : ''}{Math.abs(delta).toFixed(1)}
+          <span className="text-sm text-muted-foreground ml-1.5">{unit}</span>
+        </p>
+      </div>
+
+      {/* GAUGE — clean horizontal scale */}
+      <div className="space-y-2 pt-1">
+        <div className="relative h-10">
+          {/* full track */}
+          <div className="absolute top-1/2 -translate-y-1/2 inset-x-0 h-[2px] bg-muted rounded-full" />
+          {/* compliance zone (0 → target) — slightly darker fill */}
           <div
-            className="absolute top-1/2 -translate-y-1/2 left-0 h-1 bg-muted rounded-full"
+            className="absolute top-1/2 -translate-y-1/2 left-0 h-[2px] bg-foreground/20 rounded-full"
             style={{ width: `${targetPct}%` }}
           />
-          {/* target tick */}
-          <div
-            className="absolute top-0 bottom-0 -translate-x-1/2 flex flex-col items-center"
-            style={{ left: `${targetPct}%` }}
-          >
-            <div className="w-px h-full bg-foreground/60" />
-          </div>
-          {/* start marker */}
-          {startPct !== null && (
+          {/* progress trail showing how far we've moved from start */}
+          {currentPct < startPct && (
             <div
-              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-muted-foreground/40"
-              style={{ left: `${startPct}%` }}
+              className="absolute top-1/2 -translate-y-1/2 h-[2px] bg-foreground/40"
+              style={{ left: `${currentPct}%`, width: `${startPct - currentPct}%` }}
             />
           )}
-          {/* current marker — the focal point */}
+          {/* TARGET notch */}
+          <div
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-px h-3 bg-foreground"
+            style={{ left: `${targetPct}%` }}
+          />
+          {/* START marker (faded dot) */}
+          <div
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-muted-foreground/40"
+            style={{ left: `${startPct}%` }}
+          />
+          {/* CURRENT marker — focal point */}
           <motion.div
-            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-foreground ring-4 ring-background"
             animate={{ left: `${currentPct}%` }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
+          />
+          {/* Target label below */}
+          <div
+            className="absolute bottom-0 -translate-x-1/2 text-[9px] uppercase tracking-wider text-muted-foreground whitespace-nowrap"
+            style={{ left: `${targetPct}%` }}
           >
-            <div className="w-2.5 h-2.5 rounded-full bg-foreground ring-4 ring-background" />
-          </motion.div>
+            {t('sandboxTabs.mustReach')} · {threshold.toFixed(1)}
+          </div>
         </div>
-        <div className="flex justify-between text-[11px] tabular-nums text-muted-foreground">
+        <div className="flex justify-between text-[10px] tabular-nums text-muted-foreground">
           <span>0</span>
-          <span>{t('compliancePanel.target')} {threshold.toFixed(1)}</span>
+          <span>{unit}</span>
         </div>
       </div>
 
-      {/* JOURNEY — start → now → target */}
-      {beforeValue !== undefined && (
-        <div className="grid grid-cols-3 gap-4 border-t border-border pt-6">
-          <div className="space-y-1.5">
-            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{t('compliancePanel.starting')}</p>
-            <p className="text-lg font-light tabular-nums text-muted-foreground line-through">
-              {beforeValue.toFixed(1)}
-            </p>
+      {/* SAVED so far — narrative ROI */}
+      {beforeValue !== undefined && saved > 0 && (
+        <div className="border-t border-border pt-3">
+          <div className="flex items-baseline justify-between">
+            <span className="text-xs text-muted-foreground">{t('sandboxTabs.youSavedSoFar')}</span>
+            <span className="text-sm tabular-nums text-foreground">
+              −{saved.toFixed(1)} {unit}
+              <span className="text-muted-foreground ml-1.5">({savedPct}%)</span>
+            </span>
           </div>
-          <div className="space-y-1.5">
-            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{t('compliancePanel.current')}</p>
-            <p className="text-lg font-light tabular-nums text-foreground">
-              {currentEmission.toFixed(1)}
-            </p>
-          </div>
-          <div className="space-y-1.5">
-            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{t('compliancePanel.target')}</p>
-            <p className="text-lg font-light tabular-nums text-foreground">
-              {threshold.toFixed(1)}
-            </p>
+          <div className="flex items-baseline justify-between mt-1.5">
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+              {t('sandboxTabs.startingPoint')}
+            </span>
+            <span className="text-xs tabular-nums text-muted-foreground line-through">
+              {beforeValue.toFixed(1)} {unit}
+            </span>
           </div>
         </div>
       )}
-
-      {/* Progress — minimal */}
-      <div className="space-y-2 border-t border-border pt-6">
-        <div className="flex items-center justify-between text-xs">
-          <span className="text-muted-foreground">{t('compliancePanel.complianceProgress')}</span>
-          <span className="tabular-nums text-foreground">{Math.round(progress)}%</span>
-        </div>
-        <div className="h-px bg-muted overflow-hidden">
-          <motion.div
-            className="h-full bg-foreground"
-            animate={{ width: `${Math.min(100, progress)}%` }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-          />
-        </div>
-      </div>
     </div>
   );
 }
