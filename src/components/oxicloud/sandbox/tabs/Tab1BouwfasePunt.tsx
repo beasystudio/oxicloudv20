@@ -141,8 +141,8 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
     });
 
   return (
-    <div className="h-[calc(100vh-49px)] overflow-hidden">
-      <div className="h-full max-w-[1400px] mx-auto px-8 py-5 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div className="h-full min-h-0 overflow-hidden">
+      <div className="h-full min-h-0 max-w-[1400px] mx-auto px-8 py-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* ── LEFT: AI Scenarios ── */}
         <aside className="lg:col-span-3 flex flex-col min-h-0">
           <div className="flex items-center justify-between mb-3">
@@ -169,7 +169,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
                   className={cn(
                     "text-left p-3 border rounded-md transition-all",
                     active
-                      ? "border-foreground bg-foreground/[0.03]"
+                      ? "border-muted-foreground/40 bg-muted/30"
                       : "border-border hover:border-foreground/40 hover:bg-muted/30"
                   )}
                 >
@@ -193,7 +193,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
 
         {/* ── CENTER: Inputs (combined) ── */}
         <section className="lg:col-span-6 flex flex-col min-h-0 lg:border-x lg:border-border lg:px-8">
-          <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 space-y-6">
+              <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 pb-3 space-y-6">
             {/* GUIDED block */}
             <div>
               <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground mb-3">
@@ -206,7 +206,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
                     <label className="text-xs text-muted-foreground">{t('sandboxTabs.prefabLevel')}</label>
                     <span className="text-sm tabular-nums text-foreground">{state.prefabSlider}%</span>
                   </div>
-                  <div className="relative [&_[role=slider]]:!border-foreground/40 [&_.bg-primary]:!bg-foreground/30 [&_.bg-secondary]:!bg-muted">
+                  <div className="relative [&_[role=slider]]:!border-muted-foreground/35 [&_.bg-primary]:!bg-muted-foreground/25 [&_.bg-secondary]:!bg-muted/80">
                     <Slider
                       value={[state.prefabSlider]}
                       onValueChange={([v]) => update({ prefabSlider: v })}
@@ -293,7 +293,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
           </div>
 
           {/* Footer actions */}
-          <div className="flex items-center justify-between pt-3 mt-3 border-t border-border">
+          <div className="shrink-0 flex items-center justify-between pt-3 border-t border-border bg-background">
             <Button variant="ghost" size="sm" onClick={onBack} className="h-8 rounded-full text-xs text-muted-foreground hover:text-foreground">
               {t('sandboxTabs.back')}
             </Button>

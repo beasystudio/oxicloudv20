@@ -46,7 +46,7 @@ export function CompliancePanel({
         <span className={cn(
           "text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border",
           isCompliant
-            ? "border-foreground text-foreground"
+            ? "border-muted-foreground/30 text-foreground/80 bg-muted/20"
             : "border-muted-foreground/30 text-muted-foreground"
         )}>
           {isCompliant ? t('sandboxTabs.compliantStatus') : t('sandboxTabs.notCompliantStatus')}
@@ -65,7 +65,7 @@ export function CompliancePanel({
           transition={{ duration: 0.25 }}
           className="flex items-baseline gap-2"
         >
-          <span className="text-5xl font-light tracking-tight tabular-nums text-foreground leading-none">
+          <span className="text-5xl font-light tracking-tight tabular-nums text-foreground/85 leading-none">
             {currentEmission.toFixed(1)}
           </span>
           <span className="text-sm text-muted-foreground">{unit}</span>
@@ -75,12 +75,12 @@ export function CompliancePanel({
       {/* DELTA card — the answer to "am I compliant?" */}
       <div className={cn(
         "rounded-md border p-3",
-        isCompliant ? "border-foreground/30 bg-foreground/[0.03]" : "border-border bg-muted/30"
+        isCompliant ? "border-border/70 bg-muted/15" : "border-border/70 bg-muted/20"
       )}>
         <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
           {isCompliant ? t('sandboxTabs.underTargetBy') : t('sandboxTabs.stillNeedToCut')}
         </p>
-        <p className="text-2xl font-light tabular-nums text-foreground">
+        <p className="text-2xl font-light tabular-nums text-foreground/85">
           {isCompliant ? '−' : ''}{Math.abs(delta).toFixed(1)}
           <span className="text-sm text-muted-foreground ml-1.5">{unit}</span>
         </p>
@@ -93,19 +93,19 @@ export function CompliancePanel({
           <div className="absolute top-1/2 -translate-y-1/2 inset-x-0 h-[2px] bg-muted rounded-full" />
           {/* compliance zone (0 → target) — slightly darker fill */}
           <div
-            className="absolute top-1/2 -translate-y-1/2 left-0 h-[2px] bg-foreground/20 rounded-full"
+            className="absolute top-1/2 -translate-y-1/2 left-0 h-[2px] bg-muted-foreground/20 rounded-full"
             style={{ width: `${targetPct}%` }}
           />
           {/* progress trail showing how far we've moved from start */}
           {currentPct < startPct && (
             <div
-              className="absolute top-1/2 -translate-y-1/2 h-[2px] bg-foreground/40"
+              className="absolute top-1/2 -translate-y-1/2 h-[2px] bg-muted-foreground/30"
               style={{ left: `${currentPct}%`, width: `${startPct - currentPct}%` }}
             />
           )}
           {/* TARGET notch */}
           <div
-            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-px h-3 bg-foreground"
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-px h-3 bg-muted-foreground/60"
             style={{ left: `${targetPct}%` }}
           />
           {/* START marker (faded dot) */}
@@ -115,7 +115,7 @@ export function CompliancePanel({
           />
           {/* CURRENT marker — focal point */}
           <motion.div
-            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-foreground ring-4 ring-background"
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-muted-foreground/70 ring-4 ring-background"
             animate={{ left: `${currentPct}%` }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
           />

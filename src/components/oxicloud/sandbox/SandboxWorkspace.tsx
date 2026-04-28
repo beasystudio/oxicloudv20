@@ -236,16 +236,16 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
 
   return (
     <SandboxContext.Provider value={ctx}>
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="h-[calc(100dvh-6.5rem)] min-h-0 overflow-hidden bg-background flex flex-col">
         {/* ── Minimal tab navigation: only failed sources ── */}
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabKey)} className="flex-1 flex flex-col">
-          <div className="sticky top-0 z-40 border-b border-border bg-background">
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabKey)} className="h-full min-h-0 flex flex-col">
+          <div className="shrink-0 border-b border-border bg-background">
             <TabsList className="h-auto p-0 bg-transparent rounded-none px-5 gap-0">
               {TAB_KEYS.map(key => (
                 <TabsTrigger
                   key={key}
                   value={key}
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-xs font-medium text-muted-foreground data-[state=active]:text-foreground"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-muted-foreground/60 data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-xs font-medium text-muted-foreground data-[state=active]:text-foreground/85"
                 >
                   {TAB_NAV_LABELS[key]}
                 </TabsTrigger>
@@ -253,7 +253,7 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
             </TabsList>
           </div>
 
-          <div className="flex-1">
+          <div className="flex-1 min-h-0 overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -261,7 +261,7 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.2 }}
-                className="h-full"
+                className="h-full min-h-0"
               >
                 {activeTab === 'bouwfase_punt' && (
                   <TabsContent value="bouwfase_punt" className="mt-0 h-full">
@@ -270,17 +270,17 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
                 )}
                 {activeTab === 'bouwfase_lijn' && (
                   <TabsContent value="bouwfase_lijn" className="mt-0 h-full">
-                    <Tab2BouwfaseLijnLV onBack={onBack} />
+                    <Tab2BouwfaseLijnLV onBack={onBack} onConfirm={() => setConfirmOpen(true)} />
                   </TabsContent>
                 )}
                 {activeTab === 'exploitatie_punt' && (
                   <TabsContent value="exploitatie_punt" className="mt-0 h-full">
-                    <Tab4ExploitatiePunt onBack={onBack} />
+                    <Tab4ExploitatiePunt onBack={onBack} onConfirm={() => setConfirmOpen(true)} />
                   </TabsContent>
                 )}
                 {activeTab === 'exploitatie_lijn' && (
                   <TabsContent value="exploitatie_lijn" className="mt-0 h-full">
-                    <Tab5ExploitatieLijnLV onBack={onBack} />
+                    <Tab5ExploitatieLijnLV onBack={onBack} onConfirm={() => setConfirmOpen(true)} />
                   </TabsContent>
                 )}
               </motion.div>

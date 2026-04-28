@@ -81,7 +81,37 @@ export function NoxExceedanceScreen({
         percent: (results[key] as number) * 100,
         ...CRITERION_META[key],
       }));
-    return exceeding.sort((a, b) => b.percent - a.percent).slice(0, 3);
+    // Merge sources that share a single combined limit (LV + HV under one cap)
+    // so the UI is logic-proof: one shared limit → one card.
+    const groups: Record<string, FailingCriterion> = {};
+    const groupKey = (id: string) => {
+      if (id === 'percent_light_construction' || id === 'percent_heavy_construction') return 'construction_line';
+      if (id === 'percent_light_operation' || id === 'percent_heavy_operation') return 'operation_line';
+      return id;
+    };
+    exceeding.forEach((c) => {
+      const k = groupKey(c.id);
+      if (k === 'construction_line') {
+        groups[k] = {
+          id: k,
+          title: t('noxExceedance.constructionTraffic') || 'Construction traffic (LV + HV)',
+          explanation: t('noxExceedance.constructionTrafficExpl') || 'Light and heavy construction traffic share one combined limit.',
+          percent: Math.max(c.percent, groups[k]?.percent ?? 0),
+          adjustId: 'adjust_traffic',
+        };
+      } else if (k === 'operation_line') {
+        groups[k] = {
+          id: k,
+          title: t('noxExceedance.operationTraffic') || 'Operational traffic (LV + HV)',
+          explanation: t('noxExceedance.operationTrafficExpl') || 'Light and heavy operational traffic share one combined limit.',
+          percent: Math.max(c.percent, groups[k]?.percent ?? 0),
+          adjustId: 'reduce_traffic',
+        };
+      } else {
+        groups[k] = c as FailingCriterion;
+      }
+    });
+    return Object.values(groups).sort((a, b) => b.percent - a.percent);
   }, [results, t]);
 
   const handleActionClick = (actionId: string) => {
@@ -120,57 +150,75 @@ export function NoxExceedanceScreen({
 
         {/* Two columns */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Bottlenecks */}
-          <div className="space-y-5">
-            <p className="text-[11px] font-medium tracking-[0.15em] uppercase text-muted-foreground text-center">
-              {t('noxExceedance.bottlenecks')}
-            </p>
+          {/* Bottlenecks — handles 1..N failing sources, with shared-limit merging */}
+          <div className="space-y-4 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-[11px] font-medium tracking-[0.15em] uppercase text-muted-foreground">
+                {t('noxExceedance.bottlenecks')}
+              </p>
+              <span className="text-[10px] tabular-nums text-muted-foreground border border-border rounded-full px-2 py-0.5">
+                {failingCriteria.length}
+              </span>
+            </div>
 
-            <div className="space-y-3">
-              {failingCriteria.map((criterion) => {
-                const overshoot = criterion.percent - 100;
-                const barMax = Math.max(criterion.percent, 120);
-                const thresholdPos = (100 / barMax) * 100;
-                const projectPos = (criterion.percent / barMax) * 100;
+            <div
+              className={cn(
+                'space-y-2.5',
+                failingCriteria.length > 3 && 'max-h-[460px] overflow-y-auto pr-1 -mr-1',
+              )}
+            >
+              {failingCriteria.map((criterion, idx) => {
+                const overshoot = Math.max(0, criterion.percent - 100);
+                // Fixed visual scale (0–200%) so cards are comparable when N grows.
+                const visualPct = Math.min(criterion.percent, 200);
+                const thresholdPos = 50; // 100% sits at midpoint of 0–200 scale
+                const projectPos = (visualPct / 200) * 100;
 
                 return (
                   <div
                     key={criterion.id}
-                    className="border border-border rounded-lg p-5 space-y-4 bg-card"
+                    className="border border-border rounded-lg px-4 py-3.5 space-y-3 bg-card"
                   >
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm font-medium text-foreground">{criterion.title}</p>
-                      <span className="shrink-0 text-xs font-medium text-foreground border border-border rounded-full px-2.5 py-1 tabular-nums">
-                        ↓ {overshoot.toFixed(0)}%
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex items-center gap-2">
+                        <span className="text-[10px] tabular-nums text-muted-foreground w-4 shrink-0">
+                          {idx + 1}
+                        </span>
+                        <p className="text-sm font-medium text-foreground truncate">{criterion.title}</p>
+                      </div>
+                      <span className="shrink-0 text-[11px] font-medium text-foreground border border-border rounded-full px-2 py-0.5 tabular-nums">
+                        +{overshoot.toFixed(0)}%
                       </span>
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="relative h-1.5 bg-muted rounded-full overflow-visible">
+                    <div className="space-y-1.5">
+                      <div className="relative h-1 bg-muted rounded-full">
                         <div
                           className="absolute inset-y-0 left-0 rounded-full bg-foreground"
                           style={{ width: `${projectPos}%` }}
                         />
                         <div
-                          className="absolute top-[-3px] bottom-[-3px] w-px bg-foreground/40"
+                          className="absolute top-[-2px] bottom-[-2px] w-px bg-foreground/50"
                           style={{ left: `${thresholdPos}%` }}
                         />
-                        <div
-                          className="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-foreground"
-                          style={{ left: `${projectPos}%`, marginLeft: '-5px' }}
-                        />
                       </div>
-
-                      <div className="relative flex text-[10px] text-muted-foreground tabular-nums">
+                      <div className="relative h-3 text-[10px] text-muted-foreground tabular-nums">
                         <span className="absolute left-0">0%</span>
-                        <span className="absolute -translate-x-1/2" style={{ left: `${thresholdPos}%` }}>100%</span>
-                        <span className="absolute -translate-x-1/2 text-foreground font-medium" style={{ left: `${projectPos}%` }}>
+                        <span
+                          className="absolute -translate-x-1/2"
+                          style={{ left: `${thresholdPos}%` }}
+                        >
+                          limit
+                        </span>
+                        <span className="absolute right-0 text-foreground font-medium">
                           {criterion.percent.toFixed(0)}%
                         </span>
                       </div>
                     </div>
 
-                    <p className="text-xs text-muted-foreground leading-relaxed">{criterion.explanation}</p>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">
+                      {criterion.explanation}
+                    </p>
                   </div>
                 );
               })}

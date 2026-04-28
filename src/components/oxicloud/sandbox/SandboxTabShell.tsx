@@ -43,30 +43,30 @@ export function SandboxTabShell({
   const hasScenarios = !!scenarios && scenarios.length > 0;
 
   return (
-    <div className="h-[calc(100vh-49px)] overflow-hidden">
+    <div className="h-full min-h-0 overflow-hidden bg-background">
       <div
         className={cn(
-          'h-full max-w-[1400px] mx-auto px-8 py-5 grid grid-cols-1 gap-8',
+          'h-full min-h-0 max-w-[1400px] mx-auto px-8 py-4 grid grid-cols-1 gap-8',
           hasScenarios ? 'lg:grid-cols-12' : 'lg:grid-cols-12',
         )}
       >
         {/* LEFT — scenarios (only when provided) */}
         {hasScenarios && (
           <aside className="lg:col-span-3 flex flex-col min-h-0">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            <div className="flex items-center justify-between mb-2.5">
+              <h3 className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground/80">
                 {t('sandboxTabs.aiScenarios')}
               </h3>
               {onResetAll && (
                 <button
                   onClick={onResetAll}
-                  className="text-[11px] text-muted-foreground hover:text-foreground underline underline-offset-4 hover:no-underline"
+                  className="text-[10px] text-muted-foreground/70 hover:text-foreground underline underline-offset-4 hover:no-underline"
                 >
                   {t('sandboxTabs.resetToBase')}
                 </button>
               )}
             </div>
-            <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+            <p className="text-[11px] text-muted-foreground/80 mb-3 leading-relaxed">
               {t('sandboxTabs.scenariosFor')}
             </p>
             <div className="flex flex-col gap-2 flex-1 min-h-0">
@@ -80,21 +80,21 @@ export function SandboxTabShell({
                       toast.success(sc.title, { duration: 1800 });
                     }}
                     className={cn(
-                      'text-left p-3 border rounded-md transition-all',
+                      'text-left px-3 py-2.5 border rounded-md transition-colors',
                       active
-                        ? 'border-foreground bg-foreground/[0.03]'
-                        : 'border-border hover:border-foreground/40 hover:bg-muted/30',
+                        ? 'border-muted-foreground/40 bg-muted/40'
+                        : 'border-border/70 hover:border-border hover:bg-muted/20',
                     )}
                   >
-                    <div className="flex items-start justify-between gap-2 mb-1.5">
-                      <h4 className="text-sm text-foreground leading-tight">{sc.title}</h4>
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <h4 className="text-[13px] text-foreground/90 leading-tight">{sc.title}</h4>
                       {sc.projected > 0 && (
-                        <span className="text-xs tabular-nums text-muted-foreground whitespace-nowrap">
+                        <span className="text-[11px] tabular-nums text-muted-foreground whitespace-nowrap">
                           {sc.projected}
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-3">
+                    <p className="text-[11px] text-muted-foreground/80 leading-relaxed line-clamp-3">
                       {sc.summary}
                     </p>
                   </button>
@@ -110,13 +110,15 @@ export function SandboxTabShell({
             'flex flex-col min-h-0',
             hasScenarios
               ? 'lg:col-span-6 lg:border-x lg:border-border lg:px-8'
-              : 'lg:col-span-8 lg:border-r lg:border-border lg:pr-10',
+              : 'lg:col-span-8 lg:border-r lg:border-border/60 lg:pr-10',
           )}
         >
-          <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 space-y-5">
+          {/* Subtle, low-contrast input surface so it doesn't dominate */}
+          <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 pb-3 space-y-5 text-foreground/90">
             {inputs}
           </div>
-          <div className="flex items-center justify-between pt-3 mt-3 border-t border-border">
+          {/* Footer — always anchored at the bottom of the viewport */}
+          <div className="shrink-0 flex items-center justify-between pt-3 border-t border-border bg-background">
             <Button variant="ghost" size="sm" onClick={onBack} className="h-8 rounded-full text-xs text-muted-foreground hover:text-foreground">
               {t('sandboxTabs.back')}
             </Button>
@@ -197,7 +199,7 @@ export function YesNoToggle({
             onClick={() => onChange(opt)}
             className={cn(
               'px-3 h-7 text-xs rounded-full transition-colors',
-              value === opt ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground',
+              value === opt ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
             )}
           >
             {opt ? t('sandboxTabs.yes') : t('sandboxTabs.no')}
