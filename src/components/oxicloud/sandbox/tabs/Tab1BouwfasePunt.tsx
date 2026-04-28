@@ -251,24 +251,24 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
               </div>
 
               <div>
-                <div className="grid grid-cols-[1fr_70px_70px_50px] gap-2 py-1.5 border-b border-border">
+                <div className="grid grid-cols-[1fr_84px_84px_56px] gap-2 py-1.5 border-b border-border">
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.machine')}</span>
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.quantity')}</span>
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.hours')}</span>
                   <span />
                 </div>
                 {state.machines.map(m => (
-                  <div key={m.id} className="grid grid-cols-[1fr_70px_70px_50px] gap-2 py-1.5 items-center border-b border-border">
+                  <div key={m.id} className="grid grid-cols-[1fr_84px_84px_56px] gap-2 py-1.5 items-center border-b border-border">
                     <span className="text-sm text-foreground truncate">{m.machine}</span>
                     <Input
                       type="number" value={m.aantal} min={0} max={20}
                       onChange={e => updateMachine(m.id, 'aantal', e.target.value)}
-                      className="h-8 text-sm tabular-nums rounded-md"
+                      className="h-8 text-sm tabular-nums rounded-md px-2 text-center"
                     />
                     <Input
                       type="number" value={m.uren} min={0} max={2000}
                       onChange={e => updateMachine(m.id, 'uren', e.target.value)}
-                      className="h-8 text-sm tabular-nums rounded-md"
+                      className="h-8 text-sm tabular-nums rounded-md px-2 text-center"
                     />
                     <button
                       onClick={() => removeMachineRow(m.id)}

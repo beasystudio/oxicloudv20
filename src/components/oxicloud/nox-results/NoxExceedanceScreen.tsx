@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { OxiCloudProject, CalculationResults } from '@/types/oxicloud';
 import { motion } from 'framer-motion';
@@ -39,6 +39,23 @@ export function NoxExceedanceScreen({
 }: NoxExceedanceScreenProps) {
   const { t } = useLanguage();
 
+  // Demo-only: lets the user preview the worst-case scenario where every
+  // emission source is over the limit (4 grouped bottlenecks). This does
+  // not mutate the real project data — it only swaps the values used by
+  // this screen so designers can validate dense layouts.
+  const [demoMax, setDemoMax] = useState(false);
+  const effectiveResults = useMemo<CalculationResults>(() => {
+    if (!demoMax) return results;
+    return {
+      ...results,
+      percent_stationary: 1.42,
+      percent_light_construction: 1.18,
+      percent_heavy_construction: 1.27,
+      percent_light_operation: 1.09,
+      percent_heavy_operation: 1.34,
+    };
+  }, [demoMax, results]);
+
   const CRITERION_META: Record<string, { title: string; explanation: string; adjustId: string }> = {
     percent_stationary: {
       title: t('noxExceedance.constructionStationary'),
@@ -75,10 +92,10 @@ export function NoxExceedanceScreen({
 
   const failingCriteria = useMemo(() => {
     const exceeding = ALL_CRITERIA
-      .filter((key) => (results[key] as number) > 1)
+      .filter((key) => (effectiveResults[key] as number) > 1)
       .map((key) => ({
         id: key,
-        percent: (results[key] as number) * 100,
+        percent: (effectiveResults[key] as number) * 100,
         ...CRITERION_META[key],
       }));
     // Merge sources that share a single combined limit (LV + HV under one cap)
@@ -112,7 +129,7 @@ export function NoxExceedanceScreen({
       }
     });
     return Object.values(groups).sort((a, b) => b.percent - a.percent);
-  }, [results, t]);
+  }, [effectiveResults, t]);
 
   const handleActionClick = (actionId: string) => {
     if (actionId === 'adjust' && failingCriteria.length > 0) {
@@ -133,18 +150,32 @@ export function NoxExceedanceScreen({
         transition={{ duration: 0.4, ease: 'easeOut' }}
       >
         {/* Header */}
-        <div className="text-center space-y-5">
-          <div className="space-y-3">
-            <span className="text-[11px] font-medium tracking-[0.15em] uppercase text-muted-foreground block">
-              {t('noxExceedance.nonCompliant')}
-            </span>
-            <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
-              {t('noxExceedance.nonCompliant')}
-            </h1>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-              {t('noxExceedance.description')}{' '}
-              {t('noxExceedance.chooseBelow')}
-            </p>
+        <div className="text-center space-y-3">
+          <span className="inline-flex items-center text-[10px] font-semibold tracking-[0.18em] uppercase text-muted-foreground">
+            {t('noxExceedance.nonCompliant')}
+          </span>
+          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground max-w-xl mx-auto leading-tight">
+            {t('noxExceedance.description')}
+          </h1>
+          <p className="text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed">
+            {t('noxExceedance.chooseBelow')}
+          </p>
+
+          {/* Demo toggle (visual QA aid) */}
+          <div className="pt-2 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setDemoMax((v) => !v)}
+              className={cn(
+                'text-[10px] font-medium tracking-wider uppercase border rounded-full px-3 py-1 transition-colors',
+                demoMax
+                  ? 'border-foreground text-foreground bg-foreground/5'
+                  : 'border-border text-muted-foreground hover:text-foreground hover:border-foreground/40',
+              )}
+              title="Preview the maximum bottleneck scenario"
+            >
+              {demoMax ? '● Demo: max scenario' : '○ Preview max scenario'}
+            </button>
           </div>
         </div>
 
@@ -164,7 +195,7 @@ export function NoxExceedanceScreen({
             <div
               className={cn(
                 'space-y-2.5',
-                failingCriteria.length > 3 && 'max-h-[460px] overflow-y-auto pr-1 -mr-1',
+                failingCriteria.length > 4 && 'max-h-[520px] overflow-y-auto pr-1 -mr-1',
               )}
             >
               {failingCriteria.map((criterion, idx) => {
@@ -173,44 +204,56 @@ export function NoxExceedanceScreen({
                 const visualPct = Math.min(criterion.percent, 200);
                 const thresholdPos = 50; // 100% sits at midpoint of 0–200 scale
                 const projectPos = (visualPct / 200) * 100;
+                const overshootWidth = Math.max(0, projectPos - thresholdPos);
 
                 return (
                   <div
                     key={criterion.id}
-                    className="border border-border rounded-lg px-4 py-3.5 space-y-3 bg-card"
+                    className="group border border-border rounded-xl px-4 py-3.5 space-y-3 bg-card hover:border-foreground/25 transition-colors"
                   >
+                    {/* Title row */}
                     <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0 flex items-center gap-2">
-                        <span className="text-[10px] tabular-nums text-muted-foreground w-4 shrink-0">
-                          {idx + 1}
+                      <div className="min-w-0 flex items-baseline gap-2.5">
+                        <span className="text-[10px] tabular-nums text-muted-foreground/70 font-medium shrink-0">
+                          {String(idx + 1).padStart(2, '0')}
                         </span>
-                        <p className="text-sm font-medium text-foreground truncate">{criterion.title}</p>
+                        <p className="text-sm font-medium text-foreground leading-snug">
+                          {criterion.title}
+                        </p>
                       </div>
-                      <span className="shrink-0 text-[11px] font-medium text-foreground border border-border rounded-full px-2 py-0.5 tabular-nums">
+                      <span className="shrink-0 text-[11px] font-semibold text-foreground bg-foreground/10 rounded-md px-1.5 py-0.5 tabular-nums">
                         +{overshoot.toFixed(0)}%
                       </span>
                     </div>
 
+                    {/* Bar: muted base, threshold tick, dark overshoot segment */}
                     <div className="space-y-1.5">
-                      <div className="relative h-1 bg-muted rounded-full">
+                      <div className="relative h-1.5 bg-muted rounded-full overflow-visible">
+                        {/* compliant portion (0 → limit) in subtle tone */}
                         <div
-                          className="absolute inset-y-0 left-0 rounded-full bg-foreground"
-                          style={{ width: `${projectPos}%` }}
+                          className="absolute inset-y-0 left-0 rounded-l-full bg-muted-foreground/30"
+                          style={{ width: `${thresholdPos}%` }}
                         />
+                        {/* overshoot portion (limit → project) in foreground */}
                         <div
-                          className="absolute top-[-2px] bottom-[-2px] w-px bg-foreground/50"
+                          className="absolute inset-y-0 rounded-r-full bg-foreground"
+                          style={{ left: `${thresholdPos}%`, width: `${overshootWidth}%` }}
+                        />
+                        {/* threshold tick */}
+                        <div
+                          className="absolute -top-1 -bottom-1 w-px bg-foreground"
                           style={{ left: `${thresholdPos}%` }}
                         />
                       </div>
-                      <div className="relative h-3 text-[10px] text-muted-foreground tabular-nums">
+                      <div className="relative h-3 text-[10px] text-muted-foreground/80 tabular-nums">
                         <span className="absolute left-0">0%</span>
                         <span
-                          className="absolute -translate-x-1/2"
+                          className="absolute -translate-x-1/2 font-medium text-foreground/70"
                           style={{ left: `${thresholdPos}%` }}
                         >
                           limit
                         </span>
-                        <span className="absolute right-0 text-foreground font-medium">
+                        <span className="absolute right-0 text-foreground font-semibold">
                           {criterion.percent.toFixed(0)}%
                         </span>
                       </div>
@@ -231,8 +274,8 @@ export function NoxExceedanceScreen({
               {t('noxExceedance.choosePath')}
             </p>
 
-            <ol className="space-y-3">
-              {ACTION_PATHS.map((action, i) => (
+            <ul className="space-y-3">
+              {ACTION_PATHS.map((action) => (
                 <li key={action.id}>
                   <button
                     onClick={() => handleActionClick(action.id)}
@@ -243,9 +286,6 @@ export function NoxExceedanceScreen({
                         : "border-border bg-card hover:border-foreground/30"
                     )}
                   >
-                    <span className="text-xs font-medium text-muted-foreground tabular-nums w-4 shrink-0">
-                      {i + 1}
-                    </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="text-sm font-medium text-foreground">{action.title}</p>
@@ -261,7 +301,7 @@ export function NoxExceedanceScreen({
                   </button>
                 </li>
               ))}
-            </ol>
+            </ul>
           </div>
         </div>
 

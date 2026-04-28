@@ -2786,6 +2786,10 @@ export const nl = {
     operationHeavyExpl: 'Zwaar verkeer tijdens exploitatie duwt de emissies boven de wettelijke limiet.',
     operationHeavyRec: 'Beperk de toegang voor bedrijfsvoertuigen of implementeer emissiezone-beperkingen.',
     operationHeavyImpact: 'Beperking van zwaar verkeer kan operationele NOx met 10-25% verlagen.',
+    constructionTraffic: 'Bouwfase verkeer',
+    constructionTrafficExpl: 'Licht en zwaar bouwfaseverkeer overschrijden samen de drempelwaarde.',
+    operationTraffic: 'Exploitatie verkeer',
+    operationTrafficExpl: 'Licht en zwaar exploitatieverkeer overschrijden samen de drempelwaarde.',
   },
 
   noxDetailedReport: {
@@ -4436,9 +4440,9 @@ export const nl = {
     modalShareLV: 'Modaal aandeel LV',
     modalShareAffects: 'Dit percentage beïnvloedt ook de berekeningen voor Exploitatiefase Lijnbron {other}.',
     // Joint line source panels
-    jointLinePanelTitle: 'Bouwverkeer (LV + HV gecombineerd)',
-    jointLinePanelOpTitle: 'Exploitatieverkeer (LV + HV gecombineerd)',
-    jointLineHelp: 'LV en HV ritten delen één limiet. De gecombineerde ratio moet onder of gelijk aan 100% blijven.',
+    jointLinePanelTitle: 'Bouwverkeer',
+    jointLinePanelOpTitle: 'Exploitatieverkeer',
+    jointLineHelp: 'Lichte en zware ritten delen één limiet — de gecombineerde ratio moet onder of gelijk aan 100% blijven.',
     sharedInputs: 'Gedeelde invoer',
     lvSection: 'Licht verkeer (LV)',
     hvSection: 'Zwaar verkeer (HV)',
@@ -4462,9 +4466,9 @@ export const nl = {
     perYear: 'per jaar',
     // Tab 4
     s4PanelTitle: 'Verwarming en verbrandingssysteem',
-    s4Step1: 'Stap 1. Is er een verbrandingssysteem aanwezig?',
-    s4Step2: 'Stap 2. Draait het meer dan 100 uur per jaar?',
-    s4Step3: 'Stap 3. Systeemdetails',
+    s4Step1: 'Is er een verbrandingssysteem aanwezig?',
+    s4Step2: 'Draait het meer dan 100 uur per jaar?',
+    s4Step3: 'Systeemdetails',
     yes: 'Ja',
     no: 'Nee',
     s4NoSystemInfo: 'Geen verbrandingssysteem. Emissiebijdrage is 0 kg NOx.',

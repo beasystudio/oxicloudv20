@@ -4,41 +4,170 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { PhaseProject } from '@/types/splitPhase';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-interface SplitPhaseConfirmationScreenProps { phase1: PhaseProject; phase2: PhaseProject; onConfirm: () => void; onBack: () => void; }
+interface SplitPhaseConfirmationScreenProps {
+  phase1: PhaseProject;
+  phase2: PhaseProject;
+  onConfirm: () => void;
+  onBack: () => void;
+}
+
+function StepHeader({ step, total, eyebrow, title, description }: {
+  step: number; total: number; eyebrow: string; title: string; description: string;
+}) {
+  return (
+    <div className="space-y-2.5">
+      <div className="flex items-center gap-2 text-[10px] font-semibold tracking-[0.18em] uppercase text-muted-foreground">
+        <span className="tabular-nums text-foreground/80">
+          {String(step).padStart(2, '0')} / {String(total).padStart(2, '0')}
+        </span>
+        <span className="h-px w-6 bg-border" />
+        <span>{eyebrow}</span>
+      </div>
+      <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-foreground leading-tight">{title}</h1>
+      <p className="text-[13px] text-muted-foreground leading-relaxed max-w-prose">{description}</p>
+    </div>
+  );
+}
 
 export function SplitPhaseConfirmationScreen({ phase1, phase2, onConfirm, onBack }: SplitPhaseConfirmationScreenProps) {
   const { t } = useLanguage();
-  const [confirmations, setConfirmations] = useState({ independentPhases: false, separatePermits: false, validStructure: false });
+  const [confirmations, setConfirmations] = useState({
+    independentPhases: false,
+    separatePermits: false,
+    validStructure: false,
+  });
   const allConfirmed = Object.values(confirmations).every(Boolean);
-  const handleCheckChange = (key: keyof typeof confirmations) => setConfirmations(prev => ({ ...prev, [key]: !prev[key] }));
+  const handleCheckChange = (key: keyof typeof confirmations) =>
+    setConfirmations((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  const declarations: { key: keyof typeof confirmations; text: string }[] = [
+    { key: 'independentPhases', text: t('splitPhase.confirmIndependent') },
+    { key: 'separatePermits', text: t('splitPhase.confirmPermits') },
+    { key: 'validStructure', text: t('splitPhase.confirmValid') },
+  ];
 
   return (
-    <div className="min-h-[calc(100vh-200px)] bg-background">
-      <div className="max-w-3xl mx-auto px-6 py-12">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-8">
-          <div><span className="text-xs font-medium tracking-widest uppercase text-primary mb-2 block">{t('splitPhase.stepXofY').replace('{x}', '4').replace('{y}', '4')}</span><h1 className="text-3xl font-semibold tracking-tight text-foreground mb-3">{t('splitPhase.architectConfirmation')}</h1><p className="text-base text-muted-foreground">{t('splitPhase.confirmDesc')}</p></div>
-          <div className="bg-muted/30 rounded-xl border border-border p-6">
-            <h2 className="text-lg font-medium text-foreground mb-4">{t('splitPhase.phaseSplitSummary')}</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-primary/10 rounded-lg p-4 border border-primary/30"><p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('splitPhase.phase1')}</p><p className="text-xl font-semibold text-primary mt-1">{phase1.footprintArea.toLocaleString()} m²</p><p className="text-sm text-primary/70 mt-1">{t('splitPhase.compliantReadyForPermit')}</p></div>
-              <div className="bg-secondary/10 rounded-lg p-4 border border-secondary/30"><p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('splitPhase.phase2')}</p><p className="text-xl font-semibold text-foreground mt-1">{phase2.footprintArea.toLocaleString()} m²</p><p className="text-sm text-muted-foreground mt-1">{t('splitPhase.futurePhase')}</p></div>
+    <div className="min-h-[calc(100vh-180px)] bg-background px-4 md:px-10 py-10 md:py-14">
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className="w-full max-w-3xl mx-auto space-y-8"
+      >
+        <StepHeader
+          step={4}
+          total={4}
+          eyebrow="Architect confirmation"
+          title={t('splitPhase.architectConfirmation')}
+          description={t('splitPhase.confirmDesc')}
+        />
+
+        {/* Summary */}
+        <section className="border border-border rounded-xl bg-card">
+          <div className="px-4 py-2.5 border-b border-border">
+            <h2 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              {t('splitPhase.phaseSplitSummary')}
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 divide-x divide-border">
+            <div className="px-4 py-3 space-y-1">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {t('splitPhase.phase1')}
+              </p>
+              <p className="text-lg font-semibold tabular-nums text-foreground leading-none">
+                {phase1.footprintArea.toLocaleString()} m²
+              </p>
+              <p className="text-[11px] text-foreground/80">{t('splitPhase.compliantReadyForPermit')}</p>
+            </div>
+            <div className="px-4 py-3 space-y-1">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {t('splitPhase.phase2')}
+              </p>
+              <p className="text-lg font-semibold tabular-nums text-muted-foreground leading-none">
+                {phase2.footprintArea.toLocaleString()} m²
+              </p>
+              <p className="text-[11px] text-muted-foreground">{t('splitPhase.futurePhase')}</p>
             </div>
           </div>
-          <div className="bg-muted/30 rounded-xl border border-border p-6 space-y-5">
-            <h2 className="text-lg font-medium text-foreground">{t('splitPhase.legalConfirmations')}</h2>
-            <p className="text-sm text-muted-foreground">{t('splitPhase.youConfirmThat')}</p>
-            <div className="space-y-4">
-              <label className="flex items-start gap-3 cursor-pointer"><Checkbox checked={confirmations.independentPhases} onCheckedChange={() => handleCheckChange('independentPhases')} className="mt-0.5" /><span className="text-sm text-foreground leading-relaxed">{t('splitPhase.confirmIndependent')}</span></label>
-              <label className="flex items-start gap-3 cursor-pointer"><Checkbox checked={confirmations.separatePermits} onCheckedChange={() => handleCheckChange('separatePermits')} className="mt-0.5" /><span className="text-sm text-foreground leading-relaxed">{t('splitPhase.confirmPermits')}</span></label>
-              <label className="flex items-start gap-3 cursor-pointer"><Checkbox checked={confirmations.validStructure} onCheckedChange={() => handleCheckChange('validStructure')} className="mt-0.5" /><span className="text-sm text-foreground leading-relaxed">{t('splitPhase.confirmValid')}</span></label>
-            </div>
+        </section>
+
+        {/* Legal declarations */}
+        <section className="border border-border rounded-xl bg-card">
+          <div className="px-4 py-2.5 border-b border-border flex items-center justify-between">
+            <h2 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              {t('splitPhase.legalConfirmations')}
+            </h2>
+            <span className="text-[10px] tabular-nums text-muted-foreground">
+              {Object.values(confirmations).filter(Boolean).length} / 3
+            </span>
           </div>
-          <div className="bg-secondary/10 rounded-xl border border-secondary/20 p-5"><p className="text-sm text-muted-foreground"><strong className="text-foreground font-medium">{t('splitPhase.reportLabel')}</strong> {t('splitPhase.reportLabelDesc')}</p></div>
-          <div className="flex items-center gap-3 pt-4"><Button onClick={onConfirm} disabled={!allConfirmed} className="flex-1 h-12 rounded-xl text-base font-medium">{t('splitPhase.generatePhaseReports')}</Button><Button variant="outline" onClick={onBack} className="rounded-xl h-12">{t('sandbox.back')}</Button></div>
-          {!allConfirmed && <p className="text-xs text-muted-foreground text-center">{t('splitPhase.confirmAllToGenerate')}</p>}
-        </motion.div>
-      </div>
+          <ul className="divide-y divide-border">
+            {declarations.map((d, i) => {
+              const checked = confirmations[d.key];
+              return (
+                <li key={d.key}>
+                  <label
+                    className={cn(
+                      'flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors',
+                      checked ? 'bg-foreground/[0.03]' : 'hover:bg-muted/30',
+                    )}
+                  >
+                    <Checkbox
+                      checked={checked}
+                      onCheckedChange={() => handleCheckChange(d.key)}
+                      className="mt-0.5"
+                    />
+                    <div className="space-y-0.5">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                        Declaration {String(i + 1).padStart(2, '0')}
+                      </p>
+                      <p className="text-[12px] text-foreground leading-relaxed">{d.text}</p>
+                    </div>
+                  </label>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        {/* Report label note */}
+        <div className="border-l-2 border-foreground/40 pl-4">
+          <p className="text-[12px] text-muted-foreground leading-relaxed">
+            <span className="text-foreground font-medium">{t('splitPhase.reportLabel')}</span>{' '}
+            {t('splitPhase.reportLabelDesc')}
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between pt-2 border-t border-border">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onBack}
+            className="h-8 rounded-full text-xs text-muted-foreground hover:text-foreground"
+          >
+            {t('sandbox.back')}
+          </Button>
+          <div className="flex items-center gap-3">
+            {!allConfirmed && (
+              <span className="text-[11px] text-muted-foreground">
+                {t('splitPhase.confirmAllToGenerate')}
+              </span>
+            )}
+            <Button
+              onClick={onConfirm}
+              disabled={!allConfirmed}
+              className="h-9 rounded-full text-xs px-4 gap-1.5"
+            >
+              {t('splitPhase.generatePhaseReports')}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

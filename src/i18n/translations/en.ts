@@ -2863,6 +2863,11 @@ export const en = {
     operationHeavyExpl: 'Heavy traffic during operation pushes emissions above the legal limit.',
     operationHeavyRec: 'Restrict commercial vehicle access or implement emission zone restrictions.',
     operationHeavyImpact: 'Restricting heavy traffic can reduce operational NOx by 10-25%.',
+    // Grouped (shared-limit) source labels
+    constructionTraffic: 'Construction traffic',
+    constructionTrafficExpl: 'Light and heavy construction traffic combined exceed the threshold.',
+    operationTraffic: 'Operational traffic',
+    operationTrafficExpl: 'Light and heavy operational traffic combined exceed the threshold.',
   },
 
   // NOx Detailed Report Screen
@@ -4529,9 +4534,9 @@ export const en = {
     modalShareLV: 'Modal share LV',
     modalShareAffects: 'This percentage also affects calculations for Operational Phase Line Source {other}.',
     // Joint line source panels (Tab 2+3 and Tab 5+6)
-    jointLinePanelTitle: 'Construction traffic (LV + HV combined)',
-    jointLinePanelOpTitle: 'Operational traffic (LV + HV combined)',
-    jointLineHelp: 'LV and HV trips share one limit. The combined ratio must stay at or below 100%.',
+    jointLinePanelTitle: 'Construction traffic',
+    jointLinePanelOpTitle: 'Operational traffic',
+    jointLineHelp: 'Light and heavy vehicle trips share one limit — the combined ratio must stay at or below 100%.',
     sharedInputs: 'Shared inputs',
     lvSection: 'Light vehicles (LV)',
     hvSection: 'Heavy vehicles (HV)',
@@ -4555,9 +4560,9 @@ export const en = {
     perYear: 'per year',
     // Tab 4 — operational point source
     s4PanelTitle: 'Heating and combustion system',
-    s4Step1: 'Step 1. Is there a combustion system on site?',
-    s4Step2: 'Step 2. Does it run more than 100 hours per year?',
-    s4Step3: 'Step 3. System details',
+    s4Step1: 'Is there a combustion system on site?',
+    s4Step2: 'Does it run more than 100 hours per year?',
+    s4Step3: 'System details',
     yes: 'Yes',
     no: 'No',
     s4NoSystemInfo: 'No combustion system. Emission contribution is 0 kg NOx.',
