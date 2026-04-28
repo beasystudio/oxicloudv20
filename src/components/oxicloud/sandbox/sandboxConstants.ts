@@ -14,7 +14,7 @@ export const MACHINE_EMISSION_FACTORS: Record<string, number> = {
   'Mobiele kraan': 0.022,
 };
 
-// Thresholds
+// Thresholds (kg NOx) — all 6 sources fail at SEEDS
 export const THRESHOLDS = {
   bouwfase_punt: 32.0,
   bouwfase_lijn_lv: 18.5,
@@ -24,23 +24,28 @@ export const THRESHOLDS = {
   exploitatie_lijn_hv: 8.6,
 };
 
-// Seed values
+// Seed values — chosen so EVERY source exceeds its threshold
 export const SEEDS = {
-  // Tab 1 - Bouwfase Puntbronnen
-  prefab_percentage: 0.40, // as decimal for tabs 2/3, as % (40) for slider in tab 1
+  // Tab 1
+  prefab_percentage: 0.40,
   sloopoppervlakte: 1800,
   nieuwe_verharding: 950,
   diepte_bouwput: 4.5,
   grondwerkvolume: 2400,
   terrein_ophoging: 600,
-  // Tab 2/3 - Lijnbron
+  // Tab 2/3 (joint construction line)
+  floor_area: 2400,
+  construction_months: 14,
   lv_trips_rate: 8.2,
-  hv_trips_rate: 1.4,
-  // Tab 4 - Exploitatie Punt
+  hv_trips_rate: 1.8,
+  // Tab 4 (operational point — heating)
   operating_hours: 1000,
   vermogen: 60,
-  // Tab 5/6 - Exploitatie Lijn
-  parking_spaces: 42,
+  s4_gate1: true,
+  s4_gate2: true,
+  s4_fuel: 'Wood' as 'Wood' | 'Gas',
+  // Tab 5/6 (joint operational line)
+  parking_spaces: 80,
   modal_split_lv: 0.65,
   lv_trips_rate_op: 6.5,
   hv_trips_rate_op: 0.9,

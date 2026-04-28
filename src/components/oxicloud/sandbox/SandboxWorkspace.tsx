@@ -13,15 +13,13 @@ import {
 } from './sandboxConstants';
 import { Tab1BouwfasePunt } from './tabs/Tab1BouwfasePunt';
 import { Tab2BouwfaseLijnLV } from './tabs/Tab2BouwfaseLijnLV';
-import { Tab3BouwfaseLijnHV } from './tabs/Tab3BouwfaseLijnHV';
 import { Tab4ExploitatiePunt } from './tabs/Tab4ExploitatiePunt';
 import { Tab5ExploitatieLijnLV } from './tabs/Tab5ExploitatieLijnLV';
-import { Tab6ExploitatieLijnHV } from './tabs/Tab6ExploitatieLijnHV';
 
 // ── Shared sandbox state context ──
 export interface SandboxState {
   // Tab 1
-  prefabSlider: number; // 0-80 (percentage for display)
+  prefabSlider: number;
   sloopoppervlakte: number;
   nieuwe_verharding: number;
   diepte_bouwput: number;
@@ -30,17 +28,27 @@ export interface SandboxState {
   machines: MachineRow[];
   expertReason: string;
   tab1Mode: 'guided' | 'expert';
-  // Tab 2/3 shared
-  prefab_percentage: number; // 0-1 decimal
+  // Tab 2/3 shared (construction line)
+  floor_area: number;
+  construction_months: number;
+  prefab_percentage: number;
   lv_trips_rate: number;
   hv_trips_rate: number;
-  // Tab 4
+  lv_trips_override: number | null;
+  hv_trips_override: number | null;
+  // Tab 4 (operational point — heating)
+  s4_gate1: boolean;
+  s4_gate2: boolean;
+  s4_fuel: 'Wood' | 'Gas';
+  s4_power_kw: number;
   operating_hours: number;
-  // Tab 5/6 shared
+  // Tab 5/6 shared (operational line)
   parking_spaces: number;
   modal_split_lv: number;
   lv_trips_rate_op: number;
   hv_trips_rate_op: number;
+  lv_trips_op_override: number | null;
+  hv_trips_op_override: number | null;
 }
 
 interface SandboxContextType {
@@ -52,6 +60,7 @@ interface SandboxContextType {
   remaining: Record<SourceId, number>;
   progress: Record<SourceId, number>;
   isCompliant: Record<SourceId, boolean>;
+  seedEmissions: Record<SourceId, number>;
   projectCompliant: boolean;
   projectProgress: number;
 }
@@ -69,17 +78,29 @@ const INITIAL_STATE: SandboxState = {
   machines: DEFAULT_MACHINES.map(m => ({ ...m })),
   expertReason: '',
   tab1Mode: 'guided',
+  floor_area: SEEDS.floor_area,
+  construction_months: SEEDS.construction_months,
   prefab_percentage: SEEDS.prefab_percentage,
   lv_trips_rate: SEEDS.lv_trips_rate,
   hv_trips_rate: SEEDS.hv_trips_rate,
+  lv_trips_override: null,
+  hv_trips_override: null,
+  s4_gate1: SEEDS.s4_gate1,
+  s4_gate2: SEEDS.s4_gate2,
+  s4_fuel: SEEDS.s4_fuel,
+  s4_power_kw: SEEDS.vermogen,
   operating_hours: SEEDS.operating_hours,
   parking_spaces: SEEDS.parking_spaces,
   modal_split_lv: SEEDS.modal_split_lv,
   lv_trips_rate_op: SEEDS.lv_trips_rate_op,
   hv_trips_rate_op: SEEDS.hv_trips_rate_op,
+  lv_trips_op_override: null,
+  hv_trips_op_override: null,
 };
 
-// Which tabs to show - set to all 6 for mockup
+// All six emission sources are tracked for calculation.
+// Tabs 2/3 (construction line LV+HV) and 5/6 (operational line LV+HV) are
+// rendered as joint panels, so the navigation only shows 4 tab buttons.
 const visibleSources: SourceId[] = [
   'bouwfase_punt',
   'bouwfase_lijn_lv',
@@ -89,6 +110,15 @@ const visibleSources: SourceId[] = [
   'exploitatie_lijn_hv',
 ];
 
+type TabKey = 'bouwfase_punt' | 'bouwfase_lijn' | 'exploitatie_punt' | 'exploitatie_lijn';
+const TAB_KEYS: TabKey[] = ['bouwfase_punt', 'bouwfase_lijn', 'exploitatie_punt', 'exploitatie_lijn'];
+const TAB_NAV_LABELS: Record<TabKey, string> = {
+  bouwfase_punt: 'Bouwfase Puntbronnen',
+  bouwfase_lijn: 'Bouwfase Lijnbronnen',
+  exploitatie_punt: 'Exploitatiefase Puntbronnen',
+  exploitatie_lijn: 'Exploitatiefase Lijnbronnen',
+};
+
 interface SandboxWorkspaceProps {
   onComplete: () => void;
   onBack: () => void;
@@ -96,7 +126,7 @@ interface SandboxWorkspaceProps {
 
 export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) {
   const [state, setState] = useState<SandboxState>({ ...INITIAL_STATE });
-  const [activeTab, setActiveTab] = useState<SourceId>(visibleSources[0]);
+  const [activeTab, setActiveTab] = useState<TabKey>('bouwfase_punt');
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const update = useCallback((partial: Partial<SandboxState>) => {
@@ -107,48 +137,70 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
   const computed = useMemo(() => {
     const s = state;
 
-    // Tab 1: Bouwfase Punt — combines BOTH expert (machine table) and guided (parameter multipliers).
-    // Expert edits change the machine baseline; guided sliders apply reduction multipliers on top.
+    // Tab 1
     const machineEmission = calcPointSourceConstruction(s.machines);
-    const prefabEffect = 1 - ((s.prefabSlider - 40) / 100) * 0.6; // higher prefab = less emission
+    const prefabEffect = 1 - ((s.prefabSlider - 40) / 100) * 0.6;
     const sloopEffect = s.sloopoppervlakte / SEEDS.sloopoppervlakte;
     const verhardingEffect = s.nieuwe_verharding / SEEDS.nieuwe_verharding;
     const grondEffect = s.grondwerkvolume / SEEDS.grondwerkvolume;
     const guidedMultiplier = prefabEffect * (0.3 + 0.7 * sloopEffect) * (0.2 + 0.8 * verhardingEffect) * (0.3 + 0.7 * grondEffect);
     const tab1Emission = machineEmission * guidedMultiplier;
 
-    const tab2Emission = calcLineSourceConstruction(s.lv_trips_rate, 0.0021, s.prefab_percentage);
-    const tab3Emission = calcLineSourceConstruction(s.hv_trips_rate, 0.014, s.prefab_percentage);
-    const tab4Emission = calcOperationPointEmission(60, s.operating_hours);
-    const tab5Emission = calcLineSourceOperation(s.lv_trips_rate_op, 0.0021, s.modal_split_lv, s.parking_spaces);
-    const tab6Emission = calcLineSourceOperation(s.hv_trips_rate_op, 0.014, 1 - s.modal_split_lv, s.parking_spaces);
+    // Tabs 2 & 3 — joint construction line. Scale by area, months, prefab.
+    const areaFactor = s.floor_area / SEEDS.floor_area;
+    const monthsFactor = s.construction_months / SEEDS.construction_months;
+    const prefabConstFactor = (1 - s.prefab_percentage) / (1 - SEEDS.prefab_percentage);
+    const constLineFactor = areaFactor * monthsFactor * prefabConstFactor;
+    const baseTab2 = calcLineSourceConstruction(SEEDS.lv_trips_rate, 0.0021, SEEDS.prefab_percentage) * constLineFactor;
+    const baseTab3 = calcLineSourceConstruction(SEEDS.hv_trips_rate, 0.014, SEEDS.prefab_percentage) * constLineFactor;
+    const tab2Emission = s.lv_trips_override !== null ? s.lv_trips_override * 0.0021 : baseTab2;
+    const tab3Emission = s.hv_trips_override !== null ? s.hv_trips_override * 0.014 : baseTab3;
+
+    // Tab 4 — heating with gate logic
+    let tab4Emission = 0;
+    if (s.s4_gate1 && s.s4_gate2) {
+      const fuelEF = s.s4_fuel === 'Wood' ? 0.00009 : 0.00007;
+      tab4Emission = s.s4_power_kw * s.operating_hours * fuelEF;
+    }
+
+    // Tabs 5 & 6 — joint operational line
+    let tab5Emission: number;
+    if (s.parking_spaces === 0) {
+      // area based path B (lighter)
+      tab5Emission = (s.floor_area / 1000) * 3.5 * 0.0021 * 365 * 0.6;
+    } else {
+      tab5Emission = calcLineSourceOperation(s.lv_trips_rate_op, 0.0021, s.modal_split_lv, s.parking_spaces);
+    }
+    let tab6Emission = (s.floor_area / 1000) * s.hv_trips_rate_op * 0.014 * 365;
+    if (s.lv_trips_op_override !== null) tab5Emission = s.lv_trips_op_override * 0.0021;
+    if (s.hv_trips_op_override !== null) tab6Emission = s.hv_trips_op_override * 0.014;
 
     const emissions: Record<SourceId, number> = {
       bouwfase_punt: Math.round(tab1Emission * 10) / 10,
       bouwfase_lijn_lv: Math.round(tab2Emission * 10) / 10,
       bouwfase_lijn_hv: Math.round(tab3Emission * 10) / 10,
-      exploitatie_punt: Math.round(tab4Emission * 10) / 10,
+      exploitatie_punt: Math.round(tab4Emission * 100) / 100,
       exploitatie_lijn_lv: Math.round(tab5Emission * 10) / 10,
       exploitatie_lijn_hv: Math.round(tab6Emission * 10) / 10,
     };
 
     const thresholds = { ...THRESHOLDS };
 
-    // Calculate original overshoots (at seed values)
+    // Seeds (compute at default seed values)
     const seedTab1 = calcPointSourceConstruction(DEFAULT_MACHINES);
     const seedTab2 = calcLineSourceConstruction(SEEDS.lv_trips_rate, 0.0021, SEEDS.prefab_percentage);
     const seedTab3 = calcLineSourceConstruction(SEEDS.hv_trips_rate, 0.014, SEEDS.prefab_percentage);
-    const seedTab4 = calcOperationPointEmission(60, SEEDS.operating_hours);
+    const seedTab4 = SEEDS.vermogen * SEEDS.operating_hours * 0.00009;
     const seedTab5 = calcLineSourceOperation(SEEDS.lv_trips_rate_op, 0.0021, SEEDS.modal_split_lv, SEEDS.parking_spaces);
-    const seedTab6 = calcLineSourceOperation(SEEDS.hv_trips_rate_op, 0.014, 1 - SEEDS.modal_split_lv, SEEDS.parking_spaces);
+    const seedTab6 = (SEEDS.floor_area / 1000) * SEEDS.hv_trips_rate_op * 0.014 * 365;
 
     const seedEmissions: Record<SourceId, number> = {
-      bouwfase_punt: seedTab1,
-      bouwfase_lijn_lv: seedTab2,
-      bouwfase_lijn_hv: seedTab3,
-      exploitatie_punt: seedTab4,
-      exploitatie_lijn_lv: seedTab5,
-      exploitatie_lijn_hv: seedTab6,
+      bouwfase_punt: Math.round(seedTab1 * 10) / 10,
+      bouwfase_lijn_lv: Math.round(seedTab2 * 10) / 10,
+      bouwfase_lijn_hv: Math.round(seedTab3 * 10) / 10,
+      exploitatie_punt: Math.round(seedTab4 * 100) / 100,
+      exploitatie_lijn_lv: Math.round(seedTab5 * 10) / 10,
+      exploitatie_lijn_hv: Math.round(seedTab6 * 10) / 10,
     };
 
     const overshoots: Record<SourceId, number> = {} as any;
@@ -168,7 +220,7 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
     const projectProgress = calcProgress(totalRemaining, totalOvershoot);
     const projectCompliant = visibleSources.every(id => isCompliant[id]);
 
-    return { emissions, thresholds, overshoots, remaining, progress, isCompliant, projectCompliant, projectProgress };
+    return { emissions, thresholds, overshoots, remaining, progress, isCompliant, seedEmissions, projectCompliant, projectProgress };
   }, [state]);
 
   const ctx: SandboxContextType = {
@@ -186,16 +238,16 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
     <SandboxContext.Provider value={ctx}>
       <div className="min-h-screen bg-background flex flex-col">
         {/* ── Minimal tab navigation: only failed sources ── */}
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as SourceId)} className="flex-1 flex flex-col">
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabKey)} className="flex-1 flex flex-col">
           <div className="sticky top-0 z-40 border-b border-border bg-background">
             <TabsList className="h-auto p-0 bg-transparent rounded-none px-5 gap-0">
-              {visibleSources.filter(src => !computed.isCompliant[src]).map(src => (
+              {TAB_KEYS.map(key => (
                 <TabsTrigger
-                  key={src}
-                  value={src}
+                  key={key}
+                  value={key}
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-xs font-medium text-muted-foreground data-[state=active]:text-foreground"
                 >
-                  {SOURCE_LABELS[src]}
+                  {TAB_NAV_LABELS[key]}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -216,14 +268,9 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
                     <Tab1BouwfasePunt onConfirm={() => setConfirmOpen(true)} onBack={onBack} />
                   </TabsContent>
                 )}
-                {activeTab === 'bouwfase_lijn_lv' && (
-                  <TabsContent value="bouwfase_lijn_lv" className="mt-0 h-full">
+                {activeTab === 'bouwfase_lijn' && (
+                  <TabsContent value="bouwfase_lijn" className="mt-0 h-full">
                     <Tab2BouwfaseLijnLV onBack={onBack} />
-                  </TabsContent>
-                )}
-                {activeTab === 'bouwfase_lijn_hv' && (
-                  <TabsContent value="bouwfase_lijn_hv" className="mt-0 h-full">
-                    <Tab3BouwfaseLijnHV onBack={onBack} />
                   </TabsContent>
                 )}
                 {activeTab === 'exploitatie_punt' && (
@@ -231,14 +278,9 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
                     <Tab4ExploitatiePunt onBack={onBack} />
                   </TabsContent>
                 )}
-                {activeTab === 'exploitatie_lijn_lv' && (
-                  <TabsContent value="exploitatie_lijn_lv" className="mt-0 h-full">
+                {activeTab === 'exploitatie_lijn' && (
+                  <TabsContent value="exploitatie_lijn" className="mt-0 h-full">
                     <Tab5ExploitatieLijnLV onBack={onBack} />
-                  </TabsContent>
-                )}
-                {activeTab === 'exploitatie_lijn_hv' && (
-                  <TabsContent value="exploitatie_lijn_hv" className="mt-0 h-full">
-                    <Tab6ExploitatieLijnHV onBack={onBack} />
                   </TabsContent>
                 )}
               </motion.div>
