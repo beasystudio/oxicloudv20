@@ -964,6 +964,8 @@ export const nl = {
     issuer: 'Uitgever',
     quoteSummary: 'Offerte overzicht',
     quoteNumber: 'Offertenummer',
+    client: 'Opdrachtgever',
+    architect: 'Architect',
     briefProject: 'Project',
     briefDate: 'Datum',
     briefValidUntil: 'Geldig tot',
@@ -4514,6 +4516,9 @@ export const nl = {
   // ── PB Flow (PassendeBeoordelingFlow) ──
   pbFlow: {
     title: 'Passende Beoordeling',
+    awaitStep1: 'Uw opdrachtgever ontvangt de offerte voor de Passende Beoordeling per e-mail met een beveiligde ondertekeningslink',
+    awaitStep2: 'Ze bekijken en ondertekenen online — u wordt direct op de hoogte gebracht',
+    awaitStep3: 'Zodra de betaling is ontvangen, stelt het OxiCloud-team uw Passende Beoordeling-rapport op en levert het in deze projectmap af',
     legallyRequired: 'Wettelijk vereist',
     introDesc: 'Na uitputting van alle optimalisatiemogelijkheden overschrijdt dit project de toegestane NOx-drempel. Conform de toepasselijke wetgeving is een Passende Beoordeling verplicht alvorens dit project verder kan worden ingediend.',
     // Status 0

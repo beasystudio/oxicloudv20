@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+import { useMemo, useState } from 'react';
+import { QuoteSentAwaitingStep } from '@/components/oxicloud/quote-flow/QuoteSentAwaitingStep';
+=======
 /**
  * Passende Beoordeling — Functional Spec v4
  *
@@ -37,18 +41,11 @@ import {
   CheckCircle2,
   User,
 } from 'lucide-react';
+>>>>>>> 5f4d97eabf43c197dfea62a530a8b48de1c13a49
 import { OxiCloudProject, CalculationResults } from '@/types/oxicloud';
-
-import {
-  type PBStatus,
-  buildPBProjectData,
-  QUOTE_LINE_ITEMS,
-  COMMISSION_RATE,
-  PB_STATUS_CONFIG,
-  KENNISGEVING_SENDER,
-  PB_STATUSES,
-} from './types';
-import { KennisgevingEmailPreview } from './KennisgevingEmailPreview';
+import { useMockAuth } from '@/contexts/MockAuthContext';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { buildPBProjectData, QUOTE_LINE_ITEMS, type PBStatus } from './types';
 
 interface PassendeBeoordelingFlowProps {
   project: OxiCloudProject;
@@ -57,6 +54,8 @@ interface PassendeBeoordelingFlowProps {
   onBack: () => void;
 }
 
+<<<<<<< HEAD
+=======
 const STEP_LABELS: Record<PBStatus, string> = {
   price_generated:    'Quote',
   awaiting_payment:   'Payment',
@@ -65,25 +64,58 @@ const STEP_LABELS: Record<PBStatus, string> = {
   report_delivered:   'Released',
 };
 
+>>>>>>> 5f4d97eabf43c197dfea62a530a8b48de1c13a49
 export function PassendeBeoordelingFlow({
-  project: oxiProject,
-  results,
+  project,
   onComplete,
   onBack,
 }: PassendeBeoordelingFlowProps) {
+<<<<<<< HEAD
+  const { currentUser } = useMockAuth();
+  const { t } = useLanguage();
+  const [status, setStatus] = useState<PBStatus>('quote_sent');
+=======
   const [pbStatus, setPbStatus] = useState<PBStatus>('price_generated');
   const [showEmailPreview, setShowEmailPreview] = useState(false);
   const [reportReleased, setReportReleased] = useState(false);
 
+>>>>>>> 5f4d97eabf43c197dfea62a530a8b48de1c13a49
   const [pbProject] = useState(() => buildPBProjectData());
-  const subtotal = QUOTE_LINE_ITEMS.reduce((s, i) => s + i.amount, 0);
-  const commission = subtotal * COMMISSION_RATE;
-  const quoteSentDate = new Date().toLocaleDateString('nl-BE');
-  const slaDate = useMemo(
-    () => new Date(Date.now() + 21 * 86400000).toLocaleDateString('nl-BE'),
+  const quoteReference = useMemo(
+    () => `QT-${new Date().getFullYear()}-${project.id.slice(0, 4).toUpperCase() || 'PROJ'}`,
+    [project.id]
+  );
+  const quoteAmount = useMemo(
+    () => QUOTE_LINE_ITEMS.reduce((total, item) => total + item.amount, 0),
     []
   );
 
+<<<<<<< HEAD
+  const handleClientSigned = () => {
+    setStatus('signed');
+    window.setTimeout(onComplete, 250);
+  };
+
+  return (
+    <QuoteSentAwaitingStep
+      quoteReference={quoteReference}
+      endClientName={pbProject.clientName}
+      onBackToProject={onBack}
+      onSimulatePayment={status === 'quote_sent' ? handleClientSigned : undefined}
+      recipientInfo={{
+        name: pbProject.clientName,
+        email: pbProject.clientEmail,
+      }}
+      partnerShareAmount={quoteAmount}
+      projectName={project.name || pbProject.name}
+      partnerCompanyName={currentUser?.company || pbProject.architectName}
+      nextSteps={[
+        t('pbFlow.awaitStep1') || 'Your client receives the Passende Beoordeling quote via email with a secure signing link',
+        t('pbFlow.awaitStep2') || 'They review and sign online — you\u2019ll be notified instantly',
+        t('pbFlow.awaitStep3') || 'Once payment is received, the A-Spine team prepares your Passende Beoordeling report and delivers it to this project binder',
+      ]}
+    />
+=======
   const handleSendQuote = () => {
     setShowEmailPreview(false);
     toast.success(`Kennisgeving + quote sent to ${pbProject.clientEmail} from ${KENNISGEVING_SENDER}`);
@@ -575,5 +607,6 @@ function DocRow({ label, onClick }: { label: string; onClick: () => void }) {
         Download
       </button>
     </div>
+>>>>>>> 5f4d97eabf43c197dfea62a530a8b48de1c13a49
   );
 }

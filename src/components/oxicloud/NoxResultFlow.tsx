@@ -300,7 +300,7 @@ export function NoxResultFlow({
           project={project}
           results={results}
           onComplete={handlePassendeBeoordelingComplete}
-          onBack={() => changeStep('exceedance')}
+          onBack={onBackToProjects}
         />
       );
 

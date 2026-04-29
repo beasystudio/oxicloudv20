@@ -40,6 +40,8 @@ interface QuoteSentAwaitingStepProps {
   partnerShareAmount?: number;
   projectName?: string;
   partnerCompanyName?: string;
+  /** Optional override for the "what happens next" steps (used by PB flow). */
+  nextSteps?: string[];
 }
 
 export function QuoteSentAwaitingStep({
@@ -52,6 +54,7 @@ export function QuoteSentAwaitingStep({
   partnerShareAmount = 0,
   projectName = "",
   partnerCompanyName = "",
+  nextSteps,
 }: QuoteSentAwaitingStepProps) {
   const { t } = useLanguage();
   const [showPdfViewer, setShowPdfViewer] = useState(false);
@@ -304,24 +307,18 @@ export function QuoteSentAwaitingStep({
             >
               <div className="px-4 pb-4 pt-0">
                 <ol className="space-y-3 text-sm text-muted-foreground">
-                  <li className="flex items-start gap-2.5">
-                    <span className="flex items-center justify-center h-5 w-5 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold shrink-0 mt-0.5">
-                      1
-                    </span>
-                    <span>{t('quoteFlow.awaitStep1')}</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="flex items-center justify-center h-5 w-5 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold shrink-0 mt-0.5">
-                      2
-                    </span>
-                    <span>{t('quoteFlow.awaitStep2')}</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="flex items-center justify-center h-5 w-5 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold shrink-0 mt-0.5">
-                      3
-                    </span>
-                    <span>{t('quoteFlow.awaitStep3')}</span>
-                  </li>
+                  {(nextSteps ?? [
+                    t('quoteFlow.awaitStep1'),
+                    t('quoteFlow.awaitStep2'),
+                    t('quoteFlow.awaitStep3'),
+                  ]).map((stepText, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <span className="flex items-center justify-center h-5 w-5 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold shrink-0 mt-0.5">
+                        {idx + 1}
+                      </span>
+                      <span>{stepText}</span>
+                    </li>
+                  ))}
                 </ol>
               </div>
             </motion.div>

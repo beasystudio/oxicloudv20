@@ -964,6 +964,8 @@ export const en = {
     issuer: 'Issuer',
     quoteSummary: 'Quote Summary',
     quoteNumber: 'Quote number',
+    client: 'Client',
+    architect: 'Architect',
     briefProject: 'Project',
     briefDate: 'Date',
     briefValidUntil: 'Valid until',
@@ -4612,6 +4614,9 @@ export const en = {
   // ── PB Flow (PassendeBeoordelingFlow) ──
   pbFlow: {
     title: 'Appropriate Assessment',
+    awaitStep1: 'Your client receives the Appropriate Assessment quote via email with a secure signing link',
+    awaitStep2: 'They review and sign online — you\u2019ll be notified instantly',
+    awaitStep3: 'Once payment is received, the OxiCloud team prepares your Appropriate Assessment report and delivers it to this project binder',
     legallyRequired: 'Legally required',
     introDesc: 'After exhausting all optimisation options, this project exceeds the permitted NOx threshold. Under applicable legislation, an Appropriate Assessment is mandatory before this project can proceed to submission.',
     // Status 0

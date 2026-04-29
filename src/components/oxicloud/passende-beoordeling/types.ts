@@ -8,6 +8,28 @@
  */
 
 export type PBStatus =
+<<<<<<< HEAD
+  | 'draft'
+  | 'quote_sent'
+  | 'signed'
+  | 'report_held'
+  | 'released';
+
+export const PB_STATUS_CONFIG: Record<PBStatus, { label: string; index: number }> = {
+  draft: { label: 'Draft', index: 0 },
+  quote_sent: { label: 'Quote sent', index: 1 },
+  signed: { label: 'Signed', index: 2 },
+  report_held: { label: 'Report Held', index: 3 },
+  released: { label: 'Released', index: 4 },
+};
+
+export const PB_STATUSES: PBStatus[] = [
+  'draft',
+  'quote_sent',
+  'signed',
+  'report_held',
+  'released',
+=======
   | 'price_generated'      // Quote auto-generated, ready to send via Kennisgeving email
   | 'awaiting_payment'     // Quote sent — waiting for client signature + payment
   | 'paid'                 // Client paid → Christine is preparing the PB report manually
@@ -28,14 +50,12 @@ export const PB_STATUSES: PBStatus[] = [
   'paid',
   'report_in_progress',
   'report_delivered',
+>>>>>>> 5f4d97eabf43c197dfea62a530a8b48de1c13a49
 ];
 
 export interface PBProjectData {
   name: string;
   address: string;
-  noxImpact: number;
-  threshold: number;
-  overshoot: number;
   clientName: string;
   clientEmail: string;
   architectName: string;
@@ -66,9 +86,6 @@ export function buildPBProjectData(): PBProjectData {
   return {
     name,
     address,
-    noxImpact: 38.4,
-    threshold: 32.0,
-    overshoot: 6.4,
     clientName: 'Pauwels NV',
     clientEmail: 'info@pauwels-nv.be',
     architectName: managerName,
@@ -78,11 +95,5 @@ export function buildPBProjectData(): PBProjectData {
 }
 
 export const QUOTE_LINE_ITEMS = [
-  { description: 'Passende Beoordeling - Uitvoering', amount: 2400 },
-  { description: 'Juridische review', amount: 600 },
-  { description: 'Ecologische impactanalyse', amount: 800 },
+  { description: 'Passende Beoordeling', amount: 3800 },
 ];
-
-export const COMMISSION_RATE = 0.08;
-
-export const KENNISGEVING_SENDER = 'hello@oxicloud.be';
