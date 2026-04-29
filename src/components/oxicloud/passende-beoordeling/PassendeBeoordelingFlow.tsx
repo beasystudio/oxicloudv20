@@ -1,3 +1,16 @@
+/**
+ * Passende Beoordeling — Functional Spec v4
+ *
+ * Manually delivered service. No automated calculation.
+ * Same status sequence as the v0 compliance flow:
+ *   price_generated → awaiting_payment → paid → report_in_progress → report_delivered
+ *
+ * PB-specific elements:
+ *   • Quote email uses the Kennisgeving Passende Beoordeling template
+ *   • Once paid, Christine prepares the report manually (no architect form)
+ *   • Christine uploads the final report → report is held → released to the client
+ */
+
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -11,13 +24,31 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Check, FileText, Download, Mail, Clock, AlertTriangle, ArrowLeft } from 'lucide-react';
+import {
+  Check,
+  FileText,
+  Download,
+  Mail,
+  Clock,
+  ArrowLeft,
+  Upload,
+  Lock,
+  Zap,
+  CheckCircle2,
+  User,
+} from 'lucide-react';
 import { OxiCloudProject, CalculationResults } from '@/types/oxicloud';
-import { useLanguage } from '@/i18n/LanguageContext';
 
-import { type PBStatus, buildPBProjectData, QUOTE_LINE_ITEMS, COMMISSION_RATE, PB_STATUS_CONFIG } from './types';
-import { TemporaryReport } from './TemporaryReport';
-import { EmailPreviewModal } from './EmailPreviewModal';
+import {
+  type PBStatus,
+  buildPBProjectData,
+  QUOTE_LINE_ITEMS,
+  COMMISSION_RATE,
+  PB_STATUS_CONFIG,
+  KENNISGEVING_SENDER,
+  PB_STATUSES,
+} from './types';
+import { KennisgevingEmailPreview } from './KennisgevingEmailPreview';
 
 interface PassendeBeoordelingFlowProps {
   project: OxiCloudProject;
@@ -26,21 +57,12 @@ interface PassendeBeoordelingFlowProps {
   onBack: () => void;
 }
 
-const STEP_KEYS: PBStatus[] = [
-  'input_complete',
-  'quote_generated',
-  'awaiting_payment',
-  'paid',
-  'report_delivered',
-];
-
 const STEP_LABELS: Record<PBStatus, string> = {
-  on_hold: 'On Hold',
-  input_complete: 'Notification',
-  quote_generated: 'Quote',
-  awaiting_payment: 'Payment',
-  paid: 'In Progress',
-  report_delivered: 'Delivered',
+  price_generated:    'Quote',
+  awaiting_payment:   'Payment',
+  paid:               'In Preparation',
+  report_in_progress: 'Report Held',
+  report_delivered:   'Released',
 };
 
 export function PassendeBeoordelingFlow({
@@ -49,18 +71,9 @@ export function PassendeBeoordelingFlow({
   onComplete,
   onBack,
 }: PassendeBeoordelingFlowProps) {
-  const { t } = useLanguage();
-  const [pbStatus, setPbStatus] = useState<PBStatus>('input_complete');
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [confirmDialogAction, setConfirmDialogAction] = useState<
-    'generate_quote' | 'reactivate' | null
-  >(null);
+  const [pbStatus, setPbStatus] = useState<PBStatus>('price_generated');
   const [showEmailPreview, setShowEmailPreview] = useState(false);
-  const [edgeCases] = useState({
-    noResponse14Days: false,
-    quoteExpired: false,
-    slaMissed: false,
-  });
+  const [reportReleased, setReportReleased] = useState(false);
 
   const [pbProject] = useState(() => buildPBProjectData());
   const subtotal = QUOTE_LINE_ITEMS.reduce((s, i) => s + i.amount, 0);
@@ -71,85 +84,79 @@ export function PassendeBeoordelingFlow({
     []
   );
 
-  const openConfirm = (action: typeof confirmDialogAction) => {
-    setConfirmDialogAction(action);
-    setShowConfirmDialog(true);
-  };
-
-  const handleConfirm = () => {
-    setShowConfirmDialog(false);
-    if (confirmDialogAction === 'generate_quote') {
-      setPbStatus('quote_generated');
-    } else if (confirmDialogAction === 'reactivate') {
-      setPbStatus('input_complete');
-    }
-    setConfirmDialogAction(null);
-  };
-
-  const handleSendQuote = () => setShowEmailPreview(true);
-
-  const handleEmailConfirm = () => {
+  const handleSendQuote = () => {
     setShowEmailPreview(false);
-    toast.success(t('pbFlow.quoteSentSuccess'));
+    toast.success(`Kennisgeving + quote sent to ${pbProject.clientEmail} from ${KENNISGEVING_SENDER}`);
     setPbStatus('awaiting_payment');
   };
 
-  const activeStep: PBStatus = pbStatus === 'on_hold' ? 'input_complete' : pbStatus;
-  const stepIndex = STEP_KEYS.indexOf(activeStep);
+  const handlePaymentReceived = () => {
+    toast.success('Payment confirmed. Christine has been notified to prepare the PB report.');
+    setPbStatus('paid');
+  };
+
+  const handleChristineUpload = () => {
+    toast.success('Final PB report uploaded by Christine. Held until client confirms release.');
+    setPbStatus('report_in_progress');
+  };
+
+  const handleReleaseReport = () => {
+    setReportReleased(true);
+    toast.success('Report released — client now has access.');
+    setTimeout(() => setPbStatus('report_delivered'), 600);
+  };
+
+  const stepIndex = PB_STATUSES.indexOf(pbStatus);
 
   const renderFooterAction = () => {
     switch (pbStatus) {
-      case 'on_hold':
+      case 'price_generated':
         return (
-          <Button onClick={() => openConfirm('reactivate')} className="h-9 rounded-full text-sm px-5">
-            {t('pbFlow.resumeProject')}
-          </Button>
-        );
-      case 'input_complete':
-        return (
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              onClick={() => setPbStatus('on_hold')}
-              className="h-8 rounded-full text-xs text-muted-foreground hover:text-foreground"
-            >
-              {t('pbFlow.clientNotProceeding')}
-            </Button>
-            <Button onClick={() => openConfirm('generate_quote')} className="h-9 rounded-full text-sm px-5">
-              {t('pbFlow.generateQuote')}
-            </Button>
-          </div>
-        );
-      case 'quote_generated':
-        return (
-          <Button onClick={handleSendQuote} className="h-9 rounded-full text-sm px-5 gap-2">
+          <Button onClick={() => setShowEmailPreview(true)} className="h-9 rounded-full text-sm px-5 gap-2">
             <Mail className="w-3.5 h-3.5" />
-            {t('pbFlow.sendQuoteToClient')}
+            Send quote (Kennisgeving email)
           </Button>
         );
       case 'awaiting_payment':
-        return edgeCases.quoteExpired ? (
+        return (
           <Button
             variant="outline"
-            onClick={() => setPbStatus('input_complete')}
-            className="h-9 rounded-full text-sm px-5"
+            onClick={handlePaymentReceived}
+            className="h-9 rounded-full text-sm px-5 gap-2 border-dashed"
           >
-            {t('pbFlow.requestNewQuote')}
+            <Zap className="w-3.5 h-3.5" />
+            Simulate signature + payment
           </Button>
-        ) : null;
+        );
       case 'paid':
-        return null;
+        return (
+          <Button onClick={handleChristineUpload} className="h-9 rounded-full text-sm px-5 gap-2">
+            <Upload className="w-3.5 h-3.5" />
+            Christine: upload final PB report
+          </Button>
+        );
+      case 'report_in_progress':
+        return (
+          <Button
+            onClick={handleReleaseReport}
+            className="h-9 rounded-full text-sm px-5 gap-2"
+            variant="outline"
+          >
+            <Zap className="w-3.5 h-3.5" />
+            Simulate client release payment
+          </Button>
+        );
       case 'report_delivered':
         return (
           <Button
             onClick={() => {
-              toast.info(t('pbFlow.reportOpening'));
+              toast.info('Opening PB report…');
               onComplete();
             }}
             className="h-9 rounded-full text-sm px-5 gap-2"
           >
             <FileText className="w-3.5 h-3.5" />
-            {t('pbFlow.viewReport')}
+            View PB report
           </Button>
         );
       default:
@@ -159,7 +166,7 @@ export function PassendeBeoordelingFlow({
 
   return (
     <div className="bg-background">
-      {/* ── Project binder header strip ── */}
+      {/* Header */}
       <div className="border-b border-border bg-background">
         <div className="px-6 py-3 flex items-center gap-4">
           <button
@@ -167,7 +174,7 @@ export function PassendeBeoordelingFlow({
             className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            {t('pbFlow.backToProject') || 'Project'}
+            Project
           </button>
           <span className="text-muted-foreground/40">/</span>
           <div className="flex items-baseline gap-3 min-w-0">
@@ -182,7 +189,6 @@ export function PassendeBeoordelingFlow({
           </div>
         </div>
 
-        {/* Compact KPI bar — exceedance + service fee */}
         <div className="px-6 pb-3 flex items-center gap-6 text-xs">
           <KpiInline
             label="NOx exceedance"
@@ -200,21 +206,21 @@ export function PassendeBeoordelingFlow({
           <span className="h-6 w-px bg-border" />
           <KpiInline label="Status" value={PB_STATUS_CONFIG[pbStatus].label} />
           <span className="ml-auto text-[10px] uppercase tracking-[0.14em] px-2 py-0.5 rounded-full border border-muted-foreground/30 text-muted-foreground">
-            {t('pbFlow.legallyRequired')}
+            Manually delivered service
           </span>
         </div>
 
-        {/* ── Step nav (Sandbox-style tabs) ── */}
+        {/* Step rail — mirrors v0 status sequence */}
         <div className="px-6">
-          <div className="flex gap-0 -mb-px">
-            {STEP_KEYS.map((key, i) => {
+          <div className="flex gap-0 -mb-px overflow-x-auto">
+            {PB_STATUSES.map((key, i) => {
               const done = i < stepIndex;
               const current = i === stepIndex;
               return (
                 <div
                   key={key}
                   className={cn(
-                    'border-b-2 px-4 py-2.5 text-xs font-medium gap-2 inline-flex items-center select-none',
+                    'border-b-2 px-4 py-2.5 text-xs font-medium gap-2 inline-flex items-center select-none whitespace-nowrap',
                     current
                       ? 'border-foreground text-foreground'
                       : done
@@ -240,7 +246,7 @@ export function PassendeBeoordelingFlow({
         </div>
       </div>
 
-      {/* ── Step body — single column, Sandbox-style reading width ── */}
+      {/* Body */}
       <div className="px-6 py-6">
         <div className="max-w-3xl mx-auto">
           <AnimatePresence mode="wait">
@@ -252,185 +258,142 @@ export function PassendeBeoordelingFlow({
               transition={{ duration: 0.18 }}
               className="space-y-4"
             >
-              {pbStatus === 'on_hold' && (
+              {/* ─── 1. Quote Ready — preview the Kennisgeving email + quote ─── */}
+              {pbStatus === 'price_generated' && (
                 <>
-                  <InfoCard tone="muted">{t('pbFlow.onHoldBanner')}</InfoCard>
-                  <TemporaryReport project={pbProject} condensed />
-                </>
-              )}
+                  <InfoCard tone="muted" icon={<Mail className="w-3.5 h-3.5" />}>
+                    The quote will be sent to <strong>{pbProject.clientEmail}</strong> from{' '}
+                    <strong>{KENNISGEVING_SENDER}</strong> using the <em>Kennisgeving Passende
+                    Beoordeling</em> email template — the legal context is delivered alongside
+                    the quote link.
+                  </InfoCard>
 
-              {pbStatus === 'input_complete' && (
-                <>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {t('pbFlow.introDesc')}
-                  </p>
-                  <TemporaryReport project={pbProject} />
-                  <p className="text-[11px] text-muted-foreground italic leading-relaxed">
-                    {t('pbFlow.discussReport')}
-                  </p>
-                </>
-              )}
+                  <QuoteBreakdown subtotal={subtotal} commission={commission} />
 
-              {pbStatus === 'quote_generated' && (
-                <>
-                  <TemporaryReport project={pbProject} condensed />
-                  <div className="rounded-md border border-border bg-card overflow-hidden">
-                    <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-muted/15">
-                      <h4 className="text-xs font-medium text-foreground">
-                        {t('pbFlow.generatedQuote')}
-                      </h4>
-                      <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-muted-foreground/30 text-muted-foreground">
-                        {t('pbFlow.readyToSend')}
-                      </span>
-                    </div>
-                    <table className="w-full text-xs">
-                      <thead>
-                        <tr className="border-b border-border">
-                          <th className="px-3 py-1.5 text-left font-medium text-muted-foreground text-[10px] uppercase tracking-wider">
-                            {t('pbFlow.description')}
-                          </th>
-                          <th className="px-3 py-1.5 text-right font-medium text-muted-foreground text-[10px] uppercase tracking-wider">
-                            {t('pbFlow.amount')}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-border">
-                        {QUOTE_LINE_ITEMS.map((item) => (
-                          <tr key={item.description}>
-                            <td className="px-3 py-2 text-foreground">{item.description}</td>
-                            <td className="px-3 py-2 text-right tabular-nums">
-                              € {item.amount.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
-                            </td>
-                          </tr>
-                        ))}
-                        <tr className="bg-muted/15">
-                          <td className="px-3 py-2 font-medium">{t('pbFlow.subtotal')}</td>
-                          <td className="px-3 py-2 text-right font-medium tabular-nums">
-                            € {subtotal.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="px-3 py-2 text-muted-foreground">
-                            {t('pbFlow.architectCommission')}
-                          </td>
-                          <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">
-                            € {commission.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
-                          </td>
-                        </tr>
-                        <tr className="font-semibold border-t border-border">
-                          <td className="px-3 py-2.5">{t('pbFlow.totalExclVat')}</td>
-                          <td className="px-3 py-2.5 text-right tabular-nums">
-                            € {subtotal.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="px-3 py-2 text-muted-foreground text-[11px]">
-                            {t('pbFlow.expectedDelivery')}
-                          </td>
-                          <td className="px-3 py-2 text-right text-muted-foreground text-[11px]">
-                            {t('pbFlow.threeWeeksAfterPayment')}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                  <div>
+                    <h4 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground mb-2">
+                      Email preview — Kennisgeving template
+                    </h4>
+                    <KennisgevingEmailPreview project={pbProject} quoteAmount={subtotal} />
                   </div>
-                  <p className="text-[11px] text-muted-foreground italic leading-relaxed">
-                    {t('pbFlow.commissionAutoSettled')}
-                  </p>
                 </>
               )}
 
+              {/* ─── 2. Awaiting Payment ─── */}
               {pbStatus === 'awaiting_payment' && (
                 <>
                   <InfoCard tone="muted" icon={<Clock className="w-3.5 h-3.5" />}>
-                    {t('pbFlow.awaitingPaymentBanner')}
+                    Kennisgeving + quote sent to <strong>{pbProject.clientEmail}</strong> on{' '}
+                    {quoteSentDate}. Waiting for the client to sign and pay. Once payment is
+                    received, Christine is automatically notified to begin the PB report.
                   </InfoCard>
-                  {edgeCases.noResponse14Days && (
-                    <InfoCard tone="muted" icon={<AlertTriangle className="w-3.5 h-3.5" />}>
-                      {t('pbFlow.noResponse14d')}
-                    </InfoCard>
-                  )}
-                  {edgeCases.quoteExpired && (
-                    <InfoCard tone="warning" icon={<AlertTriangle className="w-3.5 h-3.5" />}>
-                      {t('pbFlow.quoteExpired30d')}
-                    </InfoCard>
-                  )}
                   <div className="rounded-md border border-border bg-card divide-y divide-border">
-                    <Row
-                      label={t('pbFlow.quote')}
-                      value={`€ ${subtotal.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}`}
-                    />
-                    <Row label={t('pbFlow.sentOn')} value={quoteSentDate} />
-                    <Row
-                      label={t('pbFlow.expectedDelivery')}
-                      value={t('pbFlow.threeWeeksAfterPayment')}
-                    />
+                    <Row label="Quote total" value={`€ ${subtotal.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}`} />
+                    <Row label="Sent from" value={KENNISGEVING_SENDER} />
+                    <Row label="Sent to" value={pbProject.clientEmail} />
+                    <Row label="Sent on" value={quoteSentDate} />
+                    <Row label="Architect commission" value={`€ ${commission.toLocaleString('nl-BE', { minimumFractionDigits: 2 })} (auto-settled on payment)`} />
                   </div>
                   <p className="text-[11px] text-muted-foreground italic leading-relaxed">
-                    {t('pbFlow.clientMustTransfer')}
-                  </p>
-                  <TemporaryReport project={pbProject} condensed />
-                  <p className="text-[11px] text-muted-foreground italic leading-relaxed">
-                    {t('pbFlow.noResponse14dAuto')}
+                    The Kennisgeving email is permanently archived in the NOx Card.
                   </p>
                 </>
               )}
 
+              {/* ─── 3. Paid — Christine preparing report manually ─── */}
               {pbStatus === 'paid' && (
                 <>
-                  <InfoCard tone="muted" icon={<Clock className="w-3.5 h-3.5" />}>
-                    {t('pbFlow.reportInProgressBanner')}
+                  <InfoCard tone="muted" icon={<User className="w-3.5 h-3.5" />}>
+                    Payment received. Unlike the v0 compliance flow, no detailed NOx form is
+                    required from the architect. Christine is now manually preparing the
+                    Passende Beoordeling report internally.
                   </InfoCard>
-                  {edgeCases.slaMissed && (
-                    <InfoCard tone="warning" icon={<AlertTriangle className="w-3.5 h-3.5" />}>
-                      {t('pbFlow.delayExpected')}
-                    </InfoCard>
-                  )}
                   <div className="rounded-md border border-border bg-card p-4 space-y-1">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      {t('pbFlow.expectedDeliveryDate')}
+                      Expected delivery date
                     </p>
                     <p className="text-3xl font-light tracking-tight tabular-nums text-foreground/85 leading-none">
                       {slaDate}
                     </p>
                     <p className="text-[11px] text-muted-foreground pt-1">
-                      {t('pbFlow.threeWeeksWorking')}
+                      ≈ 3 working weeks after payment
                     </p>
                   </div>
-                  <p className="text-[11px] text-muted-foreground italic leading-relaxed">
-                    {t('pbFlow.notificationWhenReady')}
-                  </p>
-                  <TemporaryReport project={pbProject} condensed />
+                  <div className="rounded-md border border-dashed border-border bg-muted/10 p-4 text-xs text-muted-foreground">
+                    <span className="font-medium text-foreground">Internal action:</span>{' '}
+                    Christine drafts the report, completes the legal review and the ecological
+                    impact analysis, then uploads the final PDF to this NOx Card.
+                  </div>
                 </>
               )}
 
+              {/* ─── 4. Report in Progress — Christine has uploaded; held until release ─── */}
+              {pbStatus === 'report_in_progress' && (
+                <>
+                  <InfoCard tone="muted" icon={<Lock className="w-3.5 h-3.5" />}>
+                    Christine has uploaded the final PB report. The report is held until the
+                    client confirms the release payment — identical to the v0 report-held gate.
+                  </InfoCard>
+
+                  {/* Held report card */}
+                  <div className="rounded-md border border-border bg-card overflow-hidden">
+                    <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-muted/15">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-3.5 h-3.5 text-muted-foreground" />
+                        <span className="text-xs font-medium">
+                          Passende Beoordeling — Final Report.pdf
+                        </span>
+                      </div>
+                      <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-amber-500/40 text-amber-600 dark:text-amber-400">
+                        Held — awaiting release
+                      </span>
+                    </div>
+                    <div className="p-4 flex items-center gap-3">
+                      <div className="h-16 w-12 rounded border border-border bg-muted/40 flex items-center justify-center">
+                        <Lock className="w-4 h-4 text-muted-foreground" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-foreground">
+                          Uploaded by Christine · {new Date().toLocaleDateString('nl-BE')}
+                        </p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          The download will unlock automatically once the release payment is
+                          confirmed.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* ─── 5. Report Delivered ─── */}
               {pbStatus === 'report_delivered' && (
                 <>
-                  <InfoCard tone="success" icon={<Check className="w-3.5 h-3.5" />}>
-                    {t('pbFlow.reportDelivered')}
+                  <InfoCard tone="success" icon={<CheckCircle2 className="w-3.5 h-3.5" />}>
+                    The PB report has been released and is permanently stored in the NOx Card.
+                    The project is eligible to proceed to permit application.
                   </InfoCard>
                   <div>
                     <h4 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground mb-2">
-                      {t('pbFlow.documents')}
+                      Documents (stored permanently in NOx Card)
                     </h4>
                     <div className="rounded-md border border-border bg-card divide-y divide-border">
                       <DocRow
-                        label={`${t('pbFlow.temporaryComplianceReport')} — ${pbProject.scanDate}`}
-                        onClick={() => toast.info(t('pbFlow.pdfPreparing'))}
+                        label={`Kennisgeving email — ${pbProject.scanDate}`}
+                        onClick={() => toast.info('Email archive preparing…')}
                       />
                       <DocRow
-                        label={`${t('pbFlow.appropriateAssessmentReport')} — ${pbProject.scanDate}`}
-                        onClick={() => toast.info(t('pbFlow.reportLoading'))}
+                        label={`Passende Beoordeling — Final Report — ${pbProject.scanDate}`}
+                        onClick={() => toast.info('PB report preparing…')}
                       />
                     </div>
                   </div>
-                  <InfoCard tone="muted">{t('pbFlow.eligibleForPermit')}</InfoCard>
                 </>
               )}
             </motion.div>
           </AnimatePresence>
 
-          {/* Inline footer actions — sits with the content (no sticky chrome) */}
+          {/* Footer actions */}
           <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">
             <Button
               variant="ghost"
@@ -445,43 +408,92 @@ export function PassendeBeoordelingFlow({
         </div>
       </div>
 
-      {/* Confirmation Dialog */}
-      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <DialogContent className="sm:max-w-sm">
+      {/* Send-quote confirmation with Kennisgeving email preview */}
+      <Dialog open={showEmailPreview} onOpenChange={setShowEmailPreview}>
+        <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>
-              {confirmDialogAction === 'generate_quote' && t('pbFlow.generateQuoteTitle')}
-              {confirmDialogAction === 'reactivate' && t('pbFlow.resumeProjectTitle')}
+            <DialogTitle className="flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              Send quote via Kennisgeving email
             </DialogTitle>
             <DialogDescription>
-              {confirmDialogAction === 'generate_quote' && t('pbFlow.generateQuoteDesc')}
-              {confirmDialogAction === 'reactivate' && t('pbFlow.resumeProjectDesc')}
+              Review the email below — it will be sent from {KENNISGEVING_SENDER} to{' '}
+              {pbProject.clientEmail}.
             </DialogDescription>
           </DialogHeader>
+          <div className="pt-2">
+            <KennisgevingEmailPreview project={pbProject} quoteAmount={subtotal} />
+          </div>
           <DialogFooter className="gap-2">
-            <Button variant="ghost" onClick={() => setShowConfirmDialog(false)}>
-              {t('sandboxTabs.cancel')}
+            <Button variant="ghost" onClick={() => setShowEmailPreview(false)}>
+              Cancel
             </Button>
-            <Button onClick={handleConfirm}>
-              {confirmDialogAction === 'generate_quote'
-                ? t('pbFlow.yesGenerateQuote')
-                : t('pbFlow.confirmBtn')}
-            </Button>
+            <Button onClick={handleSendQuote}>Confirm &amp; Send</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <EmailPreviewModal
-        open={showEmailPreview}
-        onOpenChange={setShowEmailPreview}
-        project={pbProject}
-        onConfirm={handleEmailConfirm}
-      />
     </div>
   );
 }
 
 /* ─── Helpers ─── */
+
+function QuoteBreakdown({ subtotal, commission }: { subtotal: number; commission: number }) {
+  return (
+    <div className="rounded-md border border-border bg-card overflow-hidden">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-muted/15">
+        <h4 className="text-xs font-medium text-foreground">
+          Generated quote — Passende Beoordeling
+        </h4>
+        <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-muted-foreground/30 text-muted-foreground">
+          Ready to send
+        </span>
+      </div>
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="border-b border-border">
+            <th className="px-3 py-1.5 text-left font-medium text-muted-foreground text-[10px] uppercase tracking-wider">
+              Description
+            </th>
+            <th className="px-3 py-1.5 text-right font-medium text-muted-foreground text-[10px] uppercase tracking-wider">
+              Amount
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          {QUOTE_LINE_ITEMS.map((item) => (
+            <tr key={item.description}>
+              <td className="px-3 py-2 text-foreground">{item.description}</td>
+              <td className="px-3 py-2 text-right tabular-nums">
+                € {item.amount.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
+              </td>
+            </tr>
+          ))}
+          <tr className="bg-muted/15">
+            <td className="px-3 py-2 font-medium">Subtotal</td>
+            <td className="px-3 py-2 text-right font-medium tabular-nums">
+              € {subtotal.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
+            </td>
+          </tr>
+          <tr>
+            <td className="px-3 py-2 text-muted-foreground">
+              Architect commission (auto-settled)
+            </td>
+            <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">
+              € {commission.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
+            </td>
+          </tr>
+          <tr className="font-semibold border-t border-border">
+            <td className="px-3 py-2.5">Total (excl. VAT)</td>
+            <td className="px-3 py-2.5 text-right tabular-nums">
+              € {subtotal.toLocaleString('nl-BE', { minimumFractionDigits: 2 })}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 function MetaItem({ label, value }: { label: string; value: string }) {
   return (
@@ -530,7 +542,7 @@ function InfoCard({
         'rounded-md border px-3 py-2.5 text-xs leading-relaxed flex items-start gap-2',
         tone === 'muted' && 'border-border bg-muted/15 text-foreground',
         tone === 'warning' && 'border-border bg-muted/30 text-foreground',
-        tone === 'success' && 'border-border bg-muted/15 text-foreground'
+        tone === 'success' && 'border-emerald-500/30 bg-emerald-500/5 text-foreground'
       )}
     >
       {icon && <span className="mt-0.5 text-muted-foreground shrink-0">{icon}</span>}

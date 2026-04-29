@@ -15,7 +15,7 @@ import { addNotification } from '@/lib/notificationStore';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { ReportBookletMockup } from './ReportBookletMockup';
-import { WhyWorkWithUsSection } from './WhyWorkWithUsSection';
+
 
 interface NoxReportHeldScreenProps {
   projectName: string;
@@ -156,9 +156,6 @@ export function NoxReportHeldScreen({
           </Button>
         </div>
       )}
-
-      {/* Why Work With Us - redesigned */}
-      {!isPaid && <WhyWorkWithUsSection t={t} />}
 
       {/* Back button */}
       {!isDownloading && (

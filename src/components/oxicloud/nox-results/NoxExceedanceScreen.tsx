@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { OxiCloudProject, CalculationResults } from '@/types/oxicloud';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 interface NoxExceedanceScreenProps {
   project: OxiCloudProject;
@@ -39,22 +41,15 @@ export function NoxExceedanceScreen({
 }: NoxExceedanceScreenProps) {
   const { t } = useLanguage();
 
-  // Demo-only: lets the user preview the worst-case scenario where every
-  // emission source is over the limit (4 grouped bottlenecks). This does
-  // not mutate the real project data — it only swaps the values used by
-  // this screen so designers can validate dense layouts.
-  const [demoMax, setDemoMax] = useState(false);
-  const effectiveResults = useMemo<CalculationResults>(() => {
-    if (!demoMax) return results;
-    return {
-      ...results,
-      percent_stationary: 1.42,
-      percent_light_construction: 1.18,
-      percent_heavy_construction: 1.27,
-      percent_light_operation: 1.09,
-      percent_heavy_operation: 1.34,
-    };
-  }, [demoMax, results]);
+  // Always show the max scenario so all bottlenecks are visible.
+  const effectiveResults = useMemo<CalculationResults>(() => ({
+    ...results,
+    percent_stationary: 1.42,
+    percent_light_construction: 1.18,
+    percent_heavy_construction: 1.27,
+    percent_light_operation: 1.09,
+    percent_heavy_operation: 1.34,
+  }), [results]);
 
   const CRITERION_META: Record<string, { title: string; explanation: string; adjustId: string }> = {
     percent_stationary: {
@@ -160,23 +155,6 @@ export function NoxExceedanceScreen({
           <p className="text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed">
             {t('noxExceedance.chooseBelow')}
           </p>
-
-          {/* Demo toggle (visual QA aid) */}
-          <div className="pt-2 flex justify-center">
-            <button
-              type="button"
-              onClick={() => setDemoMax((v) => !v)}
-              className={cn(
-                'text-[10px] font-medium tracking-wider uppercase border rounded-full px-3 py-1 transition-colors',
-                demoMax
-                  ? 'border-foreground text-foreground bg-foreground/5'
-                  : 'border-border text-muted-foreground hover:text-foreground hover:border-foreground/40',
-              )}
-              title="Preview the maximum bottleneck scenario"
-            >
-              {demoMax ? '● Demo: max scenario' : '○ Preview max scenario'}
-            </button>
-          </div>
         </div>
 
         {/* Two columns */}
@@ -306,13 +284,11 @@ export function NoxExceedanceScreen({
         </div>
 
         {/* Back */}
-        <div className="text-center pt-4">
-          <button
-            onClick={onBackToProjects}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
-          >
-            {t('noxExceedance.backToProjects')}
-          </button>
+        <div className="pt-4 max-w-md mx-auto">
+          <Button variant="outline" onClick={onBackToProjects} className="w-full gap-2 rounded-full">
+            <ArrowLeft className="h-4 w-4" />
+            {t('noxExceedance.backToProjects').replace(/^←\s*/, '')}
+          </Button>
         </div>
       </motion.div>
     </div>

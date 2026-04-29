@@ -1,26 +1,32 @@
+/**
+ * Passende Beoordeling — Functional Spec v4
+ *
+ * Status sequence: identical to the normal v0 compliance flow.
+ * The only PB-specific element is the Kennisgeving email template used
+ * when sending the quote, and the fact that Christine manually prepares
+ * and uploads the final report instead of an automated calculation.
+ */
+
 export type PBStatus =
-  | 'on_hold'
-  | 'input_complete'
-  | 'quote_generated'
-  | 'awaiting_payment'
-  | 'paid'
-  | 'report_delivered';
+  | 'price_generated'      // Quote auto-generated, ready to send via Kennisgeving email
+  | 'awaiting_payment'     // Quote sent — waiting for client signature + payment
+  | 'paid'                 // Client paid → Christine is preparing the PB report manually
+  | 'report_in_progress'   // Christine uploaded the report → held until final release
+  | 'report_delivered';    // Released to the client
 
 export const PB_STATUS_CONFIG: Record<PBStatus, { label: string; index: number }> = {
-  on_hold: { label: 'On Hold - Awaiting Client Decision', index: 0 },
-  input_complete: { label: 'Input Complete', index: 1 },
-  quote_generated: { label: 'Offerte Gegenereerd', index: 2 },
-  awaiting_payment: { label: 'Wachten op Betaling', index: 3 },
-  paid: { label: 'Rapport in Uitvoering', index: 4 },
-  report_delivered: { label: 'Rapport Geleverd', index: 5 },
+  price_generated:    { label: 'Quote Ready',          index: 0 },
+  awaiting_payment:   { label: 'Awaiting Payment',     index: 1 },
+  paid:               { label: 'In Preparation',       index: 2 },
+  report_in_progress: { label: 'Report Held',          index: 3 },
+  report_delivered:   { label: 'Released',             index: 4 },
 };
 
 export const PB_STATUSES: PBStatus[] = [
-  'on_hold',
-  'input_complete',
-  'quote_generated',
+  'price_generated',
   'awaiting_payment',
   'paid',
+  'report_in_progress',
   'report_delivered',
 ];
 
@@ -37,12 +43,7 @@ export interface PBProjectData {
   referenceNumber: string;
 }
 
-/**
- * Build PB project data from existing mock project records.
- * Uses the first GDesign demo project by default.
- */
 export function buildPBProjectData(): PBProjectData {
-  // Pull from existing mock data via localStorage
   const stored = localStorage.getItem('oxicloud_local_projects');
   let name = 'Pauwels Herent';
   let address = 'Luchthavenlaan 16-18, 1800 Vilvoorde, Belgium';
@@ -83,3 +84,5 @@ export const QUOTE_LINE_ITEMS = [
 ];
 
 export const COMMISSION_RATE = 0.08;
+
+export const KENNISGEVING_SENDER = 'hello@oxicloud.be';
