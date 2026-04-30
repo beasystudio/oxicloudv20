@@ -214,62 +214,62 @@ export default function PartnershipProgram() {
       <div className="min-h-screen bg-background">
         <TopNavigation />
 
-        <div className="container mx-auto px-6 py-10 max-w-5xl">
+        <div className="container mx-auto px-6 py-8 max-w-4xl">
           {/* Back */}
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate(-1)}
-            className="mb-10 -ml-2 text-muted-foreground">
-            <ArrowLeft className="h-4 w-4 mr-1.5" />
+            className="mb-6 -ml-2 text-muted-foreground h-8">
+            <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
             {t.back}
           </Button>
 
-          <div className="flex gap-12">
+          <div className="flex gap-10">
             {/* Main content */}
             <main className="flex-1 min-w-0">
               {/* Hero */}
-              <section id="intro" ref={(el) => { sectionRefs.current.intro = el; }} className="mb-16 scroll-mt-24">
-                <h1 className="text-3xl font-bold text-foreground tracking-tight mb-8">
+              <section id="intro" ref={(el) => { sectionRefs.current.intro = el; }} className="mb-10 scroll-mt-24">
+                <h1 className="text-2xl font-bold text-foreground tracking-tight mb-4">
                   {t.heroTitle}
                 </h1>
-                <div className="space-y-5 text-[15px] text-muted-foreground leading-[1.8]">
+                <div className="space-y-3 text-[14px] text-muted-foreground leading-[1.65]">
                   <p>{t.heroIntro1}</p>
                   <p>{t.heroIntro2}</p>
                   <p>{t.heroIntro3}</p>
-                  <p className="font-semibold text-foreground text-[15px]">{t.heroIntro4}</p>
+                  <p className="font-medium text-foreground">{t.heroIntro4}</p>
                 </div>
               </section>
 
-              <div className="w-full h-px bg-border/60 mb-16" />
+              <div className="w-full h-px bg-border/60 mb-10" />
 
               {/* Who */}
-              <section id="who" ref={(el) => { sectionRefs.current.who = el; }} className="mb-16 scroll-mt-24">
-                <h2 className="text-xl font-bold text-foreground mb-5">{t.whoTitle}</h2>
-                <p className="text-[15px] text-muted-foreground leading-[1.8] mb-6">{t.whoIntro}</p>
-                <div className="rounded-2xl bg-card border border-border/30 p-6 mb-6">
-                  <ul className="space-y-3">
+              <section id="who" ref={(el) => { sectionRefs.current.who = el; }} className="mb-10 scroll-mt-24">
+                <h2 className="text-base font-semibold text-foreground mb-3">{t.whoTitle}</h2>
+                <p className="text-[14px] text-muted-foreground leading-[1.65] mb-4">{t.whoIntro}</p>
+                <div className="rounded-xl bg-card border border-border/40 p-4 mb-4">
+                  <ul className="space-y-1.5">
                     {t.whoList.map((item) => (
-                      <li key={item} className="flex items-center gap-3 text-[15px] text-foreground">
-                        <div className="w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
+                      <li key={item} className="flex items-center gap-2.5 text-[14px] text-foreground">
+                        <div className="w-1 h-1 rounded-full bg-foreground/40 shrink-0" />
                         {item}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <p className="text-[15px] text-muted-foreground leading-[1.8]">{t.whoOutro}</p>
+                <p className="text-[14px] text-muted-foreground leading-[1.65]">{t.whoOutro}</p>
               </section>
 
-              <div className="w-full h-px bg-border/60 mb-16" />
+              <div className="w-full h-px bg-border/60 mb-10" />
 
               {/* How it works */}
-              <section id="how" ref={(el) => { sectionRefs.current.how = el; }} className="mb-16 scroll-mt-24">
-                <h2 className="text-xl font-bold text-foreground mb-8">{t.howTitle}</h2>
+              <section id="how" ref={(el) => { sectionRefs.current.how = el; }} className="mb-10 scroll-mt-24">
+                <h2 className="text-base font-semibold text-foreground mb-5">{t.howTitle}</h2>
                 <div className="space-y-0">
                   {t.steps.map((step, i) => (
-                    <div key={i} className="flex gap-6">
+                    <div key={i} className="flex gap-4">
                       <div className="flex flex-col items-center">
-                       <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-colors ${
+                       <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-semibold shrink-0 transition-colors ${
                           i === t.steps.length - 1
                             ? 'bg-foreground text-background'
                             : 'bg-card border border-border/60 text-foreground'
@@ -277,30 +277,30 @@ export default function PartnershipProgram() {
                           {i + 1}
                         </div>
                         {i < t.steps.length - 1 && (
-                          <div className="w-px flex-1 bg-border/40 my-2" />
+                          <div className="w-px flex-1 bg-border/40 my-1.5" />
                         )}
                       </div>
-                      <div className={`pt-1.5 ${i === t.steps.length - 1 ? 'pb-0' : 'pb-10'}`}>
-                        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 font-semibold mb-1">Step {i + 1}</p>
-                        <p className="text-[15px] font-semibold text-foreground mb-3">{step.title}</p>
+                      <div className={`pt-0.5 ${i === t.steps.length - 1 ? 'pb-0' : 'pb-6'}`}>
+                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground/60 font-semibold mb-0.5">Step {i + 1}</p>
+                        <p className="text-[14px] font-semibold text-foreground mb-1.5">{step.title}</p>
                         {step.body.split('\n\n').map((para, j) => (
-                          <p key={j} className="text-[14px] text-muted-foreground leading-[1.8] mb-3">{para}</p>
+                          <p key={j} className="text-[13px] text-muted-foreground leading-[1.65] mb-1.5">{para}</p>
                         ))}
                         {step.extra && step.extra.split('\n\n').map((para, j) => (
-                          <p key={`e${j}`} className="text-[14px] text-muted-foreground leading-[1.8] mb-3">{para}</p>
+                          <p key={`e${j}`} className="text-[13px] text-muted-foreground leading-[1.65] mb-1.5">{para}</p>
                         ))}
                         {'badges' in step && step.badges && (
-                          <div className="flex flex-wrap gap-2 mb-3">
+                          <div className="flex flex-wrap gap-1.5 mb-1.5 mt-2">
                             {step.badges.map((badge) => (
-                              <span key={badge} className="inline-block text-[12px] font-medium px-3 py-1.5 rounded-full bg-muted text-foreground/80">
+                              <span key={badge} className="inline-block text-[11px] font-medium px-2.5 py-1 rounded-full bg-muted text-foreground/80">
                                 {badge}
                               </span>
                             ))}
                           </div>
                         )}
                         {'callout' in step && step.callout && (
-                          <div className="border-l-2 border-border/60 pl-4 mt-2 mb-3">
-                            <p className="text-[13px] text-muted-foreground/70 leading-[1.7]">{step.callout}</p>
+                          <div className="border-l-2 border-border/60 pl-3 mt-2">
+                            <p className="text-[12px] text-muted-foreground/70 leading-[1.6]">{step.callout}</p>
                           </div>
                         )}
                       </div>
@@ -309,21 +309,21 @@ export default function PartnershipProgram() {
                 </div>
               </section>
 
-              <div className="w-full h-px bg-border/60 mb-16" />
+              <div className="w-full h-px bg-border/60 mb-10" />
 
               {/* Multi-firm */}
-              <section id="multi" ref={(el) => { sectionRefs.current.multi = el; }} className="mb-16 scroll-mt-24">
-                <div className="rounded-2xl border border-border/40 bg-muted/30 p-6 sm:p-8">
-                  <h2 className="text-lg font-bold text-foreground mb-4">{t.multiTitle}</h2>
-                  <div className="space-y-3 text-[14px] text-muted-foreground leading-[1.7]">
+              <section id="multi" ref={(el) => { sectionRefs.current.multi = el; }} className="mb-10 scroll-mt-24">
+                <div className="rounded-xl border border-border/40 bg-muted/30 p-5">
+                  <h2 className="text-base font-semibold text-foreground mb-3">{t.multiTitle}</h2>
+                  <div className="space-y-2 text-[13px] text-muted-foreground leading-[1.65]">
                     <p>{t.multiBody1}</p>
                     <p>{t.multiBody2}</p>
                     <p className="font-medium text-foreground">{t.multiBody3}</p>
                   </div>
-                  <ul className="space-y-2.5 mt-4 ml-1">
+                  <ul className="space-y-1.5 mt-3 ml-1">
                     {t.multiList.map((item) => (
-                      <li key={item} className="flex items-center gap-3 text-[14px] font-medium text-foreground">
-                        <div className="w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
+                      <li key={item} className="flex items-center gap-2.5 text-[13px] font-medium text-foreground">
+                        <div className="w-1 h-1 rounded-full bg-foreground/40 shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -331,62 +331,62 @@ export default function PartnershipProgram() {
                 </div>
               </section>
 
-              <div className="w-full h-px bg-border/60 mb-16" />
+              <div className="w-full h-px bg-border/60 mb-10" />
 
               {/* Why */}
-              <section id="why" ref={(el) => { sectionRefs.current.why = el; }} className="mb-16 scroll-mt-24">
-                <h2 className="text-xl font-bold text-foreground mb-6">{t.whyTitle}</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <section id="why" ref={(el) => { sectionRefs.current.why = el; }} className="mb-10 scroll-mt-24">
+                <h2 className="text-base font-semibold text-foreground mb-4">{t.whyTitle}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {t.benefits.map((b) => (
-                    <div key={b.title} className="rounded-2xl bg-card border border-border/30 p-6">
-                      <div className="flex items-start gap-3 mb-3">
-                        <CheckCircle2 className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
-                        <p className="text-[15px] font-semibold text-foreground leading-snug">{b.title}</p>
+                    <div key={b.title} className="rounded-xl bg-card border border-border/40 p-4">
+                      <div className="flex items-start gap-2.5 mb-1.5">
+                        <CheckCircle2 className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+                        <p className="text-[13px] font-semibold text-foreground leading-snug">{b.title}</p>
                       </div>
-                      <p className="text-[14px] text-muted-foreground leading-[1.8] ml-8">{b.body}</p>
+                      <p className="text-[13px] text-muted-foreground leading-[1.65] ml-[26px]">{b.body}</p>
                     </div>
                   ))}
                 </div>
               </section>
 
               {/* CTA */}
-              <section id="cta" ref={(el) => { sectionRefs.current.cta = el; }} className="rounded-2xl bg-card border border-border/30 p-8 relative overflow-hidden mb-10 scroll-mt-24">
+              <section id="cta" ref={(el) => { sectionRefs.current.cta = el; }} className="rounded-xl bg-card border border-border/40 p-6 relative overflow-hidden mb-8 scroll-mt-24">
 
-                <div className="flex items-center gap-3 mb-2 relative z-10">
-                  <div className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center shrink-0">
-                    <Plus className="w-5 h-5 text-background" />
+                <div className="flex items-center gap-2.5 mb-2 relative z-10">
+                  <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center shrink-0">
+                    <Plus className="w-4 h-4 text-background" />
                   </div>
-                  <h2 className="text-lg font-bold text-foreground">{t.ctaTitle}</h2>
+                  <h2 className="text-base font-semibold text-foreground">{t.ctaTitle}</h2>
                 </div>
 
-                <p className="text-[14px] text-muted-foreground leading-[1.8] mt-4 mb-6 relative z-10">
+                <p className="text-[13px] text-muted-foreground leading-[1.65] mt-2 mb-4 relative z-10">
                   {t.ctaBody}
                 </p>
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-5 relative z-10">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 mb-3 relative z-10">
                   <button
                     onClick={() => navigate('/pilot-demo/create-account')}
-                    className="rounded-full px-8 py-3.5 text-sm font-semibold transition-all bg-muted text-foreground hover:bg-muted/70">
+                    className="rounded-full px-5 py-2.5 text-[13px] font-semibold transition-all bg-foreground text-background hover:bg-foreground/90">
                     {t.ctaCreate}
                   </button>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setShowInviteManager(true)}
-                      className="rounded-full px-8 py-3.5 text-sm font-semibold border border-border/60 text-foreground hover:bg-muted/40 transition-all">
+                      className="rounded-full px-5 py-2.5 text-[13px] font-semibold border border-border/60 text-foreground hover:bg-muted/40 transition-all">
                       {t.ctaInvite}
                     </button>
                     <div className="relative group">
-                      <div className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center cursor-help hover:bg-muted/40 transition-colors shrink-0">
-                        <Info className="w-4 h-4 text-muted-foreground" />
+                      <div className="w-7 h-7 rounded-full border border-border/60 flex items-center justify-center cursor-help hover:bg-muted/40 transition-colors shrink-0">
+                        <Info className="w-3.5 h-3.5 text-muted-foreground" />
                       </div>
-                      <div className="absolute bottom-full right-0 mb-2 w-60 rounded-xl bg-foreground text-background text-xs p-3 leading-relaxed opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20 shadow-xl">
+                      <div className="absolute bottom-full right-0 mb-2 w-60 rounded-lg bg-foreground text-background text-xs p-3 leading-relaxed opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20 shadow-xl">
                         {t.ctaTooltip}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <p className="text-[12px] text-muted-foreground/60 leading-[1.7] relative z-10">
+                <p className="text-[11px] text-muted-foreground/60 leading-[1.6] relative z-10">
                   <span className="font-semibold text-muted-foreground/80">Tip:</span>{' '}
                   {t.ctaTip}
                 </p>

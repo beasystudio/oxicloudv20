@@ -37,7 +37,7 @@ export function Tab2BouwfaseLijnLV({ onBack, onConfirm }: TabProps) {
   const inputs = (
     <>
       <Section title={t('sandboxTabs.jointLinePanelTitle')} hint={t('sandboxTabs.jointLineHelp')}>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-5">
           <NumField
             label={t('sandboxTabs.floorArea')}
             value={state.floor_area}
@@ -105,7 +105,7 @@ export function Tab2BouwfaseLijnLV({ onBack, onConfirm }: TabProps) {
       onConfirm={onConfirm}
       compliance={
         <CompliancePanel
-          label={t('sandboxTabs.jointLinePanelTitle')}
+          label={t('sandboxTabs.emissionProjectionLabel')}
           threshold={combinedThreshold}
           currentEmission={Math.round(combinedEmission * 10) / 10}
           remaining={combinedRemaining}

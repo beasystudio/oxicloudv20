@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { SandboxEmissionType } from '@/types/sandbox';
@@ -81,7 +82,10 @@ export function SandboxRouter({ initialType, exceedingTypes, onComplete, onBack,
             </div>
           )}
           <div className="mt-12">
-            <Button variant="ghost" onClick={onBack} className="rounded-xl">{t('sandbox.backToOverview')}</Button>
+            <Button variant="ghost" onClick={onBack} className="rounded-xl gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              {t('sandbox.backToOverview').replace(/^←\s*/, '')}
+            </Button>
           </div>
         </div>
       </div>

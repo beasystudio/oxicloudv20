@@ -22,18 +22,26 @@ function NumberField({ label, value, onChange, min = 0, max, unit }: {
   const isNeg = value < 0;
   return (
     <div className="space-y-1">
-      <div className="flex items-center justify-between">
-        <label className="text-xs text-muted-foreground">{label}</label>
-        {unit && <span className="text-[10px] text-muted-foreground">{unit}</span>}
+      <label className="text-[11px] text-muted-foreground">{label}</label>
+      <div className="relative">
+        <Input
+          type="number"
+          value={value}
+          onChange={e => onChange(Math.max(min, Number(e.target.value)))}
+          min={min}
+          max={max}
+          className={cn(
+            "h-8 text-sm tabular-nums rounded-md bg-background border-border/70",
+            unit && "pr-9",
+            isNeg && "border-destructive"
+          )}
+        />
+        {unit && (
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground/70 pointer-events-none">
+            {unit}
+          </span>
+        )}
       </div>
-      <Input
-        type="number"
-        value={value}
-        onChange={e => onChange(Math.max(min, Number(e.target.value)))}
-        min={min}
-        max={max}
-        className={cn("h-8 text-sm tabular-nums rounded-md", isNeg && "border-destructive")}
-      />
     </div>
   );
 }
@@ -145,7 +153,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
       <div className="h-full min-h-0 max-w-[1400px] mx-auto px-8 py-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* ── LEFT: AI Scenarios ── */}
         <aside className="lg:col-span-3 flex flex-col min-h-0">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-4">
             <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
               {t('sandboxTabs.aiScenarios')}
             </h3>
@@ -156,10 +164,10 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
               {t('sandboxTabs.resetToBase')}
             </button>
           </div>
-          <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+          <p className="text-[11px] text-muted-foreground mb-4 leading-relaxed">
             {t('sandboxTabs.applyOptimizedValues')}
           </p>
-          <div className="flex flex-col gap-2 flex-1 min-h-0">
+          <div className="flex flex-col gap-3 flex-1 min-h-0">
             {SCENARIOS.map((sc) => {
               const active = activeScenarioId === sc.id;
               return (
@@ -167,15 +175,15 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
                   key={sc.id}
                   onClick={() => handleApplyScenario(sc)}
                   className={cn(
-                    "text-left p-3 border rounded-md transition-all",
+                    "text-left px-3.5 py-3 border rounded-lg transition-all",
                     active
-                      ? "border-muted-foreground/40 bg-muted/30"
-                      : "border-border hover:border-foreground/40 hover:bg-muted/30"
+                      ? "border-foreground/30 bg-muted/40"
+                      : "border-border hover:border-foreground/30 hover:bg-muted/20"
                   )}
                 >
-                  <div className="flex items-start justify-between gap-2 mb-1.5">
-                    <h4 className="text-sm text-foreground leading-tight">{sc.title}</h4>
-                    <span className="text-xs tabular-nums text-muted-foreground whitespace-nowrap">
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <h4 className="text-[13px] font-medium text-foreground leading-snug">{sc.title}</h4>
+                    <span className="text-[11px] tabular-nums text-muted-foreground whitespace-nowrap mt-0.5">
                       {sc.projected}
                     </span>
                   </div>
@@ -186,14 +194,14 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
               );
             })}
           </div>
-          <p className="text-[10px] text-muted-foreground/80 italic mt-3 leading-relaxed">
+          <p className="text-[10px] text-muted-foreground/70 italic mt-4 leading-relaxed">
             {t('sandboxTabs.combineHint')}
           </p>
         </aside>
 
         {/* ── CENTER: Inputs (combined) ── */}
-        <section className="lg:col-span-6 flex flex-col min-h-0 lg:border-x lg:border-border lg:px-8">
-              <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 pb-3 space-y-6">
+        <section className="lg:col-span-5 flex flex-col min-h-0 lg:border-x lg:border-border lg:px-8">
+          <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 pb-3 space-y-5">
             {/* GUIDED block */}
             <div>
               <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground mb-3">
@@ -203,7 +211,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
                 {/* Prefab slider */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs text-muted-foreground">{t('sandboxTabs.prefabLevel')}</label>
+                    <label className="text-[11px] text-muted-foreground">{t('sandboxTabs.prefabLevel')}</label>
                     <span className="text-sm tabular-nums text-foreground">{state.prefabSlider}%</span>
                   </div>
                   <div className="relative [&_[role=slider]]:!border-muted-foreground/35 [&_.bg-primary]:!bg-muted-foreground/25 [&_.bg-secondary]:!bg-muted/80">
@@ -235,8 +243,8 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
             </div>
 
             {/* EXPERT block — machines */}
-            <div className="border-t border-border pt-5">
-              <div className="flex items-center justify-between mb-3">
+            <div className="border-t border-border pt-4">
+              <div className="flex items-center justify-between mb-2.5">
                 <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
                   {t('sandboxTabs.expertMode')} · {t('sandboxTabs.equipmentInventory')}
                 </h3>
@@ -250,25 +258,31 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
                 )}
               </div>
 
-              <div>
-                <div className="grid grid-cols-[1fr_84px_84px_56px] gap-2 py-1.5 border-b border-border">
+              <div className="rounded-lg border border-border/70 bg-background overflow-hidden">
+                <div className="grid grid-cols-[1fr_80px_80px_60px] gap-3 px-3 py-2 border-b border-border bg-muted/20">
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.machine')}</span>
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.quantity')}</span>
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.hours')}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground text-center">{t('sandboxTabs.quantity')}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground text-center">{t('sandboxTabs.hours')}</span>
                   <span />
                 </div>
-                {state.machines.map(m => (
-                  <div key={m.id} className="grid grid-cols-[1fr_84px_84px_56px] gap-2 py-1.5 items-center border-b border-border">
-                    <span className="text-sm text-foreground truncate">{m.machine}</span>
+                {state.machines.map((m, i) => (
+                  <div
+                    key={m.id}
+                    className={cn(
+                      "grid grid-cols-[1fr_80px_80px_60px] gap-3 px-3 py-1.5 items-center",
+                      i !== state.machines.length - 1 && "border-b border-border/60"
+                    )}
+                  >
+                    <span className="text-[12px] text-foreground/90 truncate">{m.machine}</span>
                     <Input
                       type="number" value={m.aantal} min={0} max={20}
                       onChange={e => updateMachine(m.id, 'aantal', e.target.value)}
-                      className="h-8 text-sm tabular-nums rounded-md px-2 text-center"
+                      className="h-6 text-[12px] tabular-nums rounded-md px-2 text-center bg-muted/30 border-transparent hover:border-border focus-visible:border-border"
                     />
                     <Input
                       type="number" value={m.uren} min={0} max={2000}
                       onChange={e => updateMachine(m.id, 'uren', e.target.value)}
-                      className="h-8 text-sm tabular-nums rounded-md px-2 text-center"
+                      className="h-6 text-[12px] tabular-nums rounded-md px-2 text-center bg-muted/30 border-transparent hover:border-border focus-visible:border-border"
                     />
                     <button
                       onClick={() => removeMachineRow(m.id)}
@@ -280,13 +294,13 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
                 ))}
               </div>
 
-              <div className="space-y-1.5 mt-4">
-                <label className="text-xs text-muted-foreground">{t('sandboxTabs.deviationReason')}</label>
+              <div className="space-y-1.5 mt-3">
+                <label className="text-[11px] text-muted-foreground">{t('sandboxTabs.deviationReason')}</label>
                 <Textarea
                   value={state.expertReason}
                   onChange={e => update({ expertReason: e.target.value })}
                   placeholder={t('sandboxTabs.deviationPlaceholder')}
-                  className="min-h-[56px] text-sm rounded-md"
+                  className="min-h-[56px] text-sm rounded-md bg-background border-border/70 leading-relaxed"
                 />
               </div>
             </div>
@@ -294,8 +308,13 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
 
           {/* Footer actions */}
           <div className="shrink-0 flex items-center justify-between pt-3 border-t border-border bg-background">
-            <Button variant="ghost" size="sm" onClick={onBack} className="h-8 rounded-full text-xs text-muted-foreground hover:text-foreground">
-              {t('sandboxTabs.back')}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onBack}
+              className="h-8 rounded-full text-xs text-muted-foreground hover:text-foreground"
+            >
+              {t('sandbox.back')}
             </Button>
             <Button
               onClick={onConfirm}
@@ -308,7 +327,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
         </section>
 
         {/* ── RIGHT: Compliance ── */}
-        <aside className="lg:col-span-3 flex flex-col min-h-0 overflow-y-auto">
+        <aside className="lg:col-span-4 flex flex-col min-h-0 overflow-y-auto">
           <CompliancePanel
             label={t('sandboxTabs.emissionProjectionLabel')}
             threshold={thresholds[src]}

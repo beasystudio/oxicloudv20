@@ -118,23 +118,25 @@ export function SandboxTabShell({
             {inputs}
           </div>
           {/* Footer — always anchored at the bottom of the viewport */}
-          <div className="shrink-0 flex items-center justify-between pt-3 border-t border-border bg-background">
+          <div className="shrink-0 flex items-center justify-between gap-4 pt-3 border-t border-border bg-background">
             <Button variant="ghost" size="sm" onClick={onBack} className="h-8 rounded-full text-xs text-muted-foreground hover:text-foreground">
-              {t('sandboxTabs.back')}
+              {t('sandbox.back')}
             </Button>
-            {!hasScenarios && onResetAll && (
-              <button
-                onClick={onResetAll}
-                className="text-[11px] text-muted-foreground hover:text-foreground underline underline-offset-4 hover:no-underline"
-              >
-                {t('sandboxTabs.resetToBase')}
-              </button>
-            )}
-            {onConfirm && (
-              <Button onClick={onConfirm} disabled={confirmDisabled} className="h-9 rounded-full text-sm px-5">
-                {confirmLabel ?? t('sandboxTabs.confirmChanges')}
-              </Button>
-            )}
+            <div className="flex items-center justify-end gap-4">
+              {!hasScenarios && onResetAll && (
+                <button
+                  onClick={onResetAll}
+                  className="text-[11px] text-muted-foreground hover:text-foreground underline underline-offset-4 hover:no-underline"
+                >
+                  {t('sandboxTabs.resetToBase')}
+                </button>
+              )}
+              {onConfirm && (
+                <Button onClick={onConfirm} disabled={confirmDisabled} className="h-9 rounded-full text-sm px-5">
+                  {confirmLabel ?? t('sandboxTabs.confirmChanges')}
+                </Button>
+              )}
+            </div>
           </div>
         </section>
 
@@ -149,11 +151,11 @@ export function SandboxTabShell({
 export function Section({ title, hint, children }: { title: string; hint?: string; children: ReactNode }) {
   return (
     <div>
-      <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground mb-2">
+      <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground mb-3">
         {title}
       </h3>
-      {hint && <p className="text-[11px] text-muted-foreground mb-3 leading-relaxed">{hint}</p>}
-      <div className="space-y-3">{children}</div>
+      {hint && <p className="text-[11px] text-muted-foreground mb-5 leading-relaxed whitespace-nowrap">{hint}</p>}
+      <div className="space-y-5">{children}</div>
     </div>
   );
 }

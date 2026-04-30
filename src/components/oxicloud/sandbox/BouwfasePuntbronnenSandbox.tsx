@@ -142,7 +142,6 @@ export function BouwfasePuntbronnenSandbox({ onComplete, onBack, results }: Bouw
             </AnimatePresence>
             <div className="flex items-center gap-3 pt-2 pb-6">
               <Button variant="outline" onClick={handleReset} className="rounded-lg h-10">{t('sandbox.resetToBaseline')}</Button>
-              <Button variant="ghost" onClick={onBack} className="rounded-lg h-10">{t('sandbox.back')}</Button>
             </div>
           </div>
 

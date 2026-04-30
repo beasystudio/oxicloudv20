@@ -70,7 +70,6 @@ export function BouwfaseLijnbronnenSandbox({ onComplete, onBack, results }: Bouw
             </div>
             <div className="flex items-center gap-4 pt-2 pb-6">
               <Button variant="outline" onClick={handleReset} className="rounded-lg">{t('sandbox.resetToDefaultBenchmarks')}</Button>
-              <Button variant="ghost" onClick={onBack} className="rounded-lg">{t('sandbox.back')}</Button>
             </div>
           </div>
           <div className="lg:col-span-2 space-y-5">

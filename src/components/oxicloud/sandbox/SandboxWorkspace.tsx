@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, createContext, useContext } from 'react';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { AlertTriangle, Check, X, ChevronRight } from 'lucide-react';
@@ -112,11 +113,11 @@ const visibleSources: SourceId[] = [
 
 type TabKey = 'bouwfase_punt' | 'bouwfase_lijn' | 'exploitatie_punt' | 'exploitatie_lijn';
 const TAB_KEYS: TabKey[] = ['bouwfase_punt', 'bouwfase_lijn', 'exploitatie_punt', 'exploitatie_lijn'];
-const TAB_NAV_LABELS: Record<TabKey, string> = {
-  bouwfase_punt: 'Bouwfase Puntbronnen',
-  bouwfase_lijn: 'Bouwfase Lijnbronnen',
-  exploitatie_punt: 'Exploitatiefase Puntbronnen',
-  exploitatie_lijn: 'Exploitatiefase Lijnbronnen',
+const TAB_NAV_LABEL_KEYS: Record<TabKey, string> = {
+  bouwfase_punt: 'sandboxTabs.tabConstructionPoint',
+  bouwfase_lijn: 'sandboxTabs.tabConstructionLine',
+  exploitatie_punt: 'sandboxTabs.tabOperationalPoint',
+  exploitatie_lijn: 'sandboxTabs.tabOperationalLine',
 };
 
 interface SandboxWorkspaceProps {
@@ -125,6 +126,7 @@ interface SandboxWorkspaceProps {
 }
 
 export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) {
+  const { t } = useLanguage();
   const [state, setState] = useState<SandboxState>({ ...INITIAL_STATE });
   const [activeTab, setActiveTab] = useState<TabKey>('bouwfase_punt');
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -247,7 +249,7 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
                   value={key}
                   className="rounded-full border-0 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm px-4 py-1.5 text-xs font-medium text-muted-foreground transition-colors"
                 >
-                  {TAB_NAV_LABELS[key]}
+                  {t(TAB_NAV_LABEL_KEYS[key])}
                 </TabsTrigger>
               ))}
             </TabsList>

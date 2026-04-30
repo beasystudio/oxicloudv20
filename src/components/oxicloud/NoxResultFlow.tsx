@@ -11,7 +11,7 @@ import { NoxReportHeldScreen } from './nox-results/NoxReportHeldScreen';
 import { SettlementPlatformStep } from './quote-flow/SettlementPlatformStep';
 import { SandboxRouter, SandboxWorkspace } from './sandbox';
 import { SplitPhaseFlow } from './split-phase';
-import { PassendeBeoordelingFlow } from './passende-beoordeling';
+import { PassendeBeoordelingFlow, PassendeBeoordelingInfoGate } from './passende-beoordeling';
 import { toast } from 'sonner';
 import { useLanguage } from '@/i18n/LanguageContext';
 
@@ -26,6 +26,7 @@ type ResultFlowStep =
   | 'exceedance'
   | 'sandbox'
   | 'split_phase'
+  | 'pb_info'
   | 'passende_beoordeling'
   | 'nc_report_held'
   | 'pb_report_held';
@@ -91,7 +92,7 @@ export function NoxResultFlow({
   const getStoredStep = (): ResultFlowStep => {
     try {
       const stored = sessionStorage.getItem(`nox_result_step_${project.id}`);
-      if (stored && ['exceedance', 'pass_result', 'detailed_report', 'commission', 'settlement', 'sandbox', 'split_phase', 'passende_beoordeling', 'nc_report_held', 'pb_report_held'].includes(stored)) {
+      if (stored && ['exceedance', 'pass_result', 'detailed_report', 'commission', 'settlement', 'sandbox', 'split_phase', 'pb_info', 'passende_beoordeling', 'nc_report_held', 'pb_report_held'].includes(stored)) {
         return stored as ResultFlowStep;
       }
     } catch {}
@@ -102,7 +103,7 @@ export function NoxResultFlow({
 
   useEffect(() => {
     const passOnlySteps: ResultFlowStep[] = ['pass_result', 'detailed_report', 'commission', 'settlement'];
-    const failOnlySteps: ResultFlowStep[] = ['exceedance', 'sandbox', 'split_phase', 'passende_beoordeling', 'nc_report_held', 'pb_report_held'];
+    const failOnlySteps: ResultFlowStep[] = ['exceedance', 'sandbox', 'split_phase', 'pb_info', 'passende_beoordeling', 'nc_report_held', 'pb_report_held'];
 
     if (!isCompliant && passOnlySteps.includes(currentStep)) {
       changeStep('exceedance');
@@ -194,7 +195,7 @@ export function NoxResultFlow({
   };
 
   const handleRequestPassendeBeoordeling = () => {
-    changeStep('passende_beoordeling');
+    changeStep('pb_info');
   };
 
   // Sandbox/SplitPhase → report held behind payment wall (same original quote)
@@ -300,7 +301,15 @@ export function NoxResultFlow({
           project={project}
           results={results}
           onComplete={handlePassendeBeoordelingComplete}
-          onBack={onBackToProjects}
+          onBack={() => changeStep('pb_info')}
+        />
+      );
+
+    case 'pb_info':
+      return (
+        <PassendeBeoordelingInfoGate
+          onProceed={() => changeStep('passende_beoordeling')}
+          onBack={() => changeStep('exceedance')}
         />
       );
 

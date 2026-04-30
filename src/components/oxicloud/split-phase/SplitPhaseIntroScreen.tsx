@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
-import { ArrowRight } from 'lucide-react';
 
 interface SplitPhaseIntroScreenProps {
   projectEmission: number;
@@ -122,10 +121,9 @@ export function SplitPhaseIntroScreen({
           </Button>
           <Button
             onClick={onContinue}
-            className="h-9 rounded-full text-xs px-4 gap-1.5"
+            className="h-9 rounded-full text-sm px-5"
           >
             {t('splitPhase.generateSimulation')}
-            <ArrowRight className="h-3.5 w-3.5" />
           </Button>
         </div>
       </motion.div>

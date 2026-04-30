@@ -4516,6 +4516,13 @@ export const en = {
     recommendedValuesApplied: 'Recommended values applied',
     expertNotCarried: 'Expert adjustments are not carried over.',
     emissionProjectionLabel: 'Emission projection',
+    kgNoxPerYear: 'kg NOₓ/year',
+    fuelWood: 'Wood',
+    fuelGas: 'Gas',
+    tabConstructionPoint: 'Construction phase - point sources',
+    tabConstructionLine: 'Construction phase - line sources',
+    tabOperationalPoint: 'Operational phase - point sources',
+    tabOperationalLine: 'Operational phase - line sources',
     // Tab2/3 shared
     trafficRatesHeader: 'Traffic Generation Rates - based on CROW 381, Bruges Mobility Study',
     lvTripsRate: 'LV trips rate',
@@ -4538,7 +4545,7 @@ export const en = {
     // Joint line source panels (Tab 2+3 and Tab 5+6)
     jointLinePanelTitle: 'Construction traffic',
     jointLinePanelOpTitle: 'Operational traffic',
-    jointLineHelp: 'Light and heavy vehicle trips share one limit — the combined ratio must stay at or below 100%.',
+    jointLineHelp: 'Light and heavy vehicle trips share one limit. The combined ratio must stay at or below 100%.',
     sharedInputs: 'Shared inputs',
     lvSection: 'Light vehicles (LV)',
     hvSection: 'Heavy vehicles (HV)',
@@ -4672,6 +4679,24 @@ export const en = {
     yesGenerateQuote: 'Yes, generate quote',
     confirmBtn: 'Confirm',
     quoteSentSuccess: 'Quote successfully sent to client.',
+  },
+
+  // ── PB Info Gate (read-only screen before quote) ──
+  pbGate: {
+    eyebrow: 'Appropriate Assessment',
+    title: 'Review what an Appropriate Assessment involves',
+    subtitle: 'Read through the details below. Nothing is sent yet. You decide if and when to proceed.',
+    whatLabel: 'What it is',
+    whatValue: 'A formal ecological assessment required when standard NOx limits are exceeded. It documents the project impact on Natura 2000 areas and proposes mitigation.',
+    whoLabel: 'Who prepares it',
+    whoValue: 'The OxiCloud team prepares the report, based on your project data and site context.',
+    turnaroundLabel: 'Indicative turnaround',
+    turnaroundValue: 'Typically 3 to 5 working weeks after the signed quote and required project inputs are received.',
+    pricingLabel: 'Indicative pricing',
+    pricingValue: 'Starting from \u20AC3,800. The final price is confirmed in the quote sent to your client.',
+    note: 'Proceeding will generate a quote for your client. The Appropriate Assessment work only starts once the quote is signed.',
+    back: '← Back',
+    proceed: 'Send quote to client',
   },
 
   // ── TimelineStepper ──
