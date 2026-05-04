@@ -123,26 +123,6 @@ export function SplitPhasePreviewScreen({ calculation, phase1, phase2, onContinu
         transition={{ duration: 0.3, ease: 'easeOut' }}
         className="w-full max-w-4xl mx-auto space-y-8"
       >
-        <StepHeader
-          step={3}
-          total={4}
-          eyebrow="Phase preview"
-          title={t('splitPhase.phaseProjectPreview')}
-          description={t('splitPhase.previewDesc')}
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <PhaseCard phase={phase1} isPrimary t={t} />
-          <PhaseCard phase={phase2} isPrimary={false} t={t} />
-        </div>
-
-        <div className="border-l-2 border-foreground/40 pl-4">
-          <p className="text-[12px] text-muted-foreground leading-relaxed">
-            <span className="text-foreground font-medium">{t('splitPhase.previewNote')}</span>{' '}
-            {t('splitPhase.previewNoteDesc')}
-          </p>
-        </div>
-
         <div className="flex items-center justify-between pt-2 border-t border-border">
           <Button
             variant="ghost"

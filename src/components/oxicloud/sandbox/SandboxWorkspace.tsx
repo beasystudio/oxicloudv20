@@ -241,13 +241,13 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
       <div className="h-[calc(100dvh-6.5rem)] min-h-0 overflow-hidden bg-background flex flex-col">
         {/* ── Minimal tab navigation: only failed sources ── */}
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabKey)} className="h-full min-h-0 flex flex-col">
-          <div className="shrink-0 bg-background px-5 py-3">
-            <TabsList className="h-auto p-1 bg-muted/50 rounded-full gap-1 inline-flex">
+          <div className="shrink-0 bg-background py-3">
+            <TabsList className="h-auto w-full p-1 bg-background rounded-full gap-1 flex border border-border">
               {TAB_KEYS.map(key => (
                 <TabsTrigger
                   key={key}
                   value={key}
-                  className="rounded-full border-0 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm px-4 py-1.5 text-xs font-medium text-muted-foreground transition-colors"
+                  className="flex-1 rounded-full border-0 data-[state=active]:bg-muted data-[state=active]:text-foreground data-[state=active]:font-semibold data-[state=active]:shadow-sm data-[state=active]:ring-1 data-[state=active]:ring-border px-4 py-2 text-xs font-medium text-muted-foreground transition-colors"
                 >
                   {t(TAB_NAV_LABEL_KEYS[key])}
                 </TabsTrigger>

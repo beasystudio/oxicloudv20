@@ -1,9 +1,11 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Textarea } from '@/components/ui/textarea';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ChevronDown, Settings2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useSandbox } from '../SandboxWorkspace';
 import { CompliancePanel } from '../CompliancePanel';
@@ -13,6 +15,85 @@ import { useLanguage } from '@/i18n/LanguageContext';
 interface Tab1Props {
   onConfirm: () => void;
   onBack: () => void;
+}
+
+function ExpertMachineBlock({
+  title,
+  hint,
+  restoreLabel,
+  machinesDirty,
+  onRestore,
+  children,
+}: {
+  title: string;
+  hint: string;
+  restoreLabel: string;
+  machinesDirty: boolean;
+  onRestore: () => void;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="pt-3">
+      <TooltipProvider delayDuration={150}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              onClick={() => setOpen(o => !o)}
+              aria-expanded={open}
+              className={cn(
+                "group w-full flex items-center justify-between gap-3 rounded-full px-4 py-2.5",
+                "bg-muted/40 hover:bg-muted/70 transition-colors",
+                open && "bg-muted/70"
+              )}
+            >
+              <span className="flex items-center gap-2 text-[12px] font-medium text-foreground">
+                <Settings2 className="h-3.5 w-3.5 text-muted-foreground" />
+                <span>{title}</span>
+                {machinesDirty && (
+                  <span className="ml-1 inline-flex h-1.5 w-1.5 rounded-full bg-primary" aria-hidden />
+                )}
+              </span>
+              <span className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                <span className="hidden sm:inline">{open ? 'Hide' : 'Tweak'}</span>
+                <ChevronDown
+                  className={cn(
+                    "h-4 w-4 text-muted-foreground transition-transform duration-200 group-hover:text-foreground",
+                    open && "rotate-180"
+                  )}
+                />
+              </span>
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" className="max-w-[260px] text-xs">
+            {hint}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <div
+        className={cn(
+          "grid transition-all duration-200",
+          open ? "grid-rows-[1fr] opacity-100 mt-3" : "grid-rows-[0fr] opacity-0"
+        )}
+      >
+        <div className="overflow-hidden">
+          {open && machinesDirty && (
+            <div className="flex justify-end mb-2">
+              <button
+                onClick={onRestore}
+                className="text-[11px] text-muted-foreground hover:text-foreground underline underline-offset-4 hover:no-underline"
+              >
+                {restoreLabel}
+              </button>
+            </div>
+          )}
+          {children}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function NumberField({ label, value, onChange, min = 0, max, unit }: {
@@ -150,7 +231,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
 
   return (
     <div className="h-full min-h-0 overflow-hidden">
-      <div className="h-full min-h-0 max-w-[1400px] mx-auto px-8 py-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="h-full min-h-0 py-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* ── LEFT: AI Scenarios ── */}
         <aside className="lg:col-span-3 flex flex-col min-h-0">
           <div className="flex items-center justify-between mb-4">
@@ -242,22 +323,14 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
               </div>
             </div>
 
-            {/* EXPERT block — machines */}
-            <div className="border-t border-border pt-4">
-              <div className="flex items-center justify-between mb-2.5">
-                <h3 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                  {t('sandboxTabs.expertMode')} · {t('sandboxTabs.equipmentInventory')}
-                </h3>
-                {machinesDirty && (
-                  <button
-                    onClick={handleRestoreMachines}
-                    className="text-[11px] text-muted-foreground hover:text-foreground underline underline-offset-4 hover:no-underline"
-                  >
-                    {t('sandboxTabs.restoreMachines')}
-                  </button>
-                )}
-              </div>
-
+            {/* EXPERT block — machines (collapsible) */}
+            <ExpertMachineBlock
+              machinesDirty={machinesDirty}
+              onRestore={handleRestoreMachines}
+              title={`${t('sandboxTabs.expertMode')} · ${t('sandboxTabs.equipmentInventory')}`}
+              hint={t('sandboxTabs.deviationPlaceholder')}
+              restoreLabel={t('sandboxTabs.restoreMachines')}
+            >
               <div className="rounded-lg border border-border/70 bg-background overflow-hidden">
                 <div className="grid grid-cols-[1fr_80px_80px_60px] gap-3 px-3 py-2 border-b border-border bg-muted/20">
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('sandboxTabs.machine')}</span>
@@ -303,7 +376,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
                   className="min-h-[56px] text-sm rounded-md bg-background border-border/70 leading-relaxed"
                 />
               </div>
-            </div>
+            </ExpertMachineBlock>
           </div>
 
           {/* Footer actions */}

@@ -1327,7 +1327,7 @@ const ProjectsDashboard = () => {
   return <div className="min-h-screen bg-background">
       <TopNavigation />
       
-      <main className="container mx-auto py-6 px-4">
+      <main className={cn('container mx-auto px-4', !isAdmin && noxFlowStep ? 'py-0' : 'py-6')}>
 
         {/* Main content */}
         {<>

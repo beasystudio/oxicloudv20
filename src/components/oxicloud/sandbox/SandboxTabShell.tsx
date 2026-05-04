@@ -46,7 +46,7 @@ export function SandboxTabShell({
     <div className="h-full min-h-0 overflow-hidden bg-background">
       <div
         className={cn(
-          'h-full min-h-0 max-w-[1400px] mx-auto px-8 py-4 grid grid-cols-1 gap-8',
+          'h-full min-h-0 py-4 grid grid-cols-1 gap-8',
           hasScenarios ? 'lg:grid-cols-12' : 'lg:grid-cols-12',
         )}
       >

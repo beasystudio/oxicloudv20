@@ -134,59 +134,6 @@ export function SplitPhaseCalculationScreen({ calculation, onContinue, onBack }:
           </div>
         </section>
 
-        {/* Per-source breakdown */}
-        <section className="border border-border rounded-xl bg-card">
-          <div className="px-4 py-2.5 border-b border-border flex items-center justify-between">
-            <h2 className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              Per-source compliance ratios
-            </h2>
-            <span className="text-[10px] tabular-nums text-muted-foreground">6 sources</span>
-          </div>
-          <ul className="divide-y divide-border">
-            {(Object.entries(calculation.perSourceRatios) as [EmissionSourceCode, number | null][]).map(([code, ratio]) => {
-              const isBinding = code === calculation.bindingEmissionType;
-              const excluded = ratio === null;
-              const pct = excluded ? 0 : (ratio as number) * 100;
-              return (
-                <li
-                  key={code}
-                  className={cn(
-                    'flex items-center gap-3 px-4 py-2.5 text-[12px]',
-                    isBinding && !excluded && 'bg-foreground/[0.04]',
-                  )}
-                >
-                  <span className="font-mono text-[10px] text-muted-foreground/80 w-16 shrink-0">{code}</span>
-                  <span className={cn('flex-1 truncate', excluded ? 'text-muted-foreground' : 'text-foreground')}>
-                    {SOURCE_LABEL[code]}
-                  </span>
-                  {/* mini bar */}
-                  <div className="hidden sm:block w-24 h-1 rounded-full bg-muted overflow-hidden shrink-0">
-                    {!excluded && (
-                      <div
-                        className={cn('h-full rounded-full', isBinding ? 'bg-foreground' : 'bg-muted-foreground/40')}
-                        style={{ width: `${Math.min(100, pct)}%` }}
-                      />
-                    )}
-                  </div>
-                  <span className="text-[11px] font-semibold tabular-nums w-14 text-right shrink-0">
-                    {excluded ? '—' : `${pct.toFixed(1)}%`}
-                  </span>
-                  {isBinding && !excluded && (
-                    <span className="text-[9px] font-semibold uppercase tracking-wider text-foreground bg-foreground/10 rounded px-1.5 py-0.5 shrink-0">
-                      Binding
-                    </span>
-                  )}
-                  {excluded && (
-                    <span className="text-[9px] uppercase tracking-wider text-muted-foreground border border-border rounded px-1.5 py-0.5 shrink-0">
-                      excl.
-                    </span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-
         {/* Calculation details */}
         <section className="border border-border rounded-xl bg-card">
           <div className="px-4 py-2.5 border-b border-border">

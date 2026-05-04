@@ -202,7 +202,7 @@ export default function ClientDashboard() {
          <main className="container mx-auto px-4 py-6">
 
           {/* Demo Marquee Banner */}
-          <div className="relative rounded-xl bg-primary/5 py-2.5 mb-5 overflow-hidden">
+          <div className="relative rounded-xl bg-muted/40 py-2.5 mb-5 overflow-hidden">
             {/* Fade edges */}
             <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
@@ -215,7 +215,7 @@ export default function ClientDashboard() {
                   <span>
                     {language === 'nl' ? 'Alle data is fictief. Maak een Workspace aan om echt aan de slag te gaan.' : 'All data is fictional. Create a Workspace to start working for real.'}
                   </span>
-                  <span className="text-primary">•</span>
+                  <span className="text-muted-foreground">•</span>
                 </span>
               )}
             </div>
