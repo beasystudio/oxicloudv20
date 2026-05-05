@@ -40,6 +40,8 @@ interface QuoteSentAwaitingStepProps {
   partnerCompanyName?: string;
   /** Optional override for the "what happens next" steps (used by PB flow). */
   nextSteps?: string[];
+  /** Show the NOx assessment field preview checklist. Defaults to true. */
+  showFieldChecklist?: boolean;
 }
 
 export function QuoteSentAwaitingStep({
@@ -53,6 +55,7 @@ export function QuoteSentAwaitingStep({
   projectName = "",
   partnerCompanyName = "",
   nextSteps,
+  showFieldChecklist = true,
 }: QuoteSentAwaitingStepProps) {
   const { t } = useLanguage();
   const [showPdfViewer, setShowPdfViewer] = useState(false);
