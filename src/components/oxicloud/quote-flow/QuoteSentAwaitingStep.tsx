@@ -295,7 +295,7 @@ export function QuoteSentAwaitingStep({
       </Card>
 
       {/* NOx assessment field preview */}
-      <NoxFieldChecklistCard clientName={endClientName} />
+      {showFieldChecklist && <NoxFieldChecklistCard clientName={endClientName} />}
 
       {/* Simulation + Back */}
       <div className="space-y-3 pt-2">
