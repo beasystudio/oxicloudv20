@@ -321,6 +321,7 @@ export function NoxResultFlow({
         <NoxReportHeldScreen
           projectName={project.name}
           onBackToDashboard={onBackToProjects}
+          onPaymentReceived={() => markNoxReportDelivered(project.id)}
           onReportDownloaded={() => {
             markNoxReportDelivered(project.id);
             try { sessionStorage.removeItem(`nox_result_step_${project.id}`); } catch {}
@@ -337,6 +338,7 @@ export function NoxResultFlow({
         <NoxReportHeldScreen
           projectName={project.name}
           onBackToDashboard={onBackToProjects}
+          onPaymentReceived={() => markNoxReportDelivered(project.id)}
           onReportDownloaded={() => {
             markNoxReportDelivered(project.id);
             try { sessionStorage.removeItem(`nox_result_step_${project.id}`); } catch {}
