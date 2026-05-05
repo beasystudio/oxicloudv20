@@ -15,13 +15,11 @@ import {
   Eye,
   Calendar,
   Hash,
-  ChevronDown,
-  ChevronUp,
   Mail,
-  MapPin,
 } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { NoxFieldChecklistCard } from "./NoxFieldChecklistCard";
 
 interface RecipientInfo {
   name: string;
@@ -58,7 +56,6 @@ export function QuoteSentAwaitingStep({
 }: QuoteSentAwaitingStepProps) {
   const { t } = useLanguage();
   const [showPdfViewer, setShowPdfViewer] = useState(false);
-  const [showNextSteps, setShowNextSteps] = useState(false);
 
   const quoteDate = new Date().toLocaleDateString("nl-BE", {
     day: "2-digit",
@@ -174,8 +171,9 @@ export function QuoteSentAwaitingStep({
         )}
       </div>
 
-      {/* Quote Overview */}
+      {/* Combined: Quote Overview + PDF + What happens next */}
       <Card className="p-0 overflow-hidden border-border/60">
+        {/* Quote Overview */}
         <div className="px-4 py-3 border-b border-border/40">
           <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
             {t('quoteFlow.quoteSummary') || 'Quote Overview'}
@@ -228,13 +226,11 @@ export function QuoteSentAwaitingStep({
             </span>
           </div>
         </div>
-      </Card>
 
-      {/* View Quote PDF */}
-      <Card className="p-0 overflow-hidden border-border/60">
+        {/* PDF row */}
         <button
           onClick={() => setShowPdfViewer(!showPdfViewer)}
-          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/30 transition-colors text-left"
+          className="w-full flex items-center gap-3 px-4 py-3 border-t border-border/40 hover:bg-muted/30 transition-colors text-left"
         >
           <div className="h-9 w-9 rounded-lg bg-muted/60 flex items-center justify-center shrink-0">
             <FileText className="h-4 w-4 text-muted-foreground" />
@@ -247,14 +243,7 @@ export function QuoteSentAwaitingStep({
               {t('quoteFlow.readOnlyRef') || 'Read-only reference copy'}
             </p>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <Eye className="h-4 w-4 text-muted-foreground" />
-            {showPdfViewer ? (
-              <ChevronUp className="h-4 w-4 text-muted-foreground" />
-            ) : (
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
-            )}
-          </div>
+          <Eye className="h-4 w-4 text-muted-foreground shrink-0" />
         </button>
         <AnimatePresence>
           {showPdfViewer && (
@@ -279,52 +268,31 @@ export function QuoteSentAwaitingStep({
             </motion.div>
           )}
         </AnimatePresence>
-      </Card>
 
-      {/* What happens next */}
-      <Card className="p-0 overflow-hidden border-border/60">
-        <button
-          onClick={() => setShowNextSteps(!showNextSteps)}
-          className="w-full flex items-center justify-between px-4 py-3 hover:bg-muted/30 transition-colors text-left"
-        >
-          <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+        {/* What happens next */}
+        <div className="px-4 py-3 border-t border-border/40">
+          <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             {t('quoteFlow.whatHappensNext')}
           </h3>
-          {showNextSteps ? (
-            <ChevronUp className="h-3.5 w-3.5 text-muted-foreground" />
-          ) : (
-            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
-          )}
-        </button>
-        <AnimatePresence>
-          {showNextSteps && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden"
-            >
-              <div className="px-4 pb-4 pt-0">
-                <ol className="space-y-3 text-sm text-muted-foreground">
-                  {(nextSteps ?? [
-                    t('quoteFlow.awaitStep1'),
-                    t('quoteFlow.awaitStep2'),
-                    t('quoteFlow.awaitStep3'),
-                  ]).map((stepText, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5">
-                      <span className="flex items-center justify-center h-5 w-5 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold shrink-0 mt-0.5">
-                        {idx + 1}
-                      </span>
-                      <span>{stepText}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          <ol className="space-y-3 text-sm text-muted-foreground">
+            {(nextSteps ?? [
+              t('quoteFlow.awaitStep1'),
+              t('quoteFlow.awaitStep2'),
+              t('quoteFlow.awaitStep3'),
+            ]).map((stepText, idx) => (
+              <li key={idx} className="flex items-start gap-2.5">
+                <span className="flex items-center justify-center h-5 w-5 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold shrink-0 mt-0.5">
+                  {idx + 1}
+                </span>
+                <span>{stepText}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
       </Card>
+
+      {/* NOx assessment field preview */}
+      <NoxFieldChecklistCard clientName={endClientName} />
 
       {/* Simulation + Back */}
       <div className="space-y-3 pt-2">
