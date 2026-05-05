@@ -14,6 +14,7 @@ import { SplitPhaseFlow } from './split-phase';
 import { PassendeBeoordelingFlow, PassendeBeoordelingInfoGate } from './passende-beoordeling';
 import { toast } from 'sonner';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { markNoxReportDelivered } from '@/lib/noxProjectStore';
 
 
 
@@ -321,6 +322,8 @@ export function NoxResultFlow({
           projectName={project.name}
           onBackToDashboard={onBackToProjects}
           onReportDownloaded={() => {
+            markNoxReportDelivered(project.id);
+            try { sessionStorage.removeItem(`nox_result_step_${project.id}`); } catch {}
             toast.success(t('noxResultFlow.reportDownloaded'));
             onBackToProjects();
           }}
@@ -335,6 +338,8 @@ export function NoxResultFlow({
           projectName={project.name}
           onBackToDashboard={onBackToProjects}
           onReportDownloaded={() => {
+            markNoxReportDelivered(project.id);
+            try { sessionStorage.removeItem(`nox_result_step_${project.id}`); } catch {}
             toast.success(t('noxResultFlow.reportDownloaded'));
             onBackToProjects();
           }}
