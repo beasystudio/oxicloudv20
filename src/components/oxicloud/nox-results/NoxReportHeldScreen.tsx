@@ -21,12 +21,14 @@ interface NoxReportHeldScreenProps {
   projectName: string;
   onBackToDashboard: () => void;
   onReportDownloaded?: () => void;
+  onPaymentReceived?: () => void;
 }
 
 export function NoxReportHeldScreen({
   projectName,
   onBackToDashboard,
   onReportDownloaded,
+  onPaymentReceived,
 }: NoxReportHeldScreenProps) {
   const { t } = useLanguage();
   const [isPaid, setIsPaid] = useState(false);
@@ -57,6 +59,7 @@ export function NoxReportHeldScreen({
     setIsPaid(true);
     setTimeout(() => setIsUnblurring(true), 300);
     setTimeout(() => setShowConfirmation(true), 800);
+    onPaymentReceived?.();
   };
 
   const handleDownload = () => {
