@@ -59,6 +59,7 @@ export function NoxReportHeldScreen({
     setIsPaid(true);
     setTimeout(() => setIsUnblurring(true), 300);
     setTimeout(() => setShowConfirmation(true), 800);
+    onPaymentReceived?.();
   };
 
   const handleDownload = () => {
