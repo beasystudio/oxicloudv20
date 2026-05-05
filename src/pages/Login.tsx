@@ -14,8 +14,11 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { getAvatarByEmail } from '@/lib/avatarMap';
 import { supabase } from '@/integrations/supabase/client';
 import { LanguageToggle } from '@/components/LanguageToggle';
-import loginBackground from '@/assets/login-bg.jpg';
-import oxicloudLogo from '@/assets/oxicloud-logo-white.png';
+import loginBgLight from '@/assets/login-bg-light.jpg';
+import loginBgDark from '@/assets/login-bg-dark.jpg';
+import oxicloudLogoWhite from '@/assets/oxicloud-logo-white.png';
+import oxicloudLogoDark from '@/assets/oxicloud-logo-dark.png';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface DemoAccount {
   label: string;
@@ -30,6 +33,7 @@ const demoAccounts: DemoAccount[] = [
 
 const Login = () => {
   const { t } = useLanguage();
+  const { theme } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -121,12 +125,28 @@ const Login = () => {
       </Helmet>
 
       <div className="min-h-screen flex bg-background">
-        {/* Left - Photo panel (stays dark) */}
+        {/* Left - Photo panel with smooth theme crossfade */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-          <img src={loginBackground} alt="Architecture" className="absolute inset-0 w-full h-full object-cover" />
-          
+          <AnimatePresence mode="sync" initial={false}>
+            <motion.img
+              key={theme}
+              src={theme === 'dark' ? loginBgDark : loginBgLight}
+              alt="OxiCloud environment"
+              className="absolute inset-0 w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+            />
+          </AnimatePresence>
           <div className="relative z-10 flex flex-col justify-between pt-14 pb-12 pl-12 pr-12 w-full">
-            <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-11 w-auto" /></Link>
+            <Link to="/">
+              <img
+                src={theme === 'dark' ? oxicloudLogoWhite : oxicloudLogoDark}
+                alt="OxiCloud"
+                className="h-11 w-auto transition-opacity duration-500"
+              />
+            </Link>
           </div>
         </div>
 

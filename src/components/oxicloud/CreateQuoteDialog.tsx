@@ -160,7 +160,7 @@ export function CreateQuoteDialog({
           total_amount: totalAmount,
           status: 'pending',
           valid_until: validUntil.toISOString()
-        })
+        } as any)
         .select()
         .single();
 

@@ -10,8 +10,11 @@ import { ArrowUpRight } from '@/components/icons/OxiIcons';
 import { getPilotUser, getPilotSession } from '@/lib/pilotSessionStore';
 import { logAuditEvent } from '@/lib/securityAuditStore';
 import { toast } from 'sonner';
-import loginBackground from '@/assets/login-background.jpg';
+import loginBgLight from '@/assets/login-bg-light.jpg';
+import loginBgDark from '@/assets/login-bg-dark.jpg';
 import oxicloudLogo from '@/assets/oxicloud-logo-white.png';
+import { AnimatePresence } from 'framer-motion';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function PilotLogin() {
   const [email, setEmail] = useState('');
@@ -19,6 +22,7 @@ export default function PilotLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,9 +54,21 @@ export default function PilotLogin() {
       </Helmet>
 
       <div className="min-h-screen flex bg-background">
-        {/* Left - Photo panel (stays dark) */}
-        <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden">
-          <img src={loginBackground} alt="Architecture" className="absolute inset-0 w-full h-full object-cover" />
+        {/* Left - Photo panel with theme-aware vertical rotation */}
+        <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden" style={{ perspective: '1800px' }}>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.img
+              key={theme}
+              src={theme === 'dark' ? loginBgDark : loginBgLight}
+              alt="OxiCloud environment"
+              className="absolute inset-0 w-full h-full object-cover"
+              initial={{ rotateX: 90, opacity: 0 }}
+              animate={{ rotateX: 0, opacity: 1 }}
+              exit={{ rotateX: -90, opacity: 0 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              style={{ transformOrigin: 'center center', backfaceVisibility: 'hidden' }}
+            />
+          </AnimatePresence>
           
           <div className="relative z-10 flex flex-col justify-between p-12 w-full">
             <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-11 w-auto" /></Link>

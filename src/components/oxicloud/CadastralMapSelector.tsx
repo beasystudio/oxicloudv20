@@ -331,10 +331,11 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
         // Skip invalid geometries
       }});
     if (nearest) {
-      const kdwValue = kdwData[nearest.code]?.kdw ?? 0;
+      const n: SPASite = nearest;
+      const kdwValue = kdwData[n.code]?.kdw ?? 0;
       setNearestSPA({
-        name: nearest.name,
-        code: nearest.code,
+        name: n.name,
+        code: n.code,
         distance: Math.round(minDistance),
         kdw: kdwValue
       });

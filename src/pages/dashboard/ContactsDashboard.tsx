@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ContactDetailModal } from '@/components/contacts/ContactDetailModal';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
+import { PillToggle } from '@/components/ui/pill-toggle';
 
 // Extended company type with employees and addresses
 interface CompanyWithDetails {
@@ -801,6 +802,7 @@ const ContactsDashboard = () => {
   const [sortBy, setSortBy] = useState('lastname-asc');
   const [showCount, setShowCount] = useState('24');
   const [viewMode, setViewMode] = useState<'company' | 'person'>('company');
+  const [selectedPersonId, setSelectedPersonId] = useState<string | null>(null);
 
   // Edit dialog state
   const [selectedContact, setSelectedContact] = useState<UnifiedContact | null>(null);
@@ -928,24 +930,15 @@ const ContactsDashboard = () => {
         <Card className="mb-4">
           <CardContent className="py-3 px-4">
             <div className="flex items-center gap-3">
-              <div className="flex items-center border rounded-md overflow-hidden shrink-0">
-                <button
-                  onClick={() => setViewMode('company')}
-                  className={cn("px-3 py-1.5 text-xs font-medium transition-colors",
-                  viewMode === 'company' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
-                  )}>
-                  
-                  {t('dashboard.contactsDashboard.company')}
-                </button>
-                <button
-                  onClick={() => setViewMode('person')}
-                  className={cn("px-3 py-1.5 text-xs font-medium transition-colors border-l",
-                  viewMode === 'person' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
-                  )}>
-                  
-                  {t('dashboard.contactsDashboard.person')}
-                </button>
-              </div>
+              <PillToggle
+                items={[
+                  { id: 'company', label: t('dashboard.contactsDashboard.company') },
+                  { id: 'person', label: t('dashboard.contactsDashboard.person') },
+                ]}
+                activeId={viewMode}
+                onSelect={(id) => { setViewMode(id as 'company' | 'person'); setSelectedPersonId(null); }}
+                layoutId="contactsViewMode"
+              />
               <div className="flex-1">
                 <Input placeholder={t('dashboard.contactsDashboard.searchContacts')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="h-8 text-sm" />
               </div>
@@ -974,7 +967,7 @@ const ContactsDashboard = () => {
           {/* LEFT: Master List */}
           <div className={cn(
             "flex flex-col min-h-0 transition-all duration-300 border border-border/40 rounded-2xl bg-card overflow-hidden",
-            viewMode === 'company' && expandedCompanies.length > 0 ? "w-[380px] shrink-0" : "flex-1"
+            (viewMode === 'company' && expandedCompanies.length > 0) || (viewMode === 'person' && selectedPersonId) ? "w-[380px] shrink-0" : "flex-1"
           )}>
             {/* List Header */}
             <div className="px-4 py-3 border-b border-border/30 shrink-0">
@@ -1008,10 +1001,18 @@ const ContactsDashboard = () => {
                         <p className="text-sm font-medium mb-1">{t('dashboard.contactsDashboard.noContactsFound')}</p>
                         <p className="text-xs">{t('dashboard.contactsDashboard.noPersonsAvailable')}</p>
                       </div>
-                    ) : filteredPersons.map(person => (
+                    ) : filteredPersons.map(person => {
+                      const isSelected = selectedPersonId === person.id;
+                      return (
                       <div
                         key={person.id}
-                        className="px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:z-10 relative group"
+                        className={cn(
+                          "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
+                          isSelected
+                            ? "bg-[#FBFBFB] dark:bg-muted/40 ring-1 ring-border/60 rounded-xl mx-1.5 my-0.5 border-transparent shadow-sm"
+                            : "hover:bg-muted/30"
+                        )}
+                        onClick={() => setSelectedPersonId(isSelected ? null : person.id)}
                         onDoubleClick={() => {
                           const contact: UnifiedContact = {
                             id: person.id, name: person.name, company: person.company,
@@ -1029,7 +1030,7 @@ const ContactsDashboard = () => {
                           <span className="text-[11px] text-muted-foreground truncate">{person.email}</span>
                         </div>
                       </div>
-                    ));
+                    );});
                   })()}
                 </div>
               ) : (
@@ -1205,6 +1206,92 @@ const ContactsDashboard = () => {
                   {selectedCompanyData.employees.length === 0 && selectedCompanyData.addresses.length === 0 && (
                     <div className="text-center py-12 text-muted-foreground">
                       <p className="text-sm">{t('dashboard.contactsDashboard.noContactsFound')}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* RIGHT: Person Detail Panel */}
+          {viewMode === 'person' && selectedPersonId && (() => {
+            const scopedCompanyNames = getCompanyScopedCompanies().map(c => c.name);
+            const filteredPersons = isPilot ? [] : DEMO_PERSONS.filter(p => scopedCompanyNames.includes(p.company));
+            const person = filteredPersons.find(p => p.id === selectedPersonId);
+            if (!person) return null;
+            const company = filteredCompanies.find(c => c.name === person.company);
+            return (
+              <div className="flex-1 min-h-0 overflow-auto border border-border/40 rounded-2xl bg-card ml-3">
+                <div className="px-6 py-5 border-b border-border/30">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-lg font-semibold text-foreground">{person.name}</h2>
+                      <div className="flex items-center gap-4 mt-1.5 text-xs text-muted-foreground">
+                        {person.function && <span>{person.function}</span>}
+                        {person.company && <span>{person.company}</span>}
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 text-[10px]"
+                      onClick={() => {
+                        const contact: UnifiedContact = {
+                          id: person.id, name: person.name, company: person.company,
+                          email: person.email, mobilePhone: '', workPhone: person.telephone,
+                          homePhone: '', contactCategory: 'algemeen', isCompany: false
+                        };
+                        setSelectedContact(contact);
+                        setIsEditDialogOpen(true);
+                      }}
+                    >
+                      {t('common.edit') || 'Edit'}
+                    </Button>
+                  </div>
+                </div>
+                <div className="p-6 space-y-6">
+                  <div>
+                    <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">
+                      {t('dashboard.contactsDashboard.contactPersons') || 'Contact'}
+                    </h3>
+                    <div className="rounded-xl border border-border/30 overflow-hidden">
+                      <div className="grid grid-cols-4 gap-4 px-4 py-2 bg-muted/30 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-b border-border/20">
+                        <div>{t('dashboard.contactsDashboard.name')}</div>
+                        <div>{t('dashboard.contactsDashboard.function')}</div>
+                        <div>{t('dashboard.contactsDashboard.email')}</div>
+                        <div>{t('dashboard.contactsDashboard.phone')}</div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-4 px-4 py-2.5 text-xs">
+                        <div className="font-medium text-foreground">{person.name}</div>
+                        <div className="text-muted-foreground">{person.function || '-'}</div>
+                        <div className="text-muted-foreground truncate">{person.email}</div>
+                        <div className="text-muted-foreground">{person.telephone}</div>
+                      </div>
+                    </div>
+                  </div>
+                  {company && company.addresses.length > 0 && (
+                    <div>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">
+                        {t('dashboard.contactsDashboard.branchesAddresses')}
+                      </h3>
+                      <div className="rounded-xl border border-border/30 overflow-hidden">
+                        <div className="grid grid-cols-5 gap-4 px-4 py-2 bg-muted/30 text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-b border-border/20">
+                          <div>{t('dashboard.contactsDashboard.name')}</div>
+                          <div>{t('dashboard.contactsDashboard.street')}</div>
+                          <div>{t('dashboard.contactsDashboard.nr')}</div>
+                          <div>{t('dashboard.contactsDashboard.postalCode')}</div>
+                          <div>{t('dashboard.contactsDashboard.municipality')}</div>
+                        </div>
+                        {company.addresses.map((addr, idx) => (
+                          <div key={addr.id} className={cn("grid grid-cols-5 gap-4 px-4 py-2.5 text-xs", idx < company.addresses.length - 1 && "border-b border-border/10")}>
+                            <div className="font-medium text-foreground">{addr.name}</div>
+                            <div className="text-muted-foreground">{addr.street}</div>
+                            <div className="text-muted-foreground">{addr.number}</div>
+                            <div className="text-muted-foreground">{addr.postcode}</div>
+                            <div className="text-muted-foreground">{addr.gemeente}</div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>

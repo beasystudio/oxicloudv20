@@ -1317,7 +1317,7 @@ const ProjectsDashboard = () => {
           }
 
             {/* Contacts Card - Master-Detail Layout */}
-            <ProjectContacts projectId={selectedProjectId} />
+            <ProjectContacts projectId={selectedProjectId!} />
           </div>
         </div>
       </>;

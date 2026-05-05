@@ -237,7 +237,7 @@ export function DetailedCalculationForm({
         ...prev.exploitationSystem,
         [field]: value
       }
-    }));
+    }) as DetailedCalculationData);
   };
   // Validate current step - all fields must be filled
   const isStepValid = (step: number): boolean => {
