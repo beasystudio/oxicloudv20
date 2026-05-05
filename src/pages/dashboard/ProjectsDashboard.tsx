@@ -1383,6 +1383,12 @@ const ProjectsDashboard = () => {
                 <NoxReportHeldScreen
                   projectName={currentNoxProject.name}
                   onBackToDashboard={handleNoxBack}
+                  onPaymentReceived={() => {
+                    if (selectedProjectId) {
+                      updateNoxData(selectedProjectId, { status: 'report_delivered' });
+                      setNoxProjectsRefreshKey((prev) => prev + 1);
+                    }
+                  }}
                   onReportDownloaded={() => {
                     if (selectedProjectId) {
                       updateNoxData(selectedProjectId, { status: 'report_delivered' });
