@@ -322,6 +322,8 @@ export function NoxResultFlow({
           projectName={project.name}
           onBackToDashboard={onBackToProjects}
           onReportDownloaded={() => {
+            markNoxReportDelivered(project.id);
+            try { sessionStorage.removeItem(`nox_result_step_${project.id}`); } catch {}
             toast.success(t('noxResultFlow.reportDownloaded'));
             onBackToProjects();
           }}
@@ -336,6 +338,8 @@ export function NoxResultFlow({
           projectName={project.name}
           onBackToDashboard={onBackToProjects}
           onReportDownloaded={() => {
+            markNoxReportDelivered(project.id);
+            try { sessionStorage.removeItem(`nox_result_step_${project.id}`); } catch {}
             toast.success(t('noxResultFlow.reportDownloaded'));
             onBackToProjects();
           }}
