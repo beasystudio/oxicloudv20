@@ -37,6 +37,7 @@ export function PassendeBeoordelingFlow({
 
   return (
     <QuoteSentAwaitingStep
+      showFieldChecklist={false}
       quoteReference={quoteReference}
       endClientName={pbProject.clientName}
       onBackToProject={onBack}
