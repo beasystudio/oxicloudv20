@@ -657,11 +657,11 @@ const FinancialDashboard = () => {
 
 function KpiCard({ label, value, footer, accent }: { label: string; value: string | number; footer: React.ReactNode; accent?: boolean }) {
   return (
-    <div className={cn("flex flex-col justify-between p-5 rounded-2xl border min-h-[120px] bg-background", accent ? "border-foreground/10" : "border-border/40")}>
-      <span className="text-[10px] text-muted-foreground uppercase tracking-[0.14em] font-medium">{label}</span>
+    <div className={cn("flex flex-col justify-between p-3.5 rounded-xl border min-h-[88px] bg-background", accent ? "border-foreground/15" : "border-border/40")}>
+      <span className="text-[10px] text-muted-foreground uppercase tracking-[0.12em] font-medium">{label}</span>
       <div>
-        <p className="text-3xl font-semibold tracking-tight text-foreground">{value}</p>
-        <div className="mt-1">{footer}</div>
+        <p className="text-xl font-semibold tracking-tight text-foreground tabular-nums">{value}</p>
+        <div className="mt-0.5">{footer}</div>
       </div>
     </div>
   );
@@ -669,9 +669,9 @@ function KpiCard({ label, value, footer, accent }: { label: string; value: strin
 
 function MiniStat({ label, value, color }: { label: string; value: string | number; color?: string }) {
   return (
-    <div className="bg-background p-4 text-center">
-      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-medium mb-1">{label}</p>
-      <p className={cn("text-xl font-semibold tabular-nums", color || "text-foreground")}>{value}</p>
+    <div className="bg-background p-2.5 text-center">
+      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-medium mb-0.5">{label}</p>
+      <p className={cn("text-base font-semibold tabular-nums", color || "text-foreground")}>{value}</p>
     </div>
   );
 }
