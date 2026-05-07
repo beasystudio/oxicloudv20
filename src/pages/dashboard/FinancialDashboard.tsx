@@ -238,11 +238,11 @@ const FinancialDashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <TopNavigation />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-5">
         {/* Header row */}
-        <div className="flex items-center justify-end gap-2 mb-6">
+        <div className="flex items-center justify-end gap-2 mb-4">
           <Select value={selectedYear.toString()} onValueChange={(v) => setSelectedYear(parseInt(v))}>
-            <SelectTrigger className="w-24 h-9"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="w-20 h-8 text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
               {[2020, 2021, 2022, 2023, 2024].map((year) => (
                 <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
@@ -251,14 +251,14 @@ const FinancialDashboard = () => {
           </Select>
           {isOwnerOrAdmin && (
             <>
-              <Button onClick={handleClearData} variant="ghost" size="icon" className="h-9 w-9"><RefreshCw className="h-4 w-4" /></Button>
-              <Button onClick={handleSeedData} variant="outline" size="sm" className="h-9">Seed</Button>
+              <Button onClick={handleClearData} variant="ghost" size="icon" className="h-8 w-8"><RefreshCw className="h-3.5 w-3.5" /></Button>
+              <Button onClick={handleSeedData} variant="outline" size="sm" className="h-8 text-xs">Seed</Button>
             </>
           )}
         </div>
 
         {/* KPI Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-5">
           <KpiCard
             label={`${selectedYear} ${t('dashboard.financial.yearRevenue')}`}
             value={formatCurrency(totals.currentYearRevenue)}
@@ -266,34 +266,34 @@ const FinancialDashboard = () => {
             footer={totals.growth !== 0 ? (
               <div className="flex items-center gap-1">
                 {totals.growth >= 0 ? <ArrowUpRight className="h-3 w-3 text-foreground" /> : <ArrowDownRight className="h-3 w-3 text-destructive" />}
-                <span className={cn("text-xs font-medium", totals.growth >= 0 ? "text-foreground" : "text-destructive")}>
+                <span className={cn("text-[11px] font-medium", totals.growth >= 0 ? "text-foreground" : "text-destructive")}>
                   {totals.growth >= 0 ? '+' : ''}{totals.growth}%
                 </span>
-                <span className="text-xs text-muted-foreground">{t('dashboard.financial.vsLastYear')}</span>
+                <span className="text-[11px] text-muted-foreground">{t('dashboard.financial.vsLastYear')}</span>
               </div>
-            ) : <span className="text-xs text-muted-foreground">{t('dashboard.financial.thisYear')}</span>}
+            ) : <span className="text-[11px] text-muted-foreground">{t('dashboard.financial.thisYear')}</span>}
           />
           <KpiCard
             label={t('dashboard.financial.totalRevenue')}
             value={formatCurrency(totals.lifetimeRevenue)}
-            footer={<span className="text-xs text-muted-foreground">{t('dashboard.financial.since2020')}</span>}
+            footer={<span className="text-[11px] text-muted-foreground">{t('dashboard.financial.since2020')}</span>}
           />
           <KpiCard
             label={isOwnerOrAdmin ? t('dashboard.financial.clientCompanies') : t('dashboard.financial.activeUsers')}
             value={isOwnerOrAdmin ? financialData.length : totals.activeUsers}
-            footer={<span className="text-xs text-muted-foreground">{isOwnerOrAdmin ? t('dashboard.financial.activeSubscriptions') : t('dashboard.financial.licensedSeats')}</span>}
+            footer={<span className="text-[11px] text-muted-foreground">{isOwnerOrAdmin ? t('dashboard.financial.activeSubscriptions') : t('dashboard.financial.licensedSeats')}</span>}
           />
           <KpiCard
             label={isOwnerOrAdmin ? t('dashboard.financial.mrr') : t('dashboard.financial.completedProjects')}
             value={isOwnerOrAdmin ? formatCurrency(financialData.reduce((sum, c) => sum + c.monthlyFee, 0)) : totals.projectsCompleted}
-            footer={<span className="text-xs text-muted-foreground">{isOwnerOrAdmin ? t('dashboard.financial.monthlyRecurring') : `${t('dashboard.financial.inYear')} ${selectedYear}`}</span>}
+            footer={<span className="text-[11px] text-muted-foreground">{isOwnerOrAdmin ? t('dashboard.financial.monthlyRecurring') : `${t('dashboard.financial.inYear')} ${selectedYear}`}</span>}
           />
         </div>
 
         {/* Tabs */}
         <PillToggle items={financialTabs} activeId={activeTab} onSelect={setActiveTab} layoutId="financialPillToggle" />
 
-        <div className="mt-8">
+        <div className="mt-5">
           {/* ───── COMMISSIONS (Client Users) ───── */}
           {!isOwnerOrAdmin && activeTab === 'commissions' && (
             <div className="space-y-4">
@@ -367,7 +367,7 @@ const FinancialDashboard = () => {
 
           {/* ───── PAYMENT TRACKING (Owner/Admin) ───── */}
           {isOwnerOrAdmin && activeTab === 'payment-tracking' && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Inline stats row */}
               <div className="grid grid-cols-4 gap-px rounded-xl border overflow-hidden">
                 <MiniStat label={t('dashboard.financial.pendingPayments')} value={pendingCount} color="text-chart-4" />
@@ -443,7 +443,7 @@ const FinancialDashboard = () => {
 
           {/* ───── COMMISSION TRACKING (Owner/Admin) ───── */}
           {isOwnerOrAdmin && activeTab === 'commission-tracking' && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="grid grid-cols-5 gap-px rounded-xl border overflow-hidden">
                 <MiniStat label={t('dashboard.financial.awaitingInvoice')} value={awaitingInvoiceCount} color="text-chart-4" />
                 <MiniStat label={t('dashboard.financial.invoiceReceived')} value={invoiceReceivedCount} color="text-muted-foreground" />
@@ -540,10 +540,10 @@ const FinancialDashboard = () => {
 
           {/* ───── 5-YEAR OVERVIEW ───── */}
           {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="rounded-2xl border p-5">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="rounded-xl border p-4">
                 <h3 className="text-sm font-medium text-muted-foreground mb-4">{t('dashboard.financial.revenueGrowth')}</h3>
-                <div className="h-[260px]">
+                <div className="h-[220px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={getFiveYearData()}>
                       <defs>
@@ -561,9 +561,9 @@ const FinancialDashboard = () => {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <div className="rounded-2xl border p-5">
+              <div className="rounded-xl border p-4">
                 <h3 className="text-sm font-medium text-muted-foreground mb-4">{t('dashboard.financial.revenueComposition')}</h3>
-                <div className="h-[260px]">
+                <div className="h-[220px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={getFiveYearData()}>
                       <CartesianGrid strokeDasharray="3 3" className="stroke-muted" vertical={false} />
@@ -582,9 +582,9 @@ const FinancialDashboard = () => {
 
           {/* ───── MONTHLY ───── */}
           {activeTab === 'monthly' && (
-            <div className="rounded-2xl border p-5">
+            <div className="rounded-xl border p-4">
               <h3 className="text-sm font-medium text-muted-foreground mb-4">{t('dashboard.financial.monthlyRevenue')} - {selectedYear}</h3>
-              <div className="h-[340px]">
+              <div className="h-[280px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={getMonthlyData()}>
                     <CartesianGrid strokeDasharray="3 3" className="stroke-muted" vertical={false} />
@@ -603,12 +603,12 @@ const FinancialDashboard = () => {
 
           {/* ───── PER COMPANY ───── */}
           {(isOwnerOrAdmin || hasMultipleCompanies) && activeTab === 'companies' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="rounded-2xl border p-5">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="rounded-xl border p-4">
                 <h3 className="text-sm font-medium text-muted-foreground mb-4">
                   {isOwnerOrAdmin ? t('dashboard.financial.revenueByClient') : t('dashboard.financial.revenueByCompany')} - {selectedYear}
                 </h3>
-                <div className="h-[260px]">
+                <div className="h-[220px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie data={getCompanyBreakdown()} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={3} dataKey="value" nameKey="name">
@@ -657,11 +657,11 @@ const FinancialDashboard = () => {
 
 function KpiCard({ label, value, footer, accent }: { label: string; value: string | number; footer: React.ReactNode; accent?: boolean }) {
   return (
-    <div className={cn("flex flex-col justify-between p-5 rounded-2xl border min-h-[120px] bg-background", accent ? "border-foreground/10" : "border-border/40")}>
-      <span className="text-[10px] text-muted-foreground uppercase tracking-[0.14em] font-medium">{label}</span>
+    <div className={cn("flex flex-col justify-between p-3.5 rounded-xl border min-h-[88px] bg-background", accent ? "border-foreground/15" : "border-border/40")}>
+      <span className="text-[10px] text-muted-foreground uppercase tracking-[0.12em] font-medium">{label}</span>
       <div>
-        <p className="text-3xl font-semibold tracking-tight text-foreground">{value}</p>
-        <div className="mt-1">{footer}</div>
+        <p className="text-xl font-semibold tracking-tight text-foreground tabular-nums">{value}</p>
+        <div className="mt-0.5">{footer}</div>
       </div>
     </div>
   );
@@ -669,9 +669,9 @@ function KpiCard({ label, value, footer, accent }: { label: string; value: strin
 
 function MiniStat({ label, value, color }: { label: string; value: string | number; color?: string }) {
   return (
-    <div className="bg-background p-4 text-center">
-      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-medium mb-1">{label}</p>
-      <p className={cn("text-xl font-semibold tabular-nums", color || "text-foreground")}>{value}</p>
+    <div className="bg-background p-2.5 text-center">
+      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-medium mb-0.5">{label}</p>
+      <p className={cn("text-base font-semibold tabular-nums", color || "text-foreground")}>{value}</p>
     </div>
   );
 }
