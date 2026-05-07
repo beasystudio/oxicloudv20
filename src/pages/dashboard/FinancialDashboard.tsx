@@ -367,7 +367,7 @@ const FinancialDashboard = () => {
 
           {/* ───── PAYMENT TRACKING (Owner/Admin) ───── */}
           {isOwnerOrAdmin && activeTab === 'payment-tracking' && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Inline stats row */}
               <div className="grid grid-cols-4 gap-px rounded-xl border overflow-hidden">
                 <MiniStat label={t('dashboard.financial.pendingPayments')} value={pendingCount} color="text-chart-4" />
@@ -443,7 +443,7 @@ const FinancialDashboard = () => {
 
           {/* ───── COMMISSION TRACKING (Owner/Admin) ───── */}
           {isOwnerOrAdmin && activeTab === 'commission-tracking' && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="grid grid-cols-5 gap-px rounded-xl border overflow-hidden">
                 <MiniStat label={t('dashboard.financial.awaitingInvoice')} value={awaitingInvoiceCount} color="text-chart-4" />
                 <MiniStat label={t('dashboard.financial.invoiceReceived')} value={invoiceReceivedCount} color="text-muted-foreground" />
@@ -540,10 +540,10 @@ const FinancialDashboard = () => {
 
           {/* ───── 5-YEAR OVERVIEW ───── */}
           {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="rounded-2xl border p-5">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="rounded-xl border p-4">
                 <h3 className="text-sm font-medium text-muted-foreground mb-4">{t('dashboard.financial.revenueGrowth')}</h3>
-                <div className="h-[260px]">
+                <div className="h-[220px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={getFiveYearData()}>
                       <defs>
@@ -561,9 +561,9 @@ const FinancialDashboard = () => {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <div className="rounded-2xl border p-5">
+              <div className="rounded-xl border p-4">
                 <h3 className="text-sm font-medium text-muted-foreground mb-4">{t('dashboard.financial.revenueComposition')}</h3>
-                <div className="h-[260px]">
+                <div className="h-[220px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={getFiveYearData()}>
                       <CartesianGrid strokeDasharray="3 3" className="stroke-muted" vertical={false} />
@@ -582,9 +582,9 @@ const FinancialDashboard = () => {
 
           {/* ───── MONTHLY ───── */}
           {activeTab === 'monthly' && (
-            <div className="rounded-2xl border p-5">
+            <div className="rounded-xl border p-4">
               <h3 className="text-sm font-medium text-muted-foreground mb-4">{t('dashboard.financial.monthlyRevenue')} - {selectedYear}</h3>
-              <div className="h-[340px]">
+              <div className="h-[280px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={getMonthlyData()}>
                     <CartesianGrid strokeDasharray="3 3" className="stroke-muted" vertical={false} />
@@ -603,12 +603,12 @@ const FinancialDashboard = () => {
 
           {/* ───── PER COMPANY ───── */}
           {(isOwnerOrAdmin || hasMultipleCompanies) && activeTab === 'companies' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="rounded-2xl border p-5">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="rounded-xl border p-4">
                 <h3 className="text-sm font-medium text-muted-foreground mb-4">
                   {isOwnerOrAdmin ? t('dashboard.financial.revenueByClient') : t('dashboard.financial.revenueByCompany')} - {selectedYear}
                 </h3>
-                <div className="h-[260px]">
+                <div className="h-[220px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie data={getCompanyBreakdown()} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={3} dataKey="value" nameKey="name">
