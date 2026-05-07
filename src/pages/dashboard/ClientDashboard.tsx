@@ -199,16 +199,15 @@ export default function ClientDashboard() {
        <div className="min-h-screen bg-background">
         <TopNavigation />
 
-         <main className="container mx-auto px-4 py-6">
+         <main className="container mx-auto px-4 py-5">
 
           {/* Demo Marquee Banner */}
-          <div className="relative rounded-xl bg-muted/40 py-2.5 mb-5 overflow-hidden">
-            {/* Fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          <div className="relative rounded-lg bg-muted/40 py-1.5 mb-4 overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
             <div className="flex animate-marquee whitespace-nowrap">
               {Array.from({ length: 4 }).map((_, i) =>
-              <span key={i} className="flex items-center gap-6 mx-6 text-[13px] text-muted-foreground">
+              <span key={i} className="flex items-center gap-5 mx-5 text-[12px] text-muted-foreground">
                   <span className="font-medium text-foreground">
                     {language === 'nl' ? 'U verkent momenteel de OxiCloud Demo-omgeving.' : 'You are currently exploring the OxiCloud Demo Environment.'}
                   </span>
@@ -222,166 +221,104 @@ export default function ClientDashboard() {
           </div>
 
           {/* Header */}
-          <header className="mb-8">
-            <p className="text-sm text-muted-foreground mb-0.5">
-              {new Date().toLocaleDateString(language === 'nl' ? 'nl-BE' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
-            </p>
-            <h1 className="text-3xl tracking-tight leading-[1.15] text-foreground font-semibold">
-              {greeting()}, {currentUser?.name?.split(' ')[0]}.
-            </h1>
-            <p className="text-sm text-muted-foreground mt-1.5">
+          <header className="mb-5 flex items-end justify-between gap-4 flex-wrap">
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">
+                {new Date().toLocaleDateString(language === 'nl' ? 'nl-BE' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
+              </p>
+              <h1 className="text-2xl tracking-tight leading-tight text-foreground font-semibold">
+                {greeting()}, {currentUser?.name?.split(' ')[0]}.
+              </h1>
+            </div>
+            <p className="text-xs text-muted-foreground max-w-md">
               {language === 'nl'
-                ? 'Welkom in de OxiCloud demo-omgeving. Verken de modules hieronder om het platform te leren kennen.'
-                : 'Welcome to the OxiCloud demo environment. Explore the modules below to get to know the platform.'}
+                ? 'Verken de modules hieronder om het OxiCloud-platform te leren kennen.'
+                : 'Explore the modules below to get to know the OxiCloud platform.'}
             </p>
           </header>
 
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
-
-            {/* Card 1 - Settings */}
-            <div className="rounded-2xl border border-border/40 bg-card p-6 flex flex-col group hover:border-foreground/15 transition-colors">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-bold text-foreground">
-                  1
-                </div>
-                <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
-                  {language === 'nl' ? 'Ontdek de Workspace-instellingen' : 'See How Settings Work'}
-                </h2>
-              </div>
-              <p className="text-[13px] text-muted-foreground leading-[1.6] flex-1 mb-6">
-                {language === 'nl'
-                  ? 'Bekijk hoe u uw organisatie, team en bedrijfsinformatie beheert.'
-                  : 'Explore how you can manage your organization, team, and company information.'}
-              </p>
+          {/* Compact module cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
+            {[
+              { n: 1, title: language === 'nl' ? 'Workspace-instellingen' : 'Settings',
+                desc: language === 'nl' ? 'Beheer organisatie, team en bedrijfsinformatie.' : 'Manage organization, team and company info.',
+                cta: language === 'nl' ? 'Bekijk' : 'Open', path: '/dashboard/settings' },
+              { n: 2, title: language === 'nl' ? 'Projectmap' : 'Project Binder',
+                desc: language === 'nl' ? 'Centraal projectdossier voor uw werk.' : 'Your project dossier in one place.',
+                cta: language === 'nl' ? 'Verken' : 'Explore', path: '/dashboard/projects' },
+              { n: 3, title: language === 'nl' ? 'Contactmodule' : 'Contacts',
+                desc: language === 'nl' ? 'Adresboek gesynchroniseerd over het platform.' : 'Address book synced across the platform.',
+                cta: language === 'nl' ? 'Bekijk' : 'Open', path: '/dashboard/contacts' },
+              { n: 4, title: language === 'nl' ? 'Partnerprogramma' : 'Partner Program',
+                desc: language === 'nl' ? 'Integreer emissieanalyses in uw workflow.' : 'Integrate emissions analysis in your workflow.',
+                cta: language === 'nl' ? 'Verken' : 'Explore', path: '/dashboard/partnership-program', highlight: true },
+            ].map((c) => (
               <button
-                onClick={() => navigate('/dashboard/settings')}
-                className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                {language === 'nl' ? 'Bekijk Instellingen' : 'Go to Settings'}
-              </button>
-            </div>
-
-            {/* Card 2 - Projects */}
-            <div className="rounded-2xl border border-border/40 bg-card p-6 flex flex-col group hover:border-foreground/15 transition-colors">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-bold text-foreground">
-                  2
+                key={c.n}
+                onClick={() => navigate(c.path)}
+                className={cn(
+                  "group text-left rounded-xl border bg-card p-4 flex flex-col gap-2 transition-colors hover:border-foreground/30",
+                  c.highlight ? "border-foreground/20 bg-muted/30" : "border-border/40"
+                )}>
+                <div className="flex items-center gap-2">
+                  <div className={cn(
+                    "w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0",
+                    c.highlight ? "bg-foreground text-background" : "bg-muted text-foreground"
+                  )}>
+                    {c.n}
+                  </div>
+                  <h2 className="text-[13px] font-semibold text-foreground tracking-tight truncate">{c.title}</h2>
                 </div>
-                <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
-                  {language === 'nl' ? 'Verken de Projectmap' : 'Explore the Project Binder'}
-                </h2>
-              </div>
-              <p className="text-[13px] text-muted-foreground leading-[1.6] flex-1 mb-6">
-                {language === 'nl'
-                  ? 'Ontdek hoe OxiCloud uw projectdossier centraal organiseert.'
-                  : 'Discover how OxiCloud organizes your project dossier in one central place.'}
-              </p>
-              <button
-                onClick={() => navigate('/dashboard/projects')}
-                className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                {language === 'nl' ? 'Verken Projecten' : 'Explore Projects'}
+                <p className="text-[12px] text-muted-foreground leading-snug flex-1">{c.desc}</p>
+                <span className="text-[12px] font-medium text-foreground/80 group-hover:text-foreground inline-flex items-center gap-1">
+                  {c.cta} <span aria-hidden>→</span>
+                </span>
               </button>
-            </div>
+            ))}
+          </div>
 
-            {/* Card 3 - Contacts */}
-            <div className="rounded-2xl border border-border/40 bg-card p-6 flex flex-col group hover:border-foreground/15 transition-colors">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0 text-xs font-bold text-foreground">
-                  3
-                </div>
-                <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
-                  {language === 'nl' ? 'Ervaar de Contactmodule' : 'Experience the Contact Module'}
-                </h2>
-              </div>
-              <p className="text-[13px] text-muted-foreground leading-[1.6] flex-1 mb-6">
-                {language === 'nl'
-                  ? 'Bekijk hoe uw adresboek gestructureerd en gesynchroniseerd is over het platform.'
-                  : 'See how your address book stays structured and synced across the platform.'}
-              </p>
-              <button
-                onClick={() => navigate('/dashboard/contacts')}
-                className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                {language === 'nl' ? 'Bekijk Contacten' : 'View Contacts'}
-              </button>
-            </div>
-
-            {/* Card 4 - Partner Program */}
-            <div className="rounded-2xl border-2 border-foreground/10 bg-muted/30 p-6 flex flex-col group hover:border-foreground/20 transition-colors">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-foreground text-background flex items-center justify-center shrink-0 text-xs font-bold">
-                  4
-                </div>
-                <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
-                  {language === 'nl' ? 'Word Partner' : 'Become a Partner'}
-                </h2>
-              </div>
-              <p className="text-[13px] text-muted-foreground leading-[1.6] flex-1 mb-6">
-                {language === 'nl'
-                  ? 'Ontdek hoe het Partnerprogramma u helpt emissieanalyses in uw workflow te integreren.'
-                  : 'Learn how the Partner Program helps you integrate emissions analysis into your workflow.'}
-              </p>
-              <button
-                onClick={() => navigate('/dashboard/partnership-program')}
-                className="w-full rounded-full px-4 py-2.5 text-sm font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
-                {language === 'nl' ? 'Verken Partnerprogramma' : 'Explore Partner Program'}
-              </button>
-            </div>
-
-            {/* Card 5 - Start Your Own Workspace (spans 2 cols, emphasized) */}
-            <div className="md:col-span-2 rounded-2xl border-2 border-foreground/15 bg-card p-6 flex flex-col relative overflow-hidden shadow-[0_2px_20px_-4px_rgba(0,0,0,0.08)]">
-              
-
-              <div className="flex items-center gap-3 mb-2 relative z-10">
+          {/* Highlight: Start your own Workspace */}
+          <div className="rounded-xl border border-foreground/15 bg-card p-4 sm:p-5 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)]">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
+              <div className="flex items-start gap-3 flex-1 min-w-0">
                 <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center shrink-0">
                   <Plus className="w-4 h-4 text-background" />
                 </div>
-                <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
-                  {language === 'nl' ? 'Start uw eigen Workspace' : 'Start Your Own Workspace'}
-                </h2>
+                <div className="min-w-0">
+                  <h2 className="text-[14px] font-semibold text-foreground tracking-tight">
+                    {language === 'nl' ? 'Start uw eigen Workspace' : 'Start Your Own Workspace'}
+                  </h2>
+                  <p className="text-[12px] text-muted-foreground leading-snug mt-1">
+                    {language === 'nl'
+                      ? 'Klaar voor echte analyses? We koppelen uw Workspace automatisch aan uw bureau - of nodig uw manager uit.'
+                      : 'Ready for real analyses? We auto-link your Workspace to your firm - or invite your manager.'}
+                  </p>
+                </div>
               </div>
-
-              <p className="text-[13px] text-muted-foreground leading-[1.6] mt-2 mb-5 relative z-10">
-                {language === 'nl'
-                  ? 'Klaar om echte analyses uit te voeren? We koppelen uw Workspace automatisch aan uw bureau op basis van uw e-mail - of nodig uw manager uit.'
-                  : 'Ready to run real analyses? We automatically link your Workspace to your firm based on your login email - or you can invite your manager if needed.'}
-              </p>
-
-              <div className="grid grid-cols-2 gap-3 mb-4 relative z-10">
+              <div className="flex items-center gap-2 sm:shrink-0">
                 <button
                   onClick={() => navigate('/pilot-demo/create-account')}
-                  className="rounded-full px-5 py-3 text-sm font-bold transition-all duration-200 bg-foreground text-background hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]">
+                  className="rounded-full px-4 py-2 text-[13px] font-semibold bg-foreground text-background hover:opacity-90 transition-opacity">
                   {language === 'nl' ? 'Maak Workspace' : 'Create Workspace'}
                 </button>
-                <div className="flex items-center gap-1.5">
-                  <button
-                    onClick={() => setShowInviteManager(true)}
-                    className="flex-1 rounded-full px-5 py-3 text-sm font-semibold border-2 border-foreground/20 text-foreground hover:bg-muted/50 transition-colors">
-                    {language === 'nl' ? 'Nodig mijn manager uit' : 'Invite My Manager'}
-                  </button>
-                  <div className="relative group">
-                    <div className="w-7 h-7 rounded-full border border-border flex items-center justify-center cursor-help hover:bg-muted/50 transition-colors shrink-0">
-                      <Info className="w-3.5 h-3.5 text-muted-foreground" />
-                    </div>
-                    <div className="absolute bottom-full right-0 mb-2 w-56 rounded-lg bg-foreground text-background text-xs p-2.5 leading-relaxed opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20 shadow-lg">
-                      {language === 'nl'
-                        ? 'Uw manager ontvangt een e-mail om uw Workspace aan het bureau te koppelen.'
-                        : 'Your manager will get an email to link your Workspace to the firm.'}
-                    </div>
+                <button
+                  onClick={() => setShowInviteManager(true)}
+                  className="rounded-full px-4 py-2 text-[13px] font-medium border border-border text-foreground hover:bg-muted/50 transition-colors">
+                  {language === 'nl' ? 'Nodig manager uit' : 'Invite Manager'}
+                </button>
+                <div className="relative group">
+                  <div className="w-7 h-7 rounded-full border border-border flex items-center justify-center cursor-help hover:bg-muted/50 transition-colors shrink-0">
+                    <Info className="w-3.5 h-3.5 text-muted-foreground" />
+                  </div>
+                  <div className="absolute bottom-full right-0 mb-2 w-60 rounded-lg bg-foreground text-background text-[11px] p-2.5 leading-relaxed opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-20 shadow-lg">
+                    {language === 'nl'
+                      ? 'Als freelancer is de Workspace van u. Als werknemer: nodig uw manager uit zodat uw bureau correct gekoppeld is.'
+                      : 'As a freelancer the Workspace is yours. As an employee, invite your manager so your firm is properly linked.'}
                   </div>
                 </div>
               </div>
-
-              <p className="text-[11px] text-muted-foreground/60 leading-relaxed relative z-10">
-                <span className="font-medium text-muted-foreground/80">Tip:</span>{' '}
-                {language === 'nl'
-                  ? 'Als freelancer behoort uw Workspace aan u en worden partnerafrekeningen rechtstreeks aan u toegewezen. Als werknemer worden deze afrekeningen toegewezen aan de Workspace-eigenaar - nodig uw manager uit zodat uw bureau correct gekoppeld is en erkenning krijgt.'
-                  : 'As a freelancer, your Workspace belongs to you and partner settlements are assigned directly to you. As an employee, these settlements are assigned to the Workspace owner - invite your manager to ensure your firm is properly linked and receives recognition.'}
-              </p>
             </div>
-
           </div>
-
-
 
         </main>
       </div>
