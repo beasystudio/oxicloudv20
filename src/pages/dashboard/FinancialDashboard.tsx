@@ -238,11 +238,11 @@ const FinancialDashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <TopNavigation />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-5">
         {/* Header row */}
-        <div className="flex items-center justify-end gap-2 mb-6">
+        <div className="flex items-center justify-end gap-2 mb-4">
           <Select value={selectedYear.toString()} onValueChange={(v) => setSelectedYear(parseInt(v))}>
-            <SelectTrigger className="w-24 h-9"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="w-20 h-8 text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
               {[2020, 2021, 2022, 2023, 2024].map((year) => (
                 <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
@@ -251,14 +251,14 @@ const FinancialDashboard = () => {
           </Select>
           {isOwnerOrAdmin && (
             <>
-              <Button onClick={handleClearData} variant="ghost" size="icon" className="h-9 w-9"><RefreshCw className="h-4 w-4" /></Button>
-              <Button onClick={handleSeedData} variant="outline" size="sm" className="h-9">Seed</Button>
+              <Button onClick={handleClearData} variant="ghost" size="icon" className="h-8 w-8"><RefreshCw className="h-3.5 w-3.5" /></Button>
+              <Button onClick={handleSeedData} variant="outline" size="sm" className="h-8 text-xs">Seed</Button>
             </>
           )}
         </div>
 
         {/* KPI Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-5">
           <KpiCard
             label={`${selectedYear} ${t('dashboard.financial.yearRevenue')}`}
             value={formatCurrency(totals.currentYearRevenue)}
@@ -266,34 +266,34 @@ const FinancialDashboard = () => {
             footer={totals.growth !== 0 ? (
               <div className="flex items-center gap-1">
                 {totals.growth >= 0 ? <ArrowUpRight className="h-3 w-3 text-foreground" /> : <ArrowDownRight className="h-3 w-3 text-destructive" />}
-                <span className={cn("text-xs font-medium", totals.growth >= 0 ? "text-foreground" : "text-destructive")}>
+                <span className={cn("text-[11px] font-medium", totals.growth >= 0 ? "text-foreground" : "text-destructive")}>
                   {totals.growth >= 0 ? '+' : ''}{totals.growth}%
                 </span>
-                <span className="text-xs text-muted-foreground">{t('dashboard.financial.vsLastYear')}</span>
+                <span className="text-[11px] text-muted-foreground">{t('dashboard.financial.vsLastYear')}</span>
               </div>
-            ) : <span className="text-xs text-muted-foreground">{t('dashboard.financial.thisYear')}</span>}
+            ) : <span className="text-[11px] text-muted-foreground">{t('dashboard.financial.thisYear')}</span>}
           />
           <KpiCard
             label={t('dashboard.financial.totalRevenue')}
             value={formatCurrency(totals.lifetimeRevenue)}
-            footer={<span className="text-xs text-muted-foreground">{t('dashboard.financial.since2020')}</span>}
+            footer={<span className="text-[11px] text-muted-foreground">{t('dashboard.financial.since2020')}</span>}
           />
           <KpiCard
             label={isOwnerOrAdmin ? t('dashboard.financial.clientCompanies') : t('dashboard.financial.activeUsers')}
             value={isOwnerOrAdmin ? financialData.length : totals.activeUsers}
-            footer={<span className="text-xs text-muted-foreground">{isOwnerOrAdmin ? t('dashboard.financial.activeSubscriptions') : t('dashboard.financial.licensedSeats')}</span>}
+            footer={<span className="text-[11px] text-muted-foreground">{isOwnerOrAdmin ? t('dashboard.financial.activeSubscriptions') : t('dashboard.financial.licensedSeats')}</span>}
           />
           <KpiCard
             label={isOwnerOrAdmin ? t('dashboard.financial.mrr') : t('dashboard.financial.completedProjects')}
             value={isOwnerOrAdmin ? formatCurrency(financialData.reduce((sum, c) => sum + c.monthlyFee, 0)) : totals.projectsCompleted}
-            footer={<span className="text-xs text-muted-foreground">{isOwnerOrAdmin ? t('dashboard.financial.monthlyRecurring') : `${t('dashboard.financial.inYear')} ${selectedYear}`}</span>}
+            footer={<span className="text-[11px] text-muted-foreground">{isOwnerOrAdmin ? t('dashboard.financial.monthlyRecurring') : `${t('dashboard.financial.inYear')} ${selectedYear}`}</span>}
           />
         </div>
 
         {/* Tabs */}
         <PillToggle items={financialTabs} activeId={activeTab} onSelect={setActiveTab} layoutId="financialPillToggle" />
 
-        <div className="mt-8">
+        <div className="mt-5">
           {/* ───── COMMISSIONS (Client Users) ───── */}
           {!isOwnerOrAdmin && activeTab === 'commissions' && (
             <div className="space-y-4">
