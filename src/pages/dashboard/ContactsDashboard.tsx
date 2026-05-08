@@ -1126,7 +1126,7 @@ const ContactsDashboard = () => {
                 <div className="p-6 space-y-6">
                   {/* Contact Persons Section */}
                   {selectedCompanyData.employees.length > 0 && (
-                    <div>
+                    <div className="rounded-2xl bg-muted/40 dark:bg-muted/20 border border-border/30 p-4">
                       <div className="flex items-center gap-2 mb-3">
                         <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
                           {t('dashboard.contactsDashboard.contactPersons')}
@@ -1165,7 +1165,7 @@ const ContactsDashboard = () => {
 
                   {/* Branches / Addresses Section */}
                   {selectedCompanyData.addresses.length > 0 && (
-                    <div>
+                    <div className="rounded-2xl bg-muted/40 dark:bg-muted/20 border border-border/30 p-4">
                       <div className="flex items-center gap-2 mb-3">
                         <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
                           {t('dashboard.contactsDashboard.branchesAddresses')}
