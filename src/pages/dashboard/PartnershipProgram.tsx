@@ -226,6 +226,28 @@ export default function PartnershipProgram() {
           </Button>
 
           <div className="flex gap-10">
+            {/* Side nav - sticky, left side */}
+            <nav className="hidden lg:block w-44 shrink-0">
+              <div className="sticky top-24">
+                <ul className="space-y-1">
+                  {navItems.map((item) => (
+                    <li key={item.id}>
+                      <button
+                        onClick={() => scrollTo(item.id)}
+                        className={`w-full text-left px-3 py-2 rounded-lg text-[13px] transition-all ${
+                          activeSection === item.id
+                            ? 'text-foreground font-semibold bg-muted/60'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </nav>
+
             {/* Main content */}
             <main className="flex-1 min-w-0">
               {/* Hero */}
@@ -269,7 +291,7 @@ export default function PartnershipProgram() {
                   {t.steps.map((step, i) => (
                     <div key={i} className="flex gap-4">
                       <div className="flex flex-col items-center">
-                       <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-semibold shrink-0 transition-colors ${
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-semibold shrink-0 transition-colors ${
                           i === t.steps.length - 1
                             ? 'bg-foreground text-background'
                             : 'bg-card border border-border/60 text-foreground'
@@ -392,28 +414,6 @@ export default function PartnershipProgram() {
                 </p>
               </section>
             </main>
-
-            {/* Side nav - sticky, right side */}
-            <nav className="hidden lg:block w-44 shrink-0">
-              <div className="sticky top-24">
-                <ul className="space-y-1">
-                  {navItems.map((item) => (
-                    <li key={item.id}>
-                      <button
-                        onClick={() => scrollTo(item.id)}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-[13px] transition-all ${
-                          activeSection === item.id
-                            ? 'text-foreground font-semibold bg-muted/60'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
-                        }`}
-                      >
-                        {item.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </nav>
           </div>
         </div>
       </div>
