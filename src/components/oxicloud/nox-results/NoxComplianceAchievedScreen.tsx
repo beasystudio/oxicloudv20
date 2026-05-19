@@ -1,6 +1,6 @@
 import { OxiCloudProject } from '@/types/oxicloud';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, FileText, Download, Sparkles } from 'lucide-react';
+ import { Check, ArrowRight, FileText, Download, Apple } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 interface NoxComplianceAchievedScreenProps {
@@ -48,14 +48,14 @@ export function NoxComplianceAchievedScreen({
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
           >
             <Check className="w-10 h-10 text-primary-foreground" strokeWidth={3} />
-            <motion.div
-              className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-accent flex items-center justify-center"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.5, type: 'spring' }}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-accent-foreground" />
-            </motion.div>
+             <motion.div
+               className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-accent flex items-center justify-center"
+               initial={{ scale: 0 }}
+               animate={{ scale: 1 }}
+               transition={{ delay: 0.5, type: 'spring' }}
+             >
+               <Apple className="w-3.5 h-3.5 text-accent-foreground" />
+             </motion.div>
           </motion.div>
 
           <div className="space-y-2">

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { ArrowLeft, ArrowRight, Check, MapPin, Home, Layers, Search, PenTool, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { HelpClip } from '@/components/help/HelpClip';
 
 // Fix Leaflet default marker icon
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -590,7 +591,12 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
               </div>
 
               {/* Hint */}
-              <p className="text-sm text-muted-foreground text-center leading-snug font-medium">{getStepHint()}</p>
+              <div className="flex items-center justify-center gap-1.5">
+                <p className="text-sm text-muted-foreground text-center leading-snug font-medium">{getStepHint()}</p>
+                {(currentStep === 'plot' || currentStep === 'buildings') && (
+                  <HelpClip clipId="polygon-mistake" />
+                )}
+              </div>
             </div>
 
             {/* Search Panel - directly below the overlay card, centered */}

@@ -10,7 +10,8 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Plus, ArrowLeft, Users, Download, ArrowDown, ArrowUp, Play, Clock, FileCheck, Lock, X, CreditCard, RefreshCw, User, Copy, ArrowRight, FileText, CheckCircle2 } from 'lucide-react';
+import { Search, Plus, ArrowLeft, Users, Download, ArrowDown, ArrowUp, Play, Clock, FileCheck, Lock, X, CreditCard, RefreshCw, User, Copy, ArrowRight, FileText, CheckCircle2, Eye } from 'lucide-react';
+import { NoxStepProgress } from '@/components/projects/NoxStepProgress';
 import { cn } from '@/lib/utils';
 import { getPilotSession, getPilotUser, getPilotCompany, getPilotProjects, getPilotContacts, getPilotQuotes, getPilotReports, getPilotEmployees, PilotProject, PilotContact, clonePilotNoxVersion, PilotNoxVersionEntry } from '@/lib/pilotSessionStore';
 import { toast } from 'sonner';
@@ -538,77 +539,85 @@ export default function PilotProjects() {
 
         {/* RIGHT COLUMN: 70% */}
         <div className="w-[70%] flex flex-col gap-4 overflow-hidden">
-          {/* NOx Status Card */}
-          {isNoxFrozen ? <Card className="rounded-xl border-muted-foreground/30 bg-muted/40 shadow-sm shrink-0 border border-dotted">
+          {/* NOx Status Card - mirrors /dashboard/projects */}
+          {isNoxFrozen ? (
+            <Card className="rounded-xl border-muted-foreground/30 bg-muted/40 shadow-sm shrink-0 border border-dotted">
               <CardHeader className="px-4 py-3 pb-0">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-muted-foreground">NOx Assessment</h3>
-                  <Badge variant="outline" className="text-[10px] font-medium px-2 py-0.5 text-muted-foreground border-muted-foreground/30">Setup vereist</Badge>
+                  <h3 className="text-sm font-semibold text-muted-foreground">{t('dashboard.projectsDashboard.noxAssessment')}</h3>
+                  <Badge variant="outline" className="text-[10px] font-medium px-2 py-0.5 text-muted-foreground border-muted-foreground/30">
+                    {t('dashboard.projectsDashboard.setupRequired')}
+                  </Badge>
                 </div>
               </CardHeader>
-              <CardContent className="p-4 pt-3">
+              <CardContent className="p-4 pt-3 border-dotted">
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 mb-3">
                   <div className="p-1.5 rounded-full bg-amber-100 dark:bg-amber-900/50">
                     <Users className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                   </div>
                   <div className="space-y-0.5">
-                     <p className="text-xs font-medium text-amber-700 dark:text-amber-300">Contacten vereist</p>
-                     <p className="text-[10px] text-amber-600 dark:text-amber-400">
-                       Voeg minstens één <strong>Klant</strong>-contact en één <strong>Team</strong>-contact toe om verder te gaan.
-                     </p>
+                    <p className="text-xs font-medium text-amber-700 dark:text-amber-300">
+                      {t('dashboard.projectsDashboard.contactsRequired')}
+                    </p>
+                    <p
+                      className="text-[10px] text-amber-600 dark:text-amber-400"
+                      dangerouslySetInnerHTML={{ __html: t('dashboard.projectsDashboard.contactsRequiredDesc') }}
+                    />
                   </div>
                 </div>
                 <div className="flex gap-2 mb-3">
                   <div className={cn("flex-1 px-2.5 py-1.5 rounded-md border text-[10px] font-medium flex items-center gap-1.5", hasTeamContact ? "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300" : "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300")}>
-                    {hasTeamContact ? "✓ Team toegevoegd" : "✗ Team ontbreekt"}
+                    {hasTeamContact ? t('dashboard.projectsDashboard.teamAdded') : t('dashboard.projectsDashboard.teamMissing')}
                   </div>
                 </div>
                 <Button className="w-full h-9 text-xs font-medium opacity-50" variant="secondary" disabled>
-                  NOx Beoordeling vergrendeld
+                  {t('dashboard.projectsDashboard.noxLocked')}
                 </Button>
               </CardContent>
-            </Card> : <Card className="rounded-xl border shadow-sm shrink-0 bg-card text-card-foreground">
+            </Card>
+          ) : (
+            <Card className="rounded-xl border shadow-sm shrink-0 bg-card text-card-foreground">
               <CardHeader className="px-4 py-3 pb-0">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold">NOx Assessment</h3>
-                  {statusConfig && <Badge className={cn(statusConfig.color, "text-[10px] font-medium px-2 py-0.5 text-white")}>
-                      {statusConfig.label}
-                    </Badge>}
+                  <h3 className="text-sm font-semibold">{t('dashboard.projectsDashboard.noxAssessment')}</h3>
+                  {statusConfig && selectedProject.noxStatus && (
+                    <Badge className={cn("text-[10px] font-medium px-2 py-0.5 text-white", statusConfig.color)}>
+                      {getTranslatedStatusLabel(selectedProject.noxStatus, t)}
+                    </Badge>
+                  )}
                 </div>
               </CardHeader>
               <CardContent className="p-4 pt-3">
-                {/* Progress Steps - Visual workflow indicator */}
-                {selectedProject.noxStatus && <div className="mb-4">
-                    <div className="flex items-center gap-0.5">
-                      {NOX_STEPS.map((step, index) => {
-                    const isCompleted = index < currentStepIndex || index === currentStepIndex && step === 'report_delivered';
-                    const isCurrent = index === currentStepIndex;
-                    return <div key={step} className="flex items-center flex-1">
-                            <div className={cn("h-1 flex-1 rounded-full transition-all", isCompleted ? "bg-primary" : isCurrent ? "bg-primary/60" : "bg-muted")} />
-                          </div>;
-                  })}
-                    </div>
-                    <div className="flex justify-between mt-1.5">
-                      <span className="text-[9px] text-muted-foreground">Input</span>
-                      <span className="text-[9px] text-muted-foreground">Delivered</span>
-                    </div>
-                  </div>}
+                {/* Labeled Step Progress - same component as dashboard */}
+                {selectedProject.noxStatus && (
+                  <div className="mb-4">
+                    <NoxStepProgress currentStatus={selectedProject.noxStatus} />
+                  </div>
+                )}
 
                 <div className="flex gap-3">
                   <div className="flex-1 space-y-2">
-                    <Button onClick={handleCTAClick} className="w-full h-9 text-xs font-medium" variant={selectedProject.noxStatus === 'paid' || selectedProject.noxStatus === 'report_in_progress' ? 'default' : 'secondary'}>
-                      {(!selectedProject.noxStatus || selectedProject.noxStatus === 'input_incomplete') && <><Play className="h-3.5 w-3.5 mr-1.5" />{selectedProject.preEstimation ? 'Continue your NOx assessment' : 'Start Input'}</>}
-                      {selectedProject.noxStatus === 'input_completed' && <><FileCheck className="h-3.5 w-3.5 mr-1.5" />Generate Quote</>}
-                      {selectedProject.noxStatus === 'price_generated' && <><CreditCard className="h-3.5 w-3.5 mr-1.5" />Send Quote to Client</>}
-                      {selectedProject.noxStatus === 'awaiting_payment' && <><Clock className="h-3.5 w-3.5 mr-1.5" />Awaiting Payment</>}
-                      {selectedProject.noxStatus === 'paid' && <><FileCheck className="h-3.5 w-3.5 mr-1.5" />Continue your NOx assessment</>}
-                      {selectedProject.noxStatus === 'report_in_progress' && <><RefreshCw className="h-3.5 w-3.5 mr-1.5" />Continue your NOx assessment</>}
-                      {selectedProject.noxStatus === 'report_delivered' && <><Download className="h-3.5 w-3.5 mr-1.5" />View Report</>}
-                    </Button>
+                    {selectedProject.noxStatus ? (
+                      <Button onClick={handleCTAClick} className="w-full h-9 text-xs font-medium" variant="outline">
+                        {selectedProject.noxStatus === 'input_incomplete' && <><Play className="h-3.5 w-3.5 mr-1.5" />{selectedProject.preEstimation ? t('dashboard.projectsDashboard.continueNox') : t('dashboard.nox.startInput')}</>}
+                        {selectedProject.noxStatus === 'input_completed' && <><FileText className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.generateQuote')}</>}
+                        {selectedProject.noxStatus === 'price_generated' && <><CreditCard className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.sendQuoteToClient')}</>}
+                        {selectedProject.noxStatus === 'awaiting_payment' && <><Clock className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.awaitingPayment')}</>}
+                        {selectedProject.noxStatus === 'paid' && <><FileCheck className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.continueNox')}</>}
+                        {selectedProject.noxStatus === 'report_in_progress' && <><RefreshCw className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.continueNox')}</>}
+                        {selectedProject.noxStatus === 'report_delivered' && <><Eye className="h-3.5 w-3.5 mr-1.5" />{t('dashboard.projectsDashboard.viewReport')}</>}
+                      </Button>
+                    ) : (
+                      <Button onClick={handleCTAClick} className="w-full h-9 text-xs font-medium" variant="outline">
+                        <Play className="h-3.5 w-3.5 mr-1.5" />
+                        {t('dashboard.projectsDashboard.startNox')}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardContent>
-            </Card>}
+            </Card>
+          )}
 
           {/* Contacts Card */}
           <Card className="rounded-xl border bg-card text-card-foreground shadow-sm flex-1 flex flex-col overflow-hidden min-h-0">
@@ -797,16 +806,16 @@ export default function PilotProjects() {
   // --- VIEW 1: DEFAULT VIEW ---
   const renderDefaultView = () => <>
       {/* Global Search Bar - click to activate list view */}
-      <div className="relative mb-6 cursor-pointer" onClick={handleGlobalSearchClick}>
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input placeholder="Zoek projecten…" className="pl-12 h-12 text-base bg-background cursor-pointer" readOnly />
+      <div className="relative mb-4 cursor-pointer" onClick={handleGlobalSearchClick}>
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input placeholder="Zoek projecten…" className="pl-9 h-9 text-sm bg-background cursor-pointer" readOnly />
       </div>
 
-      <div className="flex gap-6 h-[calc(100vh-180px)]">
+      <div className="flex gap-4 h-[calc(100vh-160px)]">
         {/* Left Panel: Search Filters */}
-        <Card className="w-80 shrink-0 flex flex-col">
-          <CardHeader className="pb-3 shrink-0">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Zoekfilters</CardTitle>
+        <Card className="w-72 shrink-0 flex flex-col">
+          <CardHeader className="pb-2 shrink-0 px-4 pt-3">
+            <CardTitle className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Zoekfilters</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 flex-1 overflow-y-auto">
             <div className="space-y-2">
@@ -870,16 +879,16 @@ export default function PilotProjects() {
 
         {/* Right Panel: Project Table */}
         <Card className="flex-1 flex flex-col min-h-0">
-          <CardHeader className="pb-3 shrink-0 flex flex-row items-center justify-between">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Projectoverzicht</CardTitle>
-            <Button size="sm" onClick={() => setShowCreateFlow(true)}>
-              <Plus className="h-4 w-4 mr-1" />Nieuw Project
+          <CardHeader className="pb-2 shrink-0 flex flex-row items-center justify-between px-4 pt-3">
+            <CardTitle className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Projectoverzicht</CardTitle>
+            <Button size="sm" className="h-8 text-xs" onClick={() => setShowCreateFlow(true)}>
+              <Plus className="h-3.5 w-3.5 mr-1" />Nieuw Project
             </Button>
           </CardHeader>
-          <CardContent className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          <CardContent className="flex-1 flex flex-col min-h-0 overflow-hidden px-4">
             <div className="flex-1 overflow-auto min-h-0">
               {/* Table Header */}
-              <div className="grid grid-cols-[140px_1fr_180px_1fr] gap-6 px-4 py-3 border-b border-border bg-background text-[11px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20">
+              <div className="grid grid-cols-[140px_1fr_180px_1fr] gap-6 px-3 py-2.5 border-b border-border bg-background text-[10px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20">
                 <div>N°</div>
                  <div>Naam</div>
                  <div>Manager</div>
@@ -890,20 +899,20 @@ export default function PilotProjects() {
               <div>
                 {paginatedProjects.map(project => {
                 const noxInfo = getNoxStatus(project);
-                return <div key={project.id} className={cn("grid grid-cols-[140px_1fr_180px_1fr] gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative", "hover:shadow-md hover:shadow-foreground/20 hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
-                      <div className="flex items-center gap-2.5 pt-0.5">
+                return <div key={project.id} className={cn("grid grid-cols-[140px_1fr_180px_1fr] gap-6 px-3 py-2.5 cursor-pointer transition-all duration-200 rounded-lg group items-start relative border-b border-border/30", "hover:bg-muted/40")} onClick={() => handleSelectProject(project.id)}>
+                      <div className="flex items-center gap-2 pt-0.5">
                         <span className={cn("inline-block w-2.5 h-2.5 rounded-full shrink-0", noxInfo.status ? STATUS_CONFIG[noxInfo.status].color : 'border-2 border-muted-foreground/40')} />
-                        <span className="text-sm font-medium text-foreground group-hover:text-black transition-colors">{project.projectNumber}</span>
+                        <span className="text-sm font-semibold text-foreground transition-colors">{project.projectNumber}</span>
                       </div>
-                      <div className="text-sm font-medium text-foreground group-hover:text-black transition-colors pt-0.5">{project.name}</div>
-                      <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors pt-0.5">{user.firstName} {user.lastName}</div>
-                      <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors leading-relaxed">
+                      <div className="text-sm font-medium text-foreground transition-colors pt-0.5 truncate">{project.name}</div>
+                      <div className="text-muted-foreground text-[11px] group-hover:text-foreground/80 transition-colors pt-0.5 truncate">{user.firstName} {user.lastName}</div>
+                      <div className="text-muted-foreground text-[11px] group-hover:text-foreground/80 transition-colors leading-relaxed line-clamp-2">
                         {project.siteAddress ? `${project.siteAddress.street} ${project.siteAddress.number}, ${project.siteAddress.postalCode} ${project.siteAddress.city}` : '-'}
                       </div>
                     </div>;
               })}
                 {paginatedProjects.length === 0 && <div className="text-center py-16 text-muted-foreground">
-                     <p className="text-base font-medium mb-2">Geen projecten gevonden</p>
+                     <p className="text-sm font-medium mb-1">Geen projecten gevonden</p>
                      <p className="text-xs mb-4">Maak uw eerste project aan om een NOx-beoordeling te starten</p>
                     
                   </div>}
@@ -911,16 +920,16 @@ export default function PilotProjects() {
             </div>
 
             {/* Pagination */}
-            {defaultFilteredProjects.length > 0 && <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                <span className="text-sm text-muted-foreground">{defaultFilteredProjects.length} projecten gevonden</span>
-                <div className="flex items-center gap-4">
+            {defaultFilteredProjects.length > 0 && <div className="flex items-center justify-between mt-3 pt-3 border-t">
+                <span className="text-xs text-muted-foreground">{defaultFilteredProjects.length} projecten gevonden</span>
+                <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">Toon</span>
+                    <span className="text-xs text-muted-foreground">Toon</span>
                     <Select value={String(itemsPerPage)} onValueChange={v => {
                   setItemsPerPage(Number(v));
                   setCurrentPage(1);
                 }}>
-                      <SelectTrigger className="w-16 h-8 bg-background">
+                      <SelectTrigger className="w-14 h-7 text-xs bg-background">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-background">
@@ -933,7 +942,7 @@ export default function PilotProjects() {
                   {totalPages > 1 && <div className="flex gap-1">
                       {Array.from({
                   length: totalPages
-                }, (_, i) => i + 1).map(page => <Button key={page} variant={currentPage === page ? "default" : "outline"} size="sm" className="h-8 w-8 p-0" onClick={() => setCurrentPage(page)}>
+                }, (_, i) => i + 1).map(page => <Button key={page} variant={currentPage === page ? "default" : "outline"} size="sm" className="h-7 w-7 p-0 text-xs" onClick={() => setCurrentPage(page)}>
                           {page}
                         </Button>)}
                     </div>}

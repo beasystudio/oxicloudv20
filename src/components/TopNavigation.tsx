@@ -16,6 +16,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useTheme } from '@/contexts/ThemeContext';
 import oxiLogoLight from '@/assets/oxicloud-logo-light.png';
 import oxiLogoDark from '@/assets/oxicloud-logo-dark.png';
+import { HelpCenterButton } from '@/components/help/HelpCenterButton';
 
 export const TopNavigation = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -293,6 +294,9 @@ export const TopNavigation = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* Help Center */}
+        <HelpCenterButton />
 
         {/* Notifications - stays visible */}
         <DropdownMenu>

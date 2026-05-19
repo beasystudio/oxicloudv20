@@ -12,7 +12,7 @@ import { logAuditEvent } from '@/lib/securityAuditStore';
 import { toast } from 'sonner';
 import loginBgLight from '@/assets/login-bg-light.jpg';
 import loginBgDark from '@/assets/login-bg-dark.jpg';
-import oxicloudLogo from '@/assets/oxicloud-logo-white.png';
+import oxicloudLogo from '@/assets/oxicloud-mark.png';
 import { AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -61,7 +61,7 @@ export default function PilotLogin() {
               key={theme}
               src={theme === 'dark' ? loginBgDark : loginBgLight}
               alt="OxiCloud environment"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover object-right"
               initial={{ rotateX: 90, opacity: 0 }}
               animate={{ rotateX: 0, opacity: 1 }}
               exit={{ rotateX: -90, opacity: 0 }}
@@ -69,20 +69,20 @@ export default function PilotLogin() {
               style={{ transformOrigin: 'center center', backfaceVisibility: 'hidden' }}
             />
           </AnimatePresence>
-          
-          <div className="relative z-10 flex flex-col justify-between p-12 w-full">
-            <Link to="/"><img src={oxicloudLogo} alt="OxiCloud" className="h-11 w-auto" /></Link>
-            <div className="max-w-md">
-              <p className="text-white/50 text-xs uppercase tracking-[0.14em] mb-3">Environmental Compliance</p>
-            </div>
-          </div>
         </div>
 
         {/* Right - Light form */}
         <div className="w-full lg:w-[45%] flex flex-col justify-center px-8 lg:px-16 xl:px-20">
           <motion.div variants={container} initial="hidden" animate="show" className="max-w-sm mx-auto w-full">
-            <motion.div variants={item} className="lg:hidden mb-12">
-              <Link to="/" className="text-foreground font-semibold text-lg tracking-tight">OxiCloud</Link>
+            <motion.div variants={item} className="mb-12">
+              <Link to="/" className="flex items-center gap-2">
+                <img
+                  src={oxicloudLogo}
+                  alt="OxiCloud"
+                  className="h-7 w-auto dark:invert"
+                />
+                <span className="text-foreground font-semibold text-lg tracking-tight">OxiCloud</span>
+              </Link>
             </motion.div>
 
             <motion.div variants={item} className="mb-10">

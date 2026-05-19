@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Download, Building2, User, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PillToggle } from '@/components/ui/pill-toggle';
 import {
   getPilotSession, getPilotUser, getPilotCompany, getPilotContacts, getPilotEmployees,
   addPilotContact, PilotContact
@@ -269,24 +270,15 @@ export default function PilotContacts() {
           <Card className="mb-4">
             <CardContent className="py-3 px-4">
               <div className="flex items-center gap-3">
-                <div className="flex items-center border rounded-md overflow-hidden shrink-0">
-                  <button
-                    onClick={() => setViewMode('company')}
-                    className={cn("px-3 py-1.5 text-xs font-medium transition-colors",
-                      viewMode === 'company' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {t('pilot.contacts.company')}
-                  </button>
-                  <button
-                    onClick={() => setViewMode('person')}
-                    className={cn("px-3 py-1.5 text-xs font-medium transition-colors border-l",
-                      viewMode === 'person' ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {t('pilot.contacts.person')}
-                  </button>
-                </div>
+                <PillToggle
+                  items={[
+                    { id: 'company', label: t('pilot.contacts.company') },
+                    { id: 'person', label: t('pilot.contacts.person') },
+                  ]}
+                  activeId={viewMode}
+                  onSelect={(id) => setViewMode(id as 'company' | 'person')}
+                  layoutId="pilotContactsViewMode"
+                />
                 <div className="flex-1">
                   <Input placeholder={t('pilot.contacts.searchPlaceholder')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="h-8 text-sm" />
                 </div>

@@ -11,6 +11,7 @@ import { PROJECT_TYPE_CATEGORIES, ProjectTypeCategory } from '@/types/oxicloud';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { HelpClip } from '@/components/help/HelpClip';
 
 interface ProjectTypePickerProps {
   value: string;
@@ -180,8 +181,11 @@ export function ProjectTypePicker({ value, onSelect, open, onOpenChange }: Proje
                   <button type="button" onClick={handleBack} className="h-6 w-6 rounded-md hover:bg-muted/50 flex items-center justify-center transition-colors">
                     <ArrowLeft className="h-3.5 w-3.5 text-muted-foreground" />
                   </button>
-                  <div className="min-w-0">
-                    <h3 className="text-sm font-semibold text-foreground truncate">{getCategoryLabel(selectedCategory)}</h3>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
+                      {getCategoryLabel(selectedCategory)}
+                      <HelpClip clipId="multiple-subtypes" />
+                    </h3>
                     <p className="text-xs text-muted-foreground mt-0.5">{t('forms.projectTypePicker.chooseSubtype')}</p>
                   </div>
                 </div>

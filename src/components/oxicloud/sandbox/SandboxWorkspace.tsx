@@ -37,7 +37,7 @@ export interface SandboxState {
   hv_trips_rate: number;
   lv_trips_override: number | null;
   hv_trips_override: number | null;
-  // Tab 4 (operational point — heating)
+  // Tab 4 (operational point - heating)
   s4_gate1: boolean;
   s4_gate2: boolean;
   s4_fuel: 'Wood' | 'Gas';
@@ -148,7 +148,7 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
     const guidedMultiplier = prefabEffect * (0.3 + 0.7 * sloopEffect) * (0.2 + 0.8 * verhardingEffect) * (0.3 + 0.7 * grondEffect);
     const tab1Emission = machineEmission * guidedMultiplier;
 
-    // Tabs 2 & 3 — joint construction line. Scale by area, months, prefab.
+    // Tabs 2 & 3 - joint construction line. Scale by area, months, prefab.
     const areaFactor = s.floor_area / SEEDS.floor_area;
     const monthsFactor = s.construction_months / SEEDS.construction_months;
     const prefabConstFactor = (1 - s.prefab_percentage) / (1 - SEEDS.prefab_percentage);
@@ -158,14 +158,14 @@ export function SandboxWorkspace({ onComplete, onBack }: SandboxWorkspaceProps) 
     const tab2Emission = s.lv_trips_override !== null ? s.lv_trips_override * 0.0021 : baseTab2;
     const tab3Emission = s.hv_trips_override !== null ? s.hv_trips_override * 0.014 : baseTab3;
 
-    // Tab 4 — heating with gate logic
+    // Tab 4 - heating with gate logic
     let tab4Emission = 0;
     if (s.s4_gate1 && s.s4_gate2) {
       const fuelEF = s.s4_fuel === 'Wood' ? 0.00009 : 0.00007;
       tab4Emission = s.s4_power_kw * s.operating_hours * fuelEF;
     }
 
-    // Tabs 5 & 6 — joint operational line
+    // Tabs 5 & 6 - joint operational line
     let tab5Emission: number;
     if (s.parking_spaces === 0) {
       // area based path B (lighter)

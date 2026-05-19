@@ -53,7 +53,7 @@ export function CompliancePanel({
         </span>
       </div>
 
-      {/* HERO — current value, big */}
+      {/* HERO - current value, big */}
       <div>
         <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
           {t('sandboxTabs.nowAt')}
@@ -72,7 +72,7 @@ export function CompliancePanel({
         </motion.div>
       </div>
 
-      {/* DELTA card — the answer to "am I compliant?" */}
+      {/* DELTA card - the answer to "am I compliant?" */}
       <div className={cn(
         "rounded-md border p-3",
         isCompliant ? "border-border/70 bg-muted/15" : "border-border/70 bg-muted/20"
@@ -86,12 +86,12 @@ export function CompliancePanel({
         </p>
       </div>
 
-      {/* GAUGE — clean horizontal scale */}
+      {/* GAUGE - clean horizontal scale */}
       <div className="space-y-2 pt-1">
         <div className="relative h-10">
           {/* full track */}
           <div className="absolute top-1/2 -translate-y-1/2 inset-x-0 h-[2px] bg-muted rounded-full" />
-          {/* compliance zone (0 → target) — slightly darker fill */}
+          {/* compliance zone (0 → target) - slightly darker fill */}
           <div
             className="absolute top-1/2 -translate-y-1/2 left-0 h-[2px] bg-muted-foreground/20 rounded-full"
             style={{ width: `${targetPct}%` }}
@@ -113,7 +113,7 @@ export function CompliancePanel({
             className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-muted-foreground/40"
             style={{ left: `${startPct}%` }}
           />
-          {/* CURRENT marker — focal point */}
+          {/* CURRENT marker - focal point */}
           <motion.div
             className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-muted-foreground/70 ring-4 ring-background"
             animate={{ left: `${currentPct}%` }}
@@ -133,7 +133,7 @@ export function CompliancePanel({
         </div>
       </div>
 
-      {/* SAVED so far — narrative ROI */}
+      {/* SAVED so far - narrative ROI */}
       {beforeValue !== undefined && saved > 0 && (
         <div className="border-t border-border pt-3">
           <div className="flex items-baseline justify-between">

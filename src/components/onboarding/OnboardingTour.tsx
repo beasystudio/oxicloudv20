@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { X, ArrowRight, ArrowLeft, Sparkles, Hand } from 'lucide-react';
+ import { X, ArrowRight, ArrowLeft, Apple, Hand } from 'lucide-react';
 
 export interface OnboardingStep {
   id: string;
@@ -195,11 +195,11 @@ export const OnboardingTour = ({ steps, onComplete, onSkip }: OnboardingTourProp
         <div className="p-5">
           {/* Header */}
           <div className="flex items-start justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-primary" />
-              </div>
-              <span className="text-xs text-muted-foreground">
+             <div className="flex items-center gap-2">
+               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                 <Apple className="w-4 h-4 text-primary" />
+               </div>
+               <span className="text-xs text-muted-foreground">
                 Step {currentStepIndex + 1} of {steps.length}
               </span>
             </div>

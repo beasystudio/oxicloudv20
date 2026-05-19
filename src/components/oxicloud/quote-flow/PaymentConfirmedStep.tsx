@@ -3,7 +3,7 @@
  */
 
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ArrowRight, PartyPopper, Sparkles } from "lucide-react";
+ import { CheckCircle2, ArrowRight, PartyPopper, Apple } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 interface PaymentConfirmedStepProps {
@@ -35,10 +35,10 @@ export function PaymentConfirmedStep({
       {/* Single clear action card */}
       {!noxCompleted ? (
         <div className="rounded-2xl border border-border bg-card p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <Sparkles className="h-4.5 w-4.5 text-primary" />
-            </div>
+           <div className="flex items-center gap-3 mb-4">
+             <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+               <Apple className="h-4.5 w-4.5 text-primary" />
+             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-medium text-sm">{t('quoteFlow.noxAssessment')}</h3>
               <p className="text-xs text-muted-foreground mt-0.5">

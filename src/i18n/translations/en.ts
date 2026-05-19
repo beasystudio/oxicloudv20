@@ -4606,7 +4606,7 @@ export const en = {
     trips: 'trips',
     perDay: 'per day',
     perYear: 'per year',
-    // Tab 4 — operational point source
+    // Tab 4 - operational point source
     s4PanelTitle: 'Heating and combustion system',
     s4Step1: 'Is there a combustion system on site?',
     s4Step2: 'Does it run more than 100 hours per year?',
@@ -4619,12 +4619,12 @@ export const en = {
     s4PowerKW: 'Installed power',
     s4HoursYear: 'Operating hours per year',
     s4HoursMax: 'Maximum 8760 (365 days × 24)',
-    // Tab 5 — operational LV with parking path switch
+    // Tab 5 - operational LV with parking path switch
     s5PathParking: 'Path A: parking based',
     s5PathArea: 'Path B: area based',
     s5PathSwitchInfo: 'Calculation switched to area based model.',
     s5ParkingHint: 'Set parking spaces to 0 to switch to the area based model.',
-    // Scenarios per source — labels
+    // Scenarios per source - labels
     scenariosFor: 'Reduction plans for this source',
     scenarioApplied: 'Plan applied',
     // Tab 2/3 scenarios
@@ -4661,7 +4661,7 @@ export const en = {
   pbFlow: {
     title: 'Appropriate Assessment',
     awaitStep1: 'Your client receives the Appropriate Assessment quote via email with a secure signing link',
-    awaitStep2: 'They review and sign online — you\u2019ll be notified instantly',
+    awaitStep2: 'They review and sign online - you\u2019ll be notified instantly',
     awaitStep3: 'Once payment is received, the OxiCloud team prepares your Appropriate Assessment report and delivers it to this project binder',
     legallyRequired: 'Legally required',
     introDesc: 'After exhausting all optimisation options, this project exceeds the permitted NOx threshold. Under applicable legislation, an Appropriate Assessment is mandatory before this project can proceed to submission.',

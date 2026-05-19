@@ -5,7 +5,7 @@
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { PartyPopper, ArrowRight, Sparkles } from "lucide-react";
+ import { PartyPopper, ArrowRight, Apple } from "lucide-react";
 
 interface PaymentSuccessDialogProps {
   open: boolean;
@@ -35,9 +35,9 @@ export function PaymentSuccessDialog({
         {/* Next step + CTA */}
         <div className="px-6 pb-6 space-y-4">
           <div className="flex items-center gap-3 p-3.5 bg-muted/40 rounded-xl">
-            <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-              <Sparkles className="h-4 w-4 text-primary" />
-            </div>
+             <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+               <Apple className="h-4 w-4 text-primary" />
+             </div>
             <div>
               <p className="text-xs font-medium">Next Step</p>
               <p className="text-[11px] text-muted-foreground">

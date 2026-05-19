@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 interface TabProps { onBack: () => void; onConfirm?: () => void; }
 
 /**
- * JOINT panel for Sources 2 & 3 (Construction line — LV + HV).
+ * JOINT panel for Sources 2 & 3 (Construction line - LV + HV).
  * Spec: LV/HV share one limit, assessed combined: (LV/MaxLV + HV/MaxHV) ≤ 100%.
  * Tab3 imports and renders this same panel.
  */

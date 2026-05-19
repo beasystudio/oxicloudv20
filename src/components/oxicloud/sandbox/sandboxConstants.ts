@@ -14,7 +14,7 @@ export const MACHINE_EMISSION_FACTORS: Record<string, number> = {
   'Mobiele kraan': 0.022,
 };
 
-// Thresholds (kg NOx) — all 6 sources fail at SEEDS
+// Thresholds (kg NOx) - all 6 sources fail at SEEDS
 export const THRESHOLDS = {
   bouwfase_punt: 32.0,
   bouwfase_lijn_lv: 18.5,
@@ -24,7 +24,7 @@ export const THRESHOLDS = {
   exploitatie_lijn_hv: 8.6,
 };
 
-// Seed values — chosen so EVERY source exceeds its threshold
+// Seed values - chosen so EVERY source exceeds its threshold
 export const SEEDS = {
   // Tab 1
   prefab_percentage: 0.40,
@@ -38,7 +38,7 @@ export const SEEDS = {
   construction_months: 14,
   lv_trips_rate: 8.2,
   hv_trips_rate: 1.8,
-  // Tab 4 (operational point — heating)
+  // Tab 4 (operational point - heating)
   operating_hours: 1000,
   vermogen: 60,
   s4_gate1: true,

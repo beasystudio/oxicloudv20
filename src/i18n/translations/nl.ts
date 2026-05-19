@@ -4469,7 +4469,7 @@ export const nl = {
     tabOperationalPoint: 'Exploitatiefase - puntbronnen',
     tabOperationalLine: 'Exploitatiefase - lijnbronnen',
     // Tab2/3 shared
-    trafficRatesHeader: 'Verkeersgeneratiekentallen — gebaseerd op CROW 381, Mobiliteitsstudie Brugge',
+    trafficRatesHeader: 'Verkeersgeneratiekentallen - gebaseerd op CROW 381, Mobiliteitsstudie Brugge',
     lvTripsRate: 'Kental lichte voertuigen',
     hvTripsRate: 'Kental zware voertuigen',
     tripsUnit: 'ritten/1000m²/dag',
@@ -4563,7 +4563,7 @@ export const nl = {
   pbFlow: {
     title: 'Passende Beoordeling',
     awaitStep1: 'Uw opdrachtgever ontvangt de offerte voor de Passende Beoordeling per e-mail met een beveiligde ondertekeningslink',
-    awaitStep2: 'Ze bekijken en ondertekenen online — u wordt direct op de hoogte gebracht',
+    awaitStep2: 'Ze bekijken en ondertekenen online - u wordt direct op de hoogte gebracht',
     awaitStep3: 'Zodra de betaling is ontvangen, stelt het OxiCloud-team uw Passende Beoordeling-rapport op en levert het in deze projectmap af',
     legallyRequired: 'Wettelijk vereist',
     introDesc: 'Na uitputting van alle optimalisatiemogelijkheden overschrijdt dit project de toegestane NOx-drempel. Conform de toepasselijke wetgeving is een Passende Beoordeling verplicht alvorens dit project verder kan worden ingediend.',

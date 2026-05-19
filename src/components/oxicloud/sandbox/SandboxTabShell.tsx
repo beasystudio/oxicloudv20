@@ -50,7 +50,7 @@ export function SandboxTabShell({
           hasScenarios ? 'lg:grid-cols-12' : 'lg:grid-cols-12',
         )}
       >
-        {/* LEFT — scenarios (only when provided) */}
+        {/* LEFT - scenarios (only when provided) */}
         {hasScenarios && (
           <aside className="lg:col-span-3 flex flex-col min-h-0">
             <div className="flex items-center justify-between mb-2.5">
@@ -104,7 +104,7 @@ export function SandboxTabShell({
           </aside>
         )}
 
-        {/* CENTER — inputs (minimal, neutral) */}
+        {/* CENTER - inputs (minimal, neutral) */}
         <section
           className={cn(
             'flex flex-col min-h-0',
@@ -117,7 +117,7 @@ export function SandboxTabShell({
           <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 pb-3 space-y-5 text-foreground/90">
             {inputs}
           </div>
-          {/* Footer — always anchored at the bottom of the viewport */}
+          {/* Footer - always anchored at the bottom of the viewport */}
           <div className="shrink-0 flex items-center justify-between gap-4 pt-3 border-t border-border bg-background">
             <Button variant="ghost" size="sm" onClick={onBack} className="h-8 rounded-full text-xs text-muted-foreground hover:text-foreground">
               {t('sandbox.back')}
@@ -140,7 +140,7 @@ export function SandboxTabShell({
           </div>
         </section>
 
-        {/* RIGHT — compliance */}
+        {/* RIGHT - compliance */}
         <aside className={cn('flex flex-col min-h-0 overflow-y-auto', hasScenarios ? 'lg:col-span-3' : 'lg:col-span-4')}>
           {compliance}
         </aside>

@@ -7,6 +7,7 @@ import { getPilotSession, getPilotUser, getPilotCompany, getPilotOnboarding, get
 import { PilotNavigation } from '@/components/pilot/PilotNavigation';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { motion } from 'framer-motion';
+import { HelpClip } from '@/components/help/HelpClip';
 
 /* ── Primitives (matching Demo Environment) ── */
 function Card({ className = '', children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
@@ -120,12 +121,18 @@ export default function PilotDashboard() {
           {/* Stats row */}
           <motion.div {...fade(0.22)} className="grid grid-cols-3 gap-2.5 mb-2.5">
             <Card>
-              <Label>TEAM</Label>
+              <div className="flex items-center justify-between">
+                <Label>TEAM</Label>
+                <HelpClip clipId="invite-manager" />
+              </div>
               <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{stats.teamSize}</p>
               <p className="text-xs text-muted-foreground">{t('pilot.dashboard.activeMembers')}</p>
             </Card>
             <Card>
-              <Label>{language === 'nl' ? 'PROJECTEN' : 'PROJECTS'}</Label>
+              <div className="flex items-center justify-between">
+                <Label>{language === 'nl' ? 'PROJECTEN' : 'PROJECTS'}</Label>
+                <HelpClip clipId="workspace-what-and-create" />
+              </div>
               <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{stats.totalProjects}</p>
               <p className="text-xs text-muted-foreground">{stats.activeProjects} {language === 'nl' ? 'actief' : 'active'}</p>
             </Card>

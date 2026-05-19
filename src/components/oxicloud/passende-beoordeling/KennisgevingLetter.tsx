@@ -10,7 +10,7 @@ interface KennisgevingLetterProps {
 }
 
 /**
- * Kennisgeving Passende Beoordeling — auto-generated notification letter.
+ * Kennisgeving Passende Beoordeling - auto-generated notification letter.
  * Sent from hello@oxicloud.be to the client BEFORE any quote is issued.
  * Branding mirrors the standard Stikstof report (OxiCloud + A-Spine letterhead).
  */
@@ -45,7 +45,7 @@ export function KennisgevingLetter({ project, condensed = false }: KennisgevingL
             OxiCloud · A-Spine
           </p>
           <h3 className="text-base font-bold tracking-wide uppercase text-foreground mt-1">
-            Kennisgeving — Passende Beoordeling
+            Kennisgeving - Passende Beoordeling
           </h3>
           <p className="text-xs text-muted-foreground mt-1">
             Wettelijke kennisgeving aan de opdrachtgever
@@ -100,7 +100,7 @@ export function KennisgevingLetter({ project, condensed = false }: KennisgevingL
         {/* 4. Legal Basis */}
         <Section title="4. Wettelijke grondslag">
           <p className="text-foreground">
-            Stikstofdecreet — artikel 26/1 DABM
+            Stikstofdecreet - artikel 26/1 DABM
             <span className="ml-2 text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-amber-500/40 text-amber-700 bg-amber-50">
               Pending sign-off Christine
             </span>

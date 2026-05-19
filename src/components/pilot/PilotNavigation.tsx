@@ -9,6 +9,7 @@ import { getPilotSession, getPilotUser, getPilotCompany, getPilotOnboarding, cle
 import { useLanguage } from '@/i18n/LanguageContext';
 import oxiLogoLight from '@/assets/oxicloud-logo-light.png';
 import oxiLogoDark from '@/assets/oxicloud-logo-dark.png';
+import { HelpCenterButton } from '@/components/help/HelpCenterButton';
 
 interface PilotNavigationProps {
   onStartOnboarding?: (flow: 1 | 2 | 3) => void;
@@ -61,7 +62,6 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
 
             {/* Nav items - matching production client nav */}
             <div className="hidden md:flex items-center gap-2">
-              <NavItem to="/pilot-demo/projects" label={t('pilot.nav.projects')} />
               <NavItem to="/pilot-demo/projects" label={t('pilot.nav.projects')} />
               <NavItem to="/pilot-demo/contacts" label={t('pilot.nav.contacts')} />
             </div>
@@ -120,6 +120,9 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Help Center */}
+            <HelpCenterButton />
 
             {/* Notifications - stays visible */}
             <Button variant="ghost" size="icon" className="h-9 w-9">

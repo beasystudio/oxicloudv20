@@ -51,7 +51,7 @@ export function PassendeBeoordelingFlow({
       partnerCompanyName={currentUser?.company || pbProject.architectName}
       nextSteps={[
         t('pbFlow.awaitStep1') || 'Your client receives the Passende Beoordeling quote via email with a secure signing link',
-        t('pbFlow.awaitStep2') || 'They review and sign online — you\u2019ll be notified instantly',
+        t('pbFlow.awaitStep2') || 'They review and sign online - you\u2019ll be notified instantly',
         t('pbFlow.awaitStep3') || 'Once payment is received, the A-Spine team prepares your Passende Beoordeling report and delivers it to this project binder',
       ]}
     />

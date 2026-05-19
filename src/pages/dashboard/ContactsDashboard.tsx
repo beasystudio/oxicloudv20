@@ -1001,36 +1001,43 @@ const ContactsDashboard = () => {
                         <p className="text-sm font-medium mb-1">{t('dashboard.contactsDashboard.noContactsFound')}</p>
                         <p className="text-xs">{t('dashboard.contactsDashboard.noPersonsAvailable')}</p>
                       </div>
-                    ) : filteredPersons.map(person => {
-                      const isSelected = selectedPersonId === person.id;
-                      return (
-                      <div
-                        key={person.id}
-                        className={cn(
-                          "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
-                          isSelected
-                            ? "bg-[#FBFBFB] dark:bg-muted/40 ring-1 ring-border/60 rounded-xl mx-1.5 my-0.5 border-transparent shadow-sm"
-                            : "hover:bg-muted/30"
-                        )}
-                        onClick={() => setSelectedPersonId(isSelected ? null : person.id)}
-                        onDoubleClick={() => {
-                          const contact: UnifiedContact = {
-                            id: person.id, name: person.name, company: person.company,
-                            email: person.email, mobilePhone: '', workPhone: person.telephone,
-                            homePhone: '', contactCategory: 'algemeen', isCompany: false
-                          };
-                          setSelectedContact(contact);
-                          setIsEditDialogOpen(true);
-                        }}
-                      >
-                        <div className="text-sm font-medium text-foreground">{person.name}</div>
-                        <div className="flex items-center gap-3 mt-0.5">
-                          <span className="text-[11px] text-muted-foreground">{person.company}</span>
-                          <span className="text-[11px] text-muted-foreground/60">·</span>
-                          <span className="text-[11px] text-muted-foreground truncate">{person.email}</span>
-                        </div>
+                    ) : (
+                      <div className={cn(
+                        "grid gap-3 p-3",
+                        selectedPersonId
+                          ? "grid-cols-1"
+                          : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                      )}>
+                        {filteredPersons.map(person => {
+                          const isSelected = selectedPersonId === person.id;
+                          return (
+                            <div
+                              key={person.id}
+                              className={cn(
+                                "group rounded-xl border bg-card p-4 cursor-pointer transition-all duration-200",
+                                isSelected
+                                  ? "border-foreground/40 ring-1 ring-foreground/20 shadow-sm"
+                                  : "border-border/40 hover:border-border hover:shadow-sm"
+                              )}
+                              onClick={() => setSelectedPersonId(isSelected ? null : person.id)}
+                              onDoubleClick={() => {
+                                const contact: UnifiedContact = {
+                                  id: person.id, name: person.name, company: person.company,
+                                  email: person.email, mobilePhone: '', workPhone: person.telephone,
+                                  homePhone: '', contactCategory: 'algemeen', isCompany: false
+                                };
+                                setSelectedContact(contact);
+                                setIsEditDialogOpen(true);
+                              }}
+                            >
+                              <div className="text-sm font-semibold text-foreground truncate">{person.name}</div>
+                              <div className="text-[11px] text-muted-foreground truncate mt-1.5">{person.company}</div>
+                              <div className="text-[11px] text-muted-foreground/80 truncate mt-0.5">{person.email}</div>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );});
+                    );
                   })()}
                 </div>
               ) : (
@@ -1042,39 +1049,45 @@ const ContactsDashboard = () => {
                     <p className="text-xs">{t('dashboard.contactsDashboard.noCompaniesAvailable')}</p>
                   </div>
                 ) : (
-                  <div>
+                  <div className={cn(
+                    "grid gap-3 p-3",
+                    expandedCompanies.length > 0
+                      ? "grid-cols-1"
+                      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  )}>
                     {filteredCompanies.map(company => {
                       const isSelected = expandedCompanies.includes(company.id);
                       return (
                         <div
                           key={company.id}
                           className={cn(
-                            "px-4 py-3 border-b border-border/20 cursor-pointer transition-all duration-200 relative",
+                            "group relative rounded-xl border bg-card p-4 cursor-pointer transition-all duration-200",
                             isSelected
-                              ? "bg-[#FBFBFB] dark:bg-muted/40 ring-1 ring-border/60 rounded-xl mx-1.5 my-0.5 border-transparent shadow-sm"
-                              : "hover:bg-muted/30"
+                              ? "border-foreground/40 ring-1 ring-foreground/20 shadow-sm"
+                              : "border-border/40 hover:border-border hover:shadow-sm"
                           )}
                           onClick={() => {
                             setExpandedCompanies(isSelected ? [] : [company.id]);
                           }}
                           onDoubleClick={() => handleContactDoubleClick(company)}
                         >
-                          <div className={cn("text-sm font-semibold transition-colors", isSelected ? "text-foreground" : "text-foreground")}>
+                          <div className="text-sm font-semibold text-foreground line-clamp-1 pr-8">
                             {company.name}
                           </div>
-                          <div className={cn("flex items-center gap-2 mt-1 text-[11px] transition-colors", isSelected ? "text-muted-foreground" : "text-muted-foreground")}>
-                            <span className="truncate max-w-[160px]">{company.email}</span>
-                            <span className="opacity-40">·</span>
-                            <span className="whitespace-nowrap">{company.telephone}</span>
-                          </div>
-                          {company.address && (
-                            <div className={cn("text-[10px] mt-0.5 truncate transition-colors", isSelected ? "text-muted-foreground/60" : "text-muted-foreground/60")}>
-                              {company.address}, {company.city}
+                          {company.employees.length > 0 && (
+                            <div className="absolute top-3 right-3 text-[10px] text-muted-foreground tabular-nums">
+                              {company.employees.length}
                             </div>
                           )}
-                          {company.employees.length > 0 && (
-                            <div className={cn("absolute right-4 top-1/2 -translate-y-1/2 text-[10px] tabular-nums transition-colors", isSelected ? "text-muted-foreground/60" : "text-muted-foreground/40")}>
-                              {company.employees.length} <User className="inline h-3 w-3 -mt-0.5" />
+                          <div className="text-[11px] text-muted-foreground truncate mt-1.5">
+                            {company.email}
+                          </div>
+                          <div className="text-[11px] text-muted-foreground/80 truncate mt-0.5">
+                            {company.telephone}
+                          </div>
+                          {company.address && (
+                            <div className="text-[10px] text-muted-foreground/60 truncate mt-2 pt-2 border-t border-border/30">
+                              {company.address}, {company.city}
                             </div>
                           )}
                         </div>

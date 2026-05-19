@@ -323,7 +323,7 @@ export function Tab1BouwfasePunt({ onConfirm, onBack }: Tab1Props) {
               </div>
             </div>
 
-            {/* EXPERT block — machines (collapsible) */}
+            {/* EXPERT block - machines (collapsible) */}
             <ExpertMachineBlock
               machinesDirty={machinesDirty}
               onRestore={handleRestoreMachines}

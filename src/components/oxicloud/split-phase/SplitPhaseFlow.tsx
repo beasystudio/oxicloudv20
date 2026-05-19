@@ -117,7 +117,7 @@ export function SplitPhaseFlow({
     const ratioValues = (Object.values(perSourceRatios).filter(v => v !== null) as number[]);
     const candidateRatio = complianceRatio * safetyMargin;
     const worstCase = computeWorstCaseRatio(ratioValues, complianceRatio);
-    // Enforce 70% floor (R_min) — Spec §18.2 Constraint B
+    // Enforce 70% floor (R_min) - Spec §18.2 Constraint B
     const finalRatio = Math.max(minimumRatio, worstCase);
     const bindingEmissionType = computeBindingEmissionType(perSourceRatios);
 

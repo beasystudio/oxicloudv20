@@ -30,6 +30,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { ProjectTypePicker } from './ProjectTypePicker';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { HelpClip } from '@/components/help/HelpClip';
 
 interface PreEstimationFormProps {
   initialData?: PreEstimationData;
@@ -519,7 +520,10 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                                   initial={{ opacity: 0, y: -8 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   className="space-y-2">
-                                    <Label className="text-xs font-medium text-muted-foreground">{t('preEstimation.subtype')}</Label>
+                                    <div className="flex items-center gap-1.5">
+                                      <Label className="text-xs font-medium text-muted-foreground">{t('preEstimation.subtype')}</Label>
+                                      <HelpClip clipId="multiple-subtypes" />
+                                    </div>
                                     <div className="flex flex-wrap gap-2">
                                       {selectedCat.subtypes.map((sub) => {
                                       const isActive = entry.projectTypeValue === sub.value;
@@ -564,7 +568,10 @@ export function PreEstimationForm({ initialData, initialAddress, onSubmit, onBac
                               {/* GFA + Height - side by side */}
                               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/20">
                                 <div className="space-y-2">
-                                  <Label className="text-sm font-semibold">{t('preEstimation.grossFloorArea')} <span className="text-destructive">*</span></Label>
+                                  <div className="flex items-center gap-1.5">
+                                    <Label className="text-sm font-semibold">{t('preEstimation.grossFloorArea')} <span className="text-destructive">*</span></Label>
+                                    <HelpClip clipId="building-surface-gross-net" />
+                                  </div>
                                   <Input
                                   type="number" min="0"
                                   className="h-11 bg-muted/20 border-border/50 rounded-lg"

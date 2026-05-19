@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Upload, FileText, CheckCircle, Loader2, X, Sparkles } from 'lucide-react';
+ import { Upload, FileText, CheckCircle, Loader2, X, Apple } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -271,10 +271,10 @@ export function UploadReportDialog({
                 </div>
               </div>
 
-              <Button variant="outline" onClick={handleLoadDemo} className="w-full border-dashed">
-                <Sparkles className="h-4 w-4 mr-2 text-amber-500" />
-                Load Demo Report
-              </Button>
+               <Button variant="outline" onClick={handleLoadDemo} className="w-full border-dashed">
+                 <Apple className="h-4 w-4 mr-2 text-amber-500" />
+                 Load Demo Report
+               </Button>
             </div>}
 
           {/* Processing Steps */}

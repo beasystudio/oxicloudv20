@@ -159,7 +159,7 @@ export function NoxExceedanceScreen({
 
         {/* Two columns */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Bottlenecks — handles 1..N failing sources, with shared-limit merging */}
+          {/* Bottlenecks - handles 1..N failing sources, with shared-limit merging */}
           <div className="space-y-4 min-w-0">
             <div className="flex items-center justify-between gap-2">
               <p className="text-[11px] font-medium tracking-[0.15em] uppercase text-muted-foreground">

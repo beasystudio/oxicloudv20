@@ -7,6 +7,8 @@ import { PageTransition } from "./components/PageTransition";
 import { ThemeWrapper } from "./components/DarkModeWrapper";
 
 import { MockAuthProvider } from "./contexts/MockAuthContext";
+import { HelpClipProvider } from "./components/help/HelpClipContext";
+import { HelpClipOverlay } from "./components/help/HelpClipOverlay";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -109,12 +111,15 @@ const App = () =>
 <QueryClientProvider client={queryClient}>
       <MockAuthProvider>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          
-          <BrowserRouter>
-            <AnimatedRoutes />
-          </BrowserRouter>
+          <HelpClipProvider>
+            <Toaster />
+            <Sonner />
+
+            <BrowserRouter>
+              <AnimatedRoutes />
+            </BrowserRouter>
+            <HelpClipOverlay />
+          </HelpClipProvider>
         </TooltipProvider>
       </MockAuthProvider>
   </QueryClientProvider>;

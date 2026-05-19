@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Lock, Check, Loader2, Circle } from 'lucide-react';
+import { HelpClip } from '@/components/help/HelpClip';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 
@@ -179,14 +180,16 @@ export function MapFootprintSelector({
   return <div className="space-y-4">
 
       {/* Address Search */}
-      <div className="flex gap-2 my-px">
+      <div className="flex gap-2 my-px items-center">
         <Input placeholder="Enter Belgian address..." value={address} onChange={e => setAddress(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleLocate()} disabled={isFootprintLocked} />
+        <HelpClip clipId="correct-wrong-address" />
         <Button type="button" onClick={handleLocate} disabled={isLocating || isFootprintLocked || !address.trim()} className="shrink-0">
           {isLocating ? <Loader2 className="h-4 w-4 animate-spin" /> : <>
               <Circle className="h-4 w-4 mr-1" />
               Locate
             </>}
         </Button>
+        <HelpClip clipId="polygon-mistake" />
       </div>
 
       {error && <p className="text-sm text-destructive">{error}</p>}

@@ -10,7 +10,7 @@ interface KennisgevingEmailPreviewProps {
 }
 
 /**
- * Kennisgeving Passende Beoordeling — the email TEMPLATE used when sending
+ * Kennisgeving Passende Beoordeling - the email TEMPLATE used when sending
  * the quote. Not a separate step; it's the format of the quote email itself.
  * Sent from hello@oxicloud.be with the quote link embedded.
  * Branding mirrors the standard Stikstof report (OxiCloud + A-Spine letterhead).
@@ -31,7 +31,7 @@ export function KennisgevingEmailPreview({
             OxiCloud · A-Spine
           </p>
           <h3 className="text-sm font-bold tracking-wide uppercase text-foreground mt-1">
-            Kennisgeving — Passende Beoordeling
+            Kennisgeving - Passende Beoordeling
           </h3>
         </div>
         <img src={oxicloudLogo} alt="OxiCloud" className="w-8 h-8 rounded" />
@@ -43,7 +43,7 @@ export function KennisgevingEmailPreview({
         <Header label="To" value={project.clientEmail} />
         <Header
           label="Subject"
-          value={`Offerte Passende Beoordeling — ${project.name}`}
+          value={`Offerte Passende Beoordeling - ${project.name}`}
         />
       </div>
 
@@ -76,7 +76,7 @@ export function KennisgevingEmailPreview({
 
         <Section title="Wettelijke grondslag">
           <p className="text-foreground">
-            Stikstofdecreet — artikel 26/1 DABM
+            Stikstofdecreet - artikel 26/1 DABM
             <span className="ml-2 text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-amber-500/40 text-amber-700 bg-amber-50">
               Pending sign-off Christine
             </span>
@@ -111,7 +111,7 @@ export function KennisgevingEmailPreview({
         <p className="text-muted-foreground text-xs">
           Met vriendelijke groeten,
           <br />
-          OxiCloud Platform — namens A-Spine
+          OxiCloud Platform - namens A-Spine
         </p>
       </div>
 

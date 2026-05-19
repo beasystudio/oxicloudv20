@@ -22,6 +22,10 @@ import { useMockAuth } from '@/contexts/MockAuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { PilotOnboardingFlow1 } from '@/components/pilot/PilotOnboardingFlow1';
 import { useNavigate } from 'react-router-dom';
+import { HelpClip } from '@/components/help/HelpClip';
+import { useHelpClips } from '@/components/help/HelpClipContext';
+import { getClip } from '@/components/help/helpClipsRegistry';
+import { Play, Check } from 'lucide-react';
 
 /* ─── Storage ─── */
 const STORAGE_KEY = 'oxicloud_onboarding_v3';
@@ -303,6 +307,8 @@ export const OnboardingChecklist = ({ onComplete, onDismiss, forceShow }: Onboar
               ? nl ? 'Bekijk resultaat' : 'View result'
               : nl ? 'Doorgaan met instellen' : 'Continue setup'}
           </Button>
+
+          <QuickClipsNudge nl={nl} />
         </div>
       </motion.div>
 
@@ -421,8 +427,9 @@ function CompanyStepInline({ nl, done, onComplete }: { nl: boolean; done: boolea
   return (
     <div className="p-6 space-y-4">
       <div>
-        <h4 className="text-sm font-semibold text-foreground mb-0.5">
+        <h4 className="text-sm font-semibold text-foreground mb-0.5 flex items-center gap-1.5">
           {nl ? 'Bedrijfsprofiel instellen' : 'Set up Company Profile'}
+          <HelpClip clipId="workspace-what-and-create" />
         </h4>
         <p className="text-xs text-muted-foreground">
           {nl ? 'Upload logo, bevestig bedrijfsgegevens en BTW' : 'Upload logo, confirm legal name, address & VAT'}
@@ -497,8 +504,9 @@ function TeamStepInline({
           <ChevronLeft className="w-4 h-4" />
         </button>
         <div>
-          <h4 className="text-sm font-semibold text-foreground mb-0.5">
+          <h4 className="text-sm font-semibold text-foreground mb-0.5 flex items-center gap-1.5">
             {nl ? 'Team configureren' : 'Set up your Team'}
+            <HelpClip clipId="invite-manager" />
           </h4>
           <p className="text-xs text-muted-foreground">
             {nl ? 'Nodig teamleden uit via e-mail. U kunt dit later ook doen.' : 'Invite team members by email. You can also do this later.'}
@@ -545,6 +553,53 @@ function TeamStepInline({
         <Button onClick={onComplete} className="flex-1">
           {nl ? 'Uitnodigingen versturen' : 'Send invites'}
         </Button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   QUICK CLIPS NUDGE - first-run getting-started videos
+   ═══════════════════════════════════════════════ */
+const NUDGE_CLIP_IDS = ['workspace-what-and-create', 'invite-manager', 'partner-program'] as const;
+
+function QuickClipsNudge({ nl }: { nl: boolean }) {
+  const { openClip, watchedIds } = useHelpClips();
+  const lang: 'nl' | 'en' = nl ? 'nl' : 'en';
+  const clips = NUDGE_CLIP_IDS.map((id) => getClip(id)).filter(Boolean) as NonNullable<ReturnType<typeof getClip>>[];
+  if (clips.length === 0) return null;
+
+  return (
+    <div className="mt-4 pt-4 border-t border-border">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground mb-2">
+        {nl ? '30-seconde uitleg' : '30-second explainers'}
+      </p>
+      <div className="space-y-1">
+        {clips.map((clip) => {
+          const watched = watchedIds.has(clip.id);
+          return (
+            <button
+              key={clip.id}
+              onClick={() => openClip(clip.id)}
+              className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-muted/60 transition text-left group"
+            >
+              <div
+                className={cn(
+                  'shrink-0 h-6 w-6 rounded-full flex items-center justify-center',
+                  watched ? 'bg-muted text-muted-foreground' : 'bg-primary/10 text-primary'
+                )}
+              >
+                {watched ? <Check className="h-3 w-3" /> : <Play className="h-2.5 w-2.5 fill-current" />}
+              </div>
+              <span className="flex-1 min-w-0 text-xs text-foreground truncate">
+                {clip.title[lang]}
+              </span>
+              <span className="text-[10px] text-muted-foreground tabular-nums shrink-0">
+                {clip.durationSec}s
+              </span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

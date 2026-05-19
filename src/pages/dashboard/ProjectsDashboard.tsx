@@ -730,16 +730,16 @@ const ProjectsDashboard = () => {
   // VIEW 1: Default View
   const renderDefaultView = () => <>
       {/* Global Search Bar */}
-      <div className="relative mb-6 cursor-pointer" onClick={handleGlobalSearchClick}>
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input placeholder={t('dashboard.projectsDashboard.searchProjects')} className="pl-12 h-12 text-base bg-background cursor-pointer" readOnly />
+      <div className="relative mb-4 cursor-pointer" onClick={handleGlobalSearchClick}>
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input placeholder={t('dashboard.projectsDashboard.searchProjects')} className="pl-9 h-9 text-sm bg-background cursor-pointer" readOnly />
       </div>
 
-      <div className="flex gap-6 h-[calc(100vh-180px)]">
+      <div className="flex gap-4 h-[calc(100vh-160px)]">
         {/* Left Panel: Search Field Preview */}
-        <Card className="w-80 shrink-0 flex flex-col">
-          <CardHeader className="pb-3 shrink-0">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{t('dashboard.projectsDashboard.searchFilters')}</CardTitle>
+        <Card className="w-72 shrink-0 flex flex-col">
+          <CardHeader className="pb-2 shrink-0 px-4 pt-3">
+            <CardTitle className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{t('dashboard.projectsDashboard.searchFilters')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 flex-1 overflow-y-auto">
             <div className="space-y-2">
@@ -822,19 +822,19 @@ const ProjectsDashboard = () => {
 
         {/* Right Panel: Project Snapshot Table */}
         <Card className="flex-1 flex flex-col min-h-0">
-          <CardHeader className="pb-3 shrink-0 flex flex-row items-center justify-between">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{t('dashboard.projectsDashboard.projectOverview')}</CardTitle>
+          <CardHeader className="pb-2 shrink-0 flex flex-row items-center justify-between px-4 pt-3">
+            <CardTitle className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{t('dashboard.projectsDashboard.projectOverview')}</CardTitle>
             {!isAdmin &&
-          <Button size="sm" onClick={() => setIsCreateProjectOpen(true)}>
-                <Plus className="h-4 w-4 mr-1" />
+          <Button size="sm" className="h-8 text-xs" onClick={() => setIsCreateProjectOpen(true)}>
+                <Plus className="h-3.5 w-3.5 mr-1" />
                 {t('dashboard.projectsDashboard.newProject')}
               </Button>
           }
           </CardHeader>
-          <CardContent className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          <CardContent className="flex-1 flex flex-col min-h-0 overflow-hidden px-4">
             <div className="flex-1 overflow-auto min-h-0">
               {/* Table Header */}
-               <div className={cn("gap-6 px-4 py-3 border-b border-border bg-background text-[11px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20 grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]")}>
+               <div className={cn("gap-6 px-3 py-2.5 border-b border-border bg-background text-[10px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 z-20 grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]")}>
                 <div>N°</div>
                 <div>{t('dashboard.projectsDashboard.name')}</div>
                 {isAdmin && <div>{t('dashboard.projectsDashboard.company')}</div>}
@@ -846,15 +846,15 @@ const ProjectsDashboard = () => {
               <div>
                 {paginatedProjects.map((project) => <ContextMenu key={project.id}>
                     <ContextMenuTrigger asChild>
-                      <div className={cn("gap-6 px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg group items-start relative grid", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]", "hover:scale-[1.02] hover:z-10")} onClick={() => handleSelectProject(project.id)}>
-                        <div className="flex items-center gap-2.5 pt-0.5">
+                      <div className={cn("gap-6 px-3 py-2.5 cursor-pointer transition-all duration-200 rounded-lg group items-start relative grid border-b border-border/30", isAdmin ? "grid-cols-[140px_1fr_160px_180px_1fr]" : "grid-cols-[140px_1fr_180px_1fr]", "hover:bg-muted/40")} onClick={() => handleSelectProject(project.id)}>
+                        <div className="flex items-center gap-2 pt-0.5">
                           <NoxStatusDot projectId={project.id} />
-                          <span className="text-sm font-medium text-foreground transition-colors">{project.projectNumber}</span>
+                          <span className="text-sm font-semibold text-foreground transition-colors">{project.projectNumber}</span>
                         </div>
-                        <div className="text-sm font-medium text-foreground transition-colors pt-0.5">{project.name}</div>
-                        {isAdmin && <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors pt-0.5">{project.companyId === 'gdesign' ? 'GDesign' : project.companyId === '4takt' ? '4Takt' : project.companyId || '-'}</div>}
-                        <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors pt-0.5">{project.managerName || '-'}</div>
-                        <div className="text-muted-foreground text-xs group-hover:text-foreground/80 transition-colors leading-relaxed">
+                        <div className="text-sm font-medium text-foreground transition-colors pt-0.5 truncate">{project.name}</div>
+                        {isAdmin && <div className="text-muted-foreground text-[11px] group-hover:text-foreground/80 transition-colors pt-0.5 truncate">{project.companyId === 'gdesign' ? 'GDesign' : project.companyId === '4takt' ? '4Takt' : project.companyId || '-'}</div>}
+                        <div className="text-muted-foreground text-[11px] group-hover:text-foreground/80 transition-colors pt-0.5 truncate">{project.managerName || '-'}</div>
+                        <div className="text-muted-foreground text-[11px] group-hover:text-foreground/80 transition-colors leading-relaxed line-clamp-2">
                           {project.location || '-'}
                         </div>
                       </div>
@@ -873,25 +873,25 @@ const ProjectsDashboard = () => {
                   </ContextMenu>)}
                 {paginatedProjects.length === 0 && <div className="text-center py-16 text-muted-foreground">
                     
-                    <p className="text-base font-medium mb-2">{t('dashboard.projectsDashboard.noProjectsFound')}</p>
+                    <p className="text-sm font-medium mb-1">{t('dashboard.projectsDashboard.noProjectsFound')}</p>
                     <p className="text-xs">{t('dashboard.projectsDashboard.adjustFilters')}</p>
                   </div>}
               </div>
             </div>
 
             {/* Pagination */}
-            {defaultFilteredProjects.length > 0 && <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                <span className="text-sm text-muted-foreground">
+            {defaultFilteredProjects.length > 0 && <div className="flex items-center justify-between mt-3 pt-3 border-t">
+                <span className="text-xs text-muted-foreground">
                   {defaultFilteredProjects.length} {t('dashboard.projectsDashboard.projectsFound')}
                 </span>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">{t('common.show')}</span>
+                    <span className="text-xs text-muted-foreground">{t('common.show')}</span>
                     <Select value={String(itemsPerPage)} onValueChange={(v) => {
                   setItemsPerPage(Number(v));
                   setCurrentPage(1);
                 }}>
-                      <SelectTrigger className="w-16 h-8 bg-background">
+                      <SelectTrigger className="w-14 h-7 text-xs bg-background">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-background">
@@ -904,7 +904,7 @@ const ProjectsDashboard = () => {
                   {totalPages > 1 && <div className="flex gap-1">
                       {Array.from({
                   length: totalPages
-                }, (_, i) => i + 1).map((page) => <Button key={page} variant={currentPage === page ? "default" : "outline"} size="sm" className="h-8 w-8 p-0" onClick={() => setCurrentPage(page)}>
+                }, (_, i) => i + 1).map((page) => <Button key={page} variant={currentPage === page ? "default" : "outline"} size="sm" className="h-7 w-7 p-0 text-xs" onClick={() => setCurrentPage(page)}>
                           {page}
                         </Button>)}
                     </div>}

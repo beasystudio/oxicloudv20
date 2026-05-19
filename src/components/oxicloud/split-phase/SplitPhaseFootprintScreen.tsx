@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowRight, Layers } from 'lucide-react';
 import { SplitPhaseCalculation } from '@/types/splitPhase';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { HelpClip } from '@/components/help/HelpClip';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 
@@ -77,7 +78,7 @@ export function SplitPhaseFootprintScreen({
   const phase1Ratio = totalFootprint > 0 ? phase1Area / totalFootprint : 0;
   const phase1Percent = (phase1Ratio * 100).toFixed(0);
 
-  // Spec §4.3 — area ratio must fall within [R_min, R_compliance]
+  // Spec §4.3 - area ratio must fall within [R_min, R_compliance]
   const minR = calculation.minimumRatio;
   const maxR = calculation.complianceRatio;
   const validation = useMemo<{ valid: boolean; message: string | null }>(() => {
@@ -111,7 +112,7 @@ export function SplitPhaseFootprintScreen({
   const handleDrawDeleted = useCallback(() => { setPhase1Polygon(null); setPhase1Area(0); }, []);
 
   const handleResetToSuggestion = () => {
-    // Reset map drawing — user can redraw or accept suggested
+    // Reset map drawing - user can redraw or accept suggested
     setPhase1Polygon(null);
     setPhase1Area(suggestedFootprint);
     toast.success(`Reset to suggested ${suggestedFootprint} m²`);
@@ -142,6 +143,8 @@ export function SplitPhaseFootprintScreen({
                 <span className="tabular-nums text-foreground/80">02 / 04</span>
                 <span className="h-px w-6 bg-border" />
                 <span>{t('splitPhase.defineFootprint')}</span>
+                <HelpClip clipId="polygon-mistake" />
+                <HelpClip clipId="raising-ground-level" />
               </div>
 
               {/* Areas grid */}
@@ -149,9 +152,10 @@ export function SplitPhaseFootprintScreen({
                 <Cell label={t('splitPhase.suggested')} value={`${suggestedFootprint} m²`} sub={`${(calculation.finalRatio * 100).toFixed(0)}%`} />
                 <Cell
                   label={t('splitPhase.drawn')}
-                  value={phase1Area > 0 ? `${phase1Area} m²` : '—'}
+                  value={phase1Area > 0 ? `${phase1Area} m²` : '-'}
                   sub={phase1Area > 0 ? `${phase1Percent}%` : ''}
                   emphasized={phase1Area > 0}
+                  helpClipId="building-surface-gross-net"
                 />
                 <Cell label={t('splitPhase.totalLabel')} value={`${totalFootprint} m²`} sub="100%" />
               </div>
@@ -319,10 +323,13 @@ export function SplitPhaseFootprintScreen({
   );
 }
 
-function Cell({ label, value, sub, emphasized }: { label: string; value: string; sub?: string; emphasized?: boolean }) {
+function Cell({ label, value, sub, emphasized, helpClipId }: { label: string; value: string; sub?: string; emphasized?: boolean; helpClipId?: string }) {
   return (
     <div className="px-2.5 py-1.5 text-center bg-card">
-      <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+      <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground flex items-center justify-center gap-1">
+        {label}
+        {helpClipId && <HelpClip clipId={helpClipId} />}
+      </p>
       <p className={cn('text-[12px] font-semibold tabular-nums leading-tight mt-0.5', emphasized ? 'text-foreground' : 'text-foreground')}>
         {value}
       </p>

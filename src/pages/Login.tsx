@@ -16,8 +16,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { LanguageToggle } from '@/components/LanguageToggle';
 import loginBgLight from '@/assets/login-bg-light.jpg';
 import loginBgDark from '@/assets/login-bg-dark.jpg';
-import oxicloudLogoWhite from '@/assets/oxicloud-logo-white.png';
-import oxicloudLogoDark from '@/assets/oxicloud-logo-dark.png';
+import oxicloudLogo from '@/assets/oxicloud-mark.png';
 import { useTheme } from '@/contexts/ThemeContext';
 
 interface DemoAccount {
@@ -132,29 +131,27 @@ const Login = () => {
               key={theme}
               src={theme === 'dark' ? loginBgDark : loginBgLight}
               alt="OxiCloud environment"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover object-right"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
             />
           </AnimatePresence>
-          <div className="relative z-10 flex flex-col justify-between pt-14 pb-12 pl-12 pr-12 w-full">
-            <Link to="/">
-              <img
-                src={theme === 'dark' ? oxicloudLogoWhite : oxicloudLogoDark}
-                alt="OxiCloud"
-                className="h-11 w-auto transition-opacity duration-500"
-              />
-            </Link>
-          </div>
         </div>
 
         {/* Right - Light form panel */}
         <div className="w-full lg:w-1/2 flex items-center justify-center px-8 lg:px-12 xl:px-16 overflow-y-auto">
           <motion.div variants={container} initial="hidden" animate="show" className="max-w-[400px] w-full py-12">
             <motion.div variants={item} className="mb-16 flex items-center justify-between">
-              <span className="text-foreground font-semibold text-lg tracking-tight">OxiCloud</span>
+              <Link to="/" className="flex items-center gap-2">
+                <img
+                  src={oxicloudLogo}
+                  alt="OxiCloud"
+                  className="h-7 w-auto dark:invert"
+                />
+                <span className="text-foreground font-semibold text-lg tracking-tight">OxiCloud</span>
+              </Link>
               <div className="flex items-center gap-2">
                 <ThemeToggle />
                 <LanguageToggle variant="light" />

@@ -11,56 +11,54 @@ html {
 /* Global placeholder styling */
 input::placeholder,
 textarea::placeholder {
-  font-style: italic;
   opacity: 0.35;
   font-weight: 400;
   font-size: 0.8em;
   letter-spacing: 0.01em;
-  text-transform: capitalize;
 }
 
 /* 
-  OxiCloud Design System — Neon Brutalism
+  OxiCloud Design System - Neon Brutalism
   
   Creative North Star: "The High-Contrast Editorial"
   - Sharp 0px radii everywhere
   - Four-color palette: Lime, Off-white, Charcoal, Gray
-  - No 1px borders for sectioning — use background shifts
+  - No 1px borders for sectioning - use background shifts
   - Tonal layering instead of drop shadows
   - Space Grotesk (display) + Inter (body)
 */
 
 @layer base {
   :root {
-    /* Surface — Off-white #FBFBFB */
+    /* Surface - Off-white #FBFBFB */
     --background: 0 0% 98.4%;
     --foreground: 160 4% 11%;
 
-    /* Card — Light gray #f8f8f8 */
+    /* Card - Light gray #f8f8f8 */
     --card: 0 0% 97.3%;
     --card-foreground: 160 4% 11%;
 
-    /* Primary — Lime #ADFF3B */
+    /* Primary - Lime #ADFF3B */
     --primary: 85 100% 62%;
     --primary-foreground: 85 100% 5%;
 
-    /* Secondary — Dark Charcoal #2f3131 */
+    /* Secondary - Dark Charcoal #2f3131 */
     --secondary: 180 2% 19%;
     --secondary-foreground: 0 0% 97.6%;
 
-    /* Muted — Surface container low #f3f3f4 */
+    /* Muted - Surface container low #f3f3f4 */
     --muted: 240 3% 95.5%;
     --muted-foreground: 0 1% 37%;
 
-    /* Accent — same as primary for consistency */
+    /* Accent - same as primary for consistency */
     --accent: 85 100% 62%;
     --accent-foreground: 85 100% 5%;
 
-    /* Destructive — communicated via bold charcoal, not red */
+    /* Destructive - communicated via bold charcoal, not red */
     --destructive: 160 4% 11%;
     --destructive-foreground: 0 0% 97.6%;
 
-    /* Border — Light gray #eaeaea */
+    /* Border - Light gray #eaeaea */
     --border: 0 0% 91.8%;
     --input: 240 3% 95.5%;
     --ring: 85 100% 62%;
@@ -79,7 +77,7 @@ textarea::placeholder {
     --surface-container-high: 240 2% 91%;
     --surface-container-highest: 240 2% 88.6%;
 
-    /* Sidebar — Charcoal */
+    /* Sidebar - Charcoal */
     --sidebar-background: 160 4% 11%;
     --sidebar-foreground: 0 0% 97.6%;
     --sidebar-primary: 85 100% 62%;
@@ -89,17 +87,17 @@ textarea::placeholder {
     --sidebar-border: 0 0% 22%;
     --sidebar-ring: 85 100% 62%;
 
-    /* Chart colors — 4-color system */
+    /* Chart colors - 4-color system */
     --chart-1: 85 100% 62%;
     --chart-2: 160 4% 11%;
     --chart-3: 0 1% 37%;
     --chart-4: 85 50% 45%;
     --chart-5: 0 0% 65%;
 
-    /* Ambient shadow — on_surface at 4% opacity */
+    /* Ambient shadow - on_surface at 4% opacity */
     --shadow-ambient: 0px 20px 40px hsla(160, 4%, 11%, 0.04);
 
-    /* Glass — Frosted Neon */
+    /* Glass - Frosted Neon */
     --glass-blur: 20px;
     --glass-bg: 0 0% 98.4% / 0.80;
 
@@ -108,15 +106,15 @@ textarea::placeholder {
   }
 
   .dark {
-    /* Surface — Deep charcoal */
+    /* Surface - Deep charcoal */
     --background: 160 4% 7%;
     --foreground: 0 0% 95%;
 
-    /* Card — slightly lifted */
+    /* Card - slightly lifted */
     --card: 160 4% 10%;
     --card-foreground: 0 0% 95%;
 
-    /* Primary — Lime stays consistent */
+    /* Primary - Lime stays consistent */
     --primary: 85 100% 62%;
     --primary-foreground: 85 100% 5%;
 
@@ -187,7 +185,7 @@ textarea::placeholder {
     scroll-behavior: smooth;
   }
 
-  /* Enforce pill/round globally — override the brutalist 0px rule */
+  /* Enforce pill/round globally - override the brutalist 0px rule */
   *, *::before, *::after {
     /* Allow component-level border-radius to apply */
   }
@@ -210,7 +208,7 @@ textarea::placeholder {
     background-color: hsl(var(--surface-container-highest));
   }
 
-  /* Solid surface — no blur allowed */
+  /* Solid surface - no blur allowed */
   .glass-frosted {
     background-color: hsl(var(--card));
   }
@@ -264,7 +262,7 @@ textarea::placeholder {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     EDITORIAL CARDS — No borders, tonal layering
+     EDITORIAL CARDS - No borders, tonal layering
      ═══════════════════════════════════════════════════════════ */
 
   .editorial-card {
@@ -294,7 +292,7 @@ textarea::placeholder {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     TYPOGRAPHY — Space Grotesk (Display) + Inter (Body)
+     TYPOGRAPHY - Space Grotesk (Display) + Inter (Body)
      ═══════════════════════════════════════════════════════════ */
 
   .display-lg {
@@ -348,7 +346,7 @@ textarea::placeholder {
     @apply text-xs font-medium uppercase tracking-[0.12em];
   }
 
-  /* Pill badge — no rounded corners in brutalism */
+  /* Pill badge - no rounded corners in brutalism */
   .overline,
   .overline-badge,
   .overline-dark,
@@ -358,7 +356,7 @@ textarea::placeholder {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     SECTION SPACING — Dramatic whitespace
+     SECTION SPACING - Dramatic whitespace
      ═══════════════════════════════════════════════════════════ */
 
   .section-padding {
@@ -374,7 +372,7 @@ textarea::placeholder {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     INTERACTIVE EFFECTS — Subtle, no heavy shadows
+     INTERACTIVE EFFECTS - Subtle, no heavy shadows
      ═══════════════════════════════════════════════════════════ */
 
   .hover-lift {
@@ -444,7 +442,7 @@ textarea::placeholder {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SCROLLBAR AUTO-HIDE — Minimal, macOS-style
+   SCROLLBAR AUTO-HIDE - Minimal, macOS-style
    ═══════════════════════════════════════════════════════════ */
 
 * {

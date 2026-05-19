@@ -35,6 +35,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { COUNTRIES } from '@/types/contact';
+import { HelpClip } from '@/components/help/HelpClip';
 
 interface CreateNewProjectDialogProps {
   open: boolean;
@@ -466,7 +467,10 @@ export const CreateNewProjectDialog = ({
               <section className="space-y-3">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('createProject.projectDetails')}</h4>
                 <div className="space-y-2">
-                  <Label className="text-xs">{t('createProject.projectName')}</Label>
+                  <div className="flex items-center gap-1.5">
+                    <Label className="text-xs">{t('createProject.projectName')}</Label>
+                    <HelpClip clipId="workspace-what-and-create" />
+                  </div>
                   <Input value={formData.naam} onChange={(e) => setFormData({ ...formData, naam: e.target.value })} placeholder={t('createProject.projectNamePlaceholder')} />
                   <p className="text-[11px] text-muted-foreground">{t('createProject.projectNameFormat')}</p>
                 </div>

@@ -6,7 +6,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { X, ArrowRight, ArrowLeft, Sparkles, Hand, HelpCircle } from 'lucide-react';
+ import { X, ArrowRight, ArrowLeft, Apple, Hand, HelpCircle } from 'lucide-react';
 import { 
   type ModuleOnboardingStep, 
   type OnboardingModule,

@@ -106,7 +106,7 @@ export const computeMinimumRatio = (
 };
 
 /**
- * Spec §18.2 — R_phase1 = MIN across all per-source ratios.
+ * Spec §18.2 - R_phase1 = MIN across all per-source ratios.
  * Per-source ratios are legal R_compliance values; the safety margin is
  * applied to the resulting candidate.
  */
@@ -122,7 +122,7 @@ export const computeWorstCaseRatio = (
   return Math.min(candidateRatio, minEmissionRatio);
 };
 
-/** Spec §18.2 — return the source code whose ratio is the binding (MIN) one. */
+/** Spec §18.2 - return the source code whose ratio is the binding (MIN) one. */
 export const computeBindingEmissionType = (
   perSourceRatios: PerSourceRatios
 ): EmissionSourceCode => {
