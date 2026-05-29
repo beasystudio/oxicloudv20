@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Plus, Info, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { InviteManagerDialog } from '@/components/demo/InviteManagerDialog';
+import { HelpClip } from '@/components/help/HelpClip';
 
 const copy = {
   en: {
@@ -252,8 +253,9 @@ export default function PartnershipProgram() {
             <main className="flex-1 min-w-0">
               {/* Hero */}
               <section id="intro" ref={(el) => { sectionRefs.current.intro = el; }} className="mb-10 scroll-mt-24">
-                <h1 className="text-2xl font-bold text-foreground tracking-tight mb-4">
+                <h1 className="text-2xl font-bold text-foreground tracking-tight mb-4 inline-flex items-center gap-2">
                   {t.heroTitle}
+                  <HelpClip clipId="partner-program" size="md" />
                 </h1>
                 <div className="space-y-3 text-[14px] text-muted-foreground leading-[1.65]">
                   <p>{t.heroIntro1}</p>

@@ -68,7 +68,7 @@ export function GlobalAddMenu({ companyId }: GlobalAddMenuProps) {
     return (
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon" disabled className="h-8 w-8 opacity-50 rounded-full bg-foreground text-background dark:bg-primary dark:text-primary-foreground">
+          <Button variant="ghost" size="icon" disabled className="h-8 w-8 opacity-50 rounded-full bg-primary text-primary-foreground">
             <Plus className="h-3.5 w-3.5" />
           </Button>
         </TooltipTrigger>
@@ -86,7 +86,7 @@ export function GlobalAddMenu({ companyId }: GlobalAddMenuProps) {
     <>
       <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen} modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-foreground text-background dark:bg-primary dark:text-primary-foreground hover:bg-muted/60 hover:text-foreground transition-all duration-200">
+          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-primary text-primary-foreground hover:brightness-110 transition-all duration-200">
             <Plus className="h-3.5 w-3.5" />
           </Button>
         </DropdownMenuTrigger>

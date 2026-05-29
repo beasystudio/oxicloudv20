@@ -24,7 +24,7 @@ export function DemoWelcomeModal({ onClose }: DemoWelcomeModalProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-foreground/40 dark:bg-background/60"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-white/70 dark:bg-background/70 backdrop-blur-sm"
       onClick={(e) => e.target === e.currentTarget && onClose()}>
 
       <motion.div

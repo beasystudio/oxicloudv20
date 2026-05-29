@@ -263,7 +263,9 @@ export default function ClientDashboard() {
                 <div className="flex items-center gap-2">
                   <div className={cn(
                     "w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0",
-                    c.highlight ? "bg-foreground text-background" : "bg-muted text-foreground"
+                    c.highlight
+                      ? "bg-foreground text-background dark:bg-primary dark:text-primary-foreground"
+                      : "bg-primary text-primary-foreground dark:bg-background dark:text-primary border dark:border-primary/40"
                   )}>
                     {c.n}
                   </div>
@@ -281,8 +283,8 @@ export default function ClientDashboard() {
           <div className="rounded-xl border border-foreground/15 bg-card p-4 sm:p-5 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)]">
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
               <div className="flex items-start gap-3 flex-1 min-w-0">
-                <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center shrink-0">
-                  <Plus className="w-4 h-4 text-background" />
+                <div className="w-8 h-8 rounded-full bg-[#ADFF3B] flex items-center justify-center shrink-0">
+                  <Plus className="w-4 h-4 text-black" />
                 </div>
                 <div className="min-w-0">
                   <h2 className="text-[14px] font-semibold text-foreground tracking-tight">
@@ -298,7 +300,7 @@ export default function ClientDashboard() {
               <div className="flex items-center gap-2 sm:shrink-0">
                 <button
                   onClick={() => navigate('/pilot-demo/create-account')}
-                  className="rounded-full px-4 py-2 text-[13px] font-semibold bg-foreground text-background hover:opacity-90 transition-opacity">
+                  className="rounded-full px-4 py-2 text-[13px] font-semibold bg-[#ADFF3B] text-black hover:brightness-95 transition-all">
                   {language === 'nl' ? 'Maak Workspace' : 'Create Workspace'}
                 </button>
                 <button

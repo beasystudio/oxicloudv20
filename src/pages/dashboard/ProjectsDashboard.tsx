@@ -825,7 +825,7 @@ const ProjectsDashboard = () => {
           <CardHeader className="pb-2 shrink-0 flex flex-row items-center justify-between px-4 pt-3">
             <CardTitle className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{t('dashboard.projectsDashboard.projectOverview')}</CardTitle>
             {!isAdmin &&
-          <Button size="sm" className="h-8 text-xs" onClick={() => setIsCreateProjectOpen(true)}>
+          <Button size="sm" className="h-8 text-xs bg-[#ADFF3B] text-black hover:brightness-95 dark:bg-[#ADFF3B] dark:text-black" onClick={() => setIsCreateProjectOpen(true)}>
                 <Plus className="h-3.5 w-3.5 mr-1" />
                 {t('dashboard.projectsDashboard.newProject')}
               </Button>

@@ -159,9 +159,9 @@ export const TopNavigation = () => {
     <Link
       to={to}
       className={cn(
-        "flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all duration-200",
+        "nav-pill flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all duration-200",
         isActiveRoute
-          ? "bg-primary text-primary-foreground shadow-sm"
+          ? "nav-pill-active shadow-sm"
           : "bg-transparent border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
       )}
     >

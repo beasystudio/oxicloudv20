@@ -236,7 +236,10 @@ export function MapFootprintSelector({
 
       {/* SPA Info Panel */}
       {nearestSPA && <div className="bg-muted/50 rounded-lg p-3 space-y-2">
-          <h4 className="text-sm font-medium">Nearest SPA (Special Protection Area)</h4>
+          <h4 className="text-sm font-medium inline-flex items-center gap-1.5">
+            Nearest SPA (Special Protection Area)
+            <HelpClip clipId="circle-and-line-meaning" />
+          </h4>
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div>
               <span className="text-muted-foreground">Site Name:</span>

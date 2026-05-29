@@ -19,9 +19,9 @@ export default {
     	},
     	extend: {
     		fontFamily: {
-     			sans: ['"Google Sans"', '"DM Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-     			display: ['"Google Sans"', '"DM Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-    			mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+     			sans: ['"Google Sans"', '"Google Sans"'],
+     			display: ['"Google Sans"', '"Google Sans"'],
+    			mono: ['"Google Sans"', '"Google Sans"']
     		},
     		colors: {
     			border: 'hsl(var(--border))',

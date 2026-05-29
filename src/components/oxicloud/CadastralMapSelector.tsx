@@ -8,7 +8,7 @@ import * as turf from '@turf/turf';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { ArrowLeft, ArrowRight, Check, MapPin, Home, Layers, Search, PenTool, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, MapPin, Home, Layers, Search, PenTool, ChevronRight, GripHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { HelpClip } from '@/components/help/HelpClip';
 
@@ -250,6 +250,28 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
   const plotFeatureGroupRef = useRef<L.FeatureGroup>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const buildingsFeatureGroupRef = useRef<L.FeatureGroup>(null);
+
+  // Stepper card drag offset (from default top-center anchor)
+  const [overlayOffset, setOverlayOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const overlayDragRef = useRef<{ startX: number; startY: number; baseX: number; baseY: number } | null>(null);
+  useEffect(() => {
+    function onMove(e: PointerEvent) {
+      if (!overlayDragRef.current) return;
+      const dx = e.clientX - overlayDragRef.current.startX;
+      const dy = e.clientY - overlayDragRef.current.startY;
+      setOverlayOffset({ x: overlayDragRef.current.baseX + dx, y: overlayDragRef.current.baseY + dy });
+    }
+    function onUp() { overlayDragRef.current = null; }
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+    };
+  }, []);
+  const startOverlayDrag = (e: React.PointerEvent) => {
+    overlayDragRef.current = { startX: e.clientX, startY: e.clientY, baseX: overlayOffset.x, baseY: overlayOffset.y };
+  };
 
   // Layer visibility toggles
   const [showBasemap, setShowBasemap] = useState(true);
@@ -510,8 +532,19 @@ export const CadastralMapSelector: React.FC<CadastralMapSelectorProps> = ({
       <div className="flex-1 w-full relative min-h-0 overflow-hidden rounded-2xl">
         {/* Top Overlay: Progress + Buttons + Hint */}
         <header className="absolute top-0 left-0 right-0 z-[1000] pointer-events-none flex justify-center">
-          <div className="pointer-events-auto mt-3 w-[min(28rem,calc(100%-6rem))]">
-            <div ref={overlayRef} className="bg-background rounded-2xl p-4 flex flex-col gap-2.5 shadow-sm">
+          <div
+            className="pointer-events-auto mt-3 w-[min(28rem,calc(100%-6rem))]"
+            style={{ transform: `translate(${overlayOffset.x}px, ${overlayOffset.y}px)` }}
+          >
+            <div ref={overlayRef} className="bg-background rounded-2xl p-4 pt-2 flex flex-col gap-2.5 shadow-sm border border-border">
+              {/* Drag handle */}
+              <div
+                onPointerDown={startOverlayDrag}
+                className="flex items-center justify-center -mx-4 mb-1 py-1.5 cursor-grab active:cursor-grabbing select-none text-muted-foreground/60 hover:text-foreground transition-colors"
+                title="Sleep om te verplaatsen"
+              >
+                <GripHorizontal className="h-3.5 w-3.5" />
+              </div>
               {/* Confirm Step - SPA Info */}
               {currentStep === 'confirm' && nearestSPA &&
               <div className="bg-background rounded-xl border border-border px-5 py-2.5">

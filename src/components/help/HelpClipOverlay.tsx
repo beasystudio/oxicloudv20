@@ -56,12 +56,12 @@ export function HelpClipOverlay() {
     <div
       role="dialog"
       aria-label={t}
-      className="fixed z-[200] rounded-2xl border border-border bg-card shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 flex flex-col"
-      style={{ right: pos.x, bottom: pos.y, width: size.w, height: size.h || undefined }}
+      className="fixed z-[200] rounded-2xl border border-border bg-card shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 flex flex-col backdrop-blur-md"
+      style={{ right: pos.x, bottom: pos.y, width: size.w, height: size.h || undefined, backgroundColor: 'hsl(var(--card))' }}
     >
       {/* Drag handle / header */}
       <div
-        className="flex items-center justify-between gap-2 px-3 py-2 border-b border-border bg-muted/40 cursor-grab active:cursor-grabbing select-none"
+        className="flex items-center justify-between gap-2 px-3 py-2 border-b border-border bg-muted cursor-grab active:cursor-grabbing select-none"
         onPointerDown={(e) => {
           dragRef.current = { startX: e.clientX, startY: e.clientY, baseX: pos.x, baseY: pos.y };
         }}
@@ -74,7 +74,7 @@ export function HelpClipOverlay() {
         </div>
         <button
           onClick={closeClip}
-          className="rounded-md p-1 hover:bg-muted text-muted-foreground hover:text-foreground transition"
+          className="rounded-md p-1 hover:bg-background text-muted-foreground hover:text-foreground transition"
           aria-label="Close help clip"
         >
           <X className="h-3.5 w-3.5" />

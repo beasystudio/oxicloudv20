@@ -42,7 +42,7 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
       className={cn(
         "flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium transition-all duration-200",
         isActive(to)
-          ? "bg-primary text-primary-foreground shadow-sm"
+          ? "bg-[#ADFF3B] text-black shadow-sm hover:brightness-95"
           : "bg-transparent border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
       )}
     >
@@ -72,7 +72,7 @@ export function PilotNavigation({ onStartOnboarding }: PilotNavigationProps) {
             {/* Global Add Menu (+) */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-foreground text-background dark:bg-primary dark:text-primary-foreground hover:bg-muted/60 hover:text-foreground transition-all duration-200">
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-[#ADFF3B] text-black hover:brightness-95 transition-all duration-200">
                   <Plus className="h-3.5 w-3.5" />
                 </Button>
               </DropdownMenuTrigger>

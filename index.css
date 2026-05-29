@@ -1,4 +1,69 @@
-@import url("https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&family=Google+Sans+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap");
+@font-face {
+  font-family: "Google Sans";
+  src: url("/fonts/GoogleSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Google Sans";
+  src: url("/fonts/GoogleSans-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Google Sans";
+  src: url("/fonts/GoogleSans-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Google Sans";
+  src: url("/fonts/GoogleSans-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Google Sans";
+  src: url("/fonts/GoogleSans-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Google Sans";
+  src: url("/fonts/GoogleSans-SemiBoldItalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Google Sans";
+  src: url("/fonts/GoogleSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Google Sans";
+  src: url("/fonts/GoogleSans-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+
+
 
 @tailwind base;
 @tailwind components;
@@ -20,155 +85,188 @@ textarea::placeholder {
 }
 
 /* 
-  OxiCloud Design System — Neon Brutalism
+  OxiCloud Design System — Navy & Cobalt
   
-  Creative North Star: "The High-Contrast Editorial"
+  Creative North Star: "Deep Blue Editorial"
   - Sharp 0px radii everywhere
-  - Four-color palette: Lime, Off-white, Charcoal, Gray
+  - Palette: Navy, Cobalt blue ramp, Sky tints, White, Lime accent
+  - Text: Light (#FFFFFF), Main (#022068), Scale (#4D4D4D)
+  - Primary ramp: 500 (#00022B) → 400 (#022068) → 300 (#0B60D8) → 200 (#2063C9) → 100 (#7BB6FF) → 50 (#E5FBFF) + Sky (#B3EFFA)
+  - Blue ramp:    500 (#367AE3) → 400 (#4C8AEC) → 300 (#6199F1) → 200 (#80AEF5) → 100 (#99ECFF)
+  - Secondary 300 (lime): #ADFF3B
   - No 1px borders for sectioning — use background shifts
-  - Tonal layering instead of drop shadows
-  - Space Grotesk (display) + Inter (body)
+  - Google Sans (all weights: 400/500/600/700, normal + italic)
 */
 
 @layer base {
   :root {
-    /* Surface — Off-white #FBFBFB */
-    --background: 0 0% 98.4%;
-    --foreground: 160 4% 11%;
+    /* ── Surfaces ───────────────────────────────────────── */
+    /* Base white surface */
+    --background: 0 0% 100%;
+    /* Text/Main (#022068) */
+    --foreground: 223 96% 21%;
 
-    /* Card — Light gray #f8f8f8 */
-    --card: 0 0% 97.3%;
-    --card-foreground: 160 4% 11%;
+    /* Card — very light sky tint (#E5FBFF) */
+    --card: 193 100% 95%;
+    --card-foreground: 223 96% 21%;
 
-    /* Primary — Lime #ADFF3B */
-    --primary: 85 100% 62%;
-    --primary-foreground: 85 100% 5%;
+    /* ── Primary — Navy → Cobalt ramp ───────────────────── */
+    /* primary = Primary/300 (#0B60D8) — main action blue */
+    --primary: 216 91% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary — Dark Charcoal #2f3131 */
-    --secondary: 180 2% 19%;
-    --secondary-foreground: 0 0% 97.6%;
+    /* ── Secondary — deep navy (#00022B) ────────────────── */
+    --secondary: 237 100% 9%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Muted — Surface container low #f3f3f4 */
-    --muted: 240 3% 95.5%;
-    --muted-foreground: 0 1% 37%;
+    /* ── Muted — sky tint (#E5FBFF) ────────────────────── */
+    --muted: 193 100% 95%;
+    --muted-foreground: 0 0% 30%;
 
-    /* Accent — same as primary for consistency */
+    /* ── Accent — Lime (#ADFF3B) ────────────────────────── */
     --accent: 85 100% 62%;
     --accent-foreground: 85 100% 5%;
 
-    /* Destructive — communicated via bold charcoal, not red */
-    --destructive: 160 4% 11%;
-    --destructive-foreground: 0 0% 97.6%;
+    /* ── Destructive — uses navy, not red ───────────────── */
+    --destructive: 223 96% 21%;
+    --destructive-foreground: 0 0% 100%;
 
-    /* Border — Light gray #eaeaea */
-    --border: 0 0% 91.8%;
-    --input: 240 3% 95.5%;
-    --ring: 85 100% 62%;
+    /* ── Border — Primary/50 (#E5FBFF) ─────────────────── */
+    --border: 193 100% 95%;
+    --input: 193 100% 95%;
+    --ring: 216 91% 45%;
 
     --radius: 0px;
-    --neon-lime: 85 100% 62%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 160 4% 11%;
+    --popover-foreground: 223 96% 21%;
 
-    /* Surface tiers for tonal layering */
-    --surface: 0 0% 100%;
-    --surface-container-lowest: 0 0% 100%;
-    --surface-container-low: 240 3% 95.5%;
-    --surface-container: 240 2% 93%;
-    --surface-container-high: 240 2% 91%;
-    --surface-container-highest: 240 2% 88.6%;
+    /* ── Surface tiers — sky tint ladder ────────────────── */
+    /* 
+      Tier 0 = white (#FFFFFF)
+      Tier 1 = Primary/50  (#E5FBFF)
+      Tier 2 = Primary/Sky (#B3EFFA)
+      Tier 3 = Blue/100    (#99ECFF)
+      Tier 4 = Primary/100 (#7BB6FF)
+      Tier 5 = Blue/200    (#80AEF5)
+    */
+    --surface:                    0 0% 100%;
+    --surface-container-lowest:   0 0% 100%;
+    --surface-container-low:      193 100% 95%;   /* #E5FBFF */
+    --surface-container:          193 73% 85%;    /* #B3EFFA */
+    --surface-container-high:     197 100% 80%;   /* #99ECFF */
+    --surface-container-highest:  210 80% 73%;    /* #7BB6FF */
 
-    /* Sidebar — Charcoal */
-    --sidebar-background: 160 4% 11%;
-    --sidebar-foreground: 0 0% 97.6%;
-    --sidebar-primary: 85 100% 62%;
+    /* ── Sidebar — deep navy (#00022B) ──────────────────── */
+    --sidebar-background: 237 100% 9%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 85 100% 62%;               /* lime accent */
     --sidebar-primary-foreground: 85 100% 5%;
-    --sidebar-accent: 180 2% 19%;
-    --sidebar-accent-foreground: 0 0% 97.6%;
-    --sidebar-border: 0 0% 22%;
+    --sidebar-accent: 223 96% 21%;                /* #022068 */
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 216 91% 45%;                /* #0B60D8 */
     --sidebar-ring: 85 100% 62%;
 
-    /* Chart colors — 4-color system */
-    --chart-1: 85 100% 62%;
-    --chart-2: 160 4% 11%;
-    --chart-3: 0 1% 37%;
-    --chart-4: 85 50% 45%;
-    --chart-5: 0 0% 65%;
+    /* ── Chart — blue ramp + lime ───────────────────────── */
+    --chart-1: 216 91% 45%;                       /* #0B60D8 */
+    --chart-2: 216 78% 49%;                       /* #2063C9 */
+    --chart-3: 85 100% 62%;                       /* lime    */
+    --chart-4: 217 73% 57%;                       /* #367AE3 */
+    --chart-5: 210 80% 73%;                       /* #7BB6FF */
 
-    /* Ambient shadow — on_surface at 4% opacity */
-    --shadow-ambient: 0px 20px 40px hsla(160, 4%, 11%, 0.04);
+    /* ── Shadows ─────────────────────────────────────────── */
+    --shadow-ambient: 0px 20px 40px hsla(223, 96%, 21%, 0.08);
 
-    /* Glass — Frosted Neon */
+    /* ── Glass ───────────────────────────────────────────── */
     --glass-blur: 20px;
-    --glass-bg: 0 0% 98.4% / 0.80;
+    --glass-bg: 193 100% 95% / 0.80;             /* sky tint frosted */
 
-    --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "Google Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Google Sans", ui-sans-serif, system-ui, sans-serif;
+
+    /* ── Named color tokens ──────────────────────────────── */
+    /* Text */
+    --text-light:  0 0% 100%;                     /* #FFFFFF  */
+    --text-main:   223 96% 21%;                   /* #022068  */
+    --text-scale:  0 0% 30%;                      /* #4D4D4D  */
+
+    /* Primary ramp */
+    --primary-500: 237 100% 9%;                   /* #00022B  */
+    --primary-400: 223 96% 21%;                   /* #022068  */
+    --primary-300: 216 91% 45%;                   /* #0B60D8  */
+    --primary-200: 216 78% 49%;                   /* #2063C9  */
+    --primary-100: 210 80% 73%;                   /* #7BB6FF  */
+    --primary-50:  193 100% 95%;                  /* #E5FBFF  */
+    --primary-sky: 193 73% 85%;                   /* #B3EFFA  */
+
+    /* Blue ramp */
+    --blue-500:    217 73% 57%;                   /* #367AE3  */
+    --blue-400:    214 77% 61%;                   /* #4C8AEC  */
+    --blue-300:    219 81% 66%;                   /* #6199F1  */
+    --blue-200:    213 84% 73%;                   /* #80AEF5  */
+    --blue-100:    197 100% 80%;                  /* #99ECFF  */
+
+    /* Secondary */
+    --secondary-300: 85 100% 62%;                 /* #ADFF3B (lime) */
   }
 
   .dark {
-    /* Surface — Deep charcoal */
-    --background: 160 4% 7%;
-    --foreground: 0 0% 95%;
+    /* ── Dark surfaces — deep navy ladder ───────────────── */
+    --background: 237 100% 9%;                    /* #00022B  */
+    --foreground: 0 0% 100%;
 
-    /* Card — slightly lifted */
-    --card: 160 4% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 223 96% 12%;
+    --card-foreground: 0 0% 100%;
 
-    /* Primary — Lime stays consistent */
-    --primary: 85 100% 62%;
-    --primary-foreground: 85 100% 5%;
+    --primary: 216 91% 45%;                       /* #0B60D8  */
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary */
-    --secondary: 0 0% 13%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 223 96% 21%;                     /* #022068  */
+    --secondary-foreground: 0 0% 100%;
 
-    /* Muted */
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 55%;
+    --muted: 223 60% 15%;
+    --muted-foreground: 0 0% 65%;
 
     --accent: 85 100% 62%;
     --accent-foreground: 85 100% 5%;
 
     --destructive: 0 0% 95%;
-    --destructive-foreground: 160 4% 7%;
+    --destructive-foreground: 237 100% 9%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 15%;
-    --ring: 85 100% 62%;
-    --neon-lime: 85 100% 62%;
+    --border: 223 60% 22%;
+    --input: 223 60% 15%;
+    --ring: 216 91% 45%;
 
-    --popover: 160 4% 10%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 223 96% 12%;
+    --popover-foreground: 0 0% 100%;
 
-    --surface: 160 4% 7%;
-    --surface-container-lowest: 160 4% 4%;
-    --surface-container-low: 160 4% 10%;
-    --surface-container: 160 4% 12%;
-    --surface-container-high: 160 4% 14%;
-    --surface-container-highest: 160 4% 17%;
+    --surface:                    237 100% 9%;    /* #00022B  */
+    --surface-container-lowest:   237 100% 6%;
+    --surface-container-low:      223 96% 12%;
+    --surface-container:          223 96% 15%;
+    --surface-container-high:     223 96% 18%;
+    --surface-container-highest:  223 96% 21%;    /* #022068  */
 
-    --sidebar-background: 160 4% 5%;
-    --sidebar-foreground: 0 0% 95%;
+    --sidebar-background: 237 100% 5%;
+    --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 85 100% 62%;
     --sidebar-primary-foreground: 85 100% 5%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 15%;
+    --sidebar-accent: 223 96% 15%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 223 60% 22%;
     --sidebar-ring: 85 100% 62%;
 
-    --chart-1: 85 100% 62%;
-    --chart-2: 0 0% 80%;
-    --chart-3: 0 0% 55%;
-    --chart-4: 85 50% 45%;
+    --chart-1: 85 100% 62%;                       /* lime     */
+    --chart-2: 210 80% 73%;                       /* #7BB6FF  */
+    --chart-3: 197 100% 80%;                      /* #99ECFF  */
+    --chart-4: 217 73% 57%;                       /* #367AE3  */
     --chart-5: 0 0% 40%;
 
-    --shadow-ambient: 0px 20px 40px hsla(0, 0%, 0%, 0.12);
-    --glass-bg: 160 4% 7% / 0.80;
+    --shadow-ambient: 0px 20px 40px hsla(0, 0%, 0%, 0.25);
+    --glass-bg: 237 100% 9% / 0.85;
 
-    --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "Google Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Google Sans", ui-sans-serif, system-ui, sans-serif;
   }
 }
 
@@ -186,16 +284,11 @@ textarea::placeholder {
   html {
     scroll-behavior: smooth;
   }
-
-  /* Enforce pill/round globally — override the brutalist 0px rule */
-  *, *::before, *::after {
-    /* Allow component-level border-radius to apply */
-  }
 }
 
 @layer utilities {
   /* ═══════════════════════════════════════════════════════════
-     TONAL LAYERING SYSTEM (replaces glassmorphism)
+     TONAL LAYERING — navy/sky ladder
      ═══════════════════════════════════════════════════════════ */
 
   .surface-level-0 {
@@ -210,12 +303,10 @@ textarea::placeholder {
     background-color: hsl(var(--surface-container-highest));
   }
 
-  /* Solid surface — no blur allowed */
   .glass-frosted {
     background-color: hsl(var(--card));
   }
 
-  /* Legacy glass aliases for compatibility */
   .glass-card {
     background-color: hsl(var(--card));
   }
@@ -237,34 +328,57 @@ textarea::placeholder {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     POSTER MODULES (Background Sections)
+     POSTER MODULES
      ═══════════════════════════════════════════════════════════ */
 
+  /* White surface */
   .poster-white {
     @apply bg-background text-foreground;
   }
 
+  /* Deep navy #00022B */
   .poster-black {
-    background-color: hsl(var(--secondary));
-    color: hsl(var(--secondary-foreground));
+    background-color: hsl(var(--primary-500));
+    color: hsl(var(--text-light));
   }
 
+  /* Primary blue #0B60D8 */
+  .poster-blue {
+    background-color: hsl(var(--primary-300));
+    color: hsl(var(--text-light));
+  }
+
+  /* Navy #022068 */
+  .poster-navy {
+    background-color: hsl(var(--primary-400));
+    color: hsl(var(--text-light));
+  }
+
+  /* Sky tint #E5FBFF */
+  .poster-sky {
+    background-color: hsl(var(--primary-50));
+    color: hsl(var(--text-main));
+  }
+
+  /* Lime accent — for CTA bands */
   .poster-green {
-    @apply bg-primary text-primary-foreground;
+    background-color: hsl(var(--secondary-300));
+    color: hsl(85 100% 5%);
   }
 
+  /* Legacy alias */
   .poster-grey {
     background-color: hsl(var(--surface-container-low));
     @apply text-foreground;
   }
 
   .poster-charcoal {
-    background-color: hsl(160 4% 11%);
+    background-color: hsl(var(--primary-500));
     color: hsl(0 0% 97.6%);
   }
 
   /* ═══════════════════════════════════════════════════════════
-     EDITORIAL CARDS — No borders, tonal layering
+     EDITORIAL CARDS
      ═══════════════════════════════════════════════════════════ */
 
   .editorial-card {
@@ -276,17 +390,38 @@ textarea::placeholder {
     box-shadow: var(--shadow-ambient);
   }
 
+  /* Dark navy card */
   .editorial-card-black {
-    background-color: hsl(var(--secondary));
-    color: hsl(var(--secondary-foreground));
+    background-color: hsl(var(--primary-500));
+    color: hsl(var(--text-light));
   }
 
+  /* Navy card */
+  .editorial-card-navy {
+    background-color: hsl(var(--primary-400));
+    color: hsl(var(--text-light));
+  }
+
+  /* Blue card */
+  .editorial-card-blue {
+    background-color: hsl(var(--primary-300));
+    color: hsl(var(--text-light));
+  }
+
+  /* Sky card */
+  .editorial-card-sky {
+    background-color: hsl(var(--primary-50));
+    color: hsl(var(--text-main));
+  }
+
+  /* Lime card */
   .editorial-card-green {
-    @apply bg-primary text-primary-foreground;
+    background-color: hsl(var(--secondary-300));
+    color: hsl(85 100% 5%);
   }
 
   /* ═══════════════════════════════════════════════════════════
-     CTA BAND MODULE
+     CTA BAND MODULE — lime
      ═══════════════════════════════════════════════════════════ */
 
   .cta-band {
@@ -294,7 +429,7 @@ textarea::placeholder {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     TYPOGRAPHY — Space Grotesk (Display) + Inter (Body)
+     TYPOGRAPHY — Google Sans
      ═══════════════════════════════════════════════════════════ */
 
   .display-lg {
@@ -312,7 +447,6 @@ textarea::placeholder {
     @apply text-[2rem] sm:text-[2.25rem] font-bold leading-[0.95] tracking-[-0.02em];
   }
 
-  /* Legacy heading aliases mapped to new system */
   .heading-xl {
     font-family: var(--font-display);
     @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.92] tracking-[-0.02em];
@@ -348,17 +482,26 @@ textarea::placeholder {
     @apply text-xs font-medium uppercase tracking-[0.12em];
   }
 
-  /* Pill badge — no rounded corners in brutalism */
+  /* Overline badges — cobalt tint */
   .overline,
-  .overline-badge,
+  .overline-badge {
+    font-family: var(--font-sans);
+    @apply inline-block text-xs font-semibold uppercase tracking-[0.12em] px-5 py-2;
+    background-color: hsl(var(--primary-50));
+    color: hsl(var(--primary-300));
+  }
+
+  /* Dark variant — on navy backgrounds */
   .overline-dark,
   .overline-badge-dark {
     font-family: var(--font-sans);
-    @apply inline-block text-xs font-semibold uppercase tracking-[0.12em] px-5 py-2 bg-primary/10 text-primary;
+    @apply inline-block text-xs font-semibold uppercase tracking-[0.12em] px-5 py-2;
+    background-color: hsl(var(--primary-400));
+    color: hsl(var(--secondary-300));             /* lime on navy */
   }
 
   /* ═══════════════════════════════════════════════════════════
-     SECTION SPACING — Dramatic whitespace
+     SECTION SPACING
      ═══════════════════════════════════════════════════════════ */
 
   .section-padding {
@@ -374,7 +517,7 @@ textarea::placeholder {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     INTERACTIVE EFFECTS — Subtle, no heavy shadows
+     INTERACTIVE EFFECTS
      ═══════════════════════════════════════════════════════════ */
 
   .hover-lift {
@@ -421,30 +564,28 @@ textarea::placeholder {
     mix-blend-mode: difference;
   }
 
-  /* Accent text readable on light backgrounds:
-     Light mode → foreground color (dark text)
-     Dark mode  → primary lime (high contrast on dark bg) */
+  /* Accent values — cobalt in light, lime in dark */
   .accent-value {
-    @apply text-foreground;
+    color: hsl(var(--primary-300));
   }
   .dark .accent-value {
-    color: hsl(var(--primary));
+    color: hsl(var(--secondary-300));
   }
 
-  /* Accent text inside a dark pill for light mode readability */
+  /* Accent pill — lime on navy */
   .accent-pill {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
-    background: hsl(var(--secondary));
-    color: hsl(var(--primary));
+    background: hsl(var(--primary-400));
+    color: hsl(var(--secondary-300));
   }
   .dark .accent-pill {
     background: transparent;
-    color: hsl(var(--primary));
+    color: hsl(var(--secondary-300));
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SCROLLBAR AUTO-HIDE — Minimal, macOS-style
+   SCROLLBAR — minimal, macOS-style
    ═══════════════════════════════════════════════════════════ */
 
 * {
@@ -452,7 +593,7 @@ textarea::placeholder {
   scrollbar-color: transparent transparent;
 }
 *:hover {
-  scrollbar-color: hsl(0 0% 50% / 0.2) transparent;
+  scrollbar-color: hsl(216 91% 45% / 0.2) transparent;
 }
 
 ::-webkit-scrollbar {
@@ -466,10 +607,10 @@ textarea::placeholder {
   background: transparent;
 }
 *:hover::-webkit-scrollbar-thumb {
-  background: hsl(0 0% 50% / 0.2);
+  background: hsl(216 91% 45% / 0.2);
 }
 *:hover::-webkit-scrollbar-thumb:hover {
-  background: hsl(0 0% 50% / 0.35);
+  background: hsl(216 91% 45% / 0.4);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -500,7 +641,8 @@ textarea::placeholder {
   left: 0;
   right: 0;
   height: 0%;
-  background: hsl(85 100% 62%);
+  /* Fill with cobalt blue on hover */
+  background: hsl(216 91% 45%);
   transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: -1;
 }
@@ -510,7 +652,7 @@ textarea::placeholder {
 }
 
 .cta-advanced:hover {
-  color: hsl(80 100% 5%);
+  color: hsl(0 0% 100%);
 }
 
 .cta-advanced .cta-text {
@@ -533,7 +675,7 @@ textarea::placeholder {
 
 .cta-advanced:hover .cta-icon {
   transform: rotate(90deg);
-  border-color: hsl(80 100% 5%);
+  border-color: hsl(0 0% 100%);
 }
 
 .cta-advanced .cta-arrow {
@@ -544,32 +686,46 @@ textarea::placeholder {
   transform: rotate(90deg);
 }
 
-/* Dark variant */
+/* Navy variant — dark button on light bg */
 .cta-advanced-dark {
-  color: hsl(160 4% 11%);
-  border-color: hsl(160 4% 11%);
+  color: hsl(223 96% 21%);
+  border-color: hsl(223 96% 21%);
 }
 
 .cta-advanced-dark::before {
-  background: hsl(160 4% 11%);
+  background: hsl(223 96% 21%);
 }
 
 .cta-advanced-dark:hover {
-  color: hsl(0 0% 97.6%);
+  color: hsl(0 0% 100%);
 }
 
-/* Light variant */
+/* Light variant — white button on dark/navy bg */
 .cta-advanced-light {
-  color: hsl(0 0% 97.6%);
-  border-color: hsl(0 0% 97.6%);
+  color: hsl(0 0% 100%);
+  border-color: hsl(0 0% 100%);
 }
 
 .cta-advanced-light::before {
-  background: hsl(0 0% 97.6%);
+  background: hsl(0 0% 100%);
 }
 
 .cta-advanced-light:hover {
-  color: hsl(160 4% 11%);
+  color: hsl(223 96% 21%);
+}
+
+/* Lime variant — for CTA band usage */
+.cta-advanced-lime {
+  color: hsl(85 100% 5%);
+  border-color: hsl(85 100% 5%);
+}
+
+.cta-advanced-lime::before {
+  background: hsl(85 100% 5%);
+}
+
+.cta-advanced-lime:hover {
+  color: hsl(85 100% 62%);
 }
 
 @media (prefers-reduced-motion: reduce) {

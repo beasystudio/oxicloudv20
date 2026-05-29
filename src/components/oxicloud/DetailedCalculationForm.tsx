@@ -11,6 +11,7 @@ import { OxiCloudStatusBadge } from './OxiCloudStatusBadge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { HelpClip } from '@/components/help/HelpClip';
 
 // Auto-save storage keys
 const DETAILED_CALC_DRAFT_KEY = 'nox_detailed_calc_draft_';
@@ -469,7 +470,10 @@ export function DetailedCalculationForm({
               }
             }} />
           <div>
-            <span className="text-sm font-medium">{t('detailedCalc.terrainRaisingToggle')}</span>
+            <span className="text-sm font-medium inline-flex items-center gap-1.5">
+              {t('detailedCalc.terrainRaisingToggle')}
+              <HelpClip clipId="raising-ground-level" />
+            </span>
             <p className="text-xs text-muted-foreground">{t('detailedCalc.terrainRaisingToggleDesc')}</p>
           </div>
         </label>
