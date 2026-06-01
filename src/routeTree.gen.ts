@@ -9,9 +9,129 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PilotDemoRouteImport } from './routes/pilot-demo'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as GovernmentRegisterRouteImport } from './routes/government-register'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as ForAuthoritiesRouteImport } from './routes/for-authorities'
+import { Route as ForArchitectsRouteImport } from './routes/for-architects'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BookADemoRouteImport } from './routes/book-a-demo'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ActivationRouteImport } from './routes/activation'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RegisterWorkspaceRouteImport } from './routes/register.workspace'
+import { Route as PilotDemoSettingsRouteImport } from './routes/pilot-demo.settings'
+import { Route as PilotDemoRegisterRouteImport } from './routes/pilot-demo.register'
+import { Route as PilotDemoProjectsRouteImport } from './routes/pilot-demo.projects'
+import { Route as PilotDemoProfileRouteImport } from './routes/pilot-demo.profile'
+import { Route as PilotDemoPartnershipProgramRouteImport } from './routes/pilot-demo.partnership-program'
+import { Route as PilotDemoLoginRouteImport } from './routes/pilot-demo.login'
+import { Route as PilotDemoForgotPasswordRouteImport } from './routes/pilot-demo.forgot-password'
+import { Route as PilotDemoFinancialRouteImport } from './routes/pilot-demo.financial'
+import { Route as PilotDemoDashboardRouteImport } from './routes/pilot-demo.dashboard'
+import { Route as PilotDemoCreateAccountRouteImport } from './routes/pilot-demo.create-account'
+import { Route as PilotDemoContactsRouteImport } from './routes/pilot-demo.contacts'
+import { Route as PilotDemoActivationSentRouteImport } from './routes/pilot-demo.activation-sent'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
+import { Route as DashboardProjectsRouteImport } from './routes/dashboard.projects'
+import { Route as DashboardProjectBinderRouteImport } from './routes/dashboard.project-binder'
+import { Route as DashboardPartnershipProgramRouteImport } from './routes/dashboard.partnership-program'
+import { Route as DashboardPartnerRouteImport } from './routes/dashboard.partner'
+import { Route as DashboardNoxSettingsRouteImport } from './routes/dashboard.nox-settings'
+import { Route as DashboardNoxRouteImport } from './routes/dashboard.nox'
+import { Route as DashboardMailRouteImport } from './routes/dashboard.mail'
+import { Route as DashboardLmRouteImport } from './routes/dashboard.lm'
+import { Route as DashboardLicensesRouteImport } from './routes/dashboard.licenses'
+import { Route as DashboardFinancialRouteImport } from './routes/dashboard.financial'
+import { Route as DashboardDemoRouteImport } from './routes/dashboard.demo'
+import { Route as DashboardContactsRouteImport } from './routes/dashboard.contacts'
+import { Route as DashboardAuthorityRouteImport } from './routes/dashboard.authority'
+import { Route as DashboardAdminRouteImport } from './routes/dashboard.admin'
+import { Route as DashboardClientHomeRouteImport } from './routes/dashboard.client.home'
+import { Route as DashboardAuthoritySplatRouteImport } from './routes/dashboard.authority.$'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PilotDemoRoute = PilotDemoRouteImport.update({
+  id: '/pilot-demo',
+  path: '/pilot-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GovernmentRegisterRoute = GovernmentRegisterRouteImport.update({
+  id: '/government-register',
+  path: '/government-register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForAuthoritiesRoute = ForAuthoritiesRouteImport.update({
+  id: '/for-authorities',
+  path: '/for-authorities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForArchitectsRoute = ForArchitectsRouteImport.update({
+  id: '/for-architects',
+  path: '/for-architects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookADemoRoute = BookADemoRouteImport.update({
+  id: '/book-a-demo',
+  path: '/book-a-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActivationRoute = ActivationRouteImport.update({
+  id: '/activation',
+  path: '/activation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SplatRoute = SplatRouteImport.update({
   id: '/$',
   path: '/$',
@@ -22,35 +142,600 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterWorkspaceRoute = RegisterWorkspaceRouteImport.update({
+  id: '/workspace',
+  path: '/workspace',
+  getParentRoute: () => RegisterRoute,
+} as any)
+const PilotDemoSettingsRoute = PilotDemoSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoRegisterRoute = PilotDemoRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoProjectsRoute = PilotDemoProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoProfileRoute = PilotDemoProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoPartnershipProgramRoute =
+  PilotDemoPartnershipProgramRouteImport.update({
+    id: '/partnership-program',
+    path: '/partnership-program',
+    getParentRoute: () => PilotDemoRoute,
+  } as any)
+const PilotDemoLoginRoute = PilotDemoLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoForgotPasswordRoute = PilotDemoForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoFinancialRoute = PilotDemoFinancialRouteImport.update({
+  id: '/financial',
+  path: '/financial',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoDashboardRoute = PilotDemoDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoCreateAccountRoute = PilotDemoCreateAccountRouteImport.update({
+  id: '/create-account',
+  path: '/create-account',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoContactsRoute = PilotDemoContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const PilotDemoActivationSentRoute = PilotDemoActivationSentRouteImport.update({
+  id: '/activation-sent',
+  path: '/activation-sent',
+  getParentRoute: () => PilotDemoRoute,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/dashboard/settings',
+  path: '/dashboard/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardProjectsRoute = DashboardProjectsRouteImport.update({
+  id: '/dashboard/projects',
+  path: '/dashboard/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardProjectBinderRoute = DashboardProjectBinderRouteImport.update({
+  id: '/dashboard/project-binder',
+  path: '/dashboard/project-binder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardPartnershipProgramRoute =
+  DashboardPartnershipProgramRouteImport.update({
+    id: '/dashboard/partnership-program',
+    path: '/dashboard/partnership-program',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DashboardPartnerRoute = DashboardPartnerRouteImport.update({
+  id: '/dashboard/partner',
+  path: '/dashboard/partner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardNoxSettingsRoute = DashboardNoxSettingsRouteImport.update({
+  id: '/dashboard/nox-settings',
+  path: '/dashboard/nox-settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardNoxRoute = DashboardNoxRouteImport.update({
+  id: '/dashboard/nox',
+  path: '/dashboard/nox',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardMailRoute = DashboardMailRouteImport.update({
+  id: '/dashboard/mail',
+  path: '/dashboard/mail',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardLmRoute = DashboardLmRouteImport.update({
+  id: '/dashboard/lm',
+  path: '/dashboard/lm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardLicensesRoute = DashboardLicensesRouteImport.update({
+  id: '/dashboard/licenses',
+  path: '/dashboard/licenses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardFinancialRoute = DashboardFinancialRouteImport.update({
+  id: '/dashboard/financial',
+  path: '/dashboard/financial',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardDemoRoute = DashboardDemoRouteImport.update({
+  id: '/dashboard/demo',
+  path: '/dashboard/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardContactsRoute = DashboardContactsRouteImport.update({
+  id: '/dashboard/contacts',
+  path: '/dashboard/contacts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAuthorityRoute = DashboardAuthorityRouteImport.update({
+  id: '/dashboard/authority',
+  path: '/dashboard/authority',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAdminRoute = DashboardAdminRouteImport.update({
+  id: '/dashboard/admin',
+  path: '/dashboard/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardClientHomeRoute = DashboardClientHomeRouteImport.update({
+  id: '/dashboard/client/home',
+  path: '/dashboard/client/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAuthoritySplatRoute = DashboardAuthoritySplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => DashboardAuthorityRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/about': typeof AboutRoute
+  '/activation': typeof ActivationRoute
+  '/auth': typeof AuthRoute
+  '/book-a-demo': typeof BookADemoRoute
+  '/contact': typeof ContactRoute
+  '/for-architects': typeof ForArchitectsRoute
+  '/for-authorities': typeof ForAuthoritiesRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/government-register': typeof GovernmentRegisterRoute
+  '/login': typeof LoginRoute
+  '/pilot-demo': typeof PilotDemoRouteWithChildren
+  '/profile': typeof ProfileRoute
+  '/projects': typeof ProjectsRoute
+  '/register': typeof RegisterRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
+  '/dashboard/authority': typeof DashboardAuthorityRouteWithChildren
+  '/dashboard/contacts': typeof DashboardContactsRoute
+  '/dashboard/demo': typeof DashboardDemoRoute
+  '/dashboard/financial': typeof DashboardFinancialRoute
+  '/dashboard/licenses': typeof DashboardLicensesRoute
+  '/dashboard/lm': typeof DashboardLmRoute
+  '/dashboard/mail': typeof DashboardMailRoute
+  '/dashboard/nox': typeof DashboardNoxRoute
+  '/dashboard/nox-settings': typeof DashboardNoxSettingsRoute
+  '/dashboard/partner': typeof DashboardPartnerRoute
+  '/dashboard/partnership-program': typeof DashboardPartnershipProgramRoute
+  '/dashboard/project-binder': typeof DashboardProjectBinderRoute
+  '/dashboard/projects': typeof DashboardProjectsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/pilot-demo/activation-sent': typeof PilotDemoActivationSentRoute
+  '/pilot-demo/contacts': typeof PilotDemoContactsRoute
+  '/pilot-demo/create-account': typeof PilotDemoCreateAccountRoute
+  '/pilot-demo/dashboard': typeof PilotDemoDashboardRoute
+  '/pilot-demo/financial': typeof PilotDemoFinancialRoute
+  '/pilot-demo/forgot-password': typeof PilotDemoForgotPasswordRoute
+  '/pilot-demo/login': typeof PilotDemoLoginRoute
+  '/pilot-demo/partnership-program': typeof PilotDemoPartnershipProgramRoute
+  '/pilot-demo/profile': typeof PilotDemoProfileRoute
+  '/pilot-demo/projects': typeof PilotDemoProjectsRoute
+  '/pilot-demo/register': typeof PilotDemoRegisterRoute
+  '/pilot-demo/settings': typeof PilotDemoSettingsRoute
+  '/register/workspace': typeof RegisterWorkspaceRoute
+  '/dashboard/authority/$': typeof DashboardAuthoritySplatRoute
+  '/dashboard/client/home': typeof DashboardClientHomeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/about': typeof AboutRoute
+  '/activation': typeof ActivationRoute
+  '/auth': typeof AuthRoute
+  '/book-a-demo': typeof BookADemoRoute
+  '/contact': typeof ContactRoute
+  '/for-architects': typeof ForArchitectsRoute
+  '/for-authorities': typeof ForAuthoritiesRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/government-register': typeof GovernmentRegisterRoute
+  '/login': typeof LoginRoute
+  '/pilot-demo': typeof PilotDemoRouteWithChildren
+  '/profile': typeof ProfileRoute
+  '/projects': typeof ProjectsRoute
+  '/register': typeof RegisterRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
+  '/dashboard/authority': typeof DashboardAuthorityRouteWithChildren
+  '/dashboard/contacts': typeof DashboardContactsRoute
+  '/dashboard/demo': typeof DashboardDemoRoute
+  '/dashboard/financial': typeof DashboardFinancialRoute
+  '/dashboard/licenses': typeof DashboardLicensesRoute
+  '/dashboard/lm': typeof DashboardLmRoute
+  '/dashboard/mail': typeof DashboardMailRoute
+  '/dashboard/nox': typeof DashboardNoxRoute
+  '/dashboard/nox-settings': typeof DashboardNoxSettingsRoute
+  '/dashboard/partner': typeof DashboardPartnerRoute
+  '/dashboard/partnership-program': typeof DashboardPartnershipProgramRoute
+  '/dashboard/project-binder': typeof DashboardProjectBinderRoute
+  '/dashboard/projects': typeof DashboardProjectsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/pilot-demo/activation-sent': typeof PilotDemoActivationSentRoute
+  '/pilot-demo/contacts': typeof PilotDemoContactsRoute
+  '/pilot-demo/create-account': typeof PilotDemoCreateAccountRoute
+  '/pilot-demo/dashboard': typeof PilotDemoDashboardRoute
+  '/pilot-demo/financial': typeof PilotDemoFinancialRoute
+  '/pilot-demo/forgot-password': typeof PilotDemoForgotPasswordRoute
+  '/pilot-demo/login': typeof PilotDemoLoginRoute
+  '/pilot-demo/partnership-program': typeof PilotDemoPartnershipProgramRoute
+  '/pilot-demo/profile': typeof PilotDemoProfileRoute
+  '/pilot-demo/projects': typeof PilotDemoProjectsRoute
+  '/pilot-demo/register': typeof PilotDemoRegisterRoute
+  '/pilot-demo/settings': typeof PilotDemoSettingsRoute
+  '/register/workspace': typeof RegisterWorkspaceRoute
+  '/dashboard/authority/$': typeof DashboardAuthoritySplatRoute
+  '/dashboard/client/home': typeof DashboardClientHomeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/about': typeof AboutRoute
+  '/activation': typeof ActivationRoute
+  '/auth': typeof AuthRoute
+  '/book-a-demo': typeof BookADemoRoute
+  '/contact': typeof ContactRoute
+  '/for-architects': typeof ForArchitectsRoute
+  '/for-authorities': typeof ForAuthoritiesRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/government-register': typeof GovernmentRegisterRoute
+  '/login': typeof LoginRoute
+  '/pilot-demo': typeof PilotDemoRouteWithChildren
+  '/profile': typeof ProfileRoute
+  '/projects': typeof ProjectsRoute
+  '/register': typeof RegisterRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
+  '/dashboard/authority': typeof DashboardAuthorityRouteWithChildren
+  '/dashboard/contacts': typeof DashboardContactsRoute
+  '/dashboard/demo': typeof DashboardDemoRoute
+  '/dashboard/financial': typeof DashboardFinancialRoute
+  '/dashboard/licenses': typeof DashboardLicensesRoute
+  '/dashboard/lm': typeof DashboardLmRoute
+  '/dashboard/mail': typeof DashboardMailRoute
+  '/dashboard/nox': typeof DashboardNoxRoute
+  '/dashboard/nox-settings': typeof DashboardNoxSettingsRoute
+  '/dashboard/partner': typeof DashboardPartnerRoute
+  '/dashboard/partnership-program': typeof DashboardPartnershipProgramRoute
+  '/dashboard/project-binder': typeof DashboardProjectBinderRoute
+  '/dashboard/projects': typeof DashboardProjectsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/pilot-demo/activation-sent': typeof PilotDemoActivationSentRoute
+  '/pilot-demo/contacts': typeof PilotDemoContactsRoute
+  '/pilot-demo/create-account': typeof PilotDemoCreateAccountRoute
+  '/pilot-demo/dashboard': typeof PilotDemoDashboardRoute
+  '/pilot-demo/financial': typeof PilotDemoFinancialRoute
+  '/pilot-demo/forgot-password': typeof PilotDemoForgotPasswordRoute
+  '/pilot-demo/login': typeof PilotDemoLoginRoute
+  '/pilot-demo/partnership-program': typeof PilotDemoPartnershipProgramRoute
+  '/pilot-demo/profile': typeof PilotDemoProfileRoute
+  '/pilot-demo/projects': typeof PilotDemoProjectsRoute
+  '/pilot-demo/register': typeof PilotDemoRegisterRoute
+  '/pilot-demo/settings': typeof PilotDemoSettingsRoute
+  '/register/workspace': typeof RegisterWorkspaceRoute
+  '/dashboard/authority/$': typeof DashboardAuthoritySplatRoute
+  '/dashboard/client/home': typeof DashboardClientHomeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$'
+  fullPaths:
+    | '/'
+    | '/$'
+    | '/about'
+    | '/activation'
+    | '/auth'
+    | '/book-a-demo'
+    | '/contact'
+    | '/for-architects'
+    | '/for-authorities'
+    | '/forgot-password'
+    | '/government-register'
+    | '/login'
+    | '/pilot-demo'
+    | '/profile'
+    | '/projects'
+    | '/register'
+    | '/reset-password'
+    | '/dashboard/admin'
+    | '/dashboard/authority'
+    | '/dashboard/contacts'
+    | '/dashboard/demo'
+    | '/dashboard/financial'
+    | '/dashboard/licenses'
+    | '/dashboard/lm'
+    | '/dashboard/mail'
+    | '/dashboard/nox'
+    | '/dashboard/nox-settings'
+    | '/dashboard/partner'
+    | '/dashboard/partnership-program'
+    | '/dashboard/project-binder'
+    | '/dashboard/projects'
+    | '/dashboard/settings'
+    | '/pilot-demo/activation-sent'
+    | '/pilot-demo/contacts'
+    | '/pilot-demo/create-account'
+    | '/pilot-demo/dashboard'
+    | '/pilot-demo/financial'
+    | '/pilot-demo/forgot-password'
+    | '/pilot-demo/login'
+    | '/pilot-demo/partnership-program'
+    | '/pilot-demo/profile'
+    | '/pilot-demo/projects'
+    | '/pilot-demo/register'
+    | '/pilot-demo/settings'
+    | '/register/workspace'
+    | '/dashboard/authority/$'
+    | '/dashboard/client/home'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$'
-  id: '__root__' | '/' | '/$'
+  to:
+    | '/'
+    | '/$'
+    | '/about'
+    | '/activation'
+    | '/auth'
+    | '/book-a-demo'
+    | '/contact'
+    | '/for-architects'
+    | '/for-authorities'
+    | '/forgot-password'
+    | '/government-register'
+    | '/login'
+    | '/pilot-demo'
+    | '/profile'
+    | '/projects'
+    | '/register'
+    | '/reset-password'
+    | '/dashboard/admin'
+    | '/dashboard/authority'
+    | '/dashboard/contacts'
+    | '/dashboard/demo'
+    | '/dashboard/financial'
+    | '/dashboard/licenses'
+    | '/dashboard/lm'
+    | '/dashboard/mail'
+    | '/dashboard/nox'
+    | '/dashboard/nox-settings'
+    | '/dashboard/partner'
+    | '/dashboard/partnership-program'
+    | '/dashboard/project-binder'
+    | '/dashboard/projects'
+    | '/dashboard/settings'
+    | '/pilot-demo/activation-sent'
+    | '/pilot-demo/contacts'
+    | '/pilot-demo/create-account'
+    | '/pilot-demo/dashboard'
+    | '/pilot-demo/financial'
+    | '/pilot-demo/forgot-password'
+    | '/pilot-demo/login'
+    | '/pilot-demo/partnership-program'
+    | '/pilot-demo/profile'
+    | '/pilot-demo/projects'
+    | '/pilot-demo/register'
+    | '/pilot-demo/settings'
+    | '/register/workspace'
+    | '/dashboard/authority/$'
+    | '/dashboard/client/home'
+  id:
+    | '__root__'
+    | '/'
+    | '/$'
+    | '/about'
+    | '/activation'
+    | '/auth'
+    | '/book-a-demo'
+    | '/contact'
+    | '/for-architects'
+    | '/for-authorities'
+    | '/forgot-password'
+    | '/government-register'
+    | '/login'
+    | '/pilot-demo'
+    | '/profile'
+    | '/projects'
+    | '/register'
+    | '/reset-password'
+    | '/dashboard/admin'
+    | '/dashboard/authority'
+    | '/dashboard/contacts'
+    | '/dashboard/demo'
+    | '/dashboard/financial'
+    | '/dashboard/licenses'
+    | '/dashboard/lm'
+    | '/dashboard/mail'
+    | '/dashboard/nox'
+    | '/dashboard/nox-settings'
+    | '/dashboard/partner'
+    | '/dashboard/partnership-program'
+    | '/dashboard/project-binder'
+    | '/dashboard/projects'
+    | '/dashboard/settings'
+    | '/pilot-demo/activation-sent'
+    | '/pilot-demo/contacts'
+    | '/pilot-demo/create-account'
+    | '/pilot-demo/dashboard'
+    | '/pilot-demo/financial'
+    | '/pilot-demo/forgot-password'
+    | '/pilot-demo/login'
+    | '/pilot-demo/partnership-program'
+    | '/pilot-demo/profile'
+    | '/pilot-demo/projects'
+    | '/pilot-demo/register'
+    | '/pilot-demo/settings'
+    | '/register/workspace'
+    | '/dashboard/authority/$'
+    | '/dashboard/client/home'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
+  AboutRoute: typeof AboutRoute
+  ActivationRoute: typeof ActivationRoute
+  AuthRoute: typeof AuthRoute
+  BookADemoRoute: typeof BookADemoRoute
+  ContactRoute: typeof ContactRoute
+  ForArchitectsRoute: typeof ForArchitectsRoute
+  ForAuthoritiesRoute: typeof ForAuthoritiesRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  GovernmentRegisterRoute: typeof GovernmentRegisterRoute
+  LoginRoute: typeof LoginRoute
+  PilotDemoRoute: typeof PilotDemoRouteWithChildren
+  ProfileRoute: typeof ProfileRoute
+  ProjectsRoute: typeof ProjectsRoute
+  RegisterRoute: typeof RegisterRouteWithChildren
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  DashboardAdminRoute: typeof DashboardAdminRoute
+  DashboardAuthorityRoute: typeof DashboardAuthorityRouteWithChildren
+  DashboardContactsRoute: typeof DashboardContactsRoute
+  DashboardDemoRoute: typeof DashboardDemoRoute
+  DashboardFinancialRoute: typeof DashboardFinancialRoute
+  DashboardLicensesRoute: typeof DashboardLicensesRoute
+  DashboardLmRoute: typeof DashboardLmRoute
+  DashboardMailRoute: typeof DashboardMailRoute
+  DashboardNoxRoute: typeof DashboardNoxRoute
+  DashboardNoxSettingsRoute: typeof DashboardNoxSettingsRoute
+  DashboardPartnerRoute: typeof DashboardPartnerRoute
+  DashboardPartnershipProgramRoute: typeof DashboardPartnershipProgramRoute
+  DashboardProjectBinderRoute: typeof DashboardProjectBinderRoute
+  DashboardProjectsRoute: typeof DashboardProjectsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardClientHomeRoute: typeof DashboardClientHomeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pilot-demo': {
+      id: '/pilot-demo'
+      path: '/pilot-demo'
+      fullPath: '/pilot-demo'
+      preLoaderRoute: typeof PilotDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/government-register': {
+      id: '/government-register'
+      path: '/government-register'
+      fullPath: '/government-register'
+      preLoaderRoute: typeof GovernmentRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-authorities': {
+      id: '/for-authorities'
+      path: '/for-authorities'
+      fullPath: '/for-authorities'
+      preLoaderRoute: typeof ForAuthoritiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-architects': {
+      id: '/for-architects'
+      path: '/for-architects'
+      fullPath: '/for-architects'
+      preLoaderRoute: typeof ForArchitectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book-a-demo': {
+      id: '/book-a-demo'
+      path: '/book-a-demo'
+      fullPath: '/book-a-demo'
+      preLoaderRoute: typeof BookADemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/activation': {
+      id: '/activation'
+      path: '/activation'
+      fullPath: '/activation'
+      preLoaderRoute: typeof ActivationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$': {
       id: '/$'
       path: '/$'
@@ -65,12 +750,310 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/register/workspace': {
+      id: '/register/workspace'
+      path: '/workspace'
+      fullPath: '/register/workspace'
+      preLoaderRoute: typeof RegisterWorkspaceRouteImport
+      parentRoute: typeof RegisterRoute
+    }
+    '/pilot-demo/settings': {
+      id: '/pilot-demo/settings'
+      path: '/settings'
+      fullPath: '/pilot-demo/settings'
+      preLoaderRoute: typeof PilotDemoSettingsRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/register': {
+      id: '/pilot-demo/register'
+      path: '/register'
+      fullPath: '/pilot-demo/register'
+      preLoaderRoute: typeof PilotDemoRegisterRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/projects': {
+      id: '/pilot-demo/projects'
+      path: '/projects'
+      fullPath: '/pilot-demo/projects'
+      preLoaderRoute: typeof PilotDemoProjectsRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/profile': {
+      id: '/pilot-demo/profile'
+      path: '/profile'
+      fullPath: '/pilot-demo/profile'
+      preLoaderRoute: typeof PilotDemoProfileRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/partnership-program': {
+      id: '/pilot-demo/partnership-program'
+      path: '/partnership-program'
+      fullPath: '/pilot-demo/partnership-program'
+      preLoaderRoute: typeof PilotDemoPartnershipProgramRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/login': {
+      id: '/pilot-demo/login'
+      path: '/login'
+      fullPath: '/pilot-demo/login'
+      preLoaderRoute: typeof PilotDemoLoginRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/forgot-password': {
+      id: '/pilot-demo/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/pilot-demo/forgot-password'
+      preLoaderRoute: typeof PilotDemoForgotPasswordRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/financial': {
+      id: '/pilot-demo/financial'
+      path: '/financial'
+      fullPath: '/pilot-demo/financial'
+      preLoaderRoute: typeof PilotDemoFinancialRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/dashboard': {
+      id: '/pilot-demo/dashboard'
+      path: '/dashboard'
+      fullPath: '/pilot-demo/dashboard'
+      preLoaderRoute: typeof PilotDemoDashboardRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/create-account': {
+      id: '/pilot-demo/create-account'
+      path: '/create-account'
+      fullPath: '/pilot-demo/create-account'
+      preLoaderRoute: typeof PilotDemoCreateAccountRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/contacts': {
+      id: '/pilot-demo/contacts'
+      path: '/contacts'
+      fullPath: '/pilot-demo/contacts'
+      preLoaderRoute: typeof PilotDemoContactsRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/pilot-demo/activation-sent': {
+      id: '/pilot-demo/activation-sent'
+      path: '/activation-sent'
+      fullPath: '/pilot-demo/activation-sent'
+      preLoaderRoute: typeof PilotDemoActivationSentRouteImport
+      parentRoute: typeof PilotDemoRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/dashboard/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/projects': {
+      id: '/dashboard/projects'
+      path: '/dashboard/projects'
+      fullPath: '/dashboard/projects'
+      preLoaderRoute: typeof DashboardProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/project-binder': {
+      id: '/dashboard/project-binder'
+      path: '/dashboard/project-binder'
+      fullPath: '/dashboard/project-binder'
+      preLoaderRoute: typeof DashboardProjectBinderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/partnership-program': {
+      id: '/dashboard/partnership-program'
+      path: '/dashboard/partnership-program'
+      fullPath: '/dashboard/partnership-program'
+      preLoaderRoute: typeof DashboardPartnershipProgramRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/partner': {
+      id: '/dashboard/partner'
+      path: '/dashboard/partner'
+      fullPath: '/dashboard/partner'
+      preLoaderRoute: typeof DashboardPartnerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/nox-settings': {
+      id: '/dashboard/nox-settings'
+      path: '/dashboard/nox-settings'
+      fullPath: '/dashboard/nox-settings'
+      preLoaderRoute: typeof DashboardNoxSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/nox': {
+      id: '/dashboard/nox'
+      path: '/dashboard/nox'
+      fullPath: '/dashboard/nox'
+      preLoaderRoute: typeof DashboardNoxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/mail': {
+      id: '/dashboard/mail'
+      path: '/dashboard/mail'
+      fullPath: '/dashboard/mail'
+      preLoaderRoute: typeof DashboardMailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/lm': {
+      id: '/dashboard/lm'
+      path: '/dashboard/lm'
+      fullPath: '/dashboard/lm'
+      preLoaderRoute: typeof DashboardLmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/licenses': {
+      id: '/dashboard/licenses'
+      path: '/dashboard/licenses'
+      fullPath: '/dashboard/licenses'
+      preLoaderRoute: typeof DashboardLicensesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/financial': {
+      id: '/dashboard/financial'
+      path: '/dashboard/financial'
+      fullPath: '/dashboard/financial'
+      preLoaderRoute: typeof DashboardFinancialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/demo': {
+      id: '/dashboard/demo'
+      path: '/dashboard/demo'
+      fullPath: '/dashboard/demo'
+      preLoaderRoute: typeof DashboardDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/contacts': {
+      id: '/dashboard/contacts'
+      path: '/dashboard/contacts'
+      fullPath: '/dashboard/contacts'
+      preLoaderRoute: typeof DashboardContactsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/authority': {
+      id: '/dashboard/authority'
+      path: '/dashboard/authority'
+      fullPath: '/dashboard/authority'
+      preLoaderRoute: typeof DashboardAuthorityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/admin': {
+      id: '/dashboard/admin'
+      path: '/dashboard/admin'
+      fullPath: '/dashboard/admin'
+      preLoaderRoute: typeof DashboardAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/client/home': {
+      id: '/dashboard/client/home'
+      path: '/dashboard/client/home'
+      fullPath: '/dashboard/client/home'
+      preLoaderRoute: typeof DashboardClientHomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/authority/$': {
+      id: '/dashboard/authority/$'
+      path: '/$'
+      fullPath: '/dashboard/authority/$'
+      preLoaderRoute: typeof DashboardAuthoritySplatRouteImport
+      parentRoute: typeof DashboardAuthorityRoute
+    }
   }
 }
+
+interface PilotDemoRouteChildren {
+  PilotDemoActivationSentRoute: typeof PilotDemoActivationSentRoute
+  PilotDemoContactsRoute: typeof PilotDemoContactsRoute
+  PilotDemoCreateAccountRoute: typeof PilotDemoCreateAccountRoute
+  PilotDemoDashboardRoute: typeof PilotDemoDashboardRoute
+  PilotDemoFinancialRoute: typeof PilotDemoFinancialRoute
+  PilotDemoForgotPasswordRoute: typeof PilotDemoForgotPasswordRoute
+  PilotDemoLoginRoute: typeof PilotDemoLoginRoute
+  PilotDemoPartnershipProgramRoute: typeof PilotDemoPartnershipProgramRoute
+  PilotDemoProfileRoute: typeof PilotDemoProfileRoute
+  PilotDemoProjectsRoute: typeof PilotDemoProjectsRoute
+  PilotDemoRegisterRoute: typeof PilotDemoRegisterRoute
+  PilotDemoSettingsRoute: typeof PilotDemoSettingsRoute
+}
+
+const PilotDemoRouteChildren: PilotDemoRouteChildren = {
+  PilotDemoActivationSentRoute: PilotDemoActivationSentRoute,
+  PilotDemoContactsRoute: PilotDemoContactsRoute,
+  PilotDemoCreateAccountRoute: PilotDemoCreateAccountRoute,
+  PilotDemoDashboardRoute: PilotDemoDashboardRoute,
+  PilotDemoFinancialRoute: PilotDemoFinancialRoute,
+  PilotDemoForgotPasswordRoute: PilotDemoForgotPasswordRoute,
+  PilotDemoLoginRoute: PilotDemoLoginRoute,
+  PilotDemoPartnershipProgramRoute: PilotDemoPartnershipProgramRoute,
+  PilotDemoProfileRoute: PilotDemoProfileRoute,
+  PilotDemoProjectsRoute: PilotDemoProjectsRoute,
+  PilotDemoRegisterRoute: PilotDemoRegisterRoute,
+  PilotDemoSettingsRoute: PilotDemoSettingsRoute,
+}
+
+const PilotDemoRouteWithChildren = PilotDemoRoute._addFileChildren(
+  PilotDemoRouteChildren,
+)
+
+interface RegisterRouteChildren {
+  RegisterWorkspaceRoute: typeof RegisterWorkspaceRoute
+}
+
+const RegisterRouteChildren: RegisterRouteChildren = {
+  RegisterWorkspaceRoute: RegisterWorkspaceRoute,
+}
+
+const RegisterRouteWithChildren = RegisterRoute._addFileChildren(
+  RegisterRouteChildren,
+)
+
+interface DashboardAuthorityRouteChildren {
+  DashboardAuthoritySplatRoute: typeof DashboardAuthoritySplatRoute
+}
+
+const DashboardAuthorityRouteChildren: DashboardAuthorityRouteChildren = {
+  DashboardAuthoritySplatRoute: DashboardAuthoritySplatRoute,
+}
+
+const DashboardAuthorityRouteWithChildren =
+  DashboardAuthorityRoute._addFileChildren(DashboardAuthorityRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
+  AboutRoute: AboutRoute,
+  ActivationRoute: ActivationRoute,
+  AuthRoute: AuthRoute,
+  BookADemoRoute: BookADemoRoute,
+  ContactRoute: ContactRoute,
+  ForArchitectsRoute: ForArchitectsRoute,
+  ForAuthoritiesRoute: ForAuthoritiesRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  GovernmentRegisterRoute: GovernmentRegisterRoute,
+  LoginRoute: LoginRoute,
+  PilotDemoRoute: PilotDemoRouteWithChildren,
+  ProfileRoute: ProfileRoute,
+  ProjectsRoute: ProjectsRoute,
+  RegisterRoute: RegisterRouteWithChildren,
+  ResetPasswordRoute: ResetPasswordRoute,
+  DashboardAdminRoute: DashboardAdminRoute,
+  DashboardAuthorityRoute: DashboardAuthorityRouteWithChildren,
+  DashboardContactsRoute: DashboardContactsRoute,
+  DashboardDemoRoute: DashboardDemoRoute,
+  DashboardFinancialRoute: DashboardFinancialRoute,
+  DashboardLicensesRoute: DashboardLicensesRoute,
+  DashboardLmRoute: DashboardLmRoute,
+  DashboardMailRoute: DashboardMailRoute,
+  DashboardNoxRoute: DashboardNoxRoute,
+  DashboardNoxSettingsRoute: DashboardNoxSettingsRoute,
+  DashboardPartnerRoute: DashboardPartnerRoute,
+  DashboardPartnershipProgramRoute: DashboardPartnershipProgramRoute,
+  DashboardProjectBinderRoute: DashboardProjectBinderRoute,
+  DashboardProjectsRoute: DashboardProjectsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardClientHomeRoute: DashboardClientHomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
